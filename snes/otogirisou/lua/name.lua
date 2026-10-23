@@ -14,4 +14,5 @@ emu.addEventCallback(function()
     end
   end
 end, emu.eventType.endFrame)
-dofile(os.getenv("LIBDIR") .. "/pages.lua")
+local here = debug.getinfo(1, "S").source:match("^@(.*/)") or "./"
+dofile(here .. "pages.lua")

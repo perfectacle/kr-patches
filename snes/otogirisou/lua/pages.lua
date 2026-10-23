@@ -2,6 +2,8 @@
 -- STABLE frames, save p<addr>.png once per address and log "frame addr" to pages.txt.
 package.path = os.getenv("LIBDIR") .. "/?.lua;" .. package.path
 local L = require("lib")
+-- LIBDIR holds the toolkit scripts (`krpatch snes lua`); this game's scripts are loaded from here.
+local here = debug.getinfo(1, "S").source:match("^@(.*/)") or "./"
 local stable = tonumber(os.getenv("STABLE") or "25")
 local f, last, since = 0, -1, 0
 local seen, log = {}, {}
@@ -18,4 +20,4 @@ emu.addEventCallback(function()
     L.write("pages.txt", table.concat(log, "\n"))
   end
 end, emu.eventType.endFrame)
-dofile(os.getenv("LIBDIR") .. "/lap.lua")
+dofile(here .. "lap.lua")
