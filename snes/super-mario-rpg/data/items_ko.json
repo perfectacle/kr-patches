@@ -1,0 +1,1175 @@
+[
+ {
+  "id_hex": "05",
+  "en_full": "Hammer",
+  "ko": "해머",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EC%95%84%EC%9D%B4%ED%85%9C",
+  "confidence": "official",
+  "note": "Listed on namu SMRPG item page (해머 ハンマー/Hammer); Mario Wiki Hammer page Korean is from another game"
+ },
+ {
+  "id_hex": "06",
+  "en_full": "Froggie Stick",
+  "ko": "개굴개굴지팡이",
+  "source": "https://www.mariowiki.com/Froggie_Stick",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "07",
+  "en_full": "Nok Nok Shell",
+  "ko": "엉금엉금등껍질",
+  "source": "https://www.mariowiki.com/Koopa_Shell",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "08",
+  "en_full": "Punch Glove",
+  "ko": "펀치글러브",
+  "source": "https://www.mariowiki.com/Punch_Glove",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "09",
+  "en_full": "Finger Shot",
+  "ko": "핑거샷",
+  "source": "https://www.mariowiki.com/Finger_Shot",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "0A",
+  "en_full": "Cymbals",
+  "ko": "심벌즈",
+  "source": "https://www.mariowiki.com/Cymbals",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "0B",
+  "en_full": "Chomp",
+  "ko": "멍멍이",
+  "source": "https://www.mariowiki.com/Chain_Chomp_(weapon)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "0C",
+  "en_full": "Masher",
+  "ko": "불안정해머",
+  "source": "https://www.mariowiki.com/Masher",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "0D",
+  "en_full": "Chomp Shell",
+  "ko": "멍멍이허물",
+  "source": "https://www.mariowiki.com/Fake_Chomp",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "0E",
+  "en_full": "Super Hammer",
+  "ko": "슈퍼해머",
+  "source": "https://www.mariowiki.com/Super_Hammer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "0F",
+  "en_full": "Hand Gun",
+  "ko": "핸드건",
+  "source": "https://www.mariowiki.com/Hand_Gun",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "10",
+  "en_full": "Whomp Glove",
+  "ko": "쭉쭉펀치글러브",
+  "source": "https://www.mariowiki.com/Whomp_Glove",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "11",
+  "en_full": "Slap Glove",
+  "ko": "따귀글러브",
+  "source": "https://www.mariowiki.com/Slap_Glove",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "12",
+  "en_full": "Troopa Shell",
+  "ko": "펄럭펄럭등껍질",
+  "source": "https://www.mariowiki.com/Paratroopa_Shell",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "13",
+  "en_full": "Parasol",
+  "ko": "파라솔",
+  "source": "https://www.mariowiki.com/Peach%27s_Parasol",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "14",
+  "en_full": "Hurly Gloves",
+  "ko": "투척글러브",
+  "source": "https://www.mariowiki.com/Hurly_Glove",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "15",
+  "en_full": "Double Punch",
+  "ko": "슈퍼더블펀치",
+  "source": "https://www.mariowiki.com/Double_Punch",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "16",
+  "en_full": "Ribbit Stick",
+  "ko": "개골개골지팡이",
+  "source": "https://www.mariowiki.com/Ribbit_Stick",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "17",
+  "en_full": "Spiked Link",
+  "ko": "가시멍멍이",
+  "source": "https://www.mariowiki.com/Spiked_Chomp",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "18",
+  "en_full": "Mega Glove",
+  "ko": "점보펀치글러브",
+  "source": "https://www.mariowiki.com/Mega_Glove",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "19",
+  "en_full": "War Fan",
+  "ko": "부채",
+  "source": "https://www.mariowiki.com/War_Fan",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "1A",
+  "en_full": "Hand Cannon",
+  "ko": "핸드캐넌",
+  "source": "https://www.mariowiki.com/Hand_Cannon",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "1B",
+  "en_full": "Sticky Glove",
+  "ko": "찰싹글러브",
+  "source": "https://www.mariowiki.com/Sticky_Glove",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "1C",
+  "en_full": "Ultra Hammer",
+  "ko": "울트라해머",
+  "source": "https://www.mariowiki.com/Ultra_Hammer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "1D",
+  "en_full": "Super Slap",
+  "ko": "초 따귀 글러브",
+  "source": "https://www.mariowiki.com/Super_Slap",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "1E",
+  "en_full": "Drill Claw",
+  "ko": "드릴클로",
+  "source": "https://www.mariowiki.com/Drill_Claw",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "1F",
+  "en_full": "Star Gun",
+  "ko": "스타건",
+  "source": "https://www.mariowiki.com/Star_Gun",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "20",
+  "en_full": "Sonic Cymbal",
+  "ko": "소닉 심벌즈",
+  "source": "https://www.mariowiki.com/Sonic_Cymbals",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "21",
+  "en_full": "Lazy Shell (weapon)",
+  "ko": "토실펄럭등껍질",
+  "source": "https://www.mariowiki.com/Lazy_Shell",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "22",
+  "en_full": "Frying Pan",
+  "ko": "프라이팬",
+  "source": "https://www.mariowiki.com/Frying_Pan",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "23",
+  "en_full": "Lucky Hammer",
+  "ko": "럭키해머",
+  "source": "https://www.mariowiki.com/Lucky_Hammer",
+  "confidence": "official",
+  "note": "namu writes '해머 (럭키)'"
+ },
+ {
+  "id_hex": "25",
+  "en_full": "Shirt",
+  "ko": "노멀작업복",
+  "source": "https://www.mariowiki.com/Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "26",
+  "en_full": "Pants",
+  "ko": "노멀팬츠",
+  "source": "https://www.mariowiki.com/Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "27",
+  "en_full": "Thick Shirt",
+  "ko": "스페셜작업복",
+  "source": "https://www.mariowiki.com/Thick_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "28",
+  "en_full": "Thick Pants",
+  "ko": "스페셜팬츠",
+  "source": "https://www.mariowiki.com/Thick_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "29",
+  "en_full": "Mega Shirt",
+  "ko": "퍼펙트작업복",
+  "source": "https://www.mariowiki.com/Mega_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "2A",
+  "en_full": "Mega Pants",
+  "ko": "퍼펙트팬츠",
+  "source": "https://www.mariowiki.com/Mega_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "2B",
+  "en_full": "Work Pants",
+  "ko": "더티팬츠",
+  "source": "https://www.mariowiki.com/Work_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "2C",
+  "en_full": "Mega Cape",
+  "ko": "퍼펙트망토",
+  "source": "https://www.mariowiki.com/Mega_Cape",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "2D",
+  "en_full": "Happy Shirt",
+  "ko": "해피작업복",
+  "source": "https://www.mariowiki.com/Happy_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "2E",
+  "en_full": "Happy Pants",
+  "ko": "해피팬츠",
+  "source": "https://www.mariowiki.com/Happy_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "2F",
+  "en_full": "Happy Cape",
+  "ko": "해피망토",
+  "source": "https://www.mariowiki.com/Happy_Cape",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "30",
+  "en_full": "Happy Shell",
+  "ko": "해피셸",
+  "source": "https://www.mariowiki.com/Happy_Shell",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "31",
+  "en_full": "Polka Dress",
+  "ko": "러브러브드레스",
+  "source": "https://www.mariowiki.com/Lovely_Dress",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "32",
+  "en_full": "Sailor Shirt",
+  "ko": "세일러작업복",
+  "source": "https://www.mariowiki.com/Sailor_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "33",
+  "en_full": "Sailor Pants",
+  "ko": "세일러팬츠",
+  "source": "https://www.mariowiki.com/Sailor_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "34",
+  "en_full": "Sailor Cape",
+  "ko": "세일러망토",
+  "source": "https://www.mariowiki.com/Sailor_Cape",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "35",
+  "en_full": "Nautica Dress",
+  "ko": "세일러드레스",
+  "source": "https://www.mariowiki.com/Sailor_Dress",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "36",
+  "en_full": "Courage Shell",
+  "ko": "무적등껍질",
+  "source": "https://www.mariowiki.com/Courage_Shell_(Super_Mario_RPG)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "37",
+  "en_full": "Fuzzy Shirt",
+  "ko": "폭신폭신작업복",
+  "source": "https://www.mariowiki.com/Fluffy_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "38",
+  "en_full": "Fuzzy Pants",
+  "ko": "폭신폭신팬츠",
+  "source": "https://www.mariowiki.com/Fluffy_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "39",
+  "en_full": "Fuzzy Cape",
+  "ko": "폭신폭신망토",
+  "source": "https://www.mariowiki.com/Fluffy_Cape",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "3A",
+  "en_full": "Fuzzy Dress",
+  "ko": "폭신폭신드레스",
+  "source": "https://www.mariowiki.com/Fluffy_Dress",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "3B",
+  "en_full": "Fire Shirt",
+  "ko": "파이어작업복",
+  "source": "https://www.mariowiki.com/Fire_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "3C",
+  "en_full": "Fire Pants",
+  "ko": "파이어팬츠",
+  "source": "https://www.mariowiki.com/Fire_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "3D",
+  "en_full": "Fire Cape",
+  "ko": "파이어망토",
+  "source": "https://www.mariowiki.com/Fire_Cape",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "3E",
+  "en_full": "Fire Shell",
+  "ko": "파이어셸",
+  "source": "https://www.mariowiki.com/Fire_Shell_(armor)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "3F",
+  "en_full": "Fire Dress",
+  "ko": "파이어드레스",
+  "source": "https://www.mariowiki.com/Fire_Dress",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "40",
+  "en_full": "Hero Shirt",
+  "ko": "히어로작업복",
+  "source": "https://www.mariowiki.com/Hero_Shirt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "41",
+  "en_full": "Prince Pants",
+  "ko": "프린스팬츠",
+  "source": "https://www.mariowiki.com/Prince_Pants",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "42",
+  "en_full": "Star Cape",
+  "ko": "스타망토",
+  "source": "https://www.mariowiki.com/Star_Cape",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "43",
+  "en_full": "Heal Shell",
+  "ko": "힐셸",
+  "source": "https://www.mariowiki.com/Heel_Shell",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "44",
+  "en_full": "Royal Dress",
+  "ko": "프린세스드레스",
+  "source": "https://www.mariowiki.com/Royal_Dress",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "45",
+  "en_full": "Super Suit",
+  "ko": "슈퍼점퍼",
+  "source": "https://www.mariowiki.com/Super_Suit",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "46",
+  "en_full": "Lazy Shell (armor)",
+  "ko": "토실펄럭등껍질",
+  "source": "https://www.mariowiki.com/Lazy_Shell",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "4A",
+  "en_full": "Zoom Shoes",
+  "ko": "후다닥슈즈",
+  "source": "https://www.mariowiki.com/Zoom_Shoes",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "4B",
+  "en_full": "Safety Badge",
+  "ko": "안심배지",
+  "source": "https://www.mariowiki.com/Safety_Badge_(Super_Mario_RPG)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "4C",
+  "en_full": "Jump Shoes",
+  "ko": "회전슈즈",
+  "source": "https://www.mariowiki.com/Jump_Shoes",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "4D",
+  "en_full": "Safety Ring",
+  "ko": "세이프티링",
+  "source": "https://www.mariowiki.com/Safety_Ring_(Super_Mario_RPG)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "4E",
+  "en_full": "Amulet",
+  "ko": "부키참",
+  "source": "https://www.mariowiki.com/Booster%27s_Charm",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "4F",
+  "en_full": "Scrooge Ring",
+  "ko": "당신 덕분에",
+  "source": "https://www.mariowiki.com/Flower_Ring",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "50",
+  "en_full": "Exp. Booster",
+  "ko": "당신을 넘고 싶어서",
+  "source": "https://www.mariowiki.com/Exp._Booster",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "51",
+  "en_full": "Attack Scarf",
+  "ko": "점퍼스카프",
+  "source": "https://www.mariowiki.com/Attack_Scarf",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "52",
+  "en_full": "Rare Scarf",
+  "ko": "방어스카프",
+  "source": "https://www.mariowiki.com/Defense_Scarf",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "53",
+  "en_full": "B'tub Ring",
+  "ko": "러브러브링",
+  "source": "https://www.mariowiki.com/Nurture_Ring",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "54",
+  "en_full": "Antidote Pin",
+  "ko": "독예방배지",
+  "source": "https://www.mariowiki.com/Antidote_Pin",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "55",
+  "en_full": "Wake Up Pin",
+  "ko": "몽롱예방배지",
+  "source": "https://www.mariowiki.com/Wake-Up_Pin",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "56",
+  "en_full": "Fearless Pin",
+  "ko": "공포예방배지",
+  "source": "https://www.mariowiki.com/Fearless_Pin",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "57",
+  "en_full": "Trueform Pin",
+  "ko": "변신예방배지",
+  "source": "https://www.mariowiki.com/Trueform_Pin",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "58",
+  "en_full": "Coin Trick",
+  "ko": "빛나는 날을 위해",
+  "source": "https://www.mariowiki.com/Coin_Trick",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "59",
+  "en_full": "Ghost Medal",
+  "ko": "유령훈장",
+  "source": "https://www.mariowiki.com/Ghost_Medal",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "5A",
+  "en_full": "Jinx Belt",
+  "ko": "재키벨트",
+  "source": "https://www.mariowiki.com/Jinx_Belt",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "5B",
+  "en_full": "Feather",
+  "ko": "도도깃털",
+  "source": "https://www.mariowiki.com/Feather_(accessory)",
+  "confidence": "official",
+  "note": "namu writes '도도의 깃털'"
+ },
+ {
+  "id_hex": "5C",
+  "en_full": "Troopa Pin",
+  "ko": "펄럭펄럭훈장",
+  "source": "https://www.mariowiki.com/Troopa_Medal",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "5D",
+  "en_full": "Signal Ring",
+  "ko": "시그널링",
+  "source": "https://www.mariowiki.com/Signal_Ring",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "5E",
+  "en_full": "Quartz Charm",
+  "ko": "크리스털참",
+  "source": "https://www.mariowiki.com/Quartz_Charm",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "60",
+  "en_full": "Mushroom",
+  "ko": "버섯",
+  "source": "https://www.mariowiki.com/Mushroom_(Monstro_Town)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "61",
+  "en_full": "Mid Mushroom",
+  "ko": "슈퍼버섯",
+  "source": "https://www.mariowiki.com/Super_Mushroom",
+  "confidence": "official",
+  "note": "Mario Wiki SMRPG consumable; namu writes '슈퍼 버섯'"
+ },
+ {
+  "id_hex": "62",
+  "en_full": "Max Mushroom",
+  "ko": "울트라버섯",
+  "source": "https://www.mariowiki.com/Ultra_Mushroom",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "63",
+  "en_full": "Honey Syrup",
+  "ko": "허니시럽",
+  "source": "https://www.mariowiki.com/Honey_Syrup",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "64",
+  "en_full": "Maple Syrup",
+  "ko": "메이플시럽",
+  "source": "https://www.mariowiki.com/Maple_Syrup",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "65",
+  "en_full": "Royal Syrup",
+  "ko": "로열시럽",
+  "source": "https://www.mariowiki.com/Royal_Syrup",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "66",
+  "en_full": "Pick Me Up",
+  "ko": "부활드링크",
+  "source": "https://www.mariowiki.com/Pick_Me_Up",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "67",
+  "en_full": "Able Juice",
+  "ko": "리프레시주스",
+  "source": "https://www.mariowiki.com/Cleansing_Juice",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "68",
+  "en_full": "Bracer",
+  "ko": "단단해져라",
+  "source": "https://www.mariowiki.com/Bracer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "69",
+  "en_full": "Energizer",
+  "ko": "강해져라",
+  "source": "https://www.mariowiki.com/Energizer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "6A",
+  "en_full": "Yoshi-Ade",
+  "ko": "요시엑기스",
+  "source": "https://www.mariowiki.com/Yoshi-Ade",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "6B",
+  "en_full": "Red Essence",
+  "ko": "레드요시엑기스",
+  "source": "https://www.mariowiki.com/Red_Essence",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "6C",
+  "en_full": "Kerokero Cola",
+  "ko": "개굴개굴드링크",
+  "source": "https://www.mariowiki.com/Croaka_Cola",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "6D",
+  "en_full": "Yoshi Cookie",
+  "ko": "요시쿠키",
+  "source": "https://www.mariowiki.com/Yoshi_Cookie",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "6E",
+  "en_full": "Pure Water",
+  "ko": "성수",
+  "source": "https://www.mariowiki.com/Pure_Water",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "6F",
+  "en_full": "Sleepy Bomb",
+  "ko": "수면 구슬",
+  "source": "https://www.mariowiki.com/Sleepy_Bomb",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "70",
+  "en_full": "Bad Mushroom",
+  "ko": "독버섯",
+  "source": "https://www.mariowiki.com/Poison_Mushroom",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "71",
+  "en_full": "Fire Bomb",
+  "ko": "화염구슬",
+  "source": "https://www.mariowiki.com/Fire_Bomb",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "72",
+  "en_full": "Ice Bomb",
+  "ko": "얼음구슬",
+  "source": "https://www.mariowiki.com/Ice_Bomb",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "73",
+  "en_full": "Flower Tab",
+  "ko": "플라워캡슐",
+  "source": "https://www.mariowiki.com/Flower_Tab",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "74",
+  "en_full": "Flower Jar",
+  "ko": "플라워세트",
+  "source": "https://www.mariowiki.com/Flower_Jar",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "75",
+  "en_full": "Flower Box",
+  "ko": "플라워기프트",
+  "source": "https://www.mariowiki.com/Flower_Box",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "76",
+  "en_full": "Yoshi Candy",
+  "ko": "요시캔디",
+  "source": "https://www.mariowiki.com/Yoshi_Candy",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "77",
+  "en_full": "Froggie Drink",
+  "ko": "올챙이드링크",
+  "source": "https://www.mariowiki.com/Tadpola_Cola",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "78",
+  "en_full": "Muku Cookie",
+  "ko": "통통쿠키",
+  "source": "https://www.mariowiki.com/Thropher_Cookie",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "79",
+  "en_full": "Elixir",
+  "ko": "다리쑥드링크",
+  "source": "https://www.mariowiki.com/Frogleg_Cola",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "7A",
+  "en_full": "Megalixir",
+  "ko": "꼬리쏙드링크",
+  "source": "https://www.mariowiki.com/Finless_Cola",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "7B",
+  "en_full": "See Ya",
+  "ko": "이별은 갑자기",
+  "source": "https://www.mariowiki.com/See_Ya",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "7C",
+  "en_full": "Temple Key",
+  "ko": "신전열쇠",
+  "source": "https://www.mariowiki.com/Temple_Key",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "7D",
+  "en_full": "Goodie Bag",
+  "ko": "복주머니",
+  "source": "https://www.mariowiki.com/Goodie_Bag",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "7E",
+  "en_full": "Earlier Times",
+  "ko": "그때가 그리워",
+  "source": "https://www.mariowiki.com/Earlier_Times",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "7F",
+  "en_full": "Freshen Up",
+  "ko": "리프레시올",
+  "source": "https://www.mariowiki.com/Party_Cleanse",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "80",
+  "en_full": "Rare Frog Coin",
+  "ko": "레어개구리코인",
+  "source": "https://www.mariowiki.com/Special_Frog_Coin",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "81",
+  "en_full": "Wallet",
+  "ko": "지갑",
+  "source": "https://www.mariowiki.com/Wallet",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "82",
+  "en_full": "Cricket Pie",
+  "ko": "귀뚜라미전병",
+  "source": "https://www.mariowiki.com/Cricket_Pie",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "83",
+  "en_full": "Rock Candy",
+  "ko": "별사탕",
+  "source": "https://www.mariowiki.com/Rock_Candy_(item)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "84",
+  "en_full": "Castle Key 1",
+  "ko": "궁전열쇠1",
+  "source": "https://www.mariowiki.com/Castle_Key_1",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "85",
+  "en_full": "Debuggerbomb",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Debug item (Debuggerbomb); not in remake"
+ },
+ {
+  "id_hex": "86",
+  "en_full": "Castle Key 2",
+  "ko": "궁전열쇠2",
+  "source": "https://www.mariowiki.com/Castle_Key_2",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "87",
+  "en_full": "Bambino Bomb",
+  "ko": "미니폭탄",
+  "source": "https://www.mariowiki.com/Microbomb",
+  "confidence": "official",
+  "note": "Enemy-used item; Korean from remake Monster List per Mario Wiki"
+ },
+ {
+  "id_hex": "88",
+  "en_full": "Sheep Attack",
+  "ko": "양떼몰이",
+  "source": "https://www.mariowiki.com/Sheep_Attack",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "89",
+  "en_full": "Carbo Cookie",
+  "ko": "까르보쿠키",
+  "source": "https://www.mariowiki.com/Carbo_Cookie",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "8A",
+  "en_full": "Shiny Stone",
+  "ko": "반짝반짝돌",
+  "source": "https://www.mariowiki.com/Shiny_Stone",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "8C",
+  "en_full": "Room Key",
+  "ko": "지뢰방열쇠",
+  "source": "https://www.mariowiki.com/Room_Key",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "8D",
+  "en_full": "Elder Key",
+  "ko": "선조방열쇠",
+  "source": "https://www.mariowiki.com/Elder_Key",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "8E",
+  "en_full": "Shed Key",
+  "ko": "창고열쇠",
+  "source": "https://www.mariowiki.com/Shed_Key",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "8F",
+  "en_full": "Lamb's Lure",
+  "ko": "양치기",
+  "source": "https://www.mariowiki.com/Lamb%27s_Lure",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "90",
+  "en_full": "Fright Bomb",
+  "ko": "공포구슬",
+  "source": "https://www.mariowiki.com/Fright_Bomb",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "91",
+  "en_full": "Mystery Egg",
+  "ko": "이상한알",
+  "source": "https://www.mariowiki.com/Mystery_Egg_(Super_Mario_RPG)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "92",
+  "en_full": "Beetle Box",
+  "ko": "곤충채집통",
+  "source": "https://www.mariowiki.com/Beetle_Box",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "93",
+  "en_full": "Beetle Box (with beetle)",
+  "ko": "곤충채집통",
+  "source": "https://www.mariowiki.com/Beetle_Box",
+  "confidence": "official",
+  "note": "Second Beetle Box ID (variant); same displayed name assumed"
+ },
+ {
+  "id_hex": "94",
+  "en_full": "Lucky Jewel",
+  "ko": "럭키 주얼",
+  "source": "https://www.mariowiki.com/Lucky_Jewel",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "96",
+  "en_full": "Soprano Card",
+  "ko": "소프라노카드",
+  "source": "https://www.mariowiki.com/Soprano_Card",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "97",
+  "en_full": "Alto Card",
+  "ko": "알토카드",
+  "source": "https://www.mariowiki.com/Alto_Card",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "98",
+  "en_full": "Tenor Card",
+  "ko": "테너카드",
+  "source": "https://www.mariowiki.com/Tenor_Card",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "99",
+  "en_full": "Crystalline",
+  "ko": "모두 단단해져라",
+  "source": "https://www.mariowiki.com/Party_Bracer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "9A",
+  "en_full": "Power Blast",
+  "ko": "모두 강해져라",
+  "source": "https://www.mariowiki.com/Party_Energizer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "9B",
+  "en_full": "Wilt Shroom",
+  "ko": "시든 버섯",
+  "source": "https://www.mariowiki.com/Dried_Mushroom",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "9C",
+  "en_full": "Rotten Mush",
+  "ko": "부패버섯",
+  "source": "https://www.mariowiki.com/Rotten_Mush",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "9D",
+  "en_full": "Moldy Mush",
+  "ko": "곰팡버섯",
+  "source": "https://www.mariowiki.com/Moldy_Mush",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "9E",
+  "en_full": "Seed",
+  "ko": "씨앗",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EC%95%84%EC%9D%B4%ED%85%9C",
+  "confidence": "inferred",
+  "note": "namu lists 씨앗 (たね/Seed); Mario Wiki Seed_(Super_Mario_RPG) lists unsourced '타네' (looks like a JP transliteration error). Not verified in-game"
+ },
+ {
+  "id_hex": "9F",
+  "en_full": "Fertilizer",
+  "ko": "비료",
+  "source": "https://www.mariowiki.com/Fertilizer",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "A0",
+  "en_full": "Trash Can (unused)",
+  "ko": "",
+  "source": "https://www.mariowiki.com/Waste_Basket",
+  "confidence": "missing",
+  "note": "Trash Can / waste basket menu entry; removed in remake (Mario Wiki Waste_Basket)"
+ },
+ {
+  "id_hex": "A1",
+  "en_full": "Big Boo Flag",
+  "ko": "부끄부끄부적",
+  "source": "https://www.mariowiki.com/Boo_Flag",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "A2",
+  "en_full": "Dry Bones Flag",
+  "ko": "와르르부적",
+  "source": "https://www.mariowiki.com/Dry_Bones_Flag",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "A3",
+  "en_full": "Greaper Flag",
+  "ko": "레이호부적",
+  "source": "https://www.mariowiki.com/Greaper_Flag",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "A4",
+  "en_full": "Secret Game (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused/unknown 'Secret Game' item; no remake name"
+ },
+ {
+  "id_hex": "A5",
+  "en_full": "Puppet Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused bomb item; no remake name"
+ },
+ {
+  "id_hex": "A6",
+  "en_full": "Cricket Jam",
+  "ko": "귀뚜라미양갱",
+  "source": "https://www.mariowiki.com/Cricket_Jam",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "A7",
+  "en_full": "Poison Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused bomb item; no remake name"
+ },
+ {
+  "id_hex": "A8",
+  "en_full": "Kill Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused bomb item; no remake name"
+ },
+ {
+  "id_hex": "A9",
+  "en_full": "Fear Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused bomb item; no remake name"
+ },
+ {
+  "id_hex": "AA",
+  "en_full": "Sleep Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused duplicate of Sleepy Bomb; remake name of 0x6F is '수면 구슬'"
+ },
+ {
+  "id_hex": "AB",
+  "en_full": "Mute Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused bomb item; no remake name"
+ },
+ {
+  "id_hex": "AC",
+  "en_full": "Fireworks",
+  "ko": "폭죽",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EC%95%84%EC%9D%B4%ED%85%9C",
+  "confidence": "inferred",
+  "note": "namu lists 폭죽 (はなび); Mario Wiki has no SMRPG-specific Korean name; namu often translates JP names directly"
+ },
+ {
+  "id_hex": "AD",
+  "en_full": "Bomb (unused)",
+  "ko": "",
+  "source": "",
+  "confidence": "missing",
+  "note": "Unused generic Bomb; Mario Wiki '폭탄' is from SMB2 manual, not this game"
+ },
+ {
+  "id_hex": "AE",
+  "en_full": "Bright Card",
+  "ko": "브릴리언트카드",
+  "source": "https://www.mariowiki.com/Bright_Card",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "AF",
+  "en_full": "Mushroom (2)",
+  "ko": "버섯",
+  "source": "https://www.mariowiki.com/Mushroom_(Monstro_Town)",
+  "confidence": "official"
+ },
+ {
+  "id_hex": "B0",
+  "en_full": "Star Egg",
+  "ko": "스타에그",
+  "source": "https://www.mariowiki.com/Star_Egg",
+  "confidence": "official"
+ }
+]

@@ -1,0 +1,478 @@
+id	info	text
+event:000	L160	뒷강에서 물고기를 잡다
+event:001	L160	부르마를 만나다
+event:002	L160	부르마 엉덩이 본체만체
+event:003	L160	부르마 쉬하러 가다
+event:004	L160	프테라노돈과 싸우다
+event:005	L160	캡슐 하우스에서 캠프
+event:006	L160	부르마가 씻겨 주다
+event:007	L160	부르마의 팬티를 벗기다
+event:008	L160	바다거북을 돕다
+event:009	L160	산적과 싸우다
+event:00A	L160	무천도사와 만나다
+event:00B	L160	근두운을 받다
+event:00C	L160	도끼로 머리를 맞다
+event:00D	L160	마을 소녀에게 팡팡하다
+event:00E	L160	마을 소녀로 변장하다
+event:00F	L160	오룡과 싸우다
+event:010	L160	오룡을 잡다
+event:011	L160	납치된 처녀들을 구하다
+event:012	L160	오룡에게 팡팡하다
+event:013	L160	오룡 물고기로 변해 도망
+event:014	L160	오룡 팬티 함정에 걸리다
+event:015	L160	삐삐 캔디를 먹이다
+event:016	L160	야무치와 싸우다
+event:017	L160	야무치 부르마 보고 도망
+event:018	L160	오룡 수면제 작전
+event:019	L160	야무치의 한밤 방문
+event:01A	L160	오룡과 푸알의 변신 대결
+event:01B	L160	부르마 바니걸이 되다
+event:01C	L160	야무치 강공책에 나서다
+event:01D	L160	야무치와 싸우다
+event:01E	L160	야무치 추격 작전 개시
+event:01F	L160	우마왕과 만나다
+event:020	L160	우마왕의 심부름을 맡다
+event:021	L160	치치를 만나다
+event:022	L160	치치에게 팡팡하다
+event:023	L160	카메하우스를 찾아가다
+event:024	L160	부르마 가슴 콕콕 약속
+event:025	L160	무천도사의 에네르기파！
+event:026	L160	무천도사께 「파후파후」
+event:027	L160	사람들 부르마에 겁먹다
+event:028	L160	호이포이 캡슐 공짜 구입
+event:029	L160	부르마 바니걸 그만두다
+event:02A	L160	토끼단과 싸우다
+event:02B	L160	당근토끼 등장
+event:02C	L160	부르마 당근이 되다
+event:02D	L160	당근토끼와 싸우다
+event:02E	L160	토끼단 달나라로
+event:02F	L160	드래곤볼을 도둑맞다
+event:030	L160	피라후 성에 잠입
+event:031	L160	감옥에 갇히다
+event:032	L160	부르마 야한 공격 견디다
+event:033	L160	수면 가스로 잠들다
+event:034	L160	피라후 신룡을 불러내다
+event:035	L160	신룡에게 팬티를 받다
+event:036	L160	드래곤볼 흩어지다
+event:037	L160	보름달에 거대 원숭이로
+event:038	L160	꼬리 잘려 원래대로
+event:039	L160	무천도사께 입문하다
+event:03A	L160	무천도사 에어로빅 열중
+event:03B	L160	데려온 건 못생긴 아가씨
+event:03C	L160	아가씨 테스트로 고민
+event:03D	L160	데려온 건 인어
+event:03E	L160	인어 찌찌 만지기 실패
+event:03F	L160	크리링 등장
+event:040	L160	크리링 야한 책을 바치다
+event:041	L160	둘이 싱싱한 아가씨 찾기
+event:042	L160	오공 아저씨를 고르려다
+event:043	L160	런치를 돕다
+event:044	L160	경찰과 싸우다
+event:045	L160	런치 카메하우스에 오다
+event:046	L160	무천도사의 제자가 되다
+event:047	L160	재채기로 딴사람 된 런치
+event:048	L160	카메하우스 이사
+event:049	L160	실력시험1・100M 달리기
+event:04A	L160	실력시험2・거북돌 찾기
+event:04B	L160	크리링에 거북돌 뺏기다
+event:04C	L160	크리링과 싸우다
+event:04D	L160	무서운 런치와 싸우다
+event:04E	L160	무천도사 무술 마음가짐
+event:04F	L160	새벽 수련・우유 배달
+event:050	L160	아침 수련・밭일
+event:051	L160	오후 수련・공사 알바
+event:052	L160	큰 바위를 움직이다
+event:053	L160	천하제일 무술대회 참가
+event:054	L160	무천류 도복을 받다
+event:055	L160	예선 LL데커와 싸우다
+event:056	L160	예선 파워풀 조와 싸우다
+event:057	L160	예선 란란 도사와 싸우다
+event:058	L160	야무치 일행과 재회하다
+event:059	L160	1회전 기란과 싸우다
+event:05A	L160	크리링의 팬티 작전
+event:05B	L160	준결승 나무와 싸우다
+event:05C	L160	잭키와 나무의 감동 비화
+event:05D	L160	결승전 잭키 춘과 싸우다
+event:05E	L160	시합 중 거대 원숭이로
+event:05F	L160	에네르기파로 달 파괴
+event:060	L160	사성구를 찾아 출발하다
+event:061	L160	실버 대령 부하와 싸우다
+event:062	L160	근두운이 날아가 버리다
+event:063	L160	실버 대령과 싸우다
+event:064	L160	비행기를 얻다
+event:065	L160	추위로 비행기 추락
+event:066	L160	스노에게 도움받다
+event:067	L160	화이트의 부하와 싸우다
+event:068	L160	촌장을 구하러 가다
+event:069	L160	스노에게 방한복을 받다
+event:06A	L160	머슬 타워에 잠입
+event:06B	L160	3층 메탈릭 중사와 싸움
+event:06C	L160	4층 무라사키와 싸움
+event:06D	L160	인조인간 8호를 돕다
+event:06E	L160	5층 포동이와 싸우다
+event:06F	L160	화이트 장군과 싸우다
+event:070	L160	팔봉이 오공을 감싸다
+event:071	L160	징글촌의 촌장을 구하다
+event:072	L160	팔봉이 촌장과 살기로
+event:073	L160	근두운 부활
+event:074	L160	서쪽 도시 무임승차？
+event:075	L160	그레이트 리와 싸우다
+event:076	L160	불량배와 싸우다
+event:077	L160	누나에게 돈을 주다
+event:078	L160	부르마 초상화를 그리다
+event:079	L160	경찰이 데려다주다
+event:07A	L160	마이크로 밴드로 축소
+event:07B	L160	코딱지 판 부하를 처형
+event:07C	L160	부르마 캡슐 잘못 꺼내다
+event:07D	L160	블루의 부하와 싸우다
+event:07E	L160	밴드와 잠수정을 교환
+event:07F	L160	바닷속 블루의 습격
+event:080	L160	블루 사수를 사형
+event:081	L160	블루 B부대 전멸
+event:082	L160	블루 부하 함정으로 전멸
+event:083	L160	감시 로봇과 싸우다
+event:084	L160	블루 함정에 길을 잃다
+event:085	L160	큰 문어와 싸우다
+event:086	L160	블루 장군과 싸우다
+event:087	L160	쥐를 구하다
+event:088	L160	에네르기파로 동굴 탈출
+event:089	L160	부르마 다이아를 챙기다
+event:08A	L160	런치에게 다이아 뺏기다
+event:08B	L160	블루에게 볼을 빼앗기다
+event:08C	L160	수수께끼 마을？에 오다
+event:08D	L160	블루에게서 볼을 되찾다
+event:08E	L160	옐로와 싸워 우파 구출
+event:08F	L160	RR군 타오파이파이 고용
+event:090	L160	블루 일격에 쓰러지다
+event:091	L160	타오파이파이 보라 살해
+event:092	L160	타오파이파이에게 지다
+event:093	L160	카린 탑에 오르다
+event:094	L160	카린님의 초성수를 뺏다
+event:095	L160	타오파이파이와 싸우다
+event:096	L160	RR군에 쳐들어가다
+event:097	L160	야무치 일행 오공 돕기
+event:098	L160	블랙이 레드 총수를 사살
+event:099	L160	블랙과 싸우다
+event:09A	L160	배틀 재킷과 싸우다
+event:09B	L160	웨스턴 마을서 도복 장만
+event:09C	L160	우파를 데려오다
+event:09D	L160	길에서 고추를 긁다
+event:09E	L160	점쟁이 바바 궁전에 가다
+event:09F	L160	승자 연전 개시
+event:0A0	L160	두 번째 상대까지 이기다
+event:0A1	L160	미라 군과 싸우다
+event:0A2	L160	아크맨과 싸우다
+event:0A3	L160	수수께끼 가면남과 싸움
+event:0A4	L160	꼬리가 끊어지다
+event:0A5	L160	손오반과 재회하다
+event:0A6	L160	드래곤볼 행방을 점치다
+event:0A7	L160	합체 피라후 머신과 싸움
+event:0A8	L160	변형・타조형과 싸우다
+event:0A9	L160	신룡에게 빌어 보라 부활
+event:0AA	L160	무천도사・학선인 욕 대결
+event:0AB	L160	예선 차파왕과 싸우다
+event:0AC	L160	천진반 야무치 다리 꺾다
+event:0AD	L160	크리링의 산수 작전
+event:0AE	L160	1회전 펌프트와 싸우다
+event:0AF	L160	잭키 춘 정체 들통나다
+event:0B0	L160	잭키 춘 시합 기권
+event:0B1	L160	준결승 크리링과 싸우다
+event:0B2	L160	결승전 천진반과 싸우다
+event:0B3	L160	천진반 학선인을 배신
+event:0B4	L160	천진반 기공포를 쏘다
+event:0B5	L160	크리링 의문의 죽음
+event:0B6	L160	탬버린과 싸워 지다
+event:0B7	L160	피콜로 대마왕 등장
+event:0B8	L160	피콜로 심벌을 낳다
+event:0B9	L160	무천도사 연회색 작전？
+event:0BA	L160	떨어진 생선구이를 먹다
+event:0BB	L160	야지로베와 싸우다
+event:0BC	L160	야지로베 심벌을 먹다
+event:0BD	L160	탬버린과 싸우다
+event:0BE	L160	피콜로 대마왕과 싸우다
+event:0BF	L160	무천도사 마봉파 실패
+event:0C0	L160	피콜로 대마왕 젊어지다
+event:0C1	L160	야지로베 카린 탑 오르다
+event:0C2	L160	피라후 일당 버려지다
+event:0C3	L160	야지로베 선두 과식
+event:0C4	L160	피콜로 킹 캐슬로
+event:0C5	L160	초신수를 마시다
+event:0C6	L160	피콜로 기념일 제정
+event:0C7	L160	천진반 킹 캐슬로
+event:0C8	L160	피콜로 드럼을 낳다
+event:0C9	L160	드럼과 싸우다
+event:0CA	L160	피콜로 대마왕과 싸우다
+event:0CB	L160	피콜로 알을 낳고 폭발
+choice:000	L144	오른쪽을 겨냥한다
+choice:001	L144	가운데를 겨냥한다
+choice:002	L144	왼쪽을 겨냥한다
+choice:003	L144	재밌어 보여 만져 본다
+choice:004	L144	관심 없어 안 만진다
+choice:005	L144	가만히 기다린다
+choice:006	L144	심심해 바이크 만진다
+choice:007	L144	데려다준다
+choice:008	L144	같이 여행 가자고 한다
+choice:009	L144	상관없으니 해치우자
+choice:00A	L144	그 애로 변장해 속이자
+choice:00B	L144	강을 건너가자
+choice:00C	L144	강을 따라 내려가자
+choice:00D	L144	위쪽으로 간다
+choice:00E	L144	아래쪽으로 간다
+choice:00F	L144	그래‥
+choice:010	L144	그래‥
+choice:011	L144	그래‥
+choice:012	L144	그래‥
+choice:013	L144	그래‥
+choice:014	L144	그래‥
+choice:015	L144	그래‥
+choice:016	L144	그래‥
+choice:017	L144	왜？
+choice:018	L144	이대로 걸어간다
+choice:019	L144	이대로 걸어간다
+choice:01A	L144	이대로 걸어간다
+choice:01B	L144	일단 마을로 돌아간다
+choice:01C	L144	그대로 둔다
+choice:01D	L144	부숴 버린다
+choice:01E	L144	에네르기파를 더 쏜다
+choice:01F	L144	구멍에서 외친다
+choice:020	L144	오룡・푸알에게 맡긴다
+choice:021	L144	야무치와 얘기한다
+choice:022	L144	푸알과 얘기한다
+choice:023	L144	오룡과 얘기한다
+choice:024	L144	걷는 쪽을 고른다
+choice:025	L144	웃는 쪽을 고른다
+choice:026	L144	다른 곳으로 간다
+choice:027	L144	자는 쪽을 고른다
+choice:028	L144	화난 쪽을 고른다
+choice:029	L144	우는 쪽을 고른다
+choice:02A	L144	앉은 쪽을 고른다
+choice:02B	L144	춤추는 쪽을 고른다
+choice:02C	L144	놀란 쪽을 고른다
+choice:02D	L144	뛰는 쪽을 고른다
+choice:02E	L144	서 있는 쪽을 고른다
+choice:02F	L144	소리치는 쪽을 고른다
+choice:030	L144	윙크하는 쪽을 고른다
+choice:031	L144	깡충대는 쪽을 고른다
+choice:032	L144	줄넘기하는 쪽 고른다
+choice:033	L144	오른쪽
+choice:034	L144	왼쪽
+choice:035	L144	잘 모르겠다
+choice:036	L144	동쪽으로 간다
+choice:037	L144	남쪽으로 간다
+choice:038	L144	서쪽으로 간다
+choice:039	L144	북쪽으로 간다
+choice:03A	L144	숨겨진 문을 지나간다
+choice:03B	L144	바다 쪽을 찾아본다
+choice:03C	L144	우리 집을 찾아본다
+choice:03D	L144	마을로 돌아가 본다
+choice:03E	L144	오른쪽에서 기다린다
+choice:03F	L144	가운데에서 기다린다
+choice:040	L144	왼쪽에서 기다린다
+choice:041	L144	시험해 본다
+choice:042	L144	수련을 계속한다
+choice:043	L144	크리링과 얘기한다
+choice:044	L144	부르마와 얘기한다
+choice:045	L144	우파를 데려온다
+choice:046	L144	찻집에 간다
+choice:047	L144	지불한다
+choice:048	L144	지불하지 않는다
+choice:049	L144	오른쪽으로 피한다
+choice:04A	L144	왼쪽으로 피한다
+choice:04B	L144	참고 나아간다
+choice:04C	L144	돌아간다
+choice:04D	L144	촌장을 구하러 왔어
+choice:04E	L144	나쁜 놈 무찌르러 왔어
+choice:04F	L144	계속해서 간다
+choice:050	L144	돌아간다
+choice:051	L144	별로 상관없어
+choice:052	L144	그래 알았어
+choice:053	L144	거절한다
+choice:054	L144	알았어
+choice:055	L144	싸운다
+choice:056	L144	부르마를 찾는다
+choice:057	L144	왼쪽으로 간다
+choice:058	L144	오른쪽으로 간다
+choice:059	L144	쥐를 찾는다
+choice:05A	L144	포기하고 서두른다
+choice:05B	L144	오른쪽으로 피한다
+choice:05C	L144	피하지 않는다
+choice:05D	L144	왼쪽으로 피한다
+choice:05E	L144	왼쪽으로 달려든다
+choice:05F	L144	가운데로 달려든다
+choice:060	L144	오른쪽으로 달려든다
+choice:061	L144	정면으로 들어간다
+choice:062	L144	뒤쪽으로 들어간다
+choice:063	L144	오른쪽으로 간다
+choice:064	L144	왼쪽으로 간다
+choice:065	L144	직진한다
+choice:066	L144	싸운다
+choice:067	L144	미행한다
+choice:068	L144	고맙게 먹는다
+choice:069	L144	조금 더 참는다
+choice:06A	L144	바위를 낸다
+choice:06B	L144	가위를 낸다
+choice:06C	L144	보를 낸다
+choice:06D	L144	에네르기파를 쏜다
+choice:06E	L144	여의봉을 쓴다
+choice:06F	L144	마신다
+choice:070	L144	마시지 않는다
+choice:071	L144	잘 먹겠습니다
+choice:072	L144	CYJZERO
+choice:073	L144	EXOBUD
+choice:074	L144	PERFECTACLE
+minigame:000	L144	알겠느냐！///A버튼과 Y버튼을/번갈아 눌러서/밭을 가는 게다！
+minigame:001	L144	켁！！
+minigame:002	L144	히이익！！
+minigame:003	L144	자！/어서 시작하지 못할까！
+minigame:004	L144	어허！ 느리구나！
+minigame:005	L144	으으으‥
+minigame:006	L144	흐억‥
+minigame:007	L144	끄‥끝났다‥
+minigame:008	L144	크으윽‥/소‥손이 아파‥！！
+minigame:009	L144	나 원 참‥ 꽤나/시간이 걸렸구나‥
+minigame:00A	L144	자 시작해 볼까！
+minigame:00B	L144	좋아
+minigame:00C	L144	빨리 권법을/배우고 싶다‥
+minigame:00D	L144	그러게‥
+minigame:00E	L144	겨우 절반인가‥
+minigame:00F	L144	배고프다‥
+minigame:010	L144	거의 다 했다！
+minigame:011	L144	힘내자！
+minigame:012	L144	후우‥ 끝났다‥
+minigame:013	L144	다음 거 갈까‥
+minigame:014	L144	좋아 간다！！
+minigame:015	L144	후우‥/아직 위가 안 보여‥
+minigame:016	L144	조‥조금만 더‥！！
+minigame:017	L144	헉헉/해‥해냈다‥
+minigame:018	L144	자 드래곤볼을/찾아볼까//X버튼으로/레이더를 보면서/찾는 거였지‥
+minigame:019	L144	됐다！/바로 근처에 있어！！/조금만 더！！
+minigame:01A	L144	좋아 가까워졌어！
+minigame:01B	L144	음 구슬은 아직/멀리 있나 보네‥
+minigame:01C	L144	해냈다！！/드래곤볼 찾았다！！！！
+minigame:01D	L144	좋았어‥
+minigame:01E	L144	안 돼‥
+minigame:01F	L144	끄으으윽‥！！
+minigame:020	L144	우‥움직였다！！
+minigame:021	L144	끼야아악！！
+minigame:022	L144	우와아악！
+minigame:023	L144	이봐！！/가‥감옥은 부서졌어！！//오공！！/이‥이제 원래대로/돌아와도 돼！！
+minigame:024	L144	우와왓！！/뭐‥뭐야！？
+minigame:025	L144	！！！！
+minigame:026	L144	끼에에에엑！！！！
+minigame:027	L144	뭐‥뭐야 이 녀석은！？
+minigame:028	L144	빨리 도망쳐！！/죽을 거야！！！！
+minigame:029	L144	히에에엑！！
+minigame:02A	L144	도‥도망치자！！
+minigame:02B	L144	꾸물대지 마！！
+minigame:02C	L144	제‥젠장/오공 녀석‥！
+minigame:02D	L144	지금 오공한텐 뭘/말해도 소용없어！//좀 더 멀리 도망치지/않으면 위험해！！
+minigame:02E	L144	자‥잠깐 너！/적당히 좀 해！！/농담하지 마！！
+minigame:02F	L144	야‥야무치님！/저 녀석 꼬리가/약점이었잖아요！？
+minigame:030	L144	앗！！ 그렇지！！/이런 괴물이 돼도/약점은 같은가‥！？
+minigame:031	L144	지금이야 푸알！！///가위로 변신해서/꼬리를 잘라 버리면/기절할지도 몰라！！
+minigame:032	L144	네！！
+minigame:033	L144	빨리 좀 해！！
+minigame:034	L144	에잇！！
+minigame:035	L144	잠깐 쉬지 않을래‥
+minigame:036	L144	그럴 시간 없어/크리링
+minigame:037	L144	
+place:000	L141	오공의 집
+place:001	L141	뒷강
+place:002	L141	길
+place:003	L141	숲속
+place:004	L141	캡슐 하우스
+place:005	L141	산길
+place:006	L141	해변
+place:007	L141	공사 현장
+place:008	L141	마을 밖
+place:009	L141	오룡의 집
+place:00A	L141	오룡의 집 밖
+place:00B	L141	강변
+place:00C	L141	황야
+place:00D	L141	야무치의 아지트
+place:00E	L141	캠핑카
+place:00F	L141	캠핑카 2층
+place:010	L141	캠핑카 내부
+place:011	L141	프라이팬 산
+place:012	L141	바다
+place:013	L141	강
+place:014	L141	하늘
+place:015	L141	카메하우스
+place:016	L141	뒤쪽 공터
+place:017	L141	카메하우스 상공
+place:018	L141	조회 컴퓨터
+place:019	L141	성지 카린
+place:01A	L141	사막 상공
+place:01B	L141	점쟁이 바바의 궁전
+place:01C	L141	악마의 화장실
+place:01D	L141	투기장
+place:01E	L141	사막
+place:01F	L141	실버의 야영지
+place:020	L141	평지
+place:021	L141	골짜기
+place:022	L141	실버의 야영지 상공
+place:023	L141	머슬 타워
+place:024	L141	머슬 타워 사령실
+place:025	L141	징글촌
+place:026	L141	머슬 타워 2층
+place:027	L141	머슬 타워 3층
+place:028	L141	머슬 타워 4층
+place:029	L141	머슬 타워 계단참
+place:02A	L141	머슬 타워 5층 미로
+place:02B	L141	머슬 타워 5층
+place:02C	L141	레드 리본군 사령실
+place:02D	L141	성지 카린 상공
+place:02E	L141	레드 리본군 본부
+place:02F	L141	카린 탑
+place:030	L141	정찰기 모니터
+place:031	L141	레드 리본군 상공
+place:032	L141	레드 리본군 본부 안
+place:033	L141	피라후의 비행선
+place:034	L141	천하제일 무술대회장
+place:035	L141	정글
+place:036	L141	수풀
+place:037	L141	킹 캐슬
+place:038	L141	킹 캐슬
+place:039	L141	킹 캐슬 상공
+place:03A	L141	텔레비전 방송
+place:03B	L141	천계
+place:03C	L141	숲
+place:03D	L141	얀얀 마을
+place:03E	L141	록랜드 골짜기
+place:03F	L141	하이리프 마을
+place:040	L141	판가스 마을
+place:041	L141	웨스턴 마을
+place:042	L141	캡슐 상점
+place:043	L141	거리
+place:044	L141	주유소
+place:045	L141	식료품 가게
+place:046	L141	옷 가게
+place:047	L141	피라후 성
+place:048	L141	피라후 성 안
+place:049	L141	감옥
+place:04A	L141	강철 감옥
+place:04B	L141	무천류 무술 수련 중
+place:04C	L141	눈 덮인 벌판
+place:04D	L141	해저
+place:04E	L141	레드 리본군 잠수함
+place:04F	L141	서쪽 도시
+place:050	L141	캡슐 코퍼레이션
+place:051	L141	부르마의 방
+place:052	L141	눈 덮인 산길
+place:053	L141	블루 중대 임시 캠프
+place:054	L141	뒷골목
+place:055	L141	뒷골목
+place:056	L141	섬
+place:057	L141	해저 동굴
+place:058	L141	통로
+place:059	L141	해적의 아지트
+place:05A	L141	동굴 안
+place:05B	L141	지상
+place:05C	L141	펭귄 마을
+place:05D	L141	센베의 집
+place:05E	L141	센베의 집
+place:05F	L141	예선장
+place:060	L141	예선장
+place:061	L141	무대
+place:062	L141	무대 상공
+place:063	L141	 

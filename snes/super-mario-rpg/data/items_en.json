@@ -1,0 +1,1794 @@
+[
+ {
+  "id": 0,
+  "id_hex": "00",
+  "icon": "20",
+  "en_patch": "{9A}{6F}",
+  "jp_raw": "f07c2020202020202020"
+ },
+ {
+  "id": 1,
+  "id_hex": "01",
+  "icon": "20",
+  "en_patch": "{9D}{BF}{6D}",
+  "jp_raw": "f474d220202020202020"
+ },
+ {
+  "id": 2,
+  "id_hex": "02",
+  "icon": "20",
+  "en_patch": ".{AF}{AA}{93}",
+  "jp_raw": "717f8b85bf5b20202020"
+ },
+ {
+  "id": 3,
+  "id_hex": "03",
+  "icon": "20",
+  "en_patch": "{70}{7C}",
+  "jp_raw": "707c2020202020202020"
+ },
+ {
+  "id": 4,
+  "id_hex": "04",
+  "icon": "20",
+  "en_patch": "{70}{7C}",
+  "jp_raw": "707c2020202020202020"
+ },
+ {
+  "id": 5,
+  "id_hex": "05",
+  "icon": "22",
+  "en_patch": "HAMMER",
+  "jp_raw": "a3cbad5b202020202020"
+ },
+ {
+  "id": 6,
+  "id_hex": "06",
+  "icon": "28",
+  "en_patch": "FROG STICK",
+  "jp_raw": "81c581c5a09276202020"
+ },
+ {
+  "id": 7,
+  "id_hex": "07",
+  "icon": "23",
+  "en_patch": "NOKO SHELL",
+  "jp_raw": "a183a1838274bc202020"
+ },
+ {
+  "id": 8,
+  "id_hex": "08",
+  "icon": "21",
+  "en_patch": "PUNCHGLOVE",
+  "jp_raw": "f7cb91d3c55bf1202020"
+ },
+ {
+  "id": 9,
+  "id_hex": "09",
+  "icon": "29",
+  "en_patch": "FINGERSHOT",
+  "jp_raw": "a763cbcf5b876f5f9720"
+ },
+ {
+  "id": 10,
+  "id_hex": "0A",
+  "icon": "25",
+  "en_patch": "CYMBALS",
+  "jp_raw": "87cbedc1202020202020"
+ },
+ {
+  "id": 11,
+  "id_hex": "0B",
+  "icon": "27",
+  "en_patch": "CHOMP",
+  "jp_raw": "c7cbc7cb202020202020"
+ },
+ {
+  "id": 12,
+  "id_hex": "0C",
+  "icon": "22",
+  "en_patch": "MASHER",
+  "jp_raw": "b1bd5e80a3cbad5b2020"
+ },
+ {
+  "id": 13,
+  "id_hex": "0D",
+  "icon": "27",
+  "en_patch": "CHOMPSHELL",
+  "jp_raw": "c7cbc7cba09c80cebc20"
+ },
+ {
+  "id": 14,
+  "id_hex": "0E",
+  "icon": "22",
+  "en_patch": "SUPERHAMMA",
+  "jp_raw": "895bf75ba3cbad5b2020"
+ },
+ {
+  "id": 15,
+  "id_hex": "0F",
+  "icon": "29",
+  "en_patch": "HAND GUN",
+  "jp_raw": "a3cbebcfcb2020202020"
+ },
+ {
+  "id": 16,
+  "id_hex": "10",
+  "icon": "21",
+  "en_patch": "WHOMPGLOVE",
+  "jp_raw": "a0eef7cb91d3c55bf120"
+ },
+ {
+  "id": 17,
+  "id_hex": "11",
+  "icon": "21",
+  "en_patch": "SLAP GLOVE",
+  "jp_raw": "efcb8fd3c55bf1202020"
+ },
+ {
+  "id": 18,
+  "id_hex": "12",
+  "icon": "23",
+  "en_patch": "TROOPASHEL",
+  "jp_raw": "f78ff78f8274bc202020"
+ },
+ {
+  "id": 19,
+  "id_hex": "13",
+  "icon": "28",
+  "en_patch": "PARASOL",
+  "jp_raw": "f7bd8dc1202020202020"
+ },
+ {
+  "id": 20,
+  "id_hex": "14",
+  "icon": "21",
+  "en_patch": "HURLYGLOVE",
+  "jp_raw": "f0ca98d4d3c55bf12020"
+ },
+ {
+  "id": 21,
+  "id_hex": "15",
+  "icon": "21",
+  "en_patch": "SUPERPUNCH",
+  "jp_raw": "895bf75be3f1c1f7cb91"
+ },
+ {
+  "id": 22,
+  "id_hex": "16",
+  "icon": "28",
+  "en_patch": "RIBITSTICK",
+  "jp_raw": "d583d583a09276202020"
+ },
+ {
+  "id": 23,
+  "id_hex": "17",
+  "icon": "27",
+  "en_patch": "SPIKEDLINK",
+  "jp_raw": "97d5c7cbc7cb20202020"
+ },
+ {
+  "id": 24,
+  "id_hex": "18",
+  "icon": "21",
+  "en_patch": "MEGA GLOVE",
+  "jp_raw": "e87af7cb91d3c55bf120"
+ },
+ {
+  "id": 25,
+  "id_hex": "19",
+  "icon": "26",
+  "en_patch": "WAR FAN",
+  "jp_raw": "8bcb8920202020202020"
+ },
+ {
+  "id": 26,
+  "id_hex": "1A",
+  "icon": "29",
+  "en_patch": "HANDCANNON",
+  "jp_raw": "a3cbeb7d6ba1cb202020"
+ },
+ {
+  "id": 27,
+  "id_hex": "1B",
+  "icon": "21",
+  "en_patch": "STICKGLOVE",
+  "jp_raw": "7e5e927cd3c55bf12020"
+ },
+ {
+  "id": 28,
+  "id_hex": "1C",
+  "icon": "22",
+  "en_patch": "ULTRAHAMMA",
+  "jp_raw": "75c197bda3cbad5b2020"
+ },
+ {
+  "id": 29,
+  "id_hex": "1D",
+  "icon": "21",
+  "en_patch": "SUPER SLAP",
+  "jp_raw": "906e5befcb8fd3c55bf1"
+ },
+ {
+  "id": 30,
+  "id_hex": "1E",
+  "icon": "21",
+  "en_patch": "DRILL CLAW",
+  "jp_raw": "ebbfc17fc55b20202020"
+ },
+ {
+  "id": 31,
+  "id_hex": "1F",
+  "icon": "29",
+  "en_patch": "STAR GUN",
+  "jp_raw": "898f5bcfcb2020202020"
+ },
+ {
+  "id": 32,
+  "id_hex": "20",
+  "icon": "25",
+  "en_patch": "SONICYMBAL",
+  "jp_raw": "8d9b5f7f87cbedc12020"
+ },
+ {
+  "id": 33,
+  "id_hex": "21",
+  "icon": "23",
+  "en_patch": "LAZY SHELL",
+  "jp_raw": "a4accaf78f8274bc2020"
+ },
+ {
+  "id": 34,
+  "id_hex": "22",
+  "icon": "26",
+  "en_patch": "FRY PAN",
+  "jp_raw": "a7bd73f7cb2020202020"
+ },
+ {
+  "id": 35,
+  "id_hex": "23",
+  "icon": "22",
+  "en_patch": "HAMMER",
+  "jp_raw": "a3cbad5b202020202020"
+ },
+ {
+  "id": 36,
+  "id_hex": "24",
+  "icon": "20",
+  "en_patch": "{BA}{EE}",
+  "jp_raw": "baee2020202020202020"
+ },
+ {
+  "id": 37,
+  "id_hex": "25",
+  "icon": "3C",
+  "en_patch": "SHIRT",
+  "jp_raw": "a69274a09298d0202020"
+ },
+ {
+  "id": 38,
+  "id_hex": "26",
+  "icon": "3C",
+  "en_patch": "PANTS",
+  "jp_raw": "a69274a0f7cb93202020"
+ },
+ {
+  "id": 39,
+  "id_hex": "27",
+  "icon": "3C",
+  "en_patch": "THICKSHIRT",
+  "jp_raw": "865e7abe9298d0202020"
+ },
+ {
+  "id": 40,
+  "id_hex": "28",
+  "icon": "3C",
+  "en_patch": "THICKPANTS",
+  "jp_raw": "865e7abef7cb93202020"
+ },
+ {
+  "id": 41,
+  "id_hex": "29",
+  "icon": "3C",
+  "en_patch": "MEGA SHIRT",
+  "jp_raw": "ec5e90be9298d0202020"
+ },
+ {
+  "id": 42,
+  "id_hex": "2A",
+  "icon": "3C",
+  "en_patch": "MEGA PANTS",
+  "jp_raw": "ec5e90bef7cb93202020"
+ },
+ {
+  "id": 43,
+  "id_hex": "2B",
+  "icon": "3C",
+  "en_patch": "WORK PANTS",
+  "jp_raw": "ec5e9072f7cb93202020"
+ },
+ {
+  "id": 44,
+  "id_hex": "2C",
+  "icon": "3C",
+  "en_patch": "MEGA CAPE",
+  "jp_raw": "ec5e90beadcb97202020"
+ },
+ {
+  "id": 45,
+  "id_hex": "2D",
+  "icon": "3C",
+  "en_patch": "HAPPYSHIRT",
+  "jp_raw": "a35ff95b9298d0202020"
+ },
+ {
+  "id": 46,
+  "id_hex": "2E",
+  "icon": "3C",
+  "en_patch": "HAPPYPANTS",
+  "jp_raw": "a35ff95bf7cb93202020"
+ },
+ {
+  "id": 47,
+  "id_hex": "2F",
+  "icon": "3C",
+  "en_patch": "HAPPY CAPE",
+  "jp_raw": "a35ff95badcb97202020"
+ },
+ {
+  "id": 48,
+  "id_hex": "30",
+  "icon": "3C",
+  "en_patch": "HAPPYSHELL",
+  "jp_raw": "a35ff95b8767c1202020"
+ },
+ {
+  "id": 49,
+  "id_hex": "31",
+  "icon": "3C",
+  "en_patch": "POLKADRESS",
+  "jp_raw": "bdf1bdf1ebc389202020"
+ },
+ {
+  "id": 50,
+  "id_hex": "32",
+  "icon": "3C",
+  "en_patch": "SERA SHIRT",
+  "jp_raw": "8b5bbd5b9298d0202020"
+ },
+ {
+  "id": 51,
+  "id_hex": "33",
+  "icon": "3C",
+  "en_patch": "SERA PANTS",
+  "jp_raw": "8b5bbd5bf7cb93202020"
+ },
+ {
+  "id": 52,
+  "id_hex": "34",
+  "icon": "3C",
+  "en_patch": "SERA CAPE",
+  "jp_raw": "8b5bbd5badcb97202020"
+ },
+ {
+  "id": 53,
+  "id_hex": "35",
+  "icon": "3C",
+  "en_patch": "SERA DRESS",
+  "jp_raw": "8b5bbd5bebc389202020"
+ },
+ {
+  "id": 54,
+  "id_hex": "36",
+  "icon": "3C",
+  "en_patch": "POWERSHELL",
+  "jp_raw": "b0947ca08274bc202020"
+ },
+ {
+  "id": 55,
+  "id_hex": "37",
+  "icon": "3C",
+  "en_patch": "FUZZYSHIRT",
+  "jp_raw": "a67aa67a9298d0202020"
+ },
+ {
+  "id": 56,
+  "id_hex": "38",
+  "icon": "3C",
+  "en_patch": "FUZZYPANTS",
+  "jp_raw": "a67aa67af7cb93202020"
+ },
+ {
+  "id": 57,
+  "id_hex": "39",
+  "icon": "3C",
+  "en_patch": "FUZZY CAPE",
+  "jp_raw": "a67aa67aadcb97202020"
+ },
+ {
+  "id": 58,
+  "id_hex": "3A",
+  "icon": "3C",
+  "en_patch": "FUZZYDRESS",
+  "jp_raw": "a67aa67aebc389202020"
+ },
+ {
+  "id": 59,
+  "id_hex": "3B",
+  "icon": "3C",
+  "en_patch": "FIRE SHIRT",
+  "jp_raw": "a76173719298d0202020"
+ },
+ {
+  "id": 60,
+  "id_hex": "3C",
+  "icon": "3C",
+  "en_patch": "FIRE PANTS",
+  "jp_raw": "a7617371f7cb93202020"
+ },
+ {
+  "id": 61,
+  "id_hex": "3D",
+  "icon": "3C",
+  "en_patch": "FIRE CAPE",
+  "jp_raw": "a7617371adcb97202020"
+ },
+ {
+  "id": 62,
+  "id_hex": "3E",
+  "icon": "3C",
+  "en_patch": "FIRE SHELL",
+  "jp_raw": "a76173718767c1202020"
+ },
+ {
+  "id": 63,
+  "id_hex": "3F",
+  "icon": "3C",
+  "en_patch": "FIRE DRESS",
+  "jp_raw": "a7617371ebc389202020"
+ },
+ {
+  "id": 64,
+  "id_hex": "40",
+  "icon": "3C",
+  "en_patch": "HERO SHIRT",
+  "jp_raw": "a55bc55b9298d0202020"
+ },
+ {
+  "id": 65,
+  "id_hex": "41",
+  "icon": "3C",
+  "en_patch": "PRINCEPANT",
+  "jp_raw": "fbbfcb89f7cb93202020"
+ },
+ {
+  "id": 66,
+  "id_hex": "42",
+  "icon": "3C",
+  "en_patch": "STAR CAPE",
+  "jp_raw": "898f5badcb9720202020"
+ },
+ {
+  "id": 67,
+  "id_hex": "43",
+  "icon": "3C",
+  "en_patch": "HEAL SHELL",
+  "jp_raw": "a55bc18767c120202020"
+ },
+ {
+  "id": 68,
+  "id_hex": "44",
+  "icon": "3C",
+  "en_patch": "ROYALDRESS",
+  "jp_raw": "fbbfcb8b89ebc3892020"
+ },
+ {
+  "id": 69,
+  "id_hex": "45",
+  "icon": "3C",
+  "en_patch": "SUPERSHIRT",
+  "jp_raw": "895bf75bdb6bcbf75b20"
+ },
+ {
+  "id": 70,
+  "id_hex": "46",
+  "icon": "3C",
+  "en_patch": "LAZY SHELL",
+  "jp_raw": "a4accaf78f8274bc2020"
+ },
+ {
+  "id": 71,
+  "id_hex": "47",
+  "icon": "20",
+  "en_patch": "{BA}{EE}",
+  "jp_raw": "baee2020202020202020"
+ },
+ {
+  "id": 72,
+  "id_hex": "48",
+  "icon": "20",
+  "en_patch": "{BA}{EE}",
+  "jp_raw": "baee2020202020202020"
+ },
+ {
+  "id": 73,
+  "id_hex": "49",
+  "icon": "20",
+  "en_patch": "{BA}{EE}",
+  "jp_raw": "baee2020202020202020"
+ },
+ {
+  "id": 74,
+  "id_hex": "4A",
+  "icon": "3D",
+  "en_patch": "ZOOM SHOES",
+  "jp_raw": "876defefcb876d5bdd20"
+ },
+ {
+  "id": 75,
+  "id_hex": "4B",
+  "icon": "3D",
+  "en_patch": "SAFE BADGE",
+  "jp_raw": "70ca86caed5fdb202020"
+ },
+ {
+  "id": 76,
+  "id_hex": "4C",
+  "icon": "3D",
+  "en_patch": "JUMP SHOES",
+  "jp_raw": "7a7294ca876d5bdd2020"
+ },
+ {
+  "id": 77,
+  "id_hex": "4D",
+  "icon": "3D",
+  "en_patch": "SAFE RING",
+  "jp_raw": "8b5ba795635bbfcbd320"
+ },
+ {
+  "id": 78,
+  "id_hex": "4E",
+  "icon": "3D",
+  "en_patch": "AMULET",
+  "jp_raw": "f15f7d5ba078acb4be20"
+ },
+ {
+  "id": 79,
+  "id_hex": "4F",
+  "icon": "3D",
+  "en_patch": "SCROGERING",
+  "jp_raw": "7caece72947ec28e7abc"
+ },
+ {
+  "id": 80,
+  "id_hex": "50",
+  "icon": "3D",
+  "en_patch": "EXPBOOSTER",
+  "jp_raw": "70988ec882768e7e9420"
+ },
+ {
+  "id": 81,
+  "id_hex": "51",
+  "icon": "3D",
+  "en_patch": "ATACKSCARF",
+  "jp_raw": "db6bcbf75b897b5ba720"
+ },
+ {
+  "id": 82,
+  "id_hex": "52",
+  "icon": "3D",
+  "en_patch": "RARE SCARF",
+  "jp_raw": "f474d06e897b5ba72020"
+ },
+ {
+  "id": 83,
+  "id_hex": "53",
+  "icon": "3D",
+  "en_patch": "LOVELYRING",
+  "jp_raw": "bdf1bdf1bfcbd3202020"
+ },
+ {
+  "id": 84,
+  "id_hex": "54",
+  "icon": "3D",
+  "en_patch": "ANTIDOTPIN",
+  "jp_raw": "ea7ea68ad0ed5fdb2020"
+ },
+ {
+  "id": 85,
+  "id_hex": "55",
+  "icon": "3D",
+  "en_patch": "WAKEUP PIN",
+  "jp_raw": "f4cab6bea68ad0ed5fdb"
+ },
+ {
+  "id": 86,
+  "id_hex": "56",
+  "icon": "3D",
+  "en_patch": "FEARLESPIN",
+  "jp_raw": "7c6e74a6a68ad0ed5fdb"
+ },
+ {
+  "id": 87,
+  "id_hex": "57",
+  "icon": "3D",
+  "en_patch": "TRUEFOMPIN",
+  "jp_raw": "a8ca86caa68ad0ed5fdb"
+ },
+ {
+  "id": 88,
+  "id_hex": "58",
+  "icon": "3D",
+  "en_patch": "COIN TRICK",
+  "jp_raw": "7aceb680c0a4a08eb29a"
+ },
+ {
+  "id": 89,
+  "id_hex": "59",
+  "icon": "3D",
+  "en_patch": "GHOSTMEDAL",
+  "jp_raw": "b874c2727eca866e7420"
+ },
+ {
+  "id": 90,
+  "id_hex": "5A",
+  "icon": "3D",
+  "en_patch": "JINX BELT",
+  "jp_raw": "db6b5f7d5bf3c1972020"
+ },
+ {
+  "id": 91,
+  "id_hex": "5B",
+  "icon": "3D",
+  "en_patch": "FEATHER",
+  "jp_raw": "ebeba0a29e2020202020"
+ },
+ {
+  "id": 92,
+  "id_hex": "5C",
+  "icon": "3D",
+  "en_patch": "TROOPA PIN",
+  "jp_raw": "f78ff78f7eca866e7420"
+ },
+ {
+  "id": 93,
+  "id_hex": "5D",
+  "icon": "3D",
+  "en_patch": "SIGNALRING",
+  "jp_raw": "7886bc8abfcbd3202020"
+ },
+ {
+  "id": 94,
+  "id_hex": "5E",
+  "icon": "3D",
+  "en_patch": "QUARTCHARM",
+  "jp_raw": "7fbf898fc1a078acb4be"
+ },
+ {
+  "id": 95,
+  "id_hex": "5F",
+  "icon": "3D",
+  "en_patch": "{BA}{EE}",
+  "jp_raw": "baee2020202020202020"
+ },
+ {
+  "id": 96,
+  "id_hex": "60",
+  "icon": "2D",
+  "en_patch": "MUSHROOM",
+  "jp_raw": "7da18320202020202020"
+ },
+ {
+  "id": 97,
+  "id_hex": "61",
+  "icon": "2D",
+  "en_patch": "MID MUSH",
+  "jp_raw": "895bf75b7da183202020"
+ },
+ {
+  "id": 98,
+  "id_hex": "62",
+  "icon": "2D",
+  "en_patch": "MAX MUSH",
+  "jp_raw": "75c197bd7da183202020"
+ },
+ {
+  "id": 99,
+  "id_hex": "63",
+  "icon": "2D",
+  "en_patch": "HONEYSYRUP",
+  "jp_raw": "a39b5b87c55ffb202020"
+ },
+ {
+  "id": 100,
+  "id_hex": "64",
+  "icon": "2D",
+  "en_patch": "MAPLESYRUP",
+  "jp_raw": "b373fbc187c55ffb2020"
+ },
+ {
+  "id": 101,
+  "id_hex": "65",
+  "icon": "2D",
+  "en_patch": "ROYALSYRUP",
+  "jp_raw": "c573b7c187c55ffb2020"
+ },
+ {
+  "id": 102,
+  "id_hex": "66",
+  "icon": "2D",
+  "en_patch": "PICK ME UP",
+  "jp_raw": "a65e7a92ebbfcb7f2020"
+ },
+ {
+  "id": 103,
+  "id_hex": "67",
+  "icon": "2D",
+  "en_patch": "ABLE JUICE",
+  "jp_raw": "bfa7c35f876ddb6d5b89"
+ },
+ {
+  "id": 104,
+  "id_hex": "68",
+  "icon": "2D",
+  "en_patch": "BRACER",
+  "jp_raw": "7b8f7f995bc120202020"
+ },
+ {
+  "id": 105,
+  "id_hex": "69",
+  "icon": "2D",
+  "en_patch": "ENERGIZER",
+  "jp_raw": "93bb7f995bc120202020"
+ },
+ {
+  "id": 106,
+  "id_hex": "6A",
+  "icon": "2D",
+  "en_patch": "ESSENCE",
+  "jp_raw": "bb5f875b777d89202020"
+ },
+ {
+  "id": 107,
+  "id_hex": "6B",
+  "icon": "2D",
+  "en_patch": "REDESSENCE",
+  "jp_raw": "c35febbb5f875b777d89"
+ },
+ {
+  "id": 108,
+  "id_hex": "6C",
+  "icon": "2D",
+  "en_patch": "KERO COLA",
+  "jp_raw": "81c581c5ebbfcb7f2020"
+ },
+ {
+  "id": 109,
+  "id_hex": "6D",
+  "icon": "5F",
+  "en_patch": "YOSICOOKIE",
+  "jp_raw": "bb5f875ba07f5f7d5b20"
+ },
+ {
+  "id": 110,
+  "id_hex": "6E",
+  "icon": "3B",
+  "en_patch": "PURE WATER",
+  "jp_raw": "8a728872202020202020"
+ },
+ {
+  "id": 111,
+  "id_hex": "6F",
+  "icon": "3B",
+  "en_patch": "SLEEP BOMB",
+  "jp_raw": "9eb0bee2ac2020202020"
+ },
+ {
+  "id": 112,
+  "id_hex": "70",
+  "icon": "2D",
+  "en_patch": "BAD MUSH",
+  "jp_raw": "ea7e7da1832020202020"
+ },
+ {
+  "id": 113,
+  "id_hex": "71",
+  "icon": "3B",
+  "en_patch": "FIRE BOMB",
+  "jp_raw": "7a76cae2ac2020202020"
+ },
+ {
+  "id": 114,
+  "id_hex": "72",
+  "icon": "3B",
+  "en_patch": "ICE BOMB",
+  "jp_raw": "8278bee2ac2020202020"
+ },
+ {
+  "id": 115,
+  "id_hex": "73",
+  "icon": "20",
+  "en_patch": "FLOWER TAB",
+  "jp_raw": "a7bdc75b7bfb8bc12020"
+ },
+ {
+  "id": 116,
+  "id_hex": "74",
+  "icon": "20",
+  "en_patch": "FLOWER JAR",
+  "jp_raw": "a7bdc75b8b5f97202020"
+ },
+ {
+  "id": 117,
+  "id_hex": "75",
+  "icon": "20",
+  "en_patch": "FLOWER BOX",
+  "jp_raw": "a7bdc75bd1a797202020"
+ },
+ {
+  "id": 118,
+  "id_hex": "76",
+  "icon": "5F",
+  "en_patch": "YOSHICANDY",
+  "jp_raw": "bb5f875b7d6bcbe9635b"
+ },
+ {
+  "id": 119,
+  "id_hex": "77",
+  "icon": "2D",
+  "en_patch": "FROG DRINK",
+  "jp_raw": "798fadebbfcb7f202020"
+ },
+ {
+  "id": 120,
+  "id_hex": "78",
+  "icon": "5F",
+  "en_patch": "MUKUCOOKIE",
+  "jp_raw": "b17fb17fa07f5f7d5b20"
+ },
+ {
+  "id": 121,
+  "id_hex": "79",
+  "icon": "2D",
+  "en_patch": "ELIXIR",
+  "jp_raw": "7086a276ebbfcb7f2020"
+ },
+ {
+  "id": 122,
+  "id_hex": "7A",
+  "icon": "2D",
+  "en_patch": "MEGAELIXIR",
+  "jp_raw": "78a5c390e4aeebbfcb7f"
+ },
+ {
+  "id": 123,
+  "id_hex": "7B",
+  "icon": "3F",
+  "en_patch": "SEE YA",
+  "jp_raw": "84ba98bca29692deca9a"
+ },
+ {
+  "id": 124,
+  "id_hex": "7C",
+  "icon": "20",
+  "en_patch": "TEMPLE KEY",
+  "jp_raw": "86cae8caa07bd1202020"
+ },
+ {
+  "id": 125,
+  "id_hex": "7D",
+  "icon": "3F",
+  "en_patch": "GOODIE BAG",
+  "jp_raw": "a67ef07ec42020202020"
+ },
+ {
+  "id": 126,
+  "id_hex": "7E",
+  "icon": "3F",
+  "en_patch": "EARLY TIME",
+  "jp_raw": "70a082c49ab4eabe8e72"
+ },
+ {
+  "id": 127,
+  "id_hex": "7F",
+  "icon": "2D",
+  "en_patch": "FRESHEN UP",
+  "jp_raw": "bfa7c35f876d795bc120"
+ },
+ {
+  "id": 128,
+  "id_hex": "80",
+  "icon": "20",
+  "en_patch": "SPFROGCOIN",
+  "jp_raw": "e272da987b77c18373cb"
+ },
+ {
+  "id": 129,
+  "id_hex": "81",
+  "icon": "20",
+  "en_patch": "WALLET",
+  "jp_raw": "8573a720202020202020"
+ },
+ {
+  "id": 130,
+  "id_hex": "82",
+  "icon": "20",
+  "en_patch": "CRICKETPIE",
+  "jp_raw": "8379c5d18acaf2722020"
+ },
+ {
+  "id": 131,
+  "id_hex": "83",
+  "icon": "3B",
+  "en_patch": "ROCK CANDY",
+  "jp_raw": "82cafc72967420202020"
+ },
+ {
+  "id": 132,
+  "id_hex": "84",
+  "icon": "20",
+  "en_patch": "CASTLEKEY1",
+  "jp_raw": "7c6c74e8caa07bd13120"
+ },
+ {
+  "id": 133,
+  "id_hex": "85",
+  "icon": "3B",
+  "en_patch": "DEBUGGERBO",
+  "jp_raw": "e9ed5fcf5bf5b1202020"
+ },
+ {
+  "id": 134,
+  "id_hex": "86",
+  "icon": "20",
+  "en_patch": "CASTLEKEY2",
+  "jp_raw": "7c6c74e8caa07bd13220"
+ },
+ {
+  "id": 135,
+  "id_hex": "87",
+  "icon": "20",
+  "en_patch": "MINI BOMB",
+  "jp_raw": "fb91f5b1202020202020"
+ },
+ {
+  "id": 136,
+  "id_hex": "88",
+  "icon": "3F",
+  "en_patch": "SHEEPATTAK",
+  "jp_raw": "a492daa0866e74ea7420"
+ },
+ {
+  "id": 137,
+  "id_hex": "89",
+  "icon": "20",
+  "en_patch": "CABOCOOKIE",
+  "jp_raw": "7bc1f57f5f7d5b202020"
+ },
+ {
+  "id": 138,
+  "id_hex": "8A",
+  "icon": "20",
+  "en_patch": "SHINYSTONE",
+  "jp_raw": "f87af87a728620202020"
+ },
+ {
+  "id": 139,
+  "id_hex": "8B",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 140,
+  "id_hex": "8C",
+  "icon": "20",
+  "en_patch": "ROOM KEY",
+  "jp_raw": "dabc72c15bb1a07ad020"
+ },
+ {
+  "id": 141,
+  "id_hex": "8D",
+  "icon": "20",
+  "en_patch": "ELDER KEY",
+  "jp_raw": "d68acae0c15bb1a07ad0"
+ },
+ {
+  "id": 142,
+  "id_hex": "8E",
+  "icon": "20",
+  "en_patch": "SHED KEY",
+  "jp_raw": "8c7482a07ad020202020"
+ },
+ {
+  "id": 143,
+  "id_hex": "8F",
+  "icon": "3F",
+  "en_patch": "LAMB LURE",
+  "jp_raw": "a492daa0b874c67e2020"
+ },
+ {
+  "id": 144,
+  "id_hex": "90",
+  "icon": "3B",
+  "en_patch": "FRIGHTBOMB",
+  "jp_raw": "eeeebee2ac2020202020"
+ },
+ {
+  "id": 145,
+  "id_hex": "91",
+  "icon": "3F",
+  "en_patch": "MYSTERYEGG",
+  "jp_raw": "a686d0988eacd6202020"
+ },
+ {
+  "id": 146,
+  "id_hex": "92",
+  "icon": "20",
+  "en_patch": "BEETLE BOX",
+  "jp_raw": "b0867ad6202020202020"
+ },
+ {
+  "id": 147,
+  "id_hex": "93",
+  "icon": "20",
+  "en_patch": "BEETLE BOX",
+  "jp_raw": "b0867ad6202020202020"
+ },
+ {
+  "id": 148,
+  "id_hex": "94",
+  "icon": "3F",
+  "en_patch": "LUCKYJEWEL",
+  "jp_raw": "bd5f7d5bdb6d77c12020"
+ },
+ {
+  "id": 149,
+  "id_hex": "95",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 150,
+  "id_hex": "96",
+  "icon": "20",
+  "en_patch": "SOPRA CARD",
+  "jp_raw": "8dfbbda17b5beb202020"
+ },
+ {
+  "id": 151,
+  "id_hex": "97",
+  "icon": "20",
+  "en_patch": "ALTO CARD",
+  "jp_raw": "71c1977b5beb20202020"
+ },
+ {
+  "id": 152,
+  "id_hex": "98",
+  "icon": "20",
+  "en_patch": "TENOR CARD",
+  "jp_raw": "95995b7b5beb20202020"
+ },
+ {
+  "id": 153,
+  "id_hex": "99",
+  "icon": "2D",
+  "en_patch": "CRYSTALINE",
+  "jp_raw": "afcb997b8f7f995bc120"
+ },
+ {
+  "id": 154,
+  "id_hex": "9A",
+  "icon": "2D",
+  "en_patch": "POWERBLAST",
+  "jp_raw": "afcb9993bb7f995bc120"
+ },
+ {
+  "id": 155,
+  "id_hex": "9B",
+  "icon": "2D",
+  "en_patch": "WILTEDMUSH",
+  "jp_raw": "8698ee8e7da183202020"
+ },
+ {
+  "id": 156,
+  "id_hex": "9C",
+  "icon": "2D",
+  "en_patch": "ROTTENMUSH",
+  "jp_raw": "7e845e8e7da183202020"
+ },
+ {
+  "id": 157,
+  "id_hex": "9D",
+  "icon": "2D",
+  "en_patch": "MOLDY MUSH",
+  "jp_raw": "7befa2767da183202020"
+ },
+ {
+  "id": 158,
+  "id_hex": "9E",
+  "icon": "20",
+  "en_patch": "SEED",
+  "jp_raw": "8e9e2020202020202020"
+ },
+ {
+  "id": 159,
+  "id_hex": "9F",
+  "icon": "20",
+  "en_patch": "FERTILIZER",
+  "jp_raw": "a4be6e74202020202020"
+ },
+ {
+  "id": 160,
+  "id_hex": "A0",
+  "icon": "3E",
+  "en_patch": "TRASH CAN",
+  "jp_raw": "d7afec82202020202020"
+ },
+ {
+  "id": 161,
+  "id_hex": "A1",
+  "icon": "20",
+  "en_patch": "BIGBOOFLAG",
+  "jp_raw": "95c385a078a6e2202020"
+ },
+ {
+  "id": 162,
+  "id_hex": "A2",
+  "icon": "20",
+  "en_patch": "DRYBONFLAG",
+  "jp_raw": "7bc5cba078a6e2202020"
+ },
+ {
+  "id": 163,
+  "id_hex": "A3",
+  "icon": "20",
+  "en_patch": "GREAPEFLAG",
+  "jp_raw": "c373ab5ba078a6e22020"
+ },
+ {
+  "id": 164,
+  "id_hex": "A4",
+  "icon": "3F",
+  "en_patch": "SECRETGAME",
+  "jp_raw": "a4ae92a0d55bb1202020"
+ },
+ {
+  "id": 165,
+  "id_hex": "A5",
+  "icon": "3B",
+  "en_patch": "PUPPETBOMB",
+  "jp_raw": "7b7b87f5b12020202020"
+ },
+ {
+  "id": 166,
+  "id_hex": "A6",
+  "icon": "20",
+  "en_patch": "CRICKETJAM",
+  "jp_raw": "8379c5d1ba747aca2020"
+ },
+ {
+  "id": 167,
+  "id_hex": "A7",
+  "icon": "3B",
+  "en_patch": "POISONBOMB",
+  "jp_raw": "ea7ef5b1202020202020"
+ },
+ {
+  "id": 168,
+  "id_hex": "A8",
+  "icon": "3B",
+  "en_patch": "KILL BOMB",
+  "jp_raw": "82c486f5b12020202020"
+ },
+ {
+  "id": 169,
+  "id_hex": "A9",
+  "icon": "3B",
+  "en_patch": "FEAR BOMB",
+  "jp_raw": "7c6e74a6f5b120202020"
+ },
+ {
+  "id": 170,
+  "id_hex": "AA",
+  "icon": "3B",
+  "en_patch": "SLEEP BOMB",
+  "jp_raw": "9eb0bef5b12020202020"
+ },
+ {
+  "id": 171,
+  "id_hex": "AB",
+  "icon": "3B",
+  "en_patch": "MUTE BOMB",
+  "jp_raw": "90cab47ef5b120202020"
+ },
+ {
+  "id": 172,
+  "id_hex": "AC",
+  "icon": "20",
+  "en_patch": "FIREWORKS",
+  "jp_raw": "a298ee20202020202020"
+ },
+ {
+  "id": 173,
+  "id_hex": "AD",
+  "icon": "3B",
+  "en_patch": "BOMB",
+  "jp_raw": "f5b12020202020202020"
+ },
+ {
+  "id": 174,
+  "id_hex": "AE",
+  "icon": "20",
+  "en_patch": "BRIGHTCARD",
+  "jp_raw": "f1bfbf71cb977b5beb20"
+ },
+ {
+  "id": 175,
+  "id_hex": "AF",
+  "icon": "2D",
+  "en_patch": "MUSHROOM",
+  "jp_raw": "7da18320202020202020"
+ },
+ {
+  "id": 176,
+  "id_hex": "B0",
+  "icon": "3B",
+  "en_patch": "STAR EGG",
+  "jp_raw": "898f5ba08eacd6202020"
+ },
+ {
+  "id": 177,
+  "id_hex": "B1",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 178,
+  "id_hex": "B2",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 179,
+  "id_hex": "B3",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 180,
+  "id_hex": "B4",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 181,
+  "id_hex": "B5",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 182,
+  "id_hex": "B6",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 183,
+  "id_hex": "B7",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 184,
+  "id_hex": "B8",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 185,
+  "id_hex": "B9",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 186,
+  "id_hex": "BA",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 187,
+  "id_hex": "BB",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 188,
+  "id_hex": "BC",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 189,
+  "id_hex": "BD",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 190,
+  "id_hex": "BE",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 191,
+  "id_hex": "BF",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 192,
+  "id_hex": "C0",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 193,
+  "id_hex": "C1",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 194,
+  "id_hex": "C2",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 195,
+  "id_hex": "C3",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 196,
+  "id_hex": "C4",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 197,
+  "id_hex": "C5",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 198,
+  "id_hex": "C6",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 199,
+  "id_hex": "C7",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 200,
+  "id_hex": "C8",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 201,
+  "id_hex": "C9",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 202,
+  "id_hex": "CA",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 203,
+  "id_hex": "CB",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 204,
+  "id_hex": "CC",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 205,
+  "id_hex": "CD",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 206,
+  "id_hex": "CE",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 207,
+  "id_hex": "CF",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 208,
+  "id_hex": "D0",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 209,
+  "id_hex": "D1",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 210,
+  "id_hex": "D2",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 211,
+  "id_hex": "D3",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 212,
+  "id_hex": "D4",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 213,
+  "id_hex": "D5",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 214,
+  "id_hex": "D6",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 215,
+  "id_hex": "D7",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 216,
+  "id_hex": "D8",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 217,
+  "id_hex": "D9",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 218,
+  "id_hex": "DA",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 219,
+  "id_hex": "DB",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 220,
+  "id_hex": "DC",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 221,
+  "id_hex": "DD",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 222,
+  "id_hex": "DE",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 223,
+  "id_hex": "DF",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 224,
+  "id_hex": "E0",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 225,
+  "id_hex": "E1",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 226,
+  "id_hex": "E2",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 227,
+  "id_hex": "E3",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 228,
+  "id_hex": "E4",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 229,
+  "id_hex": "E5",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 230,
+  "id_hex": "E6",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 231,
+  "id_hex": "E7",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 232,
+  "id_hex": "E8",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 233,
+  "id_hex": "E9",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 234,
+  "id_hex": "EA",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 235,
+  "id_hex": "EB",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 236,
+  "id_hex": "EC",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 237,
+  "id_hex": "ED",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 238,
+  "id_hex": "EE",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 239,
+  "id_hex": "EF",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 240,
+  "id_hex": "F0",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 241,
+  "id_hex": "F1",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 242,
+  "id_hex": "F2",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 243,
+  "id_hex": "F3",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 244,
+  "id_hex": "F4",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 245,
+  "id_hex": "F5",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 246,
+  "id_hex": "F6",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 247,
+  "id_hex": "F7",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 248,
+  "id_hex": "F8",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 249,
+  "id_hex": "F9",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 250,
+  "id_hex": "FA",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 251,
+  "id_hex": "FB",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 252,
+  "id_hex": "FC",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 253,
+  "id_hex": "FD",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 254,
+  "id_hex": "FE",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ },
+ {
+  "id": 255,
+  "id_hex": "FF",
+  "icon": "20",
+  "en_patch": "{E3}{AF}[",
+  "jp_raw": "e3af5b20202020202020"
+ }
+]

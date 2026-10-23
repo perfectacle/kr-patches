@@ -1,0 +1,25 @@
+{
+  "_comment": "English names in V1.0 dialogue that the item table lookup does not cover. 'bracketed' applies inside 「」/『』, 'bare' to unbracketed words. Croco's deliberate English (TIME, GOLD, SHINY, STONE, MR.) is left alone.",
+  "bracketed": {
+    "FLOWER": "플라워",
+    "FRY FAN": "프라이팬",
+    "GUN YOLK": "라스던"
+  },
+  "bare": {
+    "SEED": "씨앗",
+    "FERTILIZER": "비료",
+    "CABOCOOKIE": "까르보쿠키",
+    "CRICKET PIE": "귀뚜라미전병",
+    "CRICKET JAM": "귀뚜라미양갱",
+    "BRIGHTCARD": "브릴리언트카드",
+    "FIREWORKS": "폭죽",
+    "FRIGHTBOMB": "공포구슬",
+    "FIRE BOMB": "화염구슬",
+    "ICE BOMB": "얼음구슬",
+    "KERO COLA": "개굴개굴드링크",
+    "PICK ME UP": "부활드링크",
+    "ROOM KEY": "지뢰방열쇠",
+    "MUSHROOM": "버섯",
+    "HAMMER": "해머"
+  }
+}

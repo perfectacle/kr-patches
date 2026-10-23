@@ -1,0 +1,641 @@
+id	info	text
+tech:000	L106	가위바위보 주먹
+tech:001	L106	가위바위보 가위
+tech:002	L106	가위바위보 보
+tech:003	L106	가위바위보 3단
+tech:004	L106	여의봉 공격
+tech:005	L106	여의봉 늘이기
+tech:006	L106	잔상권
+tech:007	L106	다중 잔상권
+tech:008	L106	급강하 공격
+tech:009	L106	무천류 최종오의
+tech:00A	L106	기공파
+tech:00B	L106	에네르기파
+tech:00C	L106	유도 에네르기파
+tech:00D	L106	초에네르기파
+tech:00E	L106	역에네르기파
+tech:00F	L106	에네르기파 공격
+tech:010	L106	펀치
+tech:011	L106	대시 펀치
+tech:012	L106	스매시 펀치
+tech:013	L106	연속 펀치
+tech:014	L106	폭열 펀치
+tech:015	L106	대시 공격
+tech:016	L106	수도
+tech:017	L106	몸통 박치기
+tech:018	L106	킥
+tech:019	L106	대시 킥
+tech:01A	L106	대시 니킥
+tech:01B	L106	연속 킥
+tech:01C	L106	연속 돌려차기
+tech:01D	L106	꼬리 공격
+tech:01E	L106	점프 킥
+tech:01F	L106	슬래시다운 킥
+tech:020	L106	피하기
+tech:021	L106	재빨리 피하기
+tech:022	L106	잔상권 피하기
+tech:023	L106	간파
+tech:024	L106	가드
+tech:025	L106	연속기 가드
+tech:026	L106	기합 가드
+tech:027	L106	기공파 가드
+tech:028	L106	여의봉 가드
+tech:029	L106	카운터 펀치
+tech:02A	L106	카운터 킥
+tech:02B	L106	카운터 엘보
+tech:02C	L106	잔상권 카운터
+tech:02D	L106	미설정
+tech:02E	L106	미설정
+tech:02F	L106	미설정
+tech:030	L106	미설정
+tech:031	L106	미설정
+tech:032	L106	미설정
+tech:033	L106	미설정
+tech:034	L106	미설정
+tech:035	L106	미설정
+tech:036	L106	미설정
+tech:037	L106	미설정
+tech:038	L106	미설정
+tech:039	L106	미설정
+tech:03A	L106	미설정
+tech:03B	L106	미설정
+tech:03C	L106	미설정
+tech:03D	L106	미설정
+tech:03E	L106	미설정
+tech:03F	L106	미설정
+tech:040	L106	미설정
+tech:041	L106	미설정
+tech:042	L106	미설정
+tech:043	L106	미설정
+tech:044	L106	미설정
+tech:045	L106	미설정
+tech:046	L106	미설정
+tech:047	L106	미설정
+tech:048	L106	미설정
+tech:049	L106	미설정
+tech:04A	L106	미설정
+tech:04B	L106	미설정
+tech:04C	L106	미설정
+tech:04D	L106	미설정
+tech:04E	L106	미설정
+tech:04F	L106	미설정
+tech:050	L106	미설정
+tech:051	L106	미설정
+tech:052	L106	미설정
+tech:053	L106	미설정
+tech:054	L106	미설정
+tech:055	L106	미설정
+tech:056	L106	미설정
+tech:057	L106	미설정
+tech:058	L106	미설정
+tech:059	L106	미설정
+tech:05A	L106	미설정
+tech:05B	L106	미설정
+tech:05C	L106	미설정
+tech:05D	L106	미설정
+tech:05E	L106	미설정
+tech:05F	L106	미설정
+tech:060	L106	미설정
+tech:061	L106	미설정
+tech:062	L106	미설정
+tech:063	L106	미설정
+tech:064	L106	미설정
+tech:065	L106	미설정
+tech:066	L106	미설정
+tech:067	L106	미설정
+tech:068	L106	미설정
+tech:069	L106	미설정
+tech:06A	L106	미설정
+tech:06B	L106	미설정
+tech:06C	L106	미설정
+tech:06D	L106	미설정
+tech:06E	L106	미설정
+tech:06F	L106	미설정
+tech:070	L106	미설정
+tech:071	L106	미설정
+tech:072	L106	미설정
+tech:073	L106	미설정
+tech:074	L106	미설정
+tech:075	L106	미설정
+tech:076	L106	미설정
+tech:077	L106	미설정
+tech:078	L106	미설정
+tech:079	L106	미설정
+tech:07A	L106	미설정
+tech:07B	L106	미설정
+tech:07C	L106	미설정
+tech:07D	L106	미설정
+tech:07E	L106	미설정
+tech:07F	L106	미설정
+tech:080	L106	돌풍 공격
+tech:081	L106	총격
+tech:082	L106	악수 공격
+tech:083	L106	낭아풍풍권
+tech:084	L106	천공 X자권
+tech:085	L106	칭칭껌
+tech:086	L106	로켓 펀치
+tech:087	L106	입 미사일
+tech:088	L106	수리검
+tech:089	L106	부메랑 수리검
+tech:08A	L106	연막탄
+tech:08B	L106	전격
+tech:08C	L106	혓바닥 공격
+tech:08D	L106	파워건
+tech:08E	L106	머신건 공격
+tech:08F	L106	머신건 공격
+tech:090	L106	머신건 연사
+tech:091	L106	꼬리 전격
+tech:092	L106	초능력
+tech:093	L106	도돈파
+tech:094	L106	수류탄 던지기
+tech:095	L106	레이저건
+tech:096	L106	대형 미사일
+tech:097	L106	아크마이트 광선
+tech:098	L106	에네르기파
+tech:099	L106	미사일 발사
+tech:09A	L106	팔수권
+tech:09B	L106	마격포
+tech:09C	L106	전격파
+tech:09D	L106	마광포
+tech:09E	L106	마광파
+tech:09F	L106	폭력마파
+tech:0A0	L106	수리검 난사
+tech:0A1	L106	쿠나이 공격
+tech:0A2	L106	머신건 공격
+tech:0A3	L106	잔상권
+tech:0A4	L106	다중 잔상권
+tech:0A5	L106	태양권
+tech:0A6	L106	사요권
+tech:0A7	L106	총격
+tech:0A8	L106	총격
+tech:0A9	L106	괴광선
+tech:0AA	L106	잔상권
+tech:0AB	L106	총격
+tech:0AC	L106	착한아이 면면권
+tech:0AD	L106	에네르기파
+tech:0AE	L106	에네르기파
+tech:0AF	L106	도돈파
+tech:0B0	L106	총격
+tech:0B1	L106	더블 마광선
+tech:0B2	L106	만국경천장
+tech:0B3	L106	미설정
+tech:0B4	L106	미설정
+tech:0B5	L106	미설정
+tech:0B6	L106	미설정
+tech:0B7	L106	미설정
+tech:0B8	L106	미설정
+tech:0B9	L106	미설정
+tech:0BA	L106	미설정
+tech:0BB	L106	미설정
+tech:0BC	L106	미설정
+tech:0BD	L106	미설정
+tech:0BE	L106	미설정
+tech:0BF	L106	미설정
+tech:0C0	L106	미설정
+tech:0C1	L106	미설정
+tech:0C2	L106	미설정
+tech:0C3	L106	미설정
+tech:0C4	L106	미설정
+tech:0C5	L106	미설정
+tech:0C6	L106	미설정
+tech:0C7	L106	미설정
+tech:0C8	L106	미설정
+tech:0C9	L106	미설정
+tech:0CA	L106	미설정
+tech:0CB	L106	미설정
+tech:0CC	L106	미설정
+tech:0CD	L106	미설정
+tech:0CE	L106	미설정
+tech:0CF	L106	미설정
+tech:0D0	L106	미설정
+tech:0D1	L106	미설정
+tech:0D2	L106	미설정
+tech:0D3	L106	미설정
+tech:0D4	L106	미설정
+tech:0D5	L106	미설정
+tech:0D6	L106	미설정
+tech:0D7	L106	미설정
+tech:0D8	L106	미설정
+tech:0D9	L106	미설정
+tech:0DA	L106	미설정
+tech:0DB	L106	미설정
+tech:0DC	L106	미설정
+tech:0DD	L106	미설정
+tech:0DE	L106	미설정
+tech:0DF	L106	미설정
+tech:0E0	L106	미설정
+tech:0E1	L106	미설정
+tech:0E2	L106	미설정
+tech:0E3	L106	미설정
+tech:0E4	L106	미설정
+tech:0E5	L106	미설정
+tech:0E6	L106	미설정
+tech:0E7	L106	미설정
+tech:0E8	L106	미설정
+tech:0E9	L106	미설정
+tech:0EA	L106	미설정
+tech:0EB	L106	미설정
+tech:0EC	L106	미설정
+tech:0ED	L106	미설정
+tech:0EE	L106	미설정
+tech:0EF	L106	미설정
+tech:0F0	L106	미설정
+tech:0F1	L106	미설정
+tech:0F2	L106	미설정
+tech:0F3	L106	미설정
+tech:0F4	L106	미설정
+tech:0F5	L106	미설정
+tech:0F6	L106	미설정
+tech:0F7	L106	미설정
+tech:0F8	L106	미설정
+tech:0F9	L106	미설정
+tech:0FA	L106	미설정
+tech:0FB	L106	미설정
+tech:0FC	L106	미설정
+tech:0FD	L106	미설정
+tech:0FE	L106	미설정
+tech:0FF	L106	미설정
+tech:100	L106	펀치
+tech:101	L106	펀치
+tech:102	L106	펀치
+tech:103	L106	대시 펀치
+tech:104	L106	대시 펀치
+tech:105	L106	대시 펀치
+tech:106	L106	스매시 펀치
+tech:107	L106	연속 펀치
+tech:108	L106	연속 펀치
+tech:109	L106	부리 공격
+tech:10A	L106	급강하 공격
+tech:10B	L106	연속 부리 공격
+tech:10C	L106	칼 공격
+tech:10D	L106	대시 베기
+tech:10E	L106	점프 베기
+tech:10F	L106	연속 잽
+tech:110	L106	연속 잽
+tech:111	L106	연속 잽
+tech:112	L106	수도
+tech:113	L106	급강하 공격
+tech:114	L106	해머 펀치
+tech:115	L106	더블 펀치
+tech:116	L106	점프 수도
+tech:117	L106	대시 수도
+tech:118	L106	대시 엘보
+tech:119	L106	대시 해머 펀치
+tech:11A	L106	칼 공격
+tech:11B	L106	대시 베기
+tech:11C	L106	점프 베기
+tech:11D	L106	대시 엘보
+tech:11E	L106	대시 엘보
+tech:11F	L106	몸통 박치기
+tech:120	L106	연속 잽
+tech:121	L106	수도 찌르기
+tech:122	L106	점프 수도
+tech:123	L106	대시 수도
+tech:124	L106	박치기
+tech:125	L106	대시 박치기
+tech:126	L106	나이프 공격
+tech:127	L106	촉수 공격
+tech:128	L106	연속 촉수 공격
+tech:129	L106	미설정
+tech:12A	L106	미설정
+tech:12B	L106	미설정
+tech:12C	L106	미설정
+tech:12D	L106	미설정
+tech:12E	L106	미설정
+tech:12F	L106	미설정
+tech:130	L106	미설정
+tech:131	L106	미설정
+tech:132	L106	미설정
+tech:133	L106	미설정
+tech:134	L106	미설정
+tech:135	L106	미설정
+tech:136	L106	미설정
+tech:137	L106	미설정
+tech:138	L106	미설정
+tech:139	L106	미설정
+tech:13A	L106	미설정
+tech:13B	L106	미설정
+tech:13C	L106	미설정
+tech:13D	L106	미설정
+tech:13E	L106	미설정
+tech:13F	L106	미설정
+tech:140	L106	미설정
+tech:141	L106	미설정
+tech:142	L106	미설정
+tech:143	L106	미설정
+tech:144	L106	미설정
+tech:145	L106	미설정
+tech:146	L106	미설정
+tech:147	L106	미설정
+tech:148	L106	미설정
+tech:149	L106	미설정
+tech:14A	L106	미설정
+tech:14B	L106	미설정
+tech:14C	L106	미설정
+tech:14D	L106	미설정
+tech:14E	L106	미설정
+tech:14F	L106	미설정
+tech:150	L106	미설정
+tech:151	L106	미설정
+tech:152	L106	미설정
+tech:153	L106	미설정
+tech:154	L106	미설정
+tech:155	L106	미설정
+tech:156	L106	미설정
+tech:157	L106	미설정
+tech:158	L106	미설정
+tech:159	L106	미설정
+tech:15A	L106	미설정
+tech:15B	L106	미설정
+tech:15C	L106	미설정
+tech:15D	L106	미설정
+tech:15E	L106	미설정
+tech:15F	L106	미설정
+tech:160	L106	미설정
+tech:161	L106	미설정
+tech:162	L106	미설정
+tech:163	L106	미설정
+tech:164	L106	미설정
+tech:165	L106	미설정
+tech:166	L106	미설정
+tech:167	L106	미설정
+tech:168	L106	미설정
+tech:169	L106	미설정
+tech:16A	L106	미설정
+tech:16B	L106	미설정
+tech:16C	L106	미설정
+tech:16D	L106	미설정
+tech:16E	L106	미설정
+tech:16F	L106	미설정
+tech:170	L106	미설정
+tech:171	L106	미설정
+tech:172	L106	미설정
+tech:173	L106	미설정
+tech:174	L106	미설정
+tech:175	L106	미설정
+tech:176	L106	미설정
+tech:177	L106	미설정
+tech:178	L106	미설정
+tech:179	L106	미설정
+tech:17A	L106	미설정
+tech:17B	L106	미설정
+tech:17C	L106	미설정
+tech:17D	L106	미설정
+tech:17E	L106	미설정
+tech:17F	L106	미설정
+tech:180	L106	킥
+tech:181	L106	킥
+tech:182	L106	킥
+tech:183	L106	대시 킥
+tech:184	L106	대시 킥
+tech:185	L106	대시 킥
+tech:186	L106	발톱 공격
+tech:187	L106	점프 킥
+tech:188	L106	꼬리 공격
+tech:189	L106	꼬리 공격
+tech:18A	L106	점프 킥
+tech:18B	L106	슬라이딩 킥
+tech:18C	L106	점프 킥
+tech:18D	L106	점프 2단 킥
+tech:18E	L106	미들 킥
+tech:18F	L106	짓밟기
+tech:190	L106	점프 니킥
+tech:191	L106	꼬리 공격
+tech:192	L106	대시 니킥
+tech:193	L106	대시 2단 킥
+tech:194	L106	페인트 킥
+tech:195	L106	급강하 킥
+tech:196	L106	2단 돌려차기
+tech:197	L106	대시 공격
+tech:198	L106	대시 킥
+tech:199	L106	미설정
+tech:19A	L106	미설정
+tech:19B	L106	미설정
+tech:19C	L106	미설정
+tech:19D	L106	미설정
+tech:19E	L106	미설정
+tech:19F	L106	미설정
+tech:1A0	L106	미설정
+tech:1A1	L106	미설정
+tech:1A2	L106	미설정
+tech:1A3	L106	미설정
+tech:1A4	L106	미설정
+tech:1A5	L106	미설정
+tech:1A6	L106	미설정
+tech:1A7	L106	미설정
+tech:1A8	L106	미설정
+tech:1A9	L106	미설정
+tech:1AA	L106	미설정
+tech:1AB	L106	미설정
+tech:1AC	L106	미설정
+tech:1AD	L106	미설정
+tech:1AE	L106	미설정
+tech:1AF	L106	미설정
+tech:1B0	L106	미설정
+tech:1B1	L106	미설정
+tech:1B2	L106	미설정
+tech:1B3	L106	미설정
+tech:1B4	L106	미설정
+tech:1B5	L106	미설정
+tech:1B6	L106	미설정
+tech:1B7	L106	미설정
+tech:1B8	L106	미설정
+tech:1B9	L106	미설정
+tech:1BA	L106	미설정
+tech:1BB	L106	미설정
+tech:1BC	L106	미설정
+tech:1BD	L106	미설정
+tech:1BE	L106	미설정
+tech:1BF	L106	미설정
+tech:1C0	L106	미설정
+tech:1C1	L106	미설정
+tech:1C2	L106	미설정
+tech:1C3	L106	미설정
+tech:1C4	L106	미설정
+tech:1C5	L106	미설정
+tech:1C6	L106	미설정
+tech:1C7	L106	미설정
+tech:1C8	L106	미설정
+tech:1C9	L106	미설정
+tech:1CA	L106	미설정
+tech:1CB	L106	미설정
+tech:1CC	L106	미설정
+tech:1CD	L106	미설정
+tech:1CE	L106	미설정
+tech:1CF	L106	미설정
+tech:1D0	L106	미설정
+tech:1D1	L106	미설정
+tech:1D2	L106	미설정
+tech:1D3	L106	미설정
+tech:1D4	L106	미설정
+tech:1D5	L106	미설정
+tech:1D6	L106	미설정
+tech:1D7	L106	미설정
+tech:1D8	L106	미설정
+tech:1D9	L106	미설정
+tech:1DA	L106	미설정
+tech:1DB	L106	미설정
+tech:1DC	L106	미설정
+tech:1DD	L106	미설정
+tech:1DE	L106	미설정
+tech:1DF	L106	미설정
+tech:1E0	L106	미설정
+tech:1E1	L106	미설정
+tech:1E2	L106	미설정
+tech:1E3	L106	미설정
+tech:1E4	L106	미설정
+tech:1E5	L106	미설정
+tech:1E6	L106	미설정
+tech:1E7	L106	미설정
+tech:1E8	L106	미설정
+tech:1E9	L106	미설정
+tech:1EA	L106	미설정
+tech:1EB	L106	미설정
+tech:1EC	L106	미설정
+tech:1ED	L106	미설정
+tech:1EE	L106	미설정
+tech:1EF	L106	미설정
+tech:1F0	L106	미설정
+tech:1F1	L106	미설정
+tech:1F2	L106	미설정
+tech:1F3	L106	미설정
+tech:1F4	L106	미설정
+tech:1F5	L106	미설정
+tech:1F6	L106	미설정
+tech:1F7	L106	미설정
+tech:1F8	L106	미설정
+tech:1F9	L106	미설정
+tech:1FA	L106	미설정
+tech:1FB	L106	미설정
+tech:1FC	L106	미설정
+tech:1FD	L106	미설정
+tech:1FE	L106	미설정
+tech:1FF	L106	미설정
+tech:200	L106	피하기
+tech:201	L106	피하기
+tech:202	L106	재빨리 피하기
+tech:203	L106	재빨리 피하기
+tech:204	L106	가드
+tech:205	L106	가드
+tech:206	L106	연속기 가드
+tech:207	L106	카운터 펀치
+tech:208	L106	카운터 펀치
+tech:209	L106	카운터 펀치
+tech:20A	L106	카운터 펀치
+tech:20B	L106	카운터 킥
+tech:20C	L106	카운터 킥
+tech:20D	L106	카운터 킥
+tech:20E	L106	카운터 킥
+tech:20F	L106	간파
+tech:210	L106	되받아치기
+tech:211	L106	카운터 악수
+tech:212	L106	잔상권 카운터
+tech:213	L106	잔상권 피하기
+tech:214	L106	기공파 가드
+tech:215	L106	기공파 가드
+tech:216	L106	되받아치기
+tech:217	L106	미설정
+tech:218	L106	미설정
+tech:219	L106	미설정
+tech:21A	L106	미설정
+tech:21B	L106	미설정
+tech:21C	L106	미설정
+tech:21D	L106	미설정
+tech:21E	L106	미설정
+tech:21F	L106	미설정
+tech:220	L106	미설정
+tech:221	L106	미설정
+tech:222	L106	미설정
+tech:223	L106	미설정
+tech:224	L106	미설정
+tech:225	L106	미설정
+tech:226	L106	미설정
+tech:227	L106	미설정
+tech:228	L106	미설정
+tech:229	L106	미설정
+tech:22A	L106	미설정
+tech:22B	L106	미설정
+tech:22C	L106	미설정
+tech:22D	L106	미설정
+tech:22E	L106	미설정
+tech:22F	L106	미설정
+tech:230	L106	미설정
+tech:231	L106	미설정
+tech:232	L106	미설정
+tech:233	L106	미설정
+tech:234	L106	미설정
+tech:235	L106	미설정
+tech:236	L106	미설정
+tech:237	L106	미설정
+tech:238	L106	미설정
+tech:239	L106	미설정
+tech:23A	L106	미설정
+tech:23B	L106	미설정
+tech:23C	L106	미설정
+tech:23D	L106	미설정
+tech:23E	L106	미설정
+tech:23F	L106	미설정
+tech:240	L106	미설정
+tech:241	L106	미설정
+tech:242	L106	미설정
+tech:243	L106	미설정
+tech:244	L106	미설정
+tech:245	L106	미설정
+tech:246	L106	미설정
+tech:247	L106	미설정
+tech:248	L106	미설정
+tech:249	L106	미설정
+tech:24A	L106	미설정
+tech:24B	L106	미설정
+tech:24C	L106	미설정
+tech:24D	L106	미설정
+tech:24E	L106	미설정
+tech:24F	L106	미설정
+tech:250	L106	미설정
+tech:251	L106	미설정
+tech:252	L106	미설정
+tech:253	L106	미설정
+tech:254	L106	미설정
+tech:255	L106	미설정
+tech:256	L106	미설정
+tech:257	L106	미설정
+tech:258	L106	미설정
+tech:259	L106	미설정
+tech:25A	L106	미설정
+tech:25B	L106	미설정
+tech:25C	L106	미설정
+tech:25D	L106	미설정
+tech:25E	L106	미설정
+tech:25F	L106	미설정
+tech:260	L106	미설정
+tech:261	L106	미설정
+tech:262	L106	미설정
+tech:263	L106	미설정
+tech:264	L106	미설정
+tech:265	L106	미설정
+tech:266	L106	미설정
+tech:267	L106	미설정
+tech:268	L106	미설정
+tech:269	L106	미설정
+tech:26A	L106	미설정
+tech:26B	L106	미설정
+tech:26C	L106	미설정
+tech:26D	L106	미설정
+tech:26E	L106	미설정
+tech:26F	L106	미설정
+tech:270	L106	미설정
+tech:271	L106	미설정
+tech:272	L106	미설정
+tech:273	L106	미설정
+tech:274	L106	미설정
+tech:275	L106	미설정
+tech:276	L106	미설정
+tech:277	L106	미설정
+tech:278	L106	미설정
+tech:279	L106	미설정
+tech:27A	L106	미설정
+tech:27B	L106	미설정
+tech:27C	L106	미설정
+tech:27D	L106	미설정
+tech:27E	L106	미설정
+tech:27F	L106	미설정

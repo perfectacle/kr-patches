@@ -1,0 +1,954 @@
+[
+ {
+  "where": "dialogue",
+  "id": "C55",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "C56",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "C57",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "E11",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "E20",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "E23",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "E26",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "E33",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "dialogue",
+  "id": "E59",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "A2",
+  "found": "샤이가이",
+  "replace": "톤다리야",
+  "context": "",
+  "note": "JP トンダリヤ"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "E4",
+  "found": "샤이가이",
+  "replace": "샹들리헤이호",
+  "context": "",
+  "note": "JP シャンデリホー"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "E5",
+  "found": "샤이가이",
+  "replace": "샹들리헤이호",
+  "context": "",
+  "note": "JP シャンデリホー"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "ED",
+  "found": "샤이가이",
+  "replace": "샹들리헤이호",
+  "context": "",
+  "note": "JP シャンデリホー"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "F0",
+  "found": "샤이가이",
+  "replace": "샹들리헤이호",
+  "context": "",
+  "note": "JP シャンデリホー"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "F1",
+  "found": "샤이가이",
+  "replace": "샹들리헤이호",
+  "context": "",
+  "note": "JP シャンデリホー"
+ },
+ {
+  "where": "dialogue",
+  "id": "C55",
+  "found": "킹 플라워",
+  "replace": "퀸 플라워",
+  "context": "",
+  "note": "JP クィーンフラワー"
+ },
+ {
+  "where": "menu_text",
+  "id": "5F",
+  "found": "마리오에게 이동",
+  "replace": "마리오 님에게 이동",
+  "context": "",
+  "note": "honorific: 키노피오 (menu narration)"
+ },
+ {
+  "where": "dialogue",
+  "id": "29C",
+  "found": "고마워요,마리오!",
+  "replace": "고마워요, 마리오 님!",
+  "context": "",
+  "note": "honorific: Toad (rescued, Mushroom Way)"
+ },
+ {
+  "where": "dialogue",
+  "id": "2A8",
+  "found": "마리오 고마워요!",
+  "replace": "마리오 님 고마워요!",
+  "context": "",
+  "note": "honorific: unknown NPC (polite)"
+ },
+ {
+  "where": "dialogue",
+  "id": "32B",
+  "found": "어라 마리오!",
+  "replace": "어라 마리오 님!",
+  "context": "",
+  "note": "honorific: shopkeeper"
+ },
+ {
+  "where": "dialogue",
+  "id": "2DC",
+  "found": "힘내요 마리오!",
+  "replace": "힘내요 마리오 씨!",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "dialogue",
+  "id": "2DE",
+  "found": "마리오와 함께니까요",
+  "replace": "마리오 씨와 함께니까요",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "dialogue",
+  "id": "2E0",
+  "found": "마리오 구해줘요!",
+  "replace": "마리오 씨 구해줘요!",
+  "context": "",
+  "note": "honorific: 피치 (inferred; Bowser replies taking Peach)"
+ },
+ {
+  "where": "dialogue",
+  "id": "818",
+  "found": "<피치> 마리오!",
+  "replace": "<피치> 마리오 씨!",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "dialogue",
+  "id": "85A",
+  "found": "<피치> 마리오!?",
+  "replace": "<피치> 마리오 씨!?",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "dialogue",
+  "id": "8A9",
+  "found": "마리오가 있잖아요!",
+  "replace": "마리오 씨가 있잖아요!",
+  "context": "",
+  "note": "honorific: 피치 (continues after '<피치> 아빠!')"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "0E",
+  "found": "<피치> 마리오~~!",
+  "replace": "<피치> 마리오 씨~~!",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "0F",
+  "found": "<피치> 마리오~~!",
+  "replace": "<피치> 마리오 씨~~!",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "11",
+  "found": "무사했군요 마리오♡",
+  "replace": "무사했군요 마리오 씨♡",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "18",
+  "found": "조심해요 마리오!!",
+  "replace": "조심해요 마리오 씨!!",
+  "context": "",
+  "note": "honorific: 피치"
+ },
+ {
+  "where": "dialogue",
+  "id": "256",
+  "found": "100년을 걸리겠NE",
+  "replace": "100년은 걸리겠NE",
+  "context": "",
+  "note": "typo: 조사 오류(을→은)"
+ },
+ {
+  "where": "dialogue",
+  "id": "2BB",
+  "found": "계시던 거에요",
+  "replace": "계시던 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "2D3",
+  "found": "기운이 느져요",
+  "replace": "기운이 느껴져요",
+  "context": "",
+  "note": "typo: 음절 누락(느껴져요)"
+ },
+ {
+  "where": "dialogue",
+  "id": "2D8",
+  "found": "기뻐할 거에요",
+  "replace": "기뻐할 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "305",
+  "found": "진짜에요",
+  "replace": "진짜예요",
+  "context": "",
+  "note": "typo: 받침 없는 말 뒤 -예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "32E",
+  "found": "나무를.",
+  "replace": "나무를",
+  "context": "",
+  "note": "typo: 문장 중간 불필요한 마침표"
+ },
+ {
+  "where": "dialogue",
+  "id": "338",
+  "found": "지노에요",
+  "replace": "지노예요",
+  "context": "",
+  "note": "typo: 받침 없는 말 뒤 -예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "377",
+  "found": "될 거에요",
+  "replace": "될 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "37D",
+  "found": "겨발하라고",
+  "replace": "분발하라고",
+  "context": "",
+  "note": "typo: 오타(겨발→분발)"
+ },
+ {
+  "where": "dialogue",
+  "id": "3DB",
+  "found": "모자르다",
+  "replace": "모자라다",
+  "context": "",
+  "note": "typo: 모자르다→모자라다 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "422",
+  "found": "여기까리",
+  "replace": "여기까지",
+  "context": "",
+  "note": "typo: 오타(까리→까지)"
+ },
+ {
+  "where": "dialogue",
+  "id": "469",
+  "found": "모자른 걸",
+  "replace": "모자란 걸",
+  "context": "",
+  "note": "typo: 모자르다→모자라다 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "476",
+  "found": "잘 못 들었나",
+  "replace": "잘못 들었나",
+  "context": "",
+  "note": "typo: '잘못 듣다'(오청) 의미이므로 붙여 씀"
+ },
+ {
+  "where": "dialogue",
+  "id": "493",
+  "found": "공주라던지",
+  "replace": "공주라든지",
+  "context": "",
+  "note": "typo: 선택 의미는 -든지"
+ },
+ {
+  "where": "dialogue",
+  "id": "49C",
+  "found": "숨바꼭찔",
+  "replace": "숨바꼭질",
+  "context": "",
+  "note": "typo: 오타"
+ },
+ {
+  "where": "dialogue",
+  "id": "4C2",
+  "found": "갯수를",
+  "replace": "개수를",
+  "context": "",
+  "note": "typo: 맞춤법 (개수)"
+ },
+ {
+  "where": "dialogue",
+  "id": "4C6",
+  "found": "모자르네",
+  "replace": "모자라네",
+  "context": "",
+  "note": "typo: 맞춤법 (모자라다)"
+ },
+ {
+  "where": "dialogue",
+  "id": "50F",
+  "found": "「폭죽」와",
+  "replace": "「폭죽」과",
+  "context": "",
+  "note": "typo: 받침 뒤 조사 과"
+ },
+ {
+  "where": "dialogue",
+  "id": "63A",
+  "found": "소리에요",
+  "replace": "소리예요",
+  "context": "",
+  "note": "typo: 받침 없는 체언 뒤 -예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "68A",
+  "found": "가두는 일을 성공했다",
+  "replace": "가두는 일에 성공했다",
+  "context": "",
+  "note": "typo: 조사 오류 (~에 성공하다)"
+ },
+ {
+  "where": "dialogue",
+  "id": "68B",
+  "found": "잠궈뒀다",
+  "replace": "잠가뒀다",
+  "context": "",
+  "note": "typo: 맞춤법 (잠그다→잠가)"
+ },
+ {
+  "where": "dialogue",
+  "id": "693",
+  "found": "돌아오고 있지 않고 있어",
+  "replace": "돌아오지 않고 있어",
+  "context": "",
+  "note": "typo: 중복된 표현 정리"
+ },
+ {
+  "where": "dialogue",
+  "id": "77A",
+  "found": "전어이서",
+  "replace": "전이어서",
+  "context": "",
+  "note": "typo: 글자 순서 오타"
+ },
+ {
+  "where": "dialogue",
+  "id": "787",
+  "found": "쳐졌지만",
+  "replace": "처졌지만",
+  "context": "",
+  "note": "typo: 맞춤법 (뒤로 처지다)"
+ },
+ {
+  "where": "dialogue",
+  "id": "788",
+  "found": "사이클에서에서",
+  "replace": "사이클에서",
+  "context": "",
+  "note": "typo: 음절 중복"
+ },
+ {
+  "where": "dialogue",
+  "id": "817",
+  "found": "잠궈라",
+  "replace": "잠가라",
+  "context": "",
+  "note": "typo: 맞춤법 (잠그다→잠가)"
+ },
+ {
+  "where": "dialogue",
+  "id": "82A",
+  "found": "온 다면",
+  "replace": "온다면",
+  "context": "",
+  "note": "typo: 어미 잘못 띄움 (온다면)"
+ },
+ {
+  "where": "dialogue",
+  "id": "82E",
+  "found": "악세사리",
+  "replace": "액세서리",
+  "context": "",
+  "note": "typo: 외래어 표기 (액세서리)"
+ },
+ {
+  "where": "dialogue",
+  "id": "83A",
+  "found": "온 거에요",
+  "replace": "온 거예요",
+  "context": "",
+  "note": "typo: -예요 표기"
+ },
+ {
+  "where": "dialogue",
+  "id": "859",
+  "found": "계실 거에요",
+  "replace": "계실 거예요",
+  "context": "",
+  "note": "typo: -예요 표기"
+ },
+ {
+  "where": "dialogue",
+  "id": "86D",
+  "found": "몇 번이가",
+  "replace": "몇 번이나",
+  "context": "",
+  "note": "typo: 조사 오타"
+ },
+ {
+  "where": "dialogue",
+  "id": "87F",
+  "found": "차례에요",
+  "replace": "차례예요",
+  "context": "",
+  "note": "typo: 받침 없는 체언 뒤 -예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "892",
+  "found": "안되요",
+  "replace": "안돼요",
+  "context": "",
+  "note": "typo: 되/돼 혼동"
+ },
+ {
+  "where": "dialogue",
+  "id": "8B4",
+  "found": "놀랄 거에요",
+  "replace": "놀랄 거예요",
+  "context": "",
+  "note": "typo: -예요 표기"
+ },
+ {
+  "where": "dialogue",
+  "id": "900",
+  "found": "도움이 될 거에요",
+  "replace": "도움이 될 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "93F",
+  "found": "크케 클거야",
+  "replace": "크게 클거야",
+  "context": "",
+  "note": "typo: 오타(크케→크게)"
+ },
+ {
+  "where": "dialogue",
+  "id": "967",
+  "found": "그럴 거에요",
+  "replace": "그럴 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "9B0",
+  "found": "떼우세요",
+  "replace": "때우세요",
+  "context": "",
+  "note": "typo: 떼우다→때우다 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "9C7",
+  "found": "개가 모잘라",
+  "replace": "개가 모자라",
+  "context": "",
+  "note": "typo: 모잘라→모자라 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "9CC",
+  "found": "오늘을 어떤 방으로",
+  "replace": "오늘은 어떤 방으로",
+  "context": "",
+  "note": "typo: 조사 오류(을→은)"
+ },
+ {
+  "where": "dialogue",
+  "id": "A6E",
+  "found": "알고 계신 거에요",
+  "replace": "알고 계신 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "AA4",
+  "found": "키노코프스피",
+  "replace": "키노코프스키",
+  "context": "",
+  "note": "typo: 이름 오타(스피→스키)"
+ },
+ {
+  "where": "dialogue",
+  "id": "AC1",
+  "found": "「왕왕」를",
+  "replace": "「왕왕」을",
+  "context": "",
+  "note": "typo: 받침 뒤 조사(를→을)"
+ },
+ {
+  "where": "dialogue",
+  "id": "AC2",
+  "found": "「왕왕」를",
+  "replace": "「왕왕」을",
+  "context": "",
+  "note": "typo: 받침 뒤 조사(를→을)"
+ },
+ {
+  "where": "dialogue",
+  "id": "AEB",
+  "found": "어디에 누군지는",
+  "replace": "어디의 누군지는",
+  "context": "",
+  "note": "typo: 조사 오류(어디의 누구)"
+ },
+ {
+  "where": "dialogue",
+  "id": "B14",
+  "found": "감사합니.",
+  "replace": "감사합니다.",
+  "context": "",
+  "note": "typo: 음절 누락(다)"
+ },
+ {
+  "where": "dialogue",
+  "id": "B1B",
+  "found": "해적선가",
+  "replace": "해적선이",
+  "context": "",
+  "note": "typo: 받침 뒤 조사(가→이)"
+ },
+ {
+  "where": "dialogue",
+  "id": "B41",
+  "found": "좋아하실 거에요",
+  "replace": "좋아하실 거예요",
+  "context": "",
+  "note": "typo: 거에요→거예요 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "B4B",
+  "found": "감사의 표시에요",
+  "replace": "감사의 표시예요",
+  "context": "",
+  "note": "typo: 모음 뒤 이에요→예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "B4C",
+  "found": "감사의 표시에요",
+  "replace": "감사의 표시예요",
+  "context": "",
+  "note": "typo: 모음 뒤 이에요→예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "B5E",
+  "found": "모자르다고",
+  "replace": "모자라다고",
+  "context": "",
+  "note": "typo: 모자르다→모자라다 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "B75",
+  "found": "「별사탕」와",
+  "replace": "「별사탕」과",
+  "context": "",
+  "note": "typo: 받침 뒤 조사(와→과)"
+ },
+ {
+  "where": "dialogue",
+  "id": "B7F",
+  "found": "뭐 할려고",
+  "replace": "뭐 하려고",
+  "context": "",
+  "note": "typo: 할려고→하려고 맞춤법"
+ },
+ {
+  "where": "dialogue",
+  "id": "B85",
+  "found": "겁쟁이었네요",
+  "replace": "겁쟁이였네요",
+  "context": "",
+  "note": "typo: 모음 뒤 이었→였"
+ },
+ {
+  "where": "dialogue",
+  "id": "BE9",
+  "found": "본실을",
+  "replace": "본실력을",
+  "context": "",
+  "note": "typo: '력' 누락 (본실력)"
+ },
+ {
+  "where": "dialogue",
+  "id": "C1C",
+  "found": "마지 안",
+  "replace": "마치 안",
+  "context": "",
+  "note": "typo: 오타: 마지→마치"
+ },
+ {
+  "where": "dialogue",
+  "id": "C1C",
+  "found": "걸맞는",
+  "replace": "걸맞은",
+  "context": "",
+  "note": "typo: 형용사 활용: 걸맞은"
+ },
+ {
+  "where": "dialogue",
+  "id": "C78",
+  "found": "무리에요",
+  "replace": "무리예요",
+  "context": "",
+  "note": "typo: 받침 없는 말 뒤 '예요'"
+ },
+ {
+  "where": "dialogue",
+  "id": "C79",
+  "found": "줏어왔습니다",
+  "replace": "주워왔습니다",
+  "context": "",
+  "note": "typo: 맞춤법: 줍다→주워"
+ },
+ {
+  "where": "dialogue",
+  "id": "C7E",
+  "found": "인형이라는 걸.",
+  "replace": "인형이라는 걸",
+  "context": "",
+  "note": "typo: 문장 중간 불필요한 마침표"
+ },
+ {
+  "where": "dialogue",
+  "id": "C91",
+  "found": "씨앗가",
+  "replace": "씨앗이",
+  "context": "",
+  "note": "typo: 조사 오류: 받침 뒤 '이'"
+ },
+ {
+  "where": "dialogue",
+  "id": "C92",
+  "found": "헤메왔던",
+  "replace": "헤매왔던",
+  "context": "",
+  "note": "typo: 맞춤법: 헤매다"
+ },
+ {
+  "where": "dialogue",
+  "id": "C93",
+  "found": "씨앗를",
+  "replace": "씨앗을",
+  "context": "",
+  "note": "typo: 조사 오류: 받침 뒤 '을'"
+ },
+ {
+  "where": "dialogue",
+  "id": "C95",
+  "found": "씨앗를",
+  "replace": "씨앗을",
+  "context": "",
+  "note": "typo: 조사 오류: 받침 뒤 '을'"
+ },
+ {
+  "where": "dialogue",
+  "id": "C97",
+  "found": "씨앗를",
+  "replace": "씨앗을",
+  "context": "",
+  "note": "typo: 조사 오류: 받침 뒤 '을'"
+ },
+ {
+  "where": "dialogue",
+  "id": "C98",
+  "found": "양보해겠나",
+  "replace": "양보해주겠나",
+  "context": "",
+  "note": "typo: '주' 누락"
+ },
+ {
+  "where": "dialogue",
+  "id": "C99",
+  "found": "공경을.",
+  "replace": "공경을",
+  "context": "",
+  "note": "typo: 문장 중간 불필요한 마침표"
+ },
+ {
+  "where": "dialogue",
+  "id": "C9A",
+  "found": "「씨앗」와",
+  "replace": "「씨앗」과",
+  "context": "",
+  "note": "typo: 조사 오류: 받침 뒤 '과'"
+ },
+ {
+  "where": "dialogue",
+  "id": "D0A",
+  "found": "혼자말",
+  "replace": "혼잣말",
+  "context": "",
+  "note": "typo: 맞춤법: 혼잣말(사이시옷)"
+ },
+ {
+  "where": "dialogue",
+  "id": "E0A",
+  "found": "나올 거에요",
+  "replace": "나올 거예요",
+  "context": "",
+  "note": "typo: 맞춤법: 거예요"
+ },
+ {
+  "where": "dialogue",
+  "id": "E70",
+  "found": "지노 씨에요",
+  "replace": "지노 씨예요",
+  "context": "",
+  "note": "typo: 받침 없는 말 뒤 '예요'"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "81",
+  "found": "쿠퍼의",
+  "replace": "쿠파의",
+  "context": "",
+  "note": "typo: 이름 오타(쿠파)"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "6F",
+  "found": "잘 못 먹었다가는",
+  "replace": "잘못 먹었다가는",
+  "context": "",
+  "note": "typo: '잘못'(그릇되게) 띄어쓰기로 의미 바뀜"
+ },
+ {
+  "where": "battle_dialogue",
+  "id": "FE",
+  "found": "메세지",
+  "replace": "메시지",
+  "context": "",
+  "note": "typo: 맞춤법(메시지)"
+ },
+ {
+  "where": "psychopath",
+  "id": "06",
+  "found": "케릭터",
+  "replace": "캐릭터",
+  "context": "",
+  "note": "typo: 맞춤법(캐릭터)"
+ },
+ {
+  "where": "psychopath",
+  "id": "4B",
+  "found": "파랑색",
+  "replace": "파란색",
+  "context": "",
+  "note": "typo: 맞춤법(파란색/파랑)"
+ },
+ {
+  "where": "menu_text",
+  "id": "70",
+  "found": "9럼",
+  "replace": "그럼",
+  "context": "",
+  "note": "typo: 깨진 글자(그럼)"
+ },
+ {
+  "where": "dialogue",
+  "id": "012",
+  "found": "화산이 자주",
+  "replace": "불꽃이 자주",
+  "context": "",
+  "note": "typo: 장인이 만든 불꽃(花火)을 화산으로 오기"
+ },
+ {
+  "where": "dialogue",
+  "id": "836",
+  "found": "결혼식 방해하지 까",
+  "replace": "결혼식을 방해하면‥",
+  "context": "",
+  "note": "JP けっこんしきを じゃましちゃ (말끝 흐림)"
+ },
+ {
+  "where": "dialogue",
+  "id": "AF9",
+  "found": "있다!‥",
+  "replace": "있다‥",
+  "context": "",
+  "note": "JP まっている‥としたら: 다음 \"면\"으로 이어짐"
+ },
+ {
+  "where": "dialogue",
+  "id": "4E2",
+  "found": "이가 언덕에",
+  "replace": "이가 계곡에",
+  "context": "",
+  "note": "JP イガ谷"
+ },
+ {
+  "where": "dialogue",
+  "id": "C52",
+  "found": "이가 언덕 쪽에서",
+  "replace": "이가 계곡 쪽에서",
+  "context": "",
+  "note": "JP イガ谷の方角"
+ },
+ {
+  "where": "dialogue",
+  "id": "E6C",
+  "found": "<마로파파>",
+  "replace": "<마로아빠>",
+  "context": "",
+  "note": "다른 대사의 화자 태그와 통일"
+ },
+ {
+  "where": "battle_message",
+  "id": "01",
+  "found": "(을)를 획득!",
+  "replace": " 획득!",
+  "context": "",
+  "note": "조사: 이름에 따라 달라지므로 생략"
+ },
+ {
+  "where": "battle_message",
+  "id": "02",
+  "found": "획득!",
+  "replace": " 획득!",
+  "context": "",
+  "note": "띄어쓰기"
+ },
+ {
+  "where": "battle_message",
+  "id": "03",
+  "found": "이 됐다!",
+  "replace": " 달성!",
+  "context": "",
+  "note": "숫자 뒤 이/가 회피"
+ },
+ {
+  "where": "battle_message",
+  "id": "04",
+  "found": "로 업 됐다!",
+  "replace": "까지 업!",
+  "context": "",
+  "note": "숫자 뒤 (으)로 회피"
+ },
+ {
+  "where": "battle_message",
+  "id": "05",
+  "found": "(이)가 됐다!",
+  "replace": " 모습이 됐다!",
+  "context": "",
+  "note": "조사: 이름 뒤 이/가 회피"
+ },
+ {
+  "where": "battle_message",
+  "id": "06",
+  "found": "(을)를 배웠다!",
+  "replace": " 습득!",
+  "context": "",
+  "note": "조사: 기술명 뒤 을/를 회피"
+ }
+]

@@ -1,0 +1,85 @@
+2500 start 4
+2700 a 4
+2900 a 4
+3200 up+right 200
+3600 x 4
+3680 x 4
+3740 x 4
+3800 x 4
+3880 x 4
+3940 x 4
+4000 x 4
+4080 x 4
+4140 x 4
+3000 shot
+3020 shot
+3040 shot
+3060 shot
+3080 shot
+3100 shot
+3120 shot
+3140 shot
+3160 shot
+3180 shot
+3200 shot
+3220 shot
+3240 shot
+3260 shot
+3280 shot
+3300 shot
+3320 shot
+3340 shot
+3360 shot
+3380 shot
+3400 shot
+3420 shot
+3440 shot
+3460 shot
+3480 shot
+3500 shot
+3520 shot
+3540 shot
+3560 shot
+3580 shot
+3600 shot
+3620 shot
+3640 shot
+3660 shot
+3680 shot
+3700 shot
+3720 shot
+3740 shot
+3760 shot
+3780 shot
+3800 shot
+3820 shot
+3840 shot
+3860 shot
+3880 shot
+3900 shot
+3920 shot
+3940 shot
+3960 shot
+3980 shot
+4000 shot
+4020 shot
+4040 shot
+4060 shot
+4080 shot
+4100 shot
+4120 shot
+4140 shot
+4160 shot
+4180 shot
+4200 shot
+4220 shot
+4240 shot
+4260 shot
+4280 shot
+4300 shot
+4320 shot
+4340 shot
+4360 shot
+4380 shot
+4400 shot
+4400 end

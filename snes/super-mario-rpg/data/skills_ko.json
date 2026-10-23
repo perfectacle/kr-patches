@@ -1,0 +1,218 @@
+[
+ {
+  "id_hex": "00",
+  "en_full": "Jump",
+  "ko": "점프",
+  "source": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%98%A4%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29",
+  "confidence": "official",
+  "note": "Mario Wiki 'Jump' page is generic (점프 from SMB manual), not remake-specific"
+ },
+ {
+  "id_hex": "01",
+  "en_full": "Fire Orb",
+  "ko": "파이어볼",
+  "source": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%98%A4%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29",
+  "confidence": "official",
+  "note": "Mario Wiki 'Fire Orb' redirects to generic Fireball page; remake EN name is Fireball"
+ },
+ {
+  "id_hex": "02",
+  "en_full": "Super Jump",
+  "ko": "슈퍼점프",
+  "source": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%98%A4%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Super_Jump_(Super_Mario_RPG)",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "03",
+  "en_full": "Super Flame",
+  "ko": "슈퍼파이어",
+  "source": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%98%A4%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Super_Flame",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "04",
+  "en_full": "Ultra Jump",
+  "ko": "울트라점프",
+  "source": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%98%A4%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Ultra_Jump",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "05",
+  "en_full": "Ultra Flame",
+  "ko": "울트라파이어",
+  "source": "https://namu.wiki/w/%EB%A7%88%EB%A6%AC%EC%98%A4%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Ultra_Flame",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "06",
+  "en_full": "Therapy",
+  "ko": "건강해져라",
+  "source": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EA%B3%B5%EC%A3%BC%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Therapy",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "07",
+  "en_full": "Group Hug",
+  "ko": "모두 건강해져라",
+  "source": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EA%B3%B5%EC%A3%BC%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Group_Hug",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "08",
+  "en_full": "Sleepy Time",
+  "ko": "잘자양",
+  "source": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EA%B3%B5%EC%A3%BC%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Sleepy_Time",
+  "confidence": "official",
+  "note": "name shared with Sleepy Sheep item"
+ },
+ {
+  "id_hex": "09",
+  "en_full": "Come Back",
+  "ko": "부탁이야 돌아와",
+  "source": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EA%B3%B5%EC%A3%BC%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Come_Back",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "0A",
+  "en_full": "Mute",
+  "ko": "음소거",
+  "source": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EA%B3%B5%EC%A3%BC%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Mute_(move)",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "0B",
+  "en_full": "Psych Bomb",
+  "ko": "히스테릭폭탄",
+  "source": "https://namu.wiki/w/%ED%94%BC%EC%B9%98%EA%B3%B5%EC%A3%BC%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Psych_Bomb",
+  "confidence": "official",
+  "note": "Mario Wiki has typo 히스테릭폭탁; namu table and JP ヒステリックボム support 폭탄"
+ },
+ {
+  "id_hex": "0C",
+  "en_full": "Terrorize",
+  "ko": "위협",
+  "source": "https://namu.wiki/w/%EC%BF%A0%ED%8C%8C%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Terrorize",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "0D",
+  "en_full": "Poison Gas",
+  "ko": "독가스뭉게뭉게",
+  "source": "https://namu.wiki/w/%EC%BF%A0%ED%8C%8C%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Poison_Gas",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "0E",
+  "en_full": "Crusher",
+  "ko": "솟아나라쑤욱",
+  "source": "https://namu.wiki/w/%EC%BF%A0%ED%8C%8C%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Crusher",
+  "confidence": "official",
+  "note": "en_patch CRUSH; JP つきでろボボーン"
+ },
+ {
+  "id_hex": "0F",
+  "en_full": "Bowser Crush",
+  "ko": "메카쿠파프레스",
+  "source": "https://namu.wiki/w/%EC%BF%A0%ED%8C%8C%28%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG%29 ; https://www.mariowiki.com/Bowser_Crush",
+  "confidence": "official",
+  "note": "en_patch CRUSHER; remake EN Mechakoopa Stomp; namu prose also writes 메카쿠파 프레스"
+ },
+ {
+  "id_hex": "10",
+  "en_full": "Geno Beam",
+  "ko": "지노빔",
+  "source": "https://namu.wiki/w/%EC%A7%80%EB%85%B8%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Geno_Beam",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "11",
+  "en_full": "Geno Boost",
+  "ko": "지노웨이브",
+  "source": "https://namu.wiki/w/%EC%A7%80%EB%85%B8%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Geno_Boost",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "12",
+  "en_full": "Geno Whirl",
+  "ko": "지노커터",
+  "source": "https://namu.wiki/w/%EC%A7%80%EB%85%B8%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Geno_Whirl",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "13",
+  "en_full": "Geno Blast",
+  "ko": "지노블래스트",
+  "source": "https://namu.wiki/w/%EC%A7%80%EB%85%B8%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Geno_Blast",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "14",
+  "en_full": "Geno Flash",
+  "ko": "지노플래시",
+  "source": "https://namu.wiki/w/%EC%A7%80%EB%85%B8%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Geno_Flash",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "15",
+  "en_full": "Thunderbolt",
+  "ko": "번개찌리릿",
+  "source": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Thunderbolt_(move)",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "16",
+  "en_full": "HP Rain",
+  "ko": "회복샤워",
+  "source": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/HP_Rain",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "17",
+  "en_full": "Psychopath",
+  "ko": "무슨 생각하니",
+  "source": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Psychopath",
+  "confidence": "official",
+  "note": "remake EN Thought Peek"
+ },
+ {
+  "id_hex": "18",
+  "en_full": "Shocker",
+  "ko": "천둥콰르릉",
+  "source": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Shocker_(Super_Mario_RPG)",
+  "confidence": "official",
+  "note": "name shared with Thunder Rage item"
+ },
+ {
+  "id_hex": "19",
+  "en_full": "Snowy",
+  "ko": "눈펑펑",
+  "source": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Snowy",
+  "confidence": "official",
+  "note": ""
+ },
+ {
+  "id_hex": "1A",
+  "en_full": "Star Rain",
+  "ko": "반짝유성",
+  "source": "https://namu.wiki/w/%EB%A9%9C%EB%A1%9C%28%EB%A7%88%EB%A6%AC%EC%98%A4%20%EC%8B%9C%EB%A6%AC%EC%A6%88%29 ; https://www.mariowiki.com/Star_Rain",
+  "confidence": "official",
+  "note": "name shared with Shooting Star item"
+ }
+]

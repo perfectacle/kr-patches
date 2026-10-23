@@ -1,0 +1,297 @@
+500 start 4
+800 start 4
+1300 a 4
+1700 a 4
+2000 down 4
+2100 a 4
+2400 a 4
+2480 a 4
+2560 a 4
+2640 a 4
+2720 a 4
+2800 a 4
+2880 a 4
+2960 a 4
+3040 a 4
+3120 a 4
+3200 a 4
+3280 a 4
+3360 a 4
+3440 a 4
+3520 a 4
+3600 a 4
+3680 a 4
+3760 a 4
+3840 a 4
+3920 a 4
+4000 a 4
+4080 a 4
+4160 a 4
+4240 a 4
+4320 a 4
+4400 a 4
+4480 a 4
+4560 a 4
+4640 a 4
+4720 a 4
+4800 a 4
+4880 a 4
+4960 a 4
+5040 a 4
+5120 a 4
+5200 a 4
+5280 a 4
+5360 a 4
+5440 a 4
+5520 a 4
+5600 a 4
+5680 a 4
+5760 a 4
+5840 a 4
+5920 a 4
+2440 x 4
+2520 x 4
+2600 x 4
+2680 x 4
+2760 x 4
+2840 x 4
+2920 x 4
+3000 x 4
+3080 x 4
+3160 x 4
+3240 x 4
+3320 x 4
+3400 x 4
+3480 x 4
+3560 x 4
+3640 x 4
+3720 x 4
+3800 x 4
+3880 x 4
+3960 x 4
+4040 x 4
+4120 x 4
+4200 x 4
+4280 x 4
+4360 x 4
+4440 x 4
+4520 x 4
+4600 x 4
+4680 x 4
+4760 x 4
+4840 x 4
+4920 x 4
+5000 x 4
+5080 x 4
+5160 x 4
+5240 x 4
+5320 x 4
+5400 x 4
+5480 x 4
+5560 x 4
+5640 x 4
+5720 x 4
+5800 x 4
+5880 x 4
+5960 x 4
+30 shot
+60 shot
+90 shot
+120 shot
+150 shot
+180 shot
+210 shot
+240 shot
+270 shot
+300 shot
+330 shot
+360 shot
+390 shot
+420 shot
+450 shot
+480 shot
+510 shot
+540 shot
+570 shot
+600 shot
+630 shot
+660 shot
+690 shot
+720 shot
+750 shot
+780 shot
+810 shot
+840 shot
+870 shot
+900 shot
+930 shot
+960 shot
+990 shot
+1020 shot
+1050 shot
+1080 shot
+1110 shot
+1140 shot
+1170 shot
+1200 shot
+1230 shot
+1260 shot
+1290 shot
+1320 shot
+1350 shot
+1380 shot
+1410 shot
+1440 shot
+1470 shot
+1500 shot
+1530 shot
+1560 shot
+1590 shot
+1620 shot
+1650 shot
+1680 shot
+1710 shot
+1740 shot
+1770 shot
+1800 shot
+1830 shot
+1860 shot
+1890 shot
+1920 shot
+1950 shot
+1980 shot
+2010 shot
+2040 shot
+2070 shot
+2100 shot
+2130 shot
+2160 shot
+2190 shot
+2220 shot
+2250 shot
+2280 shot
+2310 shot
+2340 shot
+2370 shot
+2400 shot
+2430 shot
+2460 shot
+2490 shot
+2520 shot
+2550 shot
+2580 shot
+2610 shot
+2640 shot
+2670 shot
+2700 shot
+2730 shot
+2760 shot
+2790 shot
+2820 shot
+2850 shot
+2880 shot
+2910 shot
+2940 shot
+2970 shot
+3000 shot
+3030 shot
+3060 shot
+3090 shot
+3120 shot
+3150 shot
+3180 shot
+3210 shot
+3240 shot
+3270 shot
+3300 shot
+3330 shot
+3360 shot
+3390 shot
+3420 shot
+3450 shot
+3480 shot
+3510 shot
+3540 shot
+3570 shot
+3600 shot
+3630 shot
+3660 shot
+3690 shot
+3720 shot
+3750 shot
+3780 shot
+3810 shot
+3840 shot
+3870 shot
+3900 shot
+3930 shot
+3960 shot
+3990 shot
+4020 shot
+4050 shot
+4080 shot
+4110 shot
+4140 shot
+4170 shot
+4200 shot
+4230 shot
+4260 shot
+4290 shot
+4320 shot
+4350 shot
+4380 shot
+4410 shot
+4440 shot
+4470 shot
+4500 shot
+4530 shot
+4560 shot
+4590 shot
+4620 shot
+4650 shot
+4680 shot
+4710 shot
+4740 shot
+4770 shot
+4800 shot
+4830 shot
+4860 shot
+4890 shot
+4920 shot
+4950 shot
+4980 shot
+5010 shot
+5040 shot
+5070 shot
+5100 shot
+5130 shot
+5160 shot
+5190 shot
+5220 shot
+5250 shot
+5280 shot
+5310 shot
+5340 shot
+5370 shot
+5400 shot
+5430 shot
+5460 shot
+5490 shot
+5520 shot
+5550 shot
+5580 shot
+5610 shot
+5640 shot
+5670 shot
+5700 shot
+5730 shot
+5760 shot
+5790 shot
+5820 shot
+5850 shot
+5880 shot
+5910 shot
+5940 shot
+5970 shot
+6000 shot
+6000 end

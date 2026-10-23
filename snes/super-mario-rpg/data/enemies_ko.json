@@ -1,0 +1,1858 @@
+[
+ {
+  "id_hex": "00",
+  "en_full": "Terrapin",
+  "ko": "엉금병",
+  "source": "https://www.mariowiki.com/Terrapin",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "01",
+  "en_full": "Spikey",
+  "ko": "가시병",
+  "source": "https://www.mariowiki.com/Spikey_%28Super_Mario_RPG%29",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "02",
+  "en_full": "Sky Troopa",
+  "ko": "펄럭펄럭",
+  "source": "https://www.mariowiki.com/Koopa_Paratroopa",
+  "confidence": "inferred",
+  "note": "Remake: Koopa Paratroopa. Korean is general franchise name (not remake-cited); consistent with remake 토실펄럭/펄럭펄럭대시"
+ },
+ {
+  "id_hex": "03",
+  "en_full": "Mad Mallet",
+  "ko": "뚝",
+  "source": "https://www.mariowiki.com/Mad_Mallet",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "04",
+  "en_full": "Shaman",
+  "ko": "스펠",
+  "source": "https://www.mariowiki.com/Shaman",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "05",
+  "en_full": "Crook",
+  "ko": "슬쩌기",
+  "source": "https://www.mariowiki.com/Crook",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "06",
+  "en_full": "Goomba",
+  "ko": "굼바",
+  "source": "https://www.mariowiki.com/Goomba",
+  "confidence": "inferred",
+  "note": "General Korean name (Super Mario Collection); remake names 미라굼바/땅콩굼바 derive from it"
+ },
+ {
+  "id_hex": "07",
+  "en_full": "Piranha Plant",
+  "ko": "뻐끔플라워",
+  "source": "https://www.mariowiki.com/Piranha_Plant",
+  "confidence": "inferred",
+  "note": "General Korean name; remake Chewy=뻐끔블루 consistent"
+ },
+ {
+  "id_hex": "08",
+  "en_full": "Amanita",
+  "ko": "포핀",
+  "source": "https://www.mariowiki.com/Amanita",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "09",
+  "en_full": "Goby",
+  "ko": "뽀꾸뽀꾸",
+  "source": "https://www.mariowiki.com/Cheep_Cheep",
+  "confidence": "inferred",
+  "note": "Remake: Cheep Cheep. General Korean name, not remake-cited"
+ },
+ {
+  "id_hex": "0A",
+  "en_full": "Bloober",
+  "ko": "징오징오",
+  "source": "https://www.mariowiki.com/Blooper",
+  "confidence": "inferred",
+  "note": "Remake: Blooper. General Korean name; remake boss 문어단지징오징오 consistent"
+ },
+ {
+  "id_hex": "0B",
+  "en_full": "Bandana Red",
+  "ko": "반다나레드",
+  "source": "https://www.mariowiki.com/Bandana_Red",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "0C",
+  "en_full": "Lakitu",
+  "ko": "김수한무",
+  "source": "https://www.mariowiki.com/Lakitu",
+  "confidence": "inferred",
+  "note": "General Korean name, not remake-cited"
+ },
+ {
+  "id_hex": "0D",
+  "en_full": "Birdy",
+  "ko": "버디",
+  "source": "https://www.mariowiki.com/Birdy",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "0E",
+  "en_full": "Pinwheel",
+  "ko": "헥토바",
+  "source": "https://www.mariowiki.com/Pinwheel_%28Super_Mario_RPG%29",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "0F",
+  "en_full": "Rat Funk",
+  "ko": "찍돌이",
+  "source": "https://www.mariowiki.com/Rat_Funk",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "10",
+  "en_full": "K-9",
+  "ko": "하이도그",
+  "source": "https://www.mariowiki.com/K-9",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "11",
+  "en_full": "Magmite",
+  "ko": "마그하잉바",
+  "source": "https://www.mariowiki.com/Magmite",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "12",
+  "en_full": "The Big Boo",
+  "ko": "부끄부끄",
+  "source": "https://www.mariowiki.com/Boo",
+  "confidence": "inferred",
+  "note": "Remake: Boo. General Korean name; remake High Boo=하이부끄부끄 consistent"
+ },
+ {
+  "id_hex": "13",
+  "en_full": "Dry Bones",
+  "ko": "와르르",
+  "source": "https://www.mariowiki.com/Dry_Bones",
+  "confidence": "inferred",
+  "note": "General Korean name; remake Vomer=와르르제트 consistent"
+ },
+ {
+  "id_hex": "14",
+  "en_full": "Greaper",
+  "ko": "레이호",
+  "source": "https://www.mariowiki.com/Greaper",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "15",
+  "en_full": "Sparky",
+  "ko": "버블",
+  "source": "https://www.mariowiki.com/Lava_Bubble",
+  "confidence": "inferred",
+  "note": "Remake: Lava Bubble. Korean from Super Mario Odyssey; remake Lava Blubble=버블루 consistent"
+ },
+ {
+  "id_hex": "16",
+  "en_full": "Chomp",
+  "ko": "멍멍이",
+  "source": "https://www.mariowiki.com/Chain_Chomp",
+  "confidence": "inferred",
+  "note": "Remake: Chain Chomp. General Korean name; remake 샹들리멍 consistent"
+ },
+ {
+  "id_hex": "17",
+  "en_full": "Pandorite",
+  "ko": "머지",
+  "source": "https://www.mariowiki.com/Huhwhat",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Huhwhat"
+ },
+ {
+  "id_hex": "18",
+  "en_full": "Shy Ranger",
+  "ko": "군인헤이호",
+  "source": "https://www.mariowiki.com/Shy_Ranger",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "19",
+  "en_full": "Bob-omb",
+  "ko": "폭탄병",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "1A",
+  "en_full": "Spookum",
+  "ko": "무우쵸",
+  "source": "https://www.mariowiki.com/Snifit",
+  "confidence": "inferred",
+  "note": "Remake EN: Snifit. Korean 무우쵸 is general (Super Mario Collection), not remake-cited"
+ },
+ {
+  "id_hex": "1B",
+  "en_full": "Hammer Bro",
+  "ko": "해머브러스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "1C",
+  "en_full": "Buzzer",
+  "ko": "8비트",
+  "source": "https://www.mariowiki.com/Buzzer",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "1D",
+  "en_full": "Ameboid",
+  "ko": "말랑메바",
+  "source": "https://www.mariowiki.com/Ameboid",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "1E",
+  "en_full": "Gecko",
+  "ko": "레온",
+  "source": "https://www.mariowiki.com/Gecko",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "1F",
+  "en_full": "Wiggler",
+  "ko": "꽃충이",
+  "source": "https://www.mariowiki.com/Wiggler",
+  "confidence": "inferred",
+  "note": "General Korean name; namu remake page uses 꽃충이의 숲 for Forest Maze"
+ },
+ {
+  "id_hex": "20",
+  "en_full": "Crusty",
+  "ko": "투구게",
+  "source": "https://www.mariowiki.com/Crusty",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "21",
+  "en_full": "Magikoopa",
+  "ko": "마귀",
+  "source": "https://www.mariowiki.com/Magikoopa",
+  "confidence": "inferred",
+  "note": "General Korean name; remake Wizakoopa=마귀저드 consistent"
+ },
+ {
+  "id_hex": "22",
+  "en_full": "Leuko",
+  "ko": "해파파",
+  "source": "https://www.mariowiki.com/Leuko",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "23",
+  "en_full": "Jawful",
+  "ko": "데미글라",
+  "source": "https://www.mariowiki.com/Jawful",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "24",
+  "en_full": "Enigma",
+  "ko": "배튼",
+  "source": "https://www.mariowiki.com/Enigma",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "25",
+  "en_full": "Blaster",
+  "ko": "펑펑",
+  "source": "https://www.mariowiki.com/Bill_Blaster",
+  "confidence": "official",
+  "note": "mariowiki cites remake (SMRPGNS) for 펑펑"
+ },
+ {
+  "id_hex": "26",
+  "en_full": "Guerrilla",
+  "ko": "동키쿵",
+  "source": "https://www.mariowiki.com/Guerrilla",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "27",
+  "en_full": "Baba Yaga",
+  "ko": "바바야가",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (blue Fautso); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "28",
+  "en_full": "Hobgoblin",
+  "ko": "피에르",
+  "source": "https://www.mariowiki.com/Hobgoblin",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "29",
+  "en_full": "Reacher",
+  "ko": "그레이비",
+  "source": "https://www.mariowiki.com/Reacher",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "2A",
+  "en_full": "Shogun",
+  "ko": "앤트워리어",
+  "source": "https://www.mariowiki.com/Shogun",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "2B",
+  "en_full": "Orb User",
+  "ko": "포포",
+  "source": "https://www.mariowiki.com/Orb_User",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "2C",
+  "en_full": "Heavy Troopa",
+  "ko": "토실펄럭",
+  "source": "https://www.mariowiki.com/Big_Troopa",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Big Troopa"
+ },
+ {
+  "id_hex": "2D",
+  "en_full": "Shadow",
+  "ko": "섀도",
+  "source": "https://www.mariowiki.com/Shadow_%28enemy%29",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "2E",
+  "en_full": "Cluster",
+  "ko": "클러스터",
+  "source": "https://www.mariowiki.com/Cluster",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "2F",
+  "en_full": "Bahamutt",
+  "ko": "드시",
+  "source": "https://www.mariowiki.com/Bahamutt",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "30",
+  "en_full": "Octolot",
+  "ko": "옥토롱",
+  "source": "https://www.mariowiki.com/Octolot",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "31",
+  "en_full": "Frogog",
+  "ko": "리처드",
+  "source": "https://www.mariowiki.com/Frogog",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "32",
+  "en_full": "Clerk",
+  "ko": "계장",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "33",
+  "en_full": "Gunyolk",
+  "ko": "라스던",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "34",
+  "en_full": "Boomer",
+  "ko": "부머",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "35",
+  "en_full": "Remo Con",
+  "ko": "나무봇",
+  "source": "https://www.mariowiki.com/Dollox",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Dollox"
+ },
+ {
+  "id_hex": "36",
+  "en_full": "Snapdragon",
+  "ko": "이브",
+  "source": "https://www.mariowiki.com/Snapdragon",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "37",
+  "en_full": "Stumpet",
+  "ko": "부나",
+  "source": "https://www.mariowiki.com/Stumpet",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "38",
+  "en_full": "Dodo",
+  "ko": "도도",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "39",
+  "en_full": "Jester",
+  "ko": "다우트",
+  "source": "https://www.mariowiki.com/Jester",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "3A",
+  "en_full": "Artichoker",
+  "ko": "허둥초",
+  "source": "https://www.mariowiki.com/Artichoker",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "3B",
+  "en_full": "Arachne",
+  "ko": "노랑튤라",
+  "source": "https://www.mariowiki.com/Arachne",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "3C",
+  "en_full": "Carroboscis",
+  "ko": "캐롤라인",
+  "source": "https://www.mariowiki.com/Carroboscis",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "3D",
+  "en_full": "Hippopo",
+  "ko": "히포포",
+  "source": "https://www.mariowiki.com/Hippopo",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "3E",
+  "en_full": "Mastadoom",
+  "ko": "좀머드",
+  "source": "https://www.mariowiki.com/Mastadoom",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "3F",
+  "en_full": "Corkpedite",
+  "ko": "발쿵쿵이",
+  "source": "https://www.mariowiki.com/Stompillar",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Stompillar (head)"
+ },
+ {
+  "id_hex": "40",
+  "en_full": "Terra Cotta",
+  "ko": "엉금병레드",
+  "source": "https://www.mariowiki.com/Terra_Cotta",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "41",
+  "en_full": "Spikester",
+  "ko": "삐죽병",
+  "source": "https://www.mariowiki.com/Spikester",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "42",
+  "en_full": "Malakoopa",
+  "ko": "펄럭펄럭대시",
+  "source": "https://www.mariowiki.com/Malakoopa",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "43",
+  "en_full": "Pounder",
+  "ko": "딱",
+  "source": "https://www.mariowiki.com/Pounder",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "44",
+  "en_full": "Poundette",
+  "ko": "깡",
+  "source": "https://www.mariowiki.com/Poundette",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "45",
+  "en_full": "Sackit",
+  "ko": "훔치미",
+  "source": "https://www.mariowiki.com/Sackit",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "46",
+  "en_full": "Gu Goomba",
+  "ko": "미라굼바",
+  "source": "https://www.mariowiki.com/Pro_Goomba",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Pro Goomba"
+ },
+ {
+  "id_hex": "47",
+  "en_full": "Chewy",
+  "ko": "뻐끔블루",
+  "source": "https://www.mariowiki.com/Chewy",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "48",
+  "en_full": "Fireball",
+  "ko": "버블루",
+  "source": "https://www.mariowiki.com/Lava_Blubble",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Lava Blubble"
+ },
+ {
+  "id_hex": "49",
+  "en_full": "Mr. Kipper",
+  "ko": "팔딱팔딱",
+  "source": "https://www.mariowiki.com/Mr._Kipper",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "4A",
+  "en_full": "Factory Chief",
+  "ko": "공장장",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "4B",
+  "en_full": "Bandana Blue",
+  "ko": "반다나블루",
+  "source": "https://www.mariowiki.com/Bandana_Blue",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "4C",
+  "en_full": "Manager",
+  "ko": "과장",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "4D",
+  "en_full": "Bluebird",
+  "ko": "블루버드",
+  "source": "https://www.mariowiki.com/Bluebird",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "4F",
+  "en_full": "Alley Rat",
+  "ko": "찍동이",
+  "source": "https://www.mariowiki.com/Alley_Rat",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "50",
+  "en_full": "Chow",
+  "ko": "하이도그드라이",
+  "source": "https://www.mariowiki.com/Chow",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "51",
+  "en_full": "Magmus",
+  "ko": "메그하잉바",
+  "source": "https://www.mariowiki.com/Magmus",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "52",
+  "en_full": "Li'l Boo",
+  "ko": "하이부끄부끄",
+  "source": "https://www.mariowiki.com/High_Boo",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN High Boo"
+ },
+ {
+  "id_hex": "53",
+  "en_full": "Vomer",
+  "ko": "와르르제트",
+  "source": "https://www.mariowiki.com/Vomer",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "54",
+  "en_full": "Glum Reaper",
+  "ko": "요를레이호",
+  "source": "https://www.mariowiki.com/Glum_Reaper",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "55",
+  "en_full": "Pyrosphere",
+  "ko": "보블",
+  "source": "https://www.mariowiki.com/Lava_Babble",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Lava Babble"
+ },
+ {
+  "id_hex": "56",
+  "en_full": "Chomp Chomp",
+  "ko": "왈왈",
+  "source": "https://www.mariowiki.com/Chomp_Chomp",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "57",
+  "en_full": "Hidon",
+  "ko": "머야",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Whuhoh"
+ },
+ {
+  "id_hex": "58",
+  "en_full": "Sling Shy",
+  "ko": "하이헤이호",
+  "source": "https://www.mariowiki.com/Sling_Shy",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "59",
+  "en_full": "Rob-omb",
+  "ko": "하이폭탄",
+  "source": "https://www.mariowiki.com/Rob-omb",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "5A",
+  "en_full": "Shy Guy",
+  "ko": "헤이호",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "inferred",
+  "note": "General Korean name; namu remake boss page uses 헤이호 only generically"
+ },
+ {
+  "id_hex": "5B",
+  "en_full": "Ninja",
+  "ko": "닌자군",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "5C",
+  "en_full": "Stinger",
+  "ko": "8비트레드",
+  "source": "https://www.mariowiki.com/Stinger",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "5D",
+  "en_full": "Goombette",
+  "ko": "땅콩굼바",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Mini Goomba (Whuhoh fight)"
+ },
+ {
+  "id_hex": "5E",
+  "en_full": "Geckit",
+  "ko": "레온레드",
+  "source": "https://www.mariowiki.com/Geckit",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "5F",
+  "en_full": "Jabit",
+  "ko": "찌르군",
+  "source": "https://www.mariowiki.com/Jabit",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "60",
+  "en_full": "Star Cruster",
+  "ko": "스타투구게",
+  "source": "https://www.mariowiki.com/Star_Cruster",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "61",
+  "en_full": "Wizakoopa",
+  "ko": "마귀저드",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "62",
+  "en_full": "Muckle",
+  "ko": "하이해파파",
+  "source": "https://www.mariowiki.com/Muckle",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "63",
+  "en_full": "Forkies",
+  "ko": "오이스터",
+  "source": "https://www.mariowiki.com/Forkie",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "64",
+  "en_full": "Gorgon",
+  "ko": "배튼튼",
+  "source": "https://www.mariowiki.com/Enigmax",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Enigmax"
+ },
+ {
+  "id_hex": "65",
+  "en_full": "Big Bertha",
+  "ko": "펑펑마크2",
+  "source": "https://www.mariowiki.com/Big_Blaster",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Big Blaster"
+ },
+ {
+  "id_hex": "66",
+  "en_full": "Chained Kong",
+  "ko": "배럴쿵",
+  "source": "https://www.mariowiki.com/Chained_Kong",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "67",
+  "en_full": "Fautso",
+  "ko": "지니",
+  "source": "https://www.mariowiki.com/Jinnie",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Jinnie; also on namu boss page"
+ },
+ {
+  "id_hex": "68",
+  "en_full": "Strawhead",
+  "ko": "에드워드",
+  "source": "https://www.mariowiki.com/Straw_Head",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "69",
+  "en_full": "Juju",
+  "ko": "주주",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (blue Reacher); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "6A",
+  "en_full": "Armored Ant",
+  "ko": "개미용사",
+  "source": "https://www.mariowiki.com/Armored_Ant",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "6B",
+  "en_full": "Orbison",
+  "ko": "로로",
+  "source": "https://www.mariowiki.com/Orbison",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "6C",
+  "en_full": "Tub-O-Troopa",
+  "ko": "포동펄럭",
+  "source": "https://www.mariowiki.com/Grand_Troopa",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Grand Troopa"
+ },
+ {
+  "id_hex": "6D",
+  "en_full": "Doppel",
+  "ko": "도플",
+  "source": "https://www.mariowiki.com/Doppel",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "6E",
+  "en_full": "Pulsar",
+  "ko": "루피",
+  "source": "https://www.mariowiki.com/Pulsar",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "70",
+  "en_full": "Octovader",
+  "ko": "옥토베이더",
+  "source": "https://www.mariowiki.com/Octovader",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "71",
+  "en_full": "Ribbite",
+  "ko": "리처드2세",
+  "source": "https://www.mariowiki.com/Ribbite",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "72",
+  "en_full": "Director",
+  "ko": "부장",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "75",
+  "en_full": "Puppox",
+  "ko": "편백나무봇",
+  "source": "https://www.mariowiki.com/Puppox",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "76",
+  "en_full": "Fink Flower",
+  "ko": "플라워립",
+  "source": "https://www.mariowiki.com/Fink_Flower",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "77",
+  "en_full": "Lumbler",
+  "ko": "럼블러",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (blue Stumpet); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "78",
+  "en_full": "Springer",
+  "ko": "헤이파워",
+  "source": "https://www.mariowiki.com/Springer",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "79",
+  "en_full": "Harlequin",
+  "ko": "할리퀸",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (green Jester); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "7A",
+  "en_full": "Kriffid",
+  "ko": "바스락알로에",
+  "source": "https://www.mariowiki.com/Kriffid",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "7B",
+  "en_full": "Spinthra",
+  "ko": "초록튤라",
+  "source": "https://www.mariowiki.com/Spinthra",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "7C",
+  "en_full": "Radish",
+  "ko": "래디시",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (white Carroboscis); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "7D",
+  "en_full": "Crippo",
+  "ko": "크리포",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (brown Hippopo); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "7E",
+  "en_full": "Mastablasta",
+  "ko": "마스타블라스타",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (blue Mastadoom); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "7F",
+  "en_full": "Pile Driver",
+  "ko": "파일드라이버",
+  "source": "https://www.mariowiki.com/List_of_Super_Mario_RPG%3A_Legend_of_the_Seven_Stars_pre-release_and_unused_content",
+  "confidence": "inferred",
+  "note": "Unused enemy (blue Corkpedite); not in remake. Transliteration guess"
+ },
+ {
+  "id_hex": "80",
+  "en_full": "Apprentice",
+  "ko": "수습생",
+  "source": "https://www.mariowiki.com/Apprentice",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "86",
+  "en_full": "Box Boy",
+  "ko": "머꼬",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Pleaseno"
+ },
+ {
+  "id_hex": "87",
+  "en_full": "Shelly",
+  "ko": "정체불명껍데기",
+  "source": "https://www.mariowiki.com/Shelly",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "88",
+  "en_full": "Superspike",
+  "ko": "슈퍼삐죽병",
+  "source": "https://www.mariowiki.com/Spikester",
+  "confidence": "inferred",
+  "note": "Spikey-family variant (JP スーパーイガ?) not found in remake bestiary; built from 삐죽병"
+ },
+ {
+  "id_hex": "89",
+  "en_full": "Dodo",
+  "ko": "도도",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "8A",
+  "en_full": "Oerlikon",
+  "ko": "성게병",
+  "source": "https://www.mariowiki.com/Urspike",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Urspike"
+ },
+ {
+  "id_hex": "8B",
+  "en_full": "Chester",
+  "ko": "머임",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Comeon"
+ },
+ {
+  "id_hex": "8C",
+  "en_full": "Corkpedite (body)",
+  "ko": "몸",
+  "source": "https://www.mariowiki.com/Stompillar",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); Stompillar body"
+ },
+ {
+  "id_hex": "8E",
+  "en_full": "Torte",
+  "ko": "엉금요리사",
+  "source": "https://www.mariowiki.com/Torte",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "8F",
+  "en_full": "Shy Away",
+  "ko": "난다리야",
+  "source": "https://www.mariowiki.com/Beezo",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Beezo; also on namu boss page"
+ },
+ {
+  "id_hex": "90",
+  "en_full": "Jinx Clone",
+  "ko": "가짜재키",
+  "source": "https://www.mariowiki.com/Jinx_Clone",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "91",
+  "en_full": "Machine Made (Shyster)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko); Monster List uses 헤이파(양산형)-style variants, battle shows 양산형"
+ },
+ {
+  "id_hex": "92",
+  "en_full": "Machine Made (Drill Bit)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "93",
+  "en_full": "Formless",
+  "ko": "정체불명",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; battle name before reveal"
+ },
+ {
+  "id_hex": "94",
+  "en_full": "Mokura",
+  "ko": "둥실둥실",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Gassox"
+ },
+ {
+  "id_hex": "95",
+  "en_full": "Fire Crystal",
+  "ko": "파이어크리스털",
+  "source": "https://www.mariowiki.com/Fire_Crystal",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "96",
+  "en_full": "Water Crystal",
+  "ko": "워터크리스털",
+  "source": "https://www.mariowiki.com/Water_Crystal",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "97",
+  "en_full": "Earth Crystal",
+  "ko": "어스크리스털",
+  "source": "https://www.mariowiki.com/Earth_Crystal",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "98",
+  "en_full": "Wind Crystal",
+  "ko": "윈드크리스털",
+  "source": "https://www.mariowiki.com/Wind_Crystal",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "99",
+  "en_full": "Mario Clone",
+  "ko": "가짜마리오",
+  "source": "https://www.mariowiki.com/Mario_Clone",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "9A",
+  "en_full": "Peach Clone",
+  "ko": "가짜피치",
+  "source": "https://www.mariowiki.com/Peach_Clone",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "9B",
+  "en_full": "Bowser Clone",
+  "ko": "가짜쿠파",
+  "source": "https://www.mariowiki.com/Bowser_Clone",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "9C",
+  "en_full": "Geno Clone",
+  "ko": "가짜지노",
+  "source": "https://www.mariowiki.com/Geno_Clone",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "9D",
+  "en_full": "Mallow Clone",
+  "ko": "가짜멜로",
+  "source": "https://www.mariowiki.com/Mallow_Clone",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "9E",
+  "en_full": "Shyster",
+  "ko": "헤이파",
+  "source": "https://www.mariowiki.com/Shymore",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Shymore; also on namu boss page"
+ },
+ {
+  "id_hex": "9F",
+  "en_full": "Kinklink",
+  "ko": "샹들리멍",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Chaindelier"
+ },
+ {
+  "id_hex": "A2",
+  "en_full": "Smelter",
+  "ko": "용광로",
+  "source": "https://www.mariowiki.com/Smelter",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "A3",
+  "en_full": "Machine Made (Mack)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "A4",
+  "en_full": "Machine Made (Bowyer)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "A5",
+  "en_full": "Machine Made (Yaridovich)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "A6",
+  "en_full": "Machine Made (Axem Pink)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "A7",
+  "en_full": "Machine Made (Axem Black)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "A8",
+  "en_full": "Machine Made (Axem Red)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "A9",
+  "en_full": "Machine Made (Axem Yellow)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "AA",
+  "en_full": "Machine Made (Axem Green)",
+  "ko": "양산형",
+  "source": "https://www.mariowiki.com/Machine_Made",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko)"
+ },
+ {
+  "id_hex": "AB",
+  "en_full": "Goomba",
+  "ko": "굼바",
+  "source": "https://www.mariowiki.com/Goomba",
+  "confidence": "inferred",
+  "note": "Duplicate Goomba entry; general Korean name"
+ },
+ {
+  "id_hex": "B0",
+  "en_full": "Starslap",
+  "ko": "물가사리",
+  "source": "https://www.mariowiki.com/Starslap",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "B1",
+  "en_full": "Mukumuku",
+  "ko": "통통",
+  "source": "https://www.mariowiki.com/Thropher",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Thropher"
+ },
+ {
+  "id_hex": "B2",
+  "en_full": "Zeostar",
+  "ko": "땅가사리",
+  "source": "https://www.mariowiki.com/Zeostar",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "B3",
+  "en_full": "Jagger",
+  "ko": "불량엉금",
+  "source": "https://www.mariowiki.com/Jagger",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "B4",
+  "en_full": "Chompweed",
+  "ko": "새끼뻐끔",
+  "source": "https://www.mariowiki.com/Nipper_Plant",
+  "confidence": "inferred",
+  "note": "Remake EN Nipper Plant; Korean cited from other games (Smash/Origami King), not remake"
+ },
+ {
+  "id_hex": "B5",
+  "en_full": "Smithy (Tank Head)",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 킹스미스(전차)"
+ },
+ {
+  "id_hex": "B6",
+  "en_full": "Smithy (Safe Head)",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 킹스미스(관)"
+ },
+ {
+  "id_hex": "B8",
+  "en_full": "Microbomb",
+  "ko": "미니폭탄",
+  "source": "https://www.mariowiki.com/Microbomb",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "BB",
+  "en_full": "Neosquid",
+  "ko": "입",
+  "source": "https://www.mariowiki.com/Exor",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); Exor mouth"
+ },
+ {
+  "id_hex": "BC",
+  "en_full": "Yaridovich (Mirage)",
+  "ko": "스피어도비치",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 스피어도비치(분신)"
+ },
+ {
+  "id_hex": "BD",
+  "en_full": "Helio",
+  "ko": "화산탄",
+  "source": "https://www.mariowiki.com/Helio_%28Super_Mario_RPG%29",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); also on namu boss page"
+ },
+ {
+  "id_hex": "BE",
+  "en_full": "Right Eye",
+  "ko": "오른쪽눈",
+  "source": "https://www.mariowiki.com/Exor",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "BF",
+  "en_full": "Left Eye",
+  "ko": "왼쪽눈",
+  "source": "https://www.mariowiki.com/Exor",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "C0",
+  "en_full": "Knife Guy",
+  "ko": "클라운형",
+  "source": "https://www.mariowiki.com/Knife_Guy",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "C1",
+  "en_full": "Grate Guy",
+  "ko": "클라운동생",
+  "source": "https://www.mariowiki.com/Grate_Guy",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "C2",
+  "en_full": "Bundt",
+  "ko": "스트로베리",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; cake boss"
+ },
+ {
+  "id_hex": "C3",
+  "en_full": "Jinx",
+  "ko": "재키",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "C4",
+  "en_full": "Jinx",
+  "ko": "재키",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "C5",
+  "en_full": "Count Down",
+  "ko": "뫼비우스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "C6",
+  "en_full": "Ding-a-Ling",
+  "ko": "딸랑딸랑",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "C7",
+  "en_full": "Belome",
+  "ko": "낼름이",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "C8",
+  "en_full": "Belome",
+  "ko": "낼름이",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "CA",
+  "en_full": "Smilax",
+  "ko": "꽃봉오리",
+  "source": "https://www.mariowiki.com/Smilax",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); also on namu boss page"
+ },
+ {
+  "id_hex": "CB",
+  "en_full": "Megasmilax",
+  "ko": "퀸플라워",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "CC",
+  "en_full": "Megasmilax",
+  "ko": "퀸플라워",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "CD",
+  "en_full": "Birdo",
+  "ko": "캐서린",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "CE",
+  "en_full": "Eggbert",
+  "ko": "알폭탄",
+  "source": "https://www.mariowiki.com/Eggbert",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "CF",
+  "en_full": "Axem Yellow",
+  "ko": "옐로",
+  "source": "https://www.mariowiki.com/Axem_Yellow",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "D0",
+  "en_full": "Punchinello",
+  "ko": "페펏",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "D1",
+  "en_full": "Tentacles",
+  "ko": "오징어다리",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; mariowiki King Calamari cites battle name"
+ },
+ {
+  "id_hex": "D2",
+  "en_full": "Axem Red",
+  "ko": "레드",
+  "source": "https://www.mariowiki.com/Axem_Red",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "D3",
+  "en_full": "Axem Green",
+  "ko": "그린",
+  "source": "https://www.mariowiki.com/Axem_Green",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "D4",
+  "en_full": "King Bomb",
+  "ko": "왕폭탄",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "D5",
+  "en_full": "Mezzo Bomb",
+  "ko": "빅폭탄",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "D7",
+  "en_full": "Raspberry",
+  "ko": "라즈베리",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "D8",
+  "en_full": "King Calamari",
+  "ko": "문어단지징오징오",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "D9",
+  "en_full": "Tentacles",
+  "ko": "오징어다리",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "DA",
+  "en_full": "Jinx",
+  "ko": "재키",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "DB",
+  "en_full": "Zombone",
+  "ko": "드래곤좀비",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "DC",
+  "en_full": "Czar Dragon",
+  "ko": "카이저드래곤",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "DD",
+  "en_full": "Cloaker",
+  "ko": "돌트링크",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "DE",
+  "en_full": "Domino",
+  "ko": "메텔링크",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "DF",
+  "en_full": "Mad Adder",
+  "ko": "멜크링크",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "E0",
+  "en_full": "Mack",
+  "ko": "클레이모튼",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "E1",
+  "en_full": "Bodyguard",
+  "ko": "친위대",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "E2",
+  "en_full": "Yaridovich",
+  "ko": "스피어도비치",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "E3",
+  "en_full": "Drill Bit",
+  "ko": "찌륵이",
+  "source": "https://www.mariowiki.com/Drill_Bit",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "E4",
+  "en_full": "Axem Pink",
+  "ko": "핑크",
+  "source": "https://www.mariowiki.com/Axem_Pink",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "E5",
+  "en_full": "Axem Black",
+  "ko": "블랙",
+  "source": "https://www.mariowiki.com/Axem_Black",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "E6",
+  "en_full": "Bowyer",
+  "ko": "보이어",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "E7",
+  "en_full": "Aero",
+  "ko": "애론",
+  "source": "https://www.mariowiki.com/Aero",
+  "confidence": "inferred",
+  "note": "mariowiki gives 애론 without a citation"
+ },
+ {
+  "id_hex": "E9",
+  "en_full": "Exor",
+  "ko": "칼리버",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "EA",
+  "en_full": "Smithy",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "EB",
+  "en_full": "Shyper",
+  "ko": "신생헤이파",
+  "source": "https://www.mariowiki.com/Shyper",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko)"
+ },
+ {
+  "id_hex": "EC",
+  "en_full": "Smithy (body)",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 킹스미스(몸통)"
+ },
+ {
+  "id_hex": "ED",
+  "en_full": "Smithy (head)",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 킹스미스(진짜 모습)"
+ },
+ {
+  "id_hex": "EE",
+  "en_full": "Smithy (Mage Head)",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 킹스미스(마법사)"
+ },
+ {
+  "id_hex": "EF",
+  "en_full": "Smithy (Chest Head)",
+  "ko": "킹스미스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; Monster List variant 킹스미스(보물 상자)"
+ },
+ {
+  "id_hex": "F0",
+  "en_full": "Croco",
+  "ko": "크로커",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "F1",
+  "en_full": "Croco",
+  "ko": "크로커",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "F3",
+  "en_full": "Earth Link",
+  "ko": "어스링크",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation; remake EN Bad Adder"
+ },
+ {
+  "id_hex": "F4",
+  "en_full": "Bowser",
+  "ko": "쿠파",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "F5",
+  "en_full": "The Blade",
+  "ko": "액스포스",
+  "source": "https://www.mariowiki.com/The_Blade",
+  "confidence": "official",
+  "note": "mariowiki cites remake in-battle name (ko); also on namu boss page"
+ },
+ {
+  "id_hex": "F6",
+  "en_full": "Booster",
+  "ko": "부키",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "F7",
+  "en_full": "Booster",
+  "ko": "부키",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "F8",
+  "en_full": "Snifit",
+  "ko": "부카",
+  "source": "https://www.mariowiki.com/Snifster",
+  "confidence": "official",
+  "note": "mariowiki cites remake Monster List (ko); remake EN Snifster (Booster's Snifits)"
+ },
+ {
+  "id_hex": "F9",
+  "en_full": "Johnny",
+  "ko": "조나단 존스",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "FB",
+  "en_full": "Valentina",
+  "ko": "마르가리타",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "FC",
+  "en_full": "Cloaker",
+  "ko": "돌트링크",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "FD",
+  "en_full": "Domino",
+  "ko": "메텔링크",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ },
+ {
+  "id_hex": "FE",
+  "en_full": "Candle",
+  "ko": "촛불",
+  "source": "https://www.mariowiki.com/Candle",
+  "confidence": "inferred",
+  "note": "mariowiki 촛불 cites a non-remake source; namu remake page uses 촛불 descriptively for the cake candles"
+ },
+ {
+  "id_hex": "FF",
+  "en_full": "Culex",
+  "ko": "크리스터러",
+  "source": "https://namu.wiki/w/%EC%8A%88%ED%8D%BC%20%EB%A7%88%EB%A6%AC%EC%98%A4%20RPG/%EB%B3%B4%EC%8A%A4",
+  "confidence": "official",
+  "note": "namu boss page; states names follow Switch remake Korean translation"
+ }
+]

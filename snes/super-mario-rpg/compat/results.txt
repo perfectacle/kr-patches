@@ -1,0 +1,51 @@
+new bsnes jp exit=0 OK 9000
+cont bsnes jp exit=0 OK 4400
+new bsnes v11 exit=0 OK 9000
+cont bsnes v11 exit=0 OK 4400
+new bsnes v12 exit=0 OK 9000
+cont bsnes v12 exit=0 OK 4400
+new bsnes_hd_beta jp exit=0 OK 9000
+cont bsnes_hd_beta jp exit=0 OK 4400
+new bsnes_hd_beta v11 exit=0 OK 9000
+cont bsnes_hd_beta v11 exit=0 OK 4400
+new bsnes_hd_beta v12 exit=0 OK 9000
+cont bsnes_hd_beta v12 exit=0 OK 4400
+new snes9x jp exit=0 OK 9000
+cont snes9x jp exit=0 OK 4400
+new snes9x v11 exit=0 OK 9000
+cont snes9x v11 exit=0 OK 4400
+new snes9x v12 exit=0 OK 9000
+cont snes9x v12 exit=0 OK 4400
+new snes9x2010 jp exit=0 OK 9000
+cont snes9x2010 jp exit=0 OK 4400
+new snes9x2010 v11 exit=0 OK 9000
+cont snes9x2010 v11 exit=0 OK 4400
+new snes9x2010 v12 exit=0 OK 9000
+cont snes9x2010 v12 exit=0 OK 4400
+new mednafen_supafaust jp exit=0 OK 9000
+cont mednafen_supafaust jp exit=0 OK 4400
+new mednafen_supafaust v11 exit=0 OK 9000
+cont mednafen_supafaust v11 exit=0 OK 4400
+new mednafen_supafaust v12 exit=0 OK 9000
+cont mednafen_supafaust v12 exit=0 OK 4400
+new mesen-s jp exit=139 
+cont mesen-s jp exit=139 
+new mesen-s v11 exit=139 
+cont mesen-s v11 exit=139 
+new mesen-s v12 exit=139 
+cont mesen-s v12 exit=139 
+cont_long snes9x jp exit=0 OK 9600
+cont_long snes9x v11 exit=0 OK 9600
+cont_long snes9x v12 exit=0 OK 9600
+cont_long snes9x2010 jp exit=0 OK 9600
+cont_long snes9x2010 v11 exit=0 OK 9600
+cont_long snes9x2010 v12 exit=0 OK 9600
+cont_long mednafen_supafaust jp exit=0 OK 9600
+cont_long mednafen_supafaust v11 exit=0 OK 9600
+cont_long mednafen_supafaust v12 exit=0 OK 9600
+new mesen2 jp exit=0 shots=14
+new mesen2 v11 exit=0 shots=14
+new mesen2 v12 exit=0 shots=14
+cont mesen2 jp exit=0 shots=72
+cont mesen2 v11 exit=0 shots=72
+cont mesen2 v12 exit=0 shots=72

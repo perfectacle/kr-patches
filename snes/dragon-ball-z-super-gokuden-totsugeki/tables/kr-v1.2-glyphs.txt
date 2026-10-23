@@ -1,0 +1,7 @@
+# Narrow glyph slots that tools/pwglyph1.py redraws, loaded over kr-v1.0.txt
+# (whose names follow the v1.0 pixels) by tools/kr1.py table().
+12C=다
+142=동
+14C=레
+14D=렉
+1C8=저

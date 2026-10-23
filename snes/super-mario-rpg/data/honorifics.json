@@ -1,0 +1,6 @@
+{
+  "_comment": "Person names followed by the honorific 님/씨. Korean spelling puts a space before them after a name (마리오 님, 마리오 씨); titles such as 왕자님/선생님 keep 님 attached and are not listed. A line keeps the attached form when the space would push it past max_cells.",
+  "max_cells": 22,
+  "님": ["마리오", "부키", "카지오", "쿠파", "발렌티나", "지노", "크로코", "발렌타인", "재키", "유민파"],
+  "씨": ["마리오", "지노", "마로", "가로", "쿠파"]
+}
