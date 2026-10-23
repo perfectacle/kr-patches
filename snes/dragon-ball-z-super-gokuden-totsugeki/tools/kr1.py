@@ -6,6 +6,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 from dialogue1 import load_table  # noqa: E402
 
 NARROW_HANGUL = [(0x100, 0x167), (0x180, 0x1E7), (0x200, 0x262)]
+# Syllables that exist only as 8 px kana-slot glyphs (name entry, password). They look
+# half-width between 16 px glyphs, so outside narrow mode they count as missing and
+# text_patch1 draws 16 px glyphs for them.
+WIDE_ONLY = "플딩렉"
 
 
 def is_narrow(c):
@@ -24,6 +28,10 @@ class Encoder:
             prev = self.enc.get(v)
             if prev is None or (is_narrow(prev) and not narrow and c >= 0x500) or (narrow and is_narrow(c) and not is_narrow(prev)):
                 self.enc[v] = c
+        if not narrow:
+            for ch in WIDE_ONLY:
+                if is_narrow(self.enc.get(ch, 0)):
+                    del self.enc[ch]
         self.maxlen = max(len(k) for k in self.enc)
 
     def tokens(self, text):

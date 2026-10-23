@@ -31,7 +31,9 @@ import textsets  # noqa: E402
 GLYPH_FONT = os.path.join(os.path.dirname(__file__), "fonts", "Galmuri11.ttf")
 FONT_AREAS = [range(0x18000, 0x20000), range(0x1F8000, 0x200000)]
 
-LATE_GLYPHS = "펴"  # 0x248 draws 떠, so 펴 needs a 16 px glyph of its own
+# Drawn last, in this order, so earlier glyph codes stay put. 0x248 draws 떠, so 펴
+# needs a 16 px glyph of its own; 플, 딩 and 렉 see kr1.WIDE_ONLY.
+LATE_GLYPHS = "펴플딩렉"
 
 # Battle shouts in bank 8E outside the dialogue table; their pointers are
 # immediate operands (LDA #addr) in bank 81. Order matches Japanese $8E:C8F0-.
@@ -255,7 +257,8 @@ def main():
         sys.exit(f"need {len(needed)} new glyphs, only {len(free)} free slots")
     # Glyphs first needed after a release are placed after the others, so the codes
     # of every glyph a released ROM already has stay the same.
-    for ch, c in zip(sorted(needed, key=lambda ch: (ch in LATE_GLYPHS, ch)), free):
+    late = lambda ch: LATE_GLYPHS.index(ch) if ch in LATE_GLYPHS else -1  # noqa: E731
+    for ch, c in zip(sorted(needed, key=lambda ch: (late(ch), ch)), free):
         write_glyph(rom, c, draw_glyph(ch))
         print(f"new glyph {ch} -> {c:03X} (was {table.get(c)})")
         old = table.get(c)

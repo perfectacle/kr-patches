@@ -37,14 +37,15 @@ the macOS system font assets (`TITLE_FONT`); on other systems add
 zsh tools/build.sh
 ```
 
-Output: `super-gokuden-kr-v1.2.smc` (CRC32 `81DAD733`) and
+Output: `super-gokuden-kr-v1.2.smc` (CRC32 `A939C4F8`) and
 `release/v1.2/*.ips` (plain and 512-byte copier header), identical to the
 released patches. `tables/kr-v1.2.txt` (the v1.2 code table) is written by the
 build. Set `PYTHON` and `KRPATCH` to use another environment.
 
 Steps: `krpatch ips apply` (v1.0) → `tools/title.py` → `tools/text_patch1.py`
-(dialogue, other text sets, menu fixes) → `tools/pwglyph1.py` (password glyphs,
-checked against the table) → `tools/endpw1.py` (ending password) →
+(dialogue, other text sets, menu fixes) → `tools/statusmenu1.py` (learned and
+cleared marks in the status screen lists) → `tools/pwglyph1.py` (password
+glyphs, checked against the table) → `tools/endpw1.py` (ending password) →
 `krpatch snes checksum --fix` → `krpatch ips make --headered`.
 
 ## Layout
@@ -53,10 +54,10 @@ checked against the table) → `tools/endpw1.py` (ending password) →
 | --- | --- |
 | `tools/` | build and analysis scripts (usage in each file's first lines) |
 | `tables/v1.1/` | v1.1 text (id, window info, text) |
-| `tables/ui-fixes.tsv` | menu strings outside the pointer tables |
+| `tables/ui-fixes.tsv` | menu strings outside the pointer tables (status screen, results screen, ending credits included) |
 | `tables/*-v1.0.tsv` | Japanese text next to the v1.0 translation |
 | `tables/jp-verified.txt`, `kr-v1.0.txt` | Japanese / v1.0 code tables |
-| `tables/kr-v1.2-glyphs.txt` | names of the five glyphs v1.2 redraws (over `kr-v1.0.txt`) |
+| `tables/kr-v1.2-glyphs.txt` | names of the five 8px password glyphs v1.2 redraws (over `kr-v1.0.txt`) |
 | `tables/password.tsv` | the 163 ending-password characters (code, kana, v1.1 and v1.2 screens) |
 | `v1.0/` | the v1.0 patch the build starts from |
 | `lua/` | Mesen 2 scripts for this game |

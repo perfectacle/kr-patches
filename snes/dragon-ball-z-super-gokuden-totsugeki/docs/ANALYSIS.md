@@ -13,7 +13,7 @@ Kakusei-hen page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball
    CRC32 D531289B / MD5 8BD89634D1B2205B1E7EF016485C0076
  - v1.0 ROM: Japanese + v1.0/v1.0.ips = CRC32 52FEF8C3
  - v1.1 ROM: CRC32 7405D969 (output of tools/build.sh in the v1.1 tool bundle)
- - v1.2 ROM: output of tools/build.sh = CRC32 81DAD733
+ - v1.2 ROM: output of tools/build.sh = CRC32 A939C4F8
  - Address notation below
    · $XX:YYYY = SNES address (bank:address)
    · file 0xNNNNN = offset in the headerless ROM file
@@ -228,7 +228,7 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
      block code         location    file       v1.1
      0     C00-C7F      $81:EF00    0x0EF00    used
      1     C80-CFF      $84:EE00    0x26E00    used
-     2     D00-D7F      $86:E000    0x36000    used (v1.1 up to D57, v1.2 up to D60)
+     2     D00-D7F      $86:E000    0x36000    used (v1.1 up to D57, v1.2 up to D63)
      3     D80-DFF      $86:F000    0x37000    empty
      4     E00-E7F      $A6:E600    0x136600   empty
      5     E80-EFF      $AE:EA00    0x176A00   empty
@@ -239,7 +239,10 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
  - 213 glyphs newly drawn by v1.1
    · 37 slots that fell out of use (0x587, 0x6F5 … 0xBE3. "new glyph" in the build log)
    · 176 in the new blocks (0xC00-0xD57)
-   v1.2 drew one more, 「펴」, at 0xD60 (section 11).
+   v1.2 drew 「펴」 (0xD60) and 「플」, 「딩」 and 「렉」 (0xD61-0xD63) (section 11).
+   「플」, 「딩」 and 「렉」 had no 16px glyph and were written with the 8px glyphs in kana slots (0x24B, 0x148, 0x14D),
+   which looked half-width between 16px glyphs (WIDE_ONLY in tools/text_patch1.py).
+   The 8px glyphs stay in use for name entry and the ending password.
    New glyphs were drawn with Galmuri11 at 12px, with the shadow added by the rule above.
  - Example: 「쫓」 = 0xCE5
      0xCE5 - 0xC00 = 0xE5 → block 1 ($84:EE00), 0x65 within the block
@@ -289,6 +292,24 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
  - Ending credits: a fixed slot in bank B7 per line (cast from file 0x1BDE83, staff from 0x1BE5F1)
    The slot sizes are set by the Japanese line lengths, so a line cannot be longer.
    Cast column centres: 3 columns 48/128/208px, 2 columns 88/168px (tools/credits1.py)
+ - Status screen (story status) and the screens under it [verified]
+   v1.0 wrote 「기술」, 「습득」, 「완료」 and 「클리」 with glyphs that squeeze two syllables into one 16px cell
+   (0xB97, 0xBA0, 0xBA1, 0xBA2). v1.2 no longer uses them.
+   · Right-hand menu $80:C947: window size table $80:EEEB entry 9 = 6 cells (48px). Four 16px glyphs take 52px,
+     so all three lines use small glyphs with 0x8000 set (the same 16px glyph, 12px apart; the Japanese ROM used 12px kanji).
+     The selection highlight (red) is $80:C833 changing the palette of 6 tilemap cells.
+   · Technique-menu category window $80:B599 (entry 6, 48px): same method. The string may run to 0x35C7, the end of the Japanese area.
+     $80:D803 LDA #$B5A3, which reads the same string, still had the Japanese address after v1.0 moved it; v1.2 sets it to $B599.
+   · Categories in the technique list rows, $80:F317/F321/F32D/F339 (odd addresses): 4 codes per slot, written as four 16px glyphs.
+   · Marks in the technique list and the event list: $80:40BC and $80:3D83 write one code to the row buffer ($0A00,Y),
+     0xBA0/0xBA1 when learned/cleared, otherwise the blank glyph 0xAD5. v1.2 turns both into a JSL to routines at
+     $B7:FB00 and $B7:FB32 that write two 16px glyphs (or two blanks) and the space after them (tools/statusmenu1.py).
+     So that the mark reads with its number rather than the next word, the space after the number (9px) becomes {sp4}
+     and the space after the mark is 9px in the technique list and 12px in the event list.
+     Both lists are 224px (28 cells) wide; the longest rows are 224px (techniques) and 223px (events).
+   · Some screens that join strings in WRAM read the next string right after the previous one, so code counts must not change:
+     the achievement label $80:BAB2 (19 codes) and the first label of the status screen bottom line $80:C9C5 (5 codes; v1.0 code
+     reads the second label from $80:F56C+X). The bottom line fills its 224px window, so the second label became 「총 시간」.
 ```
 
 ## 7. Clear table event list problem (fixed in v1.1)
@@ -369,7 +390,8 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
      $81:EF00-$81:FEFF   glyph block 0
      $84:EE00-$84:FDFF   glyph block 1
      $86:E000-$86:EBFF   glyph block 2 (only 3KB used)
-     $86:EC00-$86:EC1F, $86:ED00-$86:ED1F   v1.2's 「펴」 (0xD60, upper and lower halves)
+     $86:EC00-$86:EC7F, $86:ED00-$86:ED7F   v1.2's 「펴」, 「플」, 「딩」 and 「렉」 (0xD60-0xD63, upper and lower halves)
+     $B7:FB00-$B7:FB6B   v1.2's technique/event list mark routines (section 6)
    Dialogue and text were refilled only within each bank's original string area.
  - Banks whose bytes changed between the v1.0 and v1.1 ROMs [verified]
      80 menu strings, checksum     81 save dialogue, battle shout pointers, glyph block 0
@@ -431,7 +453,7 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
    (table() in tools/kr1.py). The comparison dumps (*-v1.0.tsv) have no lines using these nine codes, so they do not change.
    v1.1 used 0x248 in dialogue 0x5D5 「펴‥평범한」 and 0x101B 「살펴봐」, where it showed as 「떠」;
    v1.2 draws 「펴」 as a new 16px glyph (0xD60) (both lines stay within the window width).
-   「디렉터」 (director) in the ending credits used 0x14D and showed as 「디러터」 in v1.1; after the redraw it shows as 「디렉터」.
+   「디렉터」 (director) in the ending credits used 0x14D and showed as 「디러터」 in v1.1. v1.2 uses a 16px 「렉」 (0xD63) (section 4).
  - Build checks (tools/pwglyph1.py; the build stops if one fails)
    · the five slots match the prepared drawings, and the pixels of the other 158 password characters are unchanged
    · all 163 password characters have distinct shapes
@@ -463,13 +485,20 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
  - $80:9CFA and $80:9DA7 in the header comment of tools/lz.py are Kakusei-hen addresses (section 5). The file is left as released.
  - WRAM $4D is also used briefly by the graphics loading routines. Watching reads of the window info table records dialogue more accurately.
  - Five of the new glyph blocks, 3-7 (320 glyphs), are entirely empty. They can be used as is for more glyphs.
+ - 16px glyphs that differ by a single pixel [verified]: syllables with a horizontal vowel (ㅗ, ㅜ, ㅡ) and a final consonant
+   fit a 3-row initial, the vertical stroke, the bar, a gap and the final (ㄹ takes 5 rows) into 11 rows (rows 3-13),
+   so the vertical stroke of ㅗ and ㅜ is 1px and the initials ㄷ and ㅁ differ only by 1px on the right.
+   46 pairs of glyphs used in the text differ by one pixel (돌/들/둘/물/몰/틀, 올/울/을, 송/승, 중/증, 볼/불/블 and others).
+   Redrawing them with Galmuri11 at 12px gives almost the same shapes, and 41 pairs still differ by 1px.
+   Raising the initial by 1px and lengthening the vertical stroke to 2px separates 43 pairs, but those 200 glyphs
+   become 1px taller than their neighbours, so v1.2 keeps the v1.0 glyphs.
 ```
 
 ## 13. Tools used
 
 ```text
  - Python 3.9.6, Pillow 11.3.0, numpy 2.0.2 (macOS)
-   Running tools/build.sh with only this bundle and the Japanese ROM was confirmed to give CRC32 81DAD733.
+   Running tools/build.sh with only this bundle and the Japanese ROM was confirmed to give CRC32 A939C4F8.
  - Mesen 2.1.1 (Lua scripts, --testrunner)
  - libretro cores: bsnes, bsnes-hd beta, snes9x, snes9x2010, Beetle Supafaust, Mesen-S (compat/)
  - New glyph drawing: Galmuri11 2.404 (tools/fonts/)

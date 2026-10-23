@@ -10,6 +10,7 @@ $KRPATCH ips apply super-gokuden-jp.smc v1.0/v1.0.ips work/build-v1.0.smc
 $PY tools/title.py work/build-v1.0.smc work/build-title.smc --no-balls
 $PY tools/text_patch1.py super-gokuden-jp.smc work/build-title.smc super-gokuden-kr-v1.2.smc tables/kr-v1.2.txt \
     tables/v1.1/*.tsv tables/ui-fixes.tsv
+$PY tools/statusmenu1.py super-gokuden-kr-v1.2.smc tables/kr-v1.2.txt
 $PY tools/pwglyph1.py super-gokuden-kr-v1.2.smc tables/kr-v1.2.txt
 $PY tools/endpw1.py super-gokuden-kr-v1.2.smc tables/kr-v1.2.txt
 $KRPATCH snes checksum --fix --mapper lorom super-gokuden-kr-v1.2.smc
