@@ -15,7 +15,7 @@ perfectacle 의 한글 패치 소스입니다. 게임 폴더마다 그 게임에
 | 게임 | 패치 | 원본 롬(헤더 제목, CRC32) |
 | --- | --- | --- |
 | [슈퍼 마리오 RPG](snes/super-mario-rpg/README.ko.md) | v1.2 | `SUPER MARIO RPG`, `5527071E` |
-| [제절초(오토기리소우)](snes/otogirisou/README.ko.md) | v1.2 | `OTOGIRISOU`, `8E4BEFD0` |
+| [제절초](snes/otogirisou/README.ko.md) | v1.2 | `OTOGIRISOU`, `8E4BEFD0` |
 | [드래곤볼 Z 초오공전: 돌격편](snes/dragon-ball-z-super-gokuden-totsugeki/README.ko.md) | v1.2 | `SFX DBZ TOTSUGEKIHEN`, `D531289B` |
 | [드래곤볼 Z 초오공전: 각성편](snes/dragon-ball-z-super-gokuden-kakusei/README.ko.md) | v1.3 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
 
