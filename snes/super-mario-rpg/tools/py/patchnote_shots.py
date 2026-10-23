@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 from PIL import Image
+from kr_patch.cli import lua_dir
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -167,7 +168,7 @@ def capture(scene, which):
         out.mkdir(parents=True, exist_ok=True)
         subprocess.run([str(ROOT / 'tools/Mesen.app/Contents/MacOS/Mesen'), '--testrunner', str(rom),
                         str(ROOT / 'test/warp_seq.lua')], cwd=ROOT,
-                       env={**os.environ, **env, 'LIBDIR': str(ROOT / 'test'), 'STATE': str(ROOT / f'test/states/{state}.mss'),
+                       env={**os.environ, **env, 'LIBDIR': str(lua_dir()), 'STATE': str(ROOT / f'test/states/{state}.mss'),
                             'SEQ': inputs, 'EVERY': str(every), 'SHOT_DIR': str(out)},
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
         for f in out.glob('w*.png'):

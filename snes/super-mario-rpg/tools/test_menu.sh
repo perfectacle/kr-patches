@@ -26,7 +26,7 @@ EQUIP_SEQ="x:3,wait:60,down:3,wait:10,down:3,wait:10,down:3,wait:10,a:3,wait:60,
 run_case() {   # name seq verify-ids poke
   local name=$1 seq=$2 ids=$3 poke=$4
   POKE="003112=FF;$poke" tools/run_seq.sh $ROM ${STATE_OVERRIDE:-$STATE} $OUT/$name "$seq" 1000 30 >/dev/null 2>&1
-  if .venv/bin/python -I tools/py/verify_menu.py $OUT/$name ${=ids} > $OUT/$name/verify.txt; then
+  if ${PYTHON:-${PWD:h:h}/.venv/bin/python} -I tools/py/verify_menu.py $OUT/$name ${=ids} > $OUT/$name/verify.txt; then
     echo "PASS $name ($(head -1 $OUT/$name/verify.txt))"
   else
     echo "FAIL $name"; sed 's/^/    /' $OUT/$name/verify.txt; fail=1

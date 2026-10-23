@@ -2,10 +2,11 @@
 # Derived save states for scenes that are hard to reach by playing.
 # Each line: base state, pokes written once, output (test/states/derived/).
 cd "$(dirname $0)/.."
+LUA=$(${KRPATCH:-${PWD:h:h}/.venv/bin/krpatch} snes lua)
 mkdir -p test/states/derived
 derive() {   # base out pokes
-  LIBDIR=$PWD/test STATE=$PWD/test/states/$1.mss POKE="$3" OUT=$2.mss SHOT_DIR=$PWD/test/states/derived \
-    tools/Mesen.app/Contents/MacOS/Mesen --testrunner build/test.sfc test/poke_state.lua >/dev/null 2>&1
+  LIBDIR=$LUA STATE=$PWD/test/states/$1.mss POKE="$3" OUT=$2.mss SHOT_DIR=$PWD/test/states/derived \
+    tools/Mesen.app/Contents/MacOS/Mesen --testrunner build/test.sfc $LUA/poke_state.lua >/dev/null 2>&1
   [[ -f test/states/derived/$2.mss ]] && echo "test/states/derived/$2.mss" || echo "FAILED $2"
 }
 # Field before a battle with Mario's and Mallow's EXP (record +$0A, u16) far past
