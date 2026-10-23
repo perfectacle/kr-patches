@@ -2,7 +2,7 @@
 
 usage: title.py in.sfc out.sfc [--png preview.png]
 
-Title BG3 uses two LZSS assets (see lz.py), each referenced from a 5-byte table
+Title BG3 uses two LZSS assets (see kr_patch.lzss), each referenced from a 5-byte table
 entry (addr lo, addr hi, bank, size lo, size hi):
   - 2bpp tiles 0x000-0x134 at $89:9B9D, entry at file 0xD720
   - 32x32 tilemap at $89:C4F3, entry at file 0xD95F
@@ -15,8 +15,8 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
-sys.path.insert(0, os.path.dirname(__file__))
-from lz import compress, decompress, planar_to_snes, snes_to_planar  # noqa: E402
+from kr_patch.lzss import compress, decompress
+from kr_patch.snes.tiles import planar_to_snes, snes_to_planar
 
 FONT_DIR = "/System/Library/AssetsV2/com_apple_MobileAsset_Font8"
 GALMURI = os.path.join(os.path.dirname(__file__), "fonts")

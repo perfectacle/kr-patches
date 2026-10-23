@@ -1,8 +1,12 @@
 #!/bin/zsh
 # usage: run_all.sh  -> out/<scenario>-<emulator>-<rom>/ and results.txt
-# Every emulator gets the same script: libretro cores through lr.py, Mesen 2
-# through lua/compat.lua. Cores and Mesen paths are this machine's.
+# Every emulator gets the same script: libretro cores through `krpatch snes run`,
+# Mesen 2 through the toolkit's script.lua; wram.log follows the scene word
+# $7E029C. Cores and Mesen paths are this machine's.
 cd "$(dirname $0)"
+KRPATCH=${KRPATCH:-${PWD:h:h:h}/.venv/bin/krpatch}
+LUA=$($KRPATCH snes lua)
+WATCH=(--watch 7E029C:2 --watch-fmt 03x)
 MESEN=${MESEN:-/Users/gwonsungyang/kr-patch/smrpg/tools/Mesen.app/Contents/MacOS/Mesen}
 MESEN_SAVES=${MESEN_SAVES:-$HOME/Library/Application Support/Mesen2/Saves}
 export LRVARS="supafaust_thread_affinity_ppu=0x0,supafaust_thread_affinity_emu=0x0"
@@ -14,10 +18,10 @@ run() {  # emulator scenario rom
   if [[ $1 == mesen2 ]]; then
     [[ $2 == cont ]] && cp roms/save.srm "$MESEN_SAVES/${f:t:r}.srm"
     [[ $2 != cont ]] && rm -f "$MESEN_SAVES/${f:t:r}.srm"
-    LUA_DIR=$PWD/../lua SCRIPT=$PWD/s_$2.txt SHOT_DIR=$PWD/$d $MESEN --testrunner $PWD/$f $PWD/../lua/compat.lua > $d.log 2>&1
+    LIBDIR=$LUA SCRIPT=$PWD/s_$2.txt SHOT_DIR=$PWD/$d WATCH_WRAM=7E029C:2 WATCH_FMT=%03x $MESEN --testrunner $PWD/$f $LUA/script.lua > $d.log 2>&1
     echo "exit=$? $(tail -1 $d/wram.log)"
-  elif [[ $2 == cont ]]; then python3 lr.py cores/$1_libretro.dylib $f $d s_$2.txt roms/save.srm > $d.log 2>&1; echo "exit=$? $(tail -1 $d.log)"
-  else python3 lr.py cores/$1_libretro.dylib $f $d s_$2.txt > $d.log 2>&1; echo "exit=$? $(tail -1 $d.log)"; fi
+  elif [[ $2 == cont ]]; then $KRPATCH snes run cores/$1_libretro.dylib $f $d s_$2.txt roms/save.srm $WATCH > $d.log 2>&1; echo "exit=$? $(tail -1 $d.log)"
+  else $KRPATCH snes run cores/$1_libretro.dylib $f $d s_$2.txt $WATCH > $d.log 2>&1; echo "exit=$? $(tail -1 $d.log)"; fi
 }
 : > results.txt
 for emu in mesen2 bsnes bsnes_hd_beta snes9x snes9x2010 mednafen_supafaust mesen-s; do

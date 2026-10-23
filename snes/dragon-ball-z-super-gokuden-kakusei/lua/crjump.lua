@@ -1,4 +1,5 @@
-package.path = "/path/to/gokuden2-kr-v1.3-tools/lua/?.lua;" .. package.path
+-- LIBDIR: the toolkit's Lua directory (`krpatch snes lua`)
+package.path = os.getenv("LIBDIR") .. "/?.lua;" .. package.path
 local L = require("lib")
 local n=0 local done=false
 emu.addEventCallback(function()
