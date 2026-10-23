@@ -3,8 +3,8 @@
 -- ("frame id"). SHOTS=1 also saves a screenshot every 3 frames for tools/pages1.py.
 -- env: TARGET, MAXF (default 8000), PERIOD (default 90), SHOTS, SHOT_DIR
 -- The ROM must have the debug menu enabled (file 0x61: 80 04 -> EA EA).
-local dir = debug.getinfo(1, "S").source:match("^@(.*/)") or "./"
-package.path = dir .. "?.lua;" .. package.path
+-- LIBDIR: the toolkit's Lua directory (`krpatch snes lua`)
+package.path = os.getenv("LIBDIR") .. "/?.lua;" .. package.path
 local L = require("lib")
 local m = emu.memType.snesMemory
 local n = 0

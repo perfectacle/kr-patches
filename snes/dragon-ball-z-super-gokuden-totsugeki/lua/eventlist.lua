@@ -2,8 +2,8 @@
 -- Debug scenario TARGET: A mash until a dialogue waits for input, then START -> story status
 -- -> clear table -> B (event list) -> scroll to the bottom -> B B -> A mash; logs dialogue ids
 -- and the WRAM words the hidden 205th event row reads ($0686 for v1.0).
-local dir = debug.getinfo(1, "S").source:match("^@(.*/)") or "./"
-package.path = dir .. "?.lua;" .. package.path
+-- LIBDIR: the toolkit's Lua directory (`krpatch snes lua`)
+package.path = os.getenv("LIBDIR") .. "/?.lua;" .. package.path
 local L = require("lib")
 local m = emu.memType.snesMemory
 local n, t0, waiting = 0, nil, 0

@@ -4,8 +4,8 @@
 --   chk     at $B7:984A: A = right edge of this glyph, $0208 = its left edge, $020A = width
 --   WRAP    at $B7:9851: the glyph did not fit and moved to the next line
 -- env: MAXF (default 5400), SHOT_DIR. Use with tools/wintest1.py output.
-local dir = debug.getinfo(1, "S").source:match("^@(.*/)") or "./"
-package.path = dir .. "?.lua;" .. package.path
+-- LIBDIR: the toolkit's Lua directory (`krpatch snes lua`)
+package.path = os.getenv("LIBDIR") .. "/?.lua;" .. package.path
 local L = require("lib")
 local n = 0
 local out = assert(io.open(L.out .. "/log.txt", "w"))

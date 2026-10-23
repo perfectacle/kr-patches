@@ -1,8 +1,8 @@
 -- Load a savestate taken during the ending (ST), optionally write the player name (NAME = 5 hex codes,
 -- comma separated) to $7E:0B01, run MAXF frames (default 11500) to the password page and save
 -- the screen, $7E:0A00 (password) and $7E:0B01 (names).
-local dir = debug.getinfo(1, "S").source:match("^@(.*/)") or "./"
-package.path = dir .. "?.lua;" .. package.path
+-- LIBDIR: the toolkit's Lua directory (`krpatch snes lua`)
+package.path = os.getenv("LIBDIR") .. "/?.lua;" .. package.path
 local L = require("lib")
 local n = 0
 local name = {}
