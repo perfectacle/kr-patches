@@ -1,5 +1,7 @@
 # Dragon Ball Z: Super Gokuden – Kakusei-hen (SFC) Korean patch v1.3
 
+English | [한국어](README.ko.md)
+
 Source of the Korean translation patch v1.3 for the Japanese *Dragon Ball Z:
 Super Gokuden – Kakusei-hen* (Super Famicom). The build starts from the
 Japanese ROM with the Korean v1.1 patch applied, undoes v1.1 text that
@@ -11,8 +13,8 @@ Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-su
 
 ROM map, text and font formats, the v1.1 progression bug, title, credits,
 debug menu, save RAM, Mesen 2 usage and the Totsugeki-hen password are
-documented in [docs/ANALYSIS.md](docs/ANALYSIS.md) (Korean; it was the
-README.txt of the published tool zip).
+documented in [docs/ANALYSIS.md](docs/ANALYSIS.md) (originally
+the README.txt of the published tool zip).
 
 ## Base ROM
 
@@ -96,12 +98,3 @@ Code (Python, shell, Lua): MIT, see the top-level `LICENSE`. The Korean text,
 code tables and graphics are fan translation data, distributed
 non-commercially and not covered by the MIT license. Galmuri is under the SIL
 Open Font License 1.1.
-
-## 한국어 요약
-
-드래곤볼 Z 초오공전 각성편(일본판) 한글패치 v1.3의 소스입니다. 일본판에 v1.1 패치를 적용한 롬에서 시작해 v1.1이 덮어쓴 데이터를 되돌리고 타이틀, 대사, 전투 말풍선, 엔딩 크레딧, 돌격편 암호 입력을 고칩니다.
-
-- 준비물: 일본판 롬(헤더 제목 `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, CRC32 `3172CD4F`)을 이 폴더에 `super-gokuden-jp.smc` 로 둡니다. 타이틀 글꼴 BM영성체는 macOS 시스템 글꼴에서 읽습니다.
-- `zsh tools/build.sh` 를 실행하면 `super-gokuden-kr-v1.3.smc`(CRC32 `B9F14962`)와 배포한 것과 같은 IPS 두 개가 `release/v1.3/` 에 나옵니다.
-- 롬 분석 노트(배포 zip의 README.txt)는 [docs/ANALYSIS.md](docs/ANALYSIS.md) 로 옮겼습니다.
-- 코드는 MIT, 한글 대사·코드표·그래픽은 비상업 배포하는 번역 데이터로 MIT와 별개입니다.

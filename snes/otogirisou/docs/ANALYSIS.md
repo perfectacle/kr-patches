@@ -1,422 +1,427 @@
-# 제절초(弟切草) 롬 분석 문서 (한글판 v1.0 / v1.1 / v1.2)
+# Otogirisou (弟切草) ROM analysis (Korean v1.0 / v1.1 / v1.2)
+
+English | [한국어](ANALYSIS.ko.md)
 
 ```text
-이 롬을 다시 분석하거나 한글판을 이어서 고칠 사람을 위한 기록입니다.
-빌드 방법은 tools/README.txt, 작업 과정과 그림은 아래 페이지의 「롬 분석 노트」에 있습니다.
+A record for anyone who analyses this ROM again or continues fixing the Korean version.
+Build instructions are in tools/README.txt; the work process and figures are in the "ROM analysis notes" on the page below.
  https://perfectacle.github.io/games/kr-patches/sfc/otogirisou/#making
 
-표시
- [실측]  롬 바이트를 읽거나, 첨부 도구를 돌리거나, 에뮬레이터(Mesen 2)에서 직접 확인한 것
- [추정]  코드를 읽고 짐작했거나 정황만 있는 것. 직접 확인하지 않았습니다.
- 표시가 없는 줄은 바로 위 항목의 표시를 따릅니다.
+Markers
+ [verified]  checked directly by reading ROM bytes, running the included tools, or in an emulator (Mesen 2)
+ [inferred]  guessed from reading code, or only circumstantial. Not checked directly.
+ A line without a marker follows the marker of the item right above it.
 
-주소 표기
- $XX:YYYY   SNES 주소 (뱅크:주소)
- 파일 0xN   헤더 없는 롬 파일의 오프셋
- LoROM 변환: 파일 오프셋 = (뱅크 & 0x7F) × 0x8000 + (주소 & 0x7FFF)
-   예) $15:E401 = 파일 0xAE401, $20:8000 = 파일 0x100000, $00:F4AC = 파일 0x74AC
+Address notation
+ $XX:YYYY   SNES address (bank:address)
+ file 0xN   offset in the headerless ROM file
+ LoROM conversion: file offset = (bank & 0x7F) × 0x8000 + (address & 0x7FFF)
+   e.g. $15:E401 = file 0xAE401, $20:8000 = file 0x100000, $00:F4AC = file 0x74AC
 ```
 
-## 1. 롬
+## 1. ROM
 
 ```text
-■ 파일 [실측]
-  롬                         크기        CRC32
-  일본판 원본 (헤더 없음)    1MB         8E4BEFD0  (MD5 AE1E9C92D0B7E6DBA6C6007D99C9C3F4)
-  v1.0 (일본판 + v1.0 IPS)   2MB         C70A8E66
-  v1.1                       2MB         27EE014E  (MD5 F45317CFAAAB68CCA5D8984AF8452535)
-  v1.2                       2MB         2C31A0B2  (MD5 CD48C59B3B80D6C9E3C648E8BDD5A4E0)
+■ Files [verified]
+  ROM                           size        CRC32
+  Japanese original (no header) 1MB         8E4BEFD0  (MD5 AE1E9C92D0B7E6DBA6C6007D99C9C3F4)
+  v1.0 (Japanese + v1.0 IPS)    2MB         C70A8E66
+  v1.1                          2MB         27EE014E  (MD5 F45317CFAAAB68CCA5D8984AF8452535)
+  v1.2                          2MB         2C31A0B2  (MD5 CD48C59B3B80D6C9E3C648E8BDD5A4E0)
 
- - v1.2는 첨부 도구로 다시 빌드해도 같은 CRC32가 나옵니다.
+ - Rebuilding v1.2 with the included tools gives the same CRC32.
 
-■ 헤더 $00:FFC0 (파일 0x7FC0) [실측]
-  위치     값                 뜻
-  0x7FC0   "OTOGIRISOU"       게임 이름 (21바이트, 나머지는 공백)
+■ Header $00:FFC0 (file 0x7FC0) [verified]
+  offset   value              meaning
+  0x7FC0   "OTOGIRISOU"       game title (21 bytes, rest is spaces)
   0x7FD5   20                 LoROM
-  0x7FD6   02                 롬 + SRAM + 배터리
-  0x7FD7   0A → 0B            롬 크기. 일본판·v1.0은 0A(1MB), v1.1부터 0B(2MB)
+  0x7FD6   02                 ROM + SRAM + battery
+  0x7FD7   0A → 0B            ROM size. 0A (1MB) in the Japanese ROM and v1.0, 0B (2MB) from v1.1
   0x7FD8   03                 SRAM 8KB
-  0x7FDC   보수 2바이트 + 체크섬 2바이트 (tools/fixsum.py로 다시 계산)
+  0x7FDC   2-byte complement + 2-byte checksum (recomputed with tools/fixsum.py)
 
- - v1.0은 롬을 2MB로 늘리면서 크기 바이트를 고치지 않았습니다. v1.1이 0B로 고쳤습니다. (tools/fixes.py)
+ - v1.0 grew the ROM to 2MB without fixing the size byte. v1.1 set it to 0B. (tools/fixes.py)
 
-■ 롬 지도 (뱅크 하나 = 32KB) [실측: 일본판·v1.0·v1.2 롬 비교]
-  뱅크          일본판                v1.0                         v1.1 / v1.2
-  $00-$14       프로그램·그림 등      읽기 루틴·폰트 표 일부 수정  후킹 지점과 연결 코드 (5장)
-  $15:E401-     허프만 대사 시작      대사 자리를 대부분 0으로     같은 자리에 v1.1·v1.2 코드와 표
-  $16-$1E       허프만 대사                                       (7장 "쓴 공간")
-  $1F           대사 폰트             한글 폰트                    v1.1 폰트 (다시 씀)
-  $20-$35       (없음)                v1.0 대사 $20:8000-$35:9AD2  v1.1 대사 $20:8000-$35:AF66
-  $36-$3F       (없음)                0                            0
+■ ROM map (one bank = 32KB) [verified: comparing the Japanese, v1.0 and v1.2 ROMs]
+  bank          Japanese              v1.0                         v1.1 / v1.2
+  $00-$14       program, graphics etc. read routine and part of    hook points and glue code (section 5)
+                                      the font table changed
+  $15:E401-     Huffman script starts most of the script area      v1.1/v1.2 code and tables in the same area
+                                      zeroed
+  $16-$1E       Huffman script                                     (section 7 "Space used")
+  $1F           script font           Korean font                  v1.1 font (rewritten)
+  $20-$35       (none)                v1.0 script $20:8000-$35:9AD2  v1.1 script $20:8000-$35:AF66
+  $36-$3F       (none)                0                            0
 
- - v1.0은 $15:E401부터의 일본판 대사 자리를 대부분 0으로 비웠습니다. 0이 이어지는 곳은 $15:E530-$1F:95A8 사이입니다.
-   그 안의 $16:806A-$16:AE4E만 v1.0이 일본판과 다른 바이트로 채웠습니다. v1.0이 넣은 그래픽과 코드입니다. (5장 "v1.0 후킹")
+ - v1.0 emptied most of the Japanese script area from $15:E401 with zeros. The zero run is between $15:E530-$1F:95A8.
+   Inside it, only $16:806A-$16:AE4E was filled by v1.0 with bytes different from the Japanese ROM: graphics and code v1.0 added. (section 5 "v1.0 hooks")
 ```
 
-## 2. 메모리
+## 2. Memory
 
 ```text
-■ 크기 [실측: 헤더, 하드웨어 사양]
-  롬 1MB(일본판) / 2MB(한글판), WRAM 128KB, SRAM 8KB, VRAM 64KB
+■ Sizes [verified: header, hardware specs]
+  ROM 1MB (Japanese) / 2MB (Korean), WRAM 128KB, SRAM 8KB, VRAM 64KB
 
-■ 게임이 쓰는 WRAM (작업 노트, Mesen 2로 확인) [실측]
-  주소              뜻
-  $0A25             패드 1 원래 값 (16비트). 상위: B Y Select Start 위 아래 왼 오, 하위: A X L R
-  $CC               게임용 버튼: bit7 = A 또는 L, bit6 = B 또는 Y, bit0-5 = Select·Start·십자 키
+■ WRAM used by the game (work notes, checked with Mesen 2) [verified]
+  address           meaning
+  $0A25             raw pad 1 value (16-bit). high: B Y Select Start Up Down Left Right, low: A X L R
+  $CC               game buttons: bit7 = A or L, bit6 = B or Y, bit0-5 = Select, Start, D-pad
   $CD               bit7 = X, bit6 = Y
-  $52-$54, $55      대본 위치 (24비트) + 일본판에서는 바이트 안의 비트 번호
-  $5D, $5F-         끼워 넣는 기호 버퍼(주인공 이름, 자동 입력 대기 코드)의 상태와 내용
-  $195B             본문 위치 사본
-  $1972             배치 미리 읽기 위치 사본
-  $1989             태스크 1(소리 명령 미리 읽기)의 위치 사본. $1989-$198C (5장)
-  $19A0             장면 미리 읽기 위치 사본
-  $1A55             지금 장면(배경) 번호
-  $1A93/$1A95       입력 대기 ($FE = 대기)
-  $1A97/$1A99       잠깐 멈춤 프레임 수
-  $1AF4, $1B08, $1AE0   미리 읽기가 준비 중인 장면, 단계, 준비됨(2)
-  $1BBD             しおり 단계 (0 → 4 → 6 → 7)
-  $1BBF             백로그 페이지 수
-  $1BC1             골라 본 선택지 수
-  $1BC3             회차
-  $1BC5             페이지 수
-  $1BEF + 변수      대본 변수 (1바이트씩, 0x1A4개). 하위 3비트 = 값, 상위 5비트 = 고른 보기
-  $0C99-            CGRAM 사본. $0C9B = 글자색 1
-  $7F:0010-         글자 레이어(BG3, 2bpp) 비트맵, 32×32타일
- - 6,000프레임을 플레이하며 쓰기 감시를 한 결과, 게임이 쓰는 $7F 영역은 $7F:0000-$B6FF, $7F:FF00- 였습니다. [실측]
-   그 사이를 v1.2가 썼습니다.
- - 최종 v1.2로 다시 확인 [실측: Mesen 2 쓰기 감시, 51번 × 12,000프레임]
-   세이브: 장 시작 30곳, 엔딩 3줄 앞 18곳 (しおり 단계 7로 숨은 보기까지 보이게) + 시나리오 0/1/2 새 게임 3번
-   입력: 장 시작은 Select·십자 키·X·Y·A를 섞어 플로차트와 메뉴를 오가고, 나머지는 A 연타
-   감시 구간: $7F:C000-$7F:D8FF, $7F:FFE0-$7F:FFEF, $7E:1FF2-$7E:1FF3 (모든 미러 뱅크 포함)
-   결과: 패치 코드(뱅크 $18 $1A $1E, $00:FAB0-$00:FB07) 밖에서 쓴 것은 켤 때 $0000-$1FFF를 0으로 지우는
-         루프($00:8030)뿐. WRAM 포트 $2181-$2183으로 주소를 정한 쓰기 0번. 51번 모두 $00:0000-$00:08FF 실행 없음
-   감시에 걸리지 않은 장면이 그 구간을 쓸 가능성은 남아 있습니다.
+  $52-$54, $55      script position (24-bit) + bit number within the byte in the Japanese ROM
+  $5D, $5F-         state and contents of the inserted-symbol buffer (hero name, automatic input-wait code)
+  $195B             copy of the text position
+  $1972             copy of the layout read-ahead position
+  $1989             position copy of task 1 (sound command read-ahead). $1989-$198C (section 5)
+  $19A0             copy of the scene read-ahead position
+  $1A55             current scene (background) number
+  $1A93/$1A95       input wait ($FE = waiting)
+  $1A97/$1A99       pause frame count
+  $1AF4, $1B08, $1AE0   scene being prepared by read-ahead, its stage, ready (2)
+  $1BBD             しおり (bookmark) stage (0 → 4 → 6 → 7)
+  $1BBF             backlog page count
+  $1BC1             number of choices made
+  $1BC3             playthrough count
+  $1BC5             page count
+  $1BEF + variable  script variables (1 byte each, 0x1A4 of them). low 3 bits = value, high 5 bits = choices picked
+  $0C99-            CGRAM copy. $0C9B = text colour 1
+  $7F:0010-         text layer (BG3, 2bpp) bitmap, 32×32 tiles
+ - Write-watching while playing 6,000 frames showed the game uses $7F:0000-$B6FF and $7F:FF00- in bank $7F. [verified]
+   v1.2 uses the space in between.
+ - Rechecked with the final v1.2 [verified: Mesen 2 write watch, 51 runs × 12,000 frames]
+   saves: 30 chapter starts, 18 points three lines before an ending (bookmark stage 7 so hidden choices show) + 3 new games for scenarios 0/1/2
+   input: at chapter starts, Select, D-pad, X, Y and A mixed to move between the flowchart and menus; elsewhere A mashing
+   watched ranges: $7F:C000-$7F:D8FF, $7F:FFE0-$7F:FFEF, $7E:1FF2-$7E:1FF3 (all mirror banks included)
+   result: the only writes outside the patch code (banks $18 $1A $1E, $00:FAB0-$00:FB07) came from the loop ($00:8030)
+         that clears $0000-$1FFF at power-on. 0 writes addressed through the WRAM port $2181-$2183. No execution of
+         $00:0000-$00:08FF in any of the 51 runs
+   A scene the watch did not cover may still write to those ranges.
 
-■ 패치가 쓰는 WRAM [실측: asm 소스]
-  주소                  소스              뜻
-  $7F:C000-$7F:C7FF     qol.asm           메뉴 대본 버퍼 A
-  $7F:C800-             qol.asm           메뉴 대본 버퍼 B
-  $7F:CF00-$7F:CFEF     qol.asm           장 목록 작업 값
-  $7F:CF40              qol.asm           메뉴가 바꾸는 엔진 값 보관 ($1BB1-$1BB8, $1BBF, $1BC1, $1BC5, 선택지 변수)
-  $7F:CF50              qol.asm           메뉴를 연 페이지 시작 (24비트)
-  $7F:CF54              qol.asm           고른 장 (1-31) 또는 0 = 돌아가기
-  $7F:CF60-$7F:CF7F     qol.asm           지금 울리는 반복음 비트맵
-  $7F:CF80, $7F:CF88    qol.asm           점프 앞에 넣을 음악·장면 코드 버퍼
-  $7F:CFF0              qol.asm           메뉴 대본 실행 중 표시
-  $7F:D000-$7F:D4FF     flow.asm          플로차트에 그린 상자 (8바이트 × 160)
-  $7F:D600-             flow.asm          노드 → 상자 번호
-  $7F:D800-$7F:D8FF     flow.asm          플로차트 작업 값
-  $7F:FFE0              wordwrap.asm      다음 글자 앞에서 줄바꿈 표시 (매직 $5A3C)
-  $7F:FFE2-$7F:FFEF     savecompat.asm    세이브 변환 임시값
-  $7E:1FF2              qol.asm           되감기 전 글자색 보관
+■ WRAM used by the patch [verified: asm sources]
+  address               source            meaning
+  $7F:C000-$7F:C7FF     qol.asm           menu script buffer A
+  $7F:C800-             qol.asm           menu script buffer B
+  $7F:CF00-$7F:CFEF     qol.asm           chapter list working values
+  $7F:CF40              qol.asm           saved engine values the menu changes ($1BB1-$1BB8, $1BBF, $1BC1, $1BC5, choice variables)
+  $7F:CF50              qol.asm           start of the page where the menu was opened (24-bit)
+  $7F:CF54              qol.asm           chosen chapter (1-31) or 0 = go back
+  $7F:CF60-$7F:CF7F     qol.asm           bitmap of the looping sounds now playing
+  $7F:CF80, $7F:CF88    qol.asm           buffers for music and scene codes inserted before a jump
+  $7F:CFF0              qol.asm           flag: menu script running
+  $7F:D000-$7F:D4FF     flow.asm          boxes drawn on the flowchart (8 bytes × 160)
+  $7F:D600-             flow.asm          node → box number
+  $7F:D800-$7F:D8FF     flow.asm          flowchart working values
+  $7F:FFE0              wordwrap.asm      flag: line break before the next character (magic $5A3C)
+  $7F:FFE2-$7F:FFEF     savecompat.asm    temporary values for save conversion
+  $7E:1FF2              qol.asm           text colour saved before rewinding
 
- - WRAM은 전원을 켰을 때 값이 정해져 있지 않습니다. 플래그는 0/1이 아니라 16비트 매직값으로 판정합니다.
+ - WRAM contents are undefined at power-on. Flags are tested against 16-bit magic values, not 0/1.
 
-■ SRAM ($70:0000-$70:1FFF, 8KB) [실측]
-  $70:0000-$70:001F     헤더. 이곳을 덮어쓰면 게임이 슬롯을 지웁니다.
-  $70:0020 + n × 0x5E3  슬롯 0-3 (0번 = 플레이 중 작업 사본). 0x17AB까지
-  $70:1800-$70:184F     v1.2 기록 (켤 때 표식이 없으면 이 범위를 0으로 지움)
- - 세이브 형식은 6장에 있습니다.
+■ SRAM ($70:0000-$70:1FFF, 8KB) [verified]
+  $70:0000-$70:001F     header. Overwriting it makes the game erase the slots.
+  $70:0020 + n × 0x5E3  slots 0-3 (0 = working copy during play). Up to 0x17AB
+  $70:1800-$70:184F     v1.2 records (cleared to 0 at power-on if the marker is missing)
+ - The save format is in section 6.
 ```
 
-## 3. 대본
+## 3. Script
 
 ```text
-■ 일본판: 허프만 비트열 [실측]
- - 대사 전체가 하나의 비트열입니다. 기준점 $15:E401 (파일 0xAE401)
- - 바이트 안에서는 낮은 비트부터 읽습니다.
- - 트리: 비트 1 → $02:C1E1 (파일 0x141E1), 비트 0 → $02:CD4F (파일 0x14D4F). 칸마다 16비트
-   루트 노드 오프셋 0x0B6C. 값의 최상위 비트가 1이면 잎(기호 = 값 & 0x1FFF), 아니면 (값 & 0x1FFF) × 2가 다음 노드
- - 기호 0x000-0xFFF = 글자(폰트 코드), 0x1000-0x1046 = 제어 코드
- - 점프 인자 = 기준점부터 센 24비트 비트 오프셋. 비트열 안에 그대로 24비트로 들어 있습니다.
-   읽은 뒤 $02:C0A1에서 LoROM 주소로 바꿉니다.
- - 크기: 약 246만 비트(약 30만 바이트)
+■ Japanese ROM: Huffman bit stream [verified]
+ - The whole script is one bit stream. Base $15:E401 (file 0xAE401)
+ - Bits within a byte are read from the lowest bit.
+ - Tree: bit 1 → $02:C1E1 (file 0x141E1), bit 0 → $02:CD4F (file 0x14D4F). 16 bits per entry
+   Root node offset 0x0B6C. If the top bit of a value is 1 it is a leaf (symbol = value & 0x1FFF), otherwise (value & 0x1FFF) × 2 is the next node
+ - Symbols 0x000-0xFFF = characters (font codes), 0x1000-0x1046 = control codes
+ - Jump argument = 24-bit bit offset from the base, stored as plain 24 bits inside the bit stream.
+   After reading, $02:C0A1 converts it to a LoROM address.
+ - Size: about 2.46 million bits (about 300,000 bytes)
 
- 예) 대본 첫 문장 「夏の夕暮。」 (tools/script.py로 디코드)
-   첫머리 제어 코드 4개 {3A:15,39}{32:16,1}{22:0,7}{22:1,1} 다음, 126번째 비트(파일 0xAE410의 bit6)부터
+ e.g. the first sentence of the script, 「夏の夕暮。」 (decoded with tools/script.py)
+   after four leading control codes {3A:15,39}{32:16,1}{22:0,7}{22:1,1}, from bit 126 (bit6 of file 0xAE410)
    夏 1000100000000010 (16)   の 01001 (5)   夕 1111101010101000 (16)
-   暮 00110111101111 (14)     。 10010 (5)    {00} 11001 (5)      → 6기호 61비트
-   「の」 = 0B6C -0-> 0B68 -1-> 0B62 -0-> 0B54 -0-> 0B38 -1-> 862E (잎, 기호 0x62E)
+   暮 00110111101111 (14)     。 10010 (5)    {00} 11001 (5)      → 6 symbols, 61 bits
+   「の」 = 0B6C -0-> 0B68 -1-> 0B62 -0-> 0B54 -0-> 0B38 -1-> 862E (leaf, symbol 0x62E)
 
-■ v1.0 이후: 기호마다 2바이트 [실측]
- - 기호 하나 = 2바이트 빅엔디언 (큰 쪽이 먼저). 점프 인자 = 3바이트 리틀엔디언 LoROM 주소
- - $20:8000부터. 뱅크 끝($XX:FFFF)을 넘으면 다음 뱅크 $8000으로 이어집니다.
- - v1.0이 바꾼 읽기 루틴: $02:C156 (허프만 대신 2바이트 읽기), $02:C087, $02:C106 (비트 오프셋 변환 건너뜀)
- 예) 같은 첫 문장의 v1.0 「여름의 해질녘.」 (파일 0x100018)
-   01 D8 여 / 04 85 름 / 01 CF 의 / 04 DF 공백 / 04 95 해 / 01 BA 질 / 01 B9 녘 / 05 C7 . / 10 00 {00}
-   → 9기호 18바이트. v1.0 대본 전체는 694,995바이트
- 예) 첫 선택지의 첫 점프: 일본판 @b0003109 (비트 3109), v1.0 @208349 ($20:8349)
+■ v1.0 and later: 2 bytes per symbol [verified]
+ - One symbol = 2 bytes big-endian (high byte first). Jump argument = 3-byte little-endian LoROM address
+ - Starts at $20:8000. Past the end of a bank ($XX:FFFF) it continues at $8000 of the next bank.
+ - Read routines changed by v1.0: $02:C156 (2-byte read instead of Huffman), $02:C087, $02:C106 (bit offset conversion skipped)
+ e.g. the same first sentence in v1.0, 「여름의 해질녘.」 (file 0x100018)
+   01 D8 여 / 04 85 름 / 01 CF 의 / 04 DF space / 04 95 해 / 01 BA 질 / 01 B9 녘 / 05 C7 . / 10 00 {00}
+   → 9 symbols, 18 bytes. The whole v1.0 script is 694,995 bytes
+ e.g. the first jump of the first choice: Japanese @b0003109 (bit 3109), v1.0 @208349 ($20:8349)
 
-■ 대본 시작 [실측]
- - $02:A569: 회차($700024 + 슬롯 × 0x5E3)와 난수로 시나리오 0/1/2를 고릅니다. 1회차 0·1, 2회차부터 2도 나옴
- - 시작 주소 표 $02:A627 (파일 0x12627, 3바이트 × 3)
-   일본판 08 20 AF | 68 F7 E4 | C0 4B C5 (비트 오프셋)
-   v1.0   00 80 20 | A9 D6 2E | C0 4B C5 ← 2번이 일본판 값 그대로라 2회차부터 멈춤
-   v1.2   00 80 20 | 95 D3 2E | A8 EA 25
- - 일본판 대사 블록은 0 → 2 → 1 순서입니다.
+■ Script start [verified]
+ - $02:A569: picks scenario 0/1/2 from the playthrough count ($700024 + slot × 0x5E3) and a random number. 0 and 1 on the first playthrough, 2 can also appear from the second
+ - Start address table $02:A627 (file 0x12627, 3 bytes × 3)
+   Japanese 08 20 AF | 68 F7 E4 | C0 4B C5 (bit offsets)
+   v1.0     00 80 20 | A9 D6 2E | C0 4B C5 ← entry 2 is still the Japanese value, so the game hangs from the second playthrough
+   v1.2     00 80 20 | 95 D3 2E | A8 EA 25
+ - The Japanese script blocks are in the order 0 → 2 → 1.
 
-■ 제어 코드 [실측: 분기표·인자 표와 대본 사용 횟수]
- - 분기표 $00:F390 (2바이트 × 0x47), 인자 표 $00:F41E (2바이트 × 0x47). 바로 뒤가 폰트 그룹 표 $00:F4AC
- - 인자 표 값: 하위 바이트 = 인자 수, 상위 바이트 = 24비트 점프 인자인 인자의 비트마스크
-   인자 수 0x63은 선택지. 처리 루틴($00:9DAE)은 기호 3개를 읽은 뒤 (첫 기호 & 7) - 1개의 점프 인자를 읽습니다.
-   건너뛰기 루틴($00:A99F)은 기호를 2개만 읽으므로, 파서는 처리 루틴 쪽을 따라야 합니다.
-   점프 인자 0은 꺼진 보기입니다.
+■ Control codes [verified: branch table, argument table and use counts in the script]
+ - Branch table $00:F390 (2 bytes × 0x47), argument table $00:F41E (2 bytes × 0x47). Right after them is the font group table $00:F4AC
+ - Argument table value: low byte = number of arguments, high byte = bit mask of the arguments that are 24-bit jump arguments
+   Argument count 0x63 is a choice. The handler ($00:9DAE) reads 3 symbols and then (first symbol & 7) - 1 jump arguments.
+   The skip routine ($00:A99F) reads only 2 symbols, so a parser must follow the handler.
+   A jump argument of 0 is a disabled option.
 
-  코드          동작
-  {00}          줄바꿈 (입력 대기 없음)
-  {03:@}        점프
-  {04:v,n,@}    $1BEF[v] & 0xFF == n 이면 점프 (상위 비트까지 비교하는 점 주의)
-  {05:v,n,@}    같지 않으면 점프
-  {13}          다음 자동 입력 대기 1번을 건너뜀
-  {16}          입력 대기 ($A7F8: $1A93 = $FE)
-  {17:n}        n × 6프레임 멈춤 ($A7FF)
-  {19} {1A}     선택지. 인자: (보기 수 + 1) | 마스크 A << 3 | 마스크 B << 8, 마스크 C, 변수 번호, 보기마다 점프
-  {1C}          선택지 보기 문구 끝
-  {1D}          엔딩 끝 표시. 분기표 대상은 아무 일도 안 하는 $A99E이고, 새 회차 처리($01:F792)가 이 코드를 직접 찾음
-  {1E:x} {1F:y} 글자 위치 (대본에서는 안 씀)
-  {20}          주인공 이름
-  {22:v,n}      $1BEF[v] 하위 3비트 = n ($A889)
-  {25} {26}     글자 버퍼를 지우고 다음 페이지 ($A7BB)
-  {27:n}        화면 지우기
-  {2E}-{33} {36} {37}  장면(배경). 장면 번호를 $1A55에 넣음 ($AAC9). 2인자 코드의 첫 인자 = 페이드 속도
-  {39:x}        소리 재생    {3A:f,x} 페이드 인    {3B:x} 정지    {3C:f,x} 페이드 아웃    {3D:x} 재생 후 대기
-  {44:n}        v1.2가 새로 단 메뉴 동작 (원래 대본에서 안 씀)
+  code          action
+  {00}          line break (no input wait)
+  {03:@}        jump
+  {04:v,n,@}    jump if $1BEF[v] & 0xFF == n (note that it compares the high bits too)
+  {05:v,n,@}    jump if not equal
+  {13}          skip the next automatic input wait once
+  {16}          input wait ($A7F8: $1A93 = $FE)
+  {17:n}        pause n × 6 frames ($A7FF)
+  {19} {1A}     choice. arguments: (option count + 1) | mask A << 3 | mask B << 8, mask C, variable number, one jump per option
+  {1C}          end of a choice option text
+  {1D}          end-of-ending marker. Its branch table target is $A99E, which does nothing; the new-playthrough code ($01:F792) looks for this code directly
+  {1E:x} {1F:y} text position (not used in the script)
+  {20}          hero name
+  {22:v,n}      $1BEF[v] low 3 bits = n ($A889)
+  {25} {26}     clear the text buffer and go to the next page ($A7BB)
+  {27:n}        clear the screen
+  {2E}-{33} {36} {37}  scene (background). Puts the scene number in $1A55 ($AAC9). First argument of the 2-argument codes = fade speed
+  {39:x}        play sound    {3A:f,x} fade in    {3B:x} stop    {3C:f,x} fade out    {3D:x} play and wait
+  {44:n}        menu action added by v1.2 (unused in the original script)
 
- - 대본에서 쓰지 않는 코드: 01 02 06-08 0A-12 14 15 18 1B 1E 1F 23 24 26 28 29 2D 31 44
- - {23}($00:E13F)/{24}($00:E1DD): 장면 번호를 골라 그리로 가는 디버그 기능 [실측: 코드와 Mesen 2]
-   {23}: $7F:FFF0의 번호 × 14로 표를 읽어 $5F 버퍼에 기호와 {24}를 넣고, 상태를 $1A03 등에 보관, $1BB1 = 3
-   {24}: $1BAD = $FE. 다음 프레임부터 메인 루프의 $00:E1E4가 십자 키로 번호를 바꿈(위아래 ±1, 좌우 ±20), A/B로 나감
-   개수 표와 장면 표를 가리키는 주소가 0으로 지워져 있어 $00:0000을 읽습니다. 일본판·v1.0·v1.1 대본에서 사용 0건
- - 「 」 』 . ？ ！ 를 찍으면 엔진이 알아서 입력을 기다립니다. ($00:AC15 / $00:AC52, 문자 목록 $02:A97C) [실측]
-   대기 없이 {25}로 지우면 A 없이 넘어가고, 자동 대기 바로 뒤에 {16}이 있으면 두 번 눌러야 넘어갑니다.
+ - Codes the script does not use: 01 02 06-08 0A-12 14 15 18 1B 1E 1F 23 24 26 28 29 2D 31 44
+ - {23} ($00:E13F) / {24} ($00:E1DD): a debug feature that picks a scene number and goes there [verified: code and Mesen 2]
+   {23}: reads a table with the number at $7F:FFF0 × 14, puts symbols and {24} in the $5F buffer, saves state in $1A03 etc., $1BB1 = 3
+   {24}: $1BAD = $FE. From the next frame, $00:E1E4 in the main loop changes the number with the D-pad (up/down ±1, left/right ±20); A/B leaves
+   The addresses pointing to the count table and the scene table were cleared to 0, so it reads $00:0000. 0 uses in the Japanese, v1.0 and v1.1 scripts
+ - Printing 「 」 』 . ？ ！ makes the engine wait for input by itself. ($00:AC15 / $00:AC52, character list $02:A97C) [verified]
+   Clearing with {25} without a wait moves on without A; a {16} right after an automatic wait needs two presses.
 
-■ 대본 텍스트 형식 (tools/dump.py, tables/script*.txt) [실측]
- - #주소 줄 = 점프 대상. 글자는 표에서, 제어 코드는 {XX:인자}, 점프 인자는 @주소
- - 일본판 비트열도 같은 규칙(점프 대상 앞, {25} 뒤)으로 나누면 v1.0과 줄 번호가 같아집니다. 6,730줄 모두 제어 코드 열이 같습니다.
- - 꺼낸 대본을 고치지 않고 다시 조립하면 v1.0과 바이트 단위로 같습니다. (tools/assemble.py)
+■ Script text format (tools/dump.py, tables/script*.txt) [verified]
+ - A #address line = jump target. Characters come from the table, control codes are {XX:args}, jump arguments are @address
+ - Splitting the Japanese bit stream by the same rules (before jump targets, after {25}) gives the same line numbers as v1.0. All 6,730 lines have the same control code sequence.
+ - Reassembling the extracted script without changes gives v1.0 byte for byte. (tools/assemble.py)
 ```
 
-## 4. 폰트
+## 4. Font
 
 ```text
-■ 형식 [실측: tools/font.py, 디코더 $00:A57F]
- - 뱅크 $1F의 가변 크기 1bpp 글자. 그룹 표 $00:F4AC (파일 0x74AC)
- - 그룹 한 칸 5바이트
-   +0 (16비트)  아래 12비트 = 글자 수, 위 4비트 = 폭
-   +2 (16비트)  뱅크 $1F 안의 시작 주소
-   +4           높이 << 2
-   예) v1.2 첫 칸 05 92 00 80 2C = 517자, 폭 9, $1F:8000, 높이 11
- - 그룹의 n번째 글자는 시작 주소에서 n × 폭 × 높이 비트 뒤. 한 줄 = 폭만큼의 비트, 가장 왼쪽 픽셀이 그 줄의 가장 높은 비트
- - 디코더는 줄마다 3바이트를 읽습니다. 그룹 데이터 뒤에 2바이트 여유를 둡니다. 뱅크 $20으로 넘어가지 못합니다.
- - 글자는 아래쪽 기준으로 정렬됩니다. (y_top = y + $18D7 - 높이)
- - 글자를 그리면 $00:A61C가 WRAM $7F:0010-의 2bpp 타일에 OR합니다. plane0 = 색 1(글자), plane1 = 색 2(그림자)
+■ Format [verified: tools/font.py, decoder $00:A57F]
+ - Variable-size 1bpp glyphs in bank $1F. Group table $00:F4AC (file 0x74AC)
+ - One group entry is 5 bytes
+   +0 (16-bit)  low 12 bits = glyph count, high 4 bits = width
+   +2 (16-bit)  start address within bank $1F
+   +4           height << 2
+   e.g. the first v1.2 entry 05 92 00 80 2C = 517 glyphs, width 9, $1F:8000, height 11
+ - The n-th glyph of a group is n × width × height bits after the start address. One row = width bits, the leftmost pixel is the highest bit of the row
+ - The decoder reads 3 bytes per row, so 2 spare bytes follow the group data. It cannot cross into bank $20.
+ - Glyphs are bottom-aligned. (y_top = y + $18D7 - height)
+ - When a glyph is drawn, $00:A61C ORs it into the 2bpp tiles in WRAM $7F:0010-. plane0 = colour 1 (text), plane1 = colour 2 (shadow)
 
-■ 그룹 표 한계 [실측]
- - 표 바로 뒤 $00:F5CE는 줄 끝에 매달 수 있는 문자 목록(코드 1478 1479 1494 1458 1455 1496 1498 1501 1503, $FFFF 끝)입니다.
-   그래서 그룹은 58칸(290바이트)이 한계입니다. 일본판과 v1.0 모두 58칸을 다 씁니다.
- - 엔진은 그룹 표 끝 표시를 보지 않습니다. [실측: $00:A4F4-$00:A51C]
-   첫 칸부터 칸마다 글자 수(아래 12비트)를 더해 가다가 찾는 코드가 들어가는 칸에서 멈춥니다.
-   마지막 그룹을 넘는 코드를 쓰면 표 뒤 $00:F5CE 데이터를 그룹 칸으로 읽습니다.
-   tools/font.py는 글자 수나 폭이 0인 칸에서 멈춥니다.
- - v1.1은 아무도 참조하지 않는 코드(1247 이후, 한글 아님) 168개를 이웃 그룹과 같은 크기의 빈 글자로 바꿔 45칸으로 합쳤습니다.
-   참조 여부는 대사, 이름 입력 표($02:A990-$02:B03F), 문자 목록 두 개($02:A97C, $00:F5CE)로 판단했습니다.
- - 새 글자 75자(코드 1614-1688)를 3칸(9×11 33자, 10×11 20자, 11×11 22자)으로 더해 48칸. 10칸이 남습니다.
- - 글자 폭 표 $1E:F000 (코드마다 1바이트, 0x800개): v1.1 단어 줄바꿈용. 줄 끝 매달기 문자는 폭 0
- - 이름 입력 화면이 대사와 같은 코드를 씁니다. v1.0 코드와 글자 대응은 바꾸지 않았습니다.
+■ Group table limits [verified]
+ - Right after the table, $00:F5CE is the list of characters that may hang at the end of a line (codes 1478 1479 1494 1458 1455 1496 1498 1501 1503, ended by $FFFF).
+   So the table can hold at most 58 entries (290 bytes). The Japanese ROM and v1.0 both use all 58.
+ - The engine does not look for an end marker in the group table. [verified: $00:A4F4-$00:A51C]
+   It adds up the glyph counts (low 12 bits) entry by entry from the first and stops at the entry the code falls into.
+   A code beyond the last group reads the $00:F5CE data after the table as group entries.
+   tools/font.py stops at an entry whose glyph count or width is 0.
+ - v1.1 turned 168 codes nobody references (1247 and later, not Hangul) into blank glyphs of the same size as their neighbours and merged them into 45 entries.
+   "Referenced" was judged from the dialogue, the name entry table ($02:A990-$02:B03F) and the two character lists ($02:A97C, $00:F5CE).
+ - 75 new glyphs (codes 1614-1688) were added as 3 entries (9×11: 33, 10×11: 20, 11×11: 22), making 48 entries. 10 remain free.
+ - Glyph width table $1E:F000 (1 byte per code, 0x800 entries): for v1.1 word wrapping. Characters that hang at the line end have width 0
+ - The name entry screen uses the same codes as the dialogue. The v1.0 code-to-character mapping was not changed.
 
-■ 글자표 [실측]
- - tables/kr-v1.0.tbl: v1.0 글자를 그려 macOS Vision으로 9번 읽어 다수결, ㅁ/ㅇ은 모서리 픽셀 규칙, 문맥 검수로 30자 수정
-   ㅗ/ㅜ/ㅡ 꼭지가 1픽셀이라 드물게 쓰는 글자에 오독이 남았을 수 있습니다. [추정]
- - tables/jp.tbl: 대조용. 일부 오독이 있습니다.
- - 코드 1247 = 공백, 1248 = 줄바꿈 안 되는 공백(이름 뒤 호칭), 1478 쉼표, 1479 마침표, 1482 느낌표 (넓은 글자, 뒤 간격 포함)
+■ Character tables [verified]
+ - tables/kr-v1.0.tbl: v1.0 glyphs drawn and read 9 times with macOS Vision, majority vote, a corner-pixel rule for ㅁ/ㅇ, 30 characters fixed by context review
+   The ㅗ/ㅜ/ㅡ stems are 1 pixel, so misreads may remain in rarely used characters. [inferred]
+ - tables/jp.tbl: for comparison. Contains some misreads.
+ - Code 1247 = space, 1248 = non-breaking space (before the honorific after a name), 1478 comma, 1479 full stop, 1482 exclamation mark (wide glyphs including the trailing gap)
 ```
 
-## 5. 엔진과 후킹 지점
+## 5. Engine and hook points
 
 ```text
-■ 메인 루프와 입력 [실측: 작업 노트]
- - $00:8570(NMI 쪽): $4218-$421F → $0A25. $00:8B9A가 $CC/$CD를 만들고 $00:8BD6이 새로 눌린 버튼만 남깁니다.
-   $00:8BF3: 키 반복 (처음 0x14프레임, 이후 6프레임)
- - Select와 R은 어디서도 쓰지 않습니다. Start는 일시 정지
- - 메인 루프 $00:9951: 입력, 배치, 화면, 입력 대기($00:9CE7), 대사 읽기($00:999A)
-   대사는 $1A95 | $1A99 | $1A9D | $1BAB | $18C7이 모두 0일 때만 읽습니다.
- - 입력 대기 중 X이고 페이지가 2개 이상이면 되감기($01:F3BB). Y로 다시 앞으로
+■ Main loop and input [verified: work notes]
+ - $00:8570 (NMI side): $4218-$421F → $0A25. $00:8B9A builds $CC/$CD and $00:8BD6 keeps only newly pressed buttons.
+   $00:8BF3: key repeat (first 0x14 frames, then 6 frames)
+ - Select and R are not used anywhere. Start pauses
+ - Main loop $00:9951: input, layout, screen, input wait ($00:9CE7), script reading ($00:999A)
+   The script is read only when $1A95 | $1A99 | $1A9D | $1BAB | $18C7 are all 0.
+ - X during an input wait with 2 or more pages rewinds ($01:F3BB). Y goes forward again
 
-■ 대본 위치 네 벌과 태스크 [실측]
- - 위치 사본 $195B $1972 $1989 $19A0. $00:9BA7이 $195B에서 $52를 다시 읽으므로, 위치를 바꿀 때는 네 벌을 모두 써야 합니다.
- - $00:8D50 태스크 시작 (A = 진입점, X = 뱅크, Y = 번호). $09F0+번호 = 도는 중, $00:8D99 = 스스로 끝냄
- - 태스크 0 = 배치 미리 읽기 ($00:AB5A, D = $0180). $28 미만 제어 코드는 여기서도 실행됩니다.
-   그래서 새 제어 코드는 $28 이상이어야 하고, 점프 후킹은 D = 0(본문)일 때만 동작해야 합니다.
- - 태스크 2 = 장면 미리 읽기 ($00:AE47, D = $0280). $19A0부터 읽으며 장면 그림을 미리 올리고, 선택지·조건 점프에서 멈춥니다.
-   점프 코드를 실행한 뒤 $00:9A5A가 $52를 넘겨 다시 시작합니다.
- - 장면 코드는 그 장면이 $1AF4에 준비될 때까지 기다립니다($19D0 = $FF).
-   점프·선택지를 거치지 않고 위치를 바꾸면 $00:9A5A를 불러야 합니다. 안 부르면 검은 화면에서 영원히 멈춥니다.
- - 태스크 1 = 소리 명령 미리 읽기 ($00:9B53에서 진입점 $00:CB99, Y = 1). 위치 $1989-$198C [실측]
-   앞서 읽다 소리 코드({39} {3D} {45} 등)를 만나면 $00:CCAC가 $01:8007 표의 목록을 사운드 명령 버퍼
-   ($10A5/$10A6, 잠금 $10A3)로 보냅니다. {19} {1A} {04} {05} {1D} {23} {24} {43} {44}에서 위치를 $1989-$198C에
-   남기고 끝나고, 다음에 시작할 때 $00:CC96이 거기서 다시 읽습니다.
-   소리를 미리 준비해 두는 태스크라는 해석은 추정입니다. [추정]
+■ Four copies of the script position, and tasks [verified]
+ - Position copies $195B $1972 $1989 $19A0. $00:9BA7 reloads $52 from $195B, so changing the position means writing all four.
+ - $00:8D50 starts a task (A = entry point, X = bank, Y = number). $09F0+number = running, $00:8D99 = the task ends itself
+ - Task 0 = layout read-ahead ($00:AB5A, D = $0180). Control codes below $28 are executed here as well.
+   So new control codes must be $28 or above, and a jump hook must act only when D = 0 (the main text).
+ - Task 2 = scene read-ahead ($00:AE47, D = $0280). Reads from $19A0, preloads scene graphics, and stops at choices and conditional jumps.
+   After a jump code runs, $00:9A5A passes it $52 and restarts it.
+ - A scene code waits until that scene is ready in $1AF4 ($19D0 = $FF).
+   Changing the position without a jump or choice requires calling $00:9A5A. Without it the game hangs forever on a black screen.
+ - Task 1 = sound command read-ahead (entry point $00:CB99 from $00:9B53, Y = 1). Position $1989-$198C [verified]
+   When reading ahead hits a sound code ({39} {3D} {45} etc.), $00:CCAC sends the list from the $01:8007 table to the sound command buffer
+   ($10A5/$10A6, lock $10A3). At {19} {1A} {04} {05} {1D} {23} {24} {43} {44} it leaves the position in $1989-$198C
+   and ends; the next time it starts, $00:CC96 resumes reading from there.
+   Reading it as a task that prepares sounds in advance is an inference. [inferred]
 
-■ 선택지 [실측]
- - $00:A13B: 처음 고른 보기면 $1BC1++, 위치를 선택지 다음으로, 백로그 비움($1BBF = 0), 자동 저장(JSL $02:A795)
- - 숨은 보기: しおり 단계 bit0/1/2가 켜지면 마스크 A/B/C가 풀립니다. 단계는 새 회차($01:F792)에서 엔딩 기록 변수로 정해집니다.
- - 한 번에 보이는 보기는 5개까지. 6개를 넣으면 화면이 깨졌습니다.
- - 장 목록은 원작 선택지처럼 지금 장면의 배경 위에 뜹니다. 메뉴 위로 보이는 눈알 같은 그림은 스프라이트가 아니라
-   장면 배경 BG2입니다. 그때 OAM은 0개이고, $0A0E를 바꿔 보면 BG2가 켜져 있을 때만 보입니다. [실측]
- - 옛 menujump 세이브(しおり 단계 0)로 1C 레인(대본 5904줄)에서 이어하면 선택지 {1A:1548,0,344}의 보기가 모두
-   마스크되어 위치가 0이 되고 $00:0000으로 폭주합니다. v1.1도 같고, 정상 플레이로는 갈 수 없는 상태입니다. [실측]
- - 선택지 382곳({19} 98곳 + {1A} 284곳)이 변수 380개를 씁니다. 두 선택지가 같이 쓰는 변수는 259, 298
+■ Choices [verified]
+ - $00:A13B: if the option is picked for the first time $1BC1++, position to after the choice, backlog cleared ($1BBF = 0), autosave (JSL $02:A795)
+ - Hidden options: when bookmark stage bit0/1/2 is set, masks A/B/C are lifted. The stage is set from the ending record variables at a new playthrough ($01:F792).
+ - At most 5 options are visible at once. Putting in 6 broke the screen.
+ - The chapter list appears over the current scene background like the original choices. The eyeball-like picture visible above the menu is not a sprite but
+   the scene background BG2. There are 0 OAM entries at that time, and changing $0A0E shows it only while BG2 is on. [verified]
+ - Continuing in the 1C lane (script line 5904) from an old menujump save (bookmark stage 0) masks every option of choice {1A:1548,0,344},
+   the position becomes 0 and the game runs away into $00:0000. v1.1 does the same; normal play cannot reach that state. [verified]
+ - 382 choices ({19} at 98 places + {1A} at 284) use 380 variables. The variables shared by two choices are 259 and 298
 
-■ 줄바꿈과 대사창 [실측]
- - 왼쪽 여백 x = 12, 줄바꿈 기준 x = 242, 첫 줄 y = 16, 줄 간격 23, 자간 2 → 한 화면 9줄. 10번째 줄부터는 잘립니다.
- - $00:A777: 글자를 그린 뒤 x + 폭이 기준을 넘으면 줄바꿈. $00:F5CE의 문자는 줄 끝에 매달 수 있음
- - 마침표처럼 입력 대기를 거는 문자를 찍으면 엔진이 대기 코드를 $5F 버퍼에 끼워 넣어 $5D가 0이 아닙니다.
-   이름을 찍는 중인지를 $5D로 판단하는 검사는 공백일 때만 해야 합니다.
+■ Line breaks and the text window [verified]
+ - Left margin x = 12, line break limit x = 242, first line y = 16, line spacing 23, letter spacing 2 → 9 lines per screen. From the 10th line on, text is cut off.
+ - $00:A777: after drawing a glyph, breaks the line if x + width exceeds the limit. Characters in $00:F5CE may hang at the line end
+ - Printing a character that sets an input wait, such as a full stop, makes the engine insert a wait code into the $5F buffer, so $5D is not 0.
+   A check that uses $5D to tell whether a name is being printed must only be done on a space.
 
-■ 화면 [실측]
- - 글자 레이어 BG3, 2bpp, 모드 1. 비트맵 오프셋 = 타일행 × 512 + 타일열 × 16 + (y & 7) × 2, bit7이 가장 왼쪽 픽셀
- - $19CE가 켜져 있으면 $00:A426이 행 $19C4-$19C6, 열 $19C8-$19CA를 VRAM으로 보냅니다.
- - 메인 화면 레이어 $0A0E(평소 $17), 색 연산 $0A13. $B6 bit6을 켜면 다음 NMI에 반영
- - 글자 팔레트 색 1 = $0C9B, 색 2 = $0C63, 색 3 = $1FFF. CGRAM 사본 $0C99, $B5 bit3을 켜면 NMI가 올림
- - 게임 폰트로 한 글자 그리기: $1A7D = 코드, $1A7F/$1A81 = 좌표, JSL $00:9595
- - 사운드 드라이버가 돌고 있으면 리셋 코드($00:8EA0)의 IPL 업로드에서 멈춥니다. 그래서 소프트 리셋 방식은 쓰지 않았습니다.
+■ Screen [verified]
+ - Text layer BG3, 2bpp, mode 1. Bitmap offset = tile row × 512 + tile column × 16 + (y & 7) × 2, bit7 is the leftmost pixel
+ - While $19CE is set, $00:A426 sends rows $19C4-$19C6 and columns $19C8-$19CA to VRAM.
+ - Main screen layers $0A0E (normally $17), colour math $0A13. Setting $B6 bit6 applies them at the next NMI
+ - Text palette colour 1 = $0C9B, colour 2 = $0C63, colour 3 = $1FFF. CGRAM copy $0C99; setting $B5 bit3 makes the NMI upload it
+ - Drawing one glyph with the game font: $1A7D = code, $1A7F/$1A81 = coordinates, JSL $00:9595
+ - While the sound driver runs, the reset code ($00:8EA0) hangs in its IPL upload. That is why a soft reset approach was not used.
 
-■ 후킹 지점 전체 [실측: asm 소스의 org, 일본판·v1.2 롬 바이트, asar 심볼]
-  주소       원래 바이트 (일본판)   v1.2           새 코드            소스             하는 일
-  $00:A777   C2 30 18 AD 83 1A      22 00 80 1E…   WordWrap $1E:8000  wordwrap.asm     단어 단위 줄바꿈
-  $02:A54F   A5 13 9F AF 05 70      22 00 80 18…   MarkNew $18:8000   savecompat.asm   새 슬롯에 v1.1 표식
-  $02:A83B   AD 5D 00 8F B1 05      22 13 80 18…   MarkSave $18:8013  savecompat.asm   자동 저장 때 표식
-  $02:A6D3   AF AC 05 70            22 22 80 18    LoadSave $18:8022  savecompat.asm   옛 세이브 위치 변환
-  $00:9CF9   A5 CC 29 00 80         22 45 84 1A EA SelCheck $1A:8445  qol.asm          입력 대기 중 Select → 플로차트
-  $02:A79C   AD BF 1B 0A 0A         22 B7 83 1A EA AutoSave $1A:83B7  qol.asm          읽은 장 기록, 메뉴 안 자동 저장 건너뜀
-  $02:C120   A5 10 85 52            5C D2 83 1A    JumpHook $1A:83D2  qol.asm          점프할 때 메뉴 값 되돌리기
-  $02:A56F   C2 30 29 FF 00         22 97 82 1A EA LapHook $1A:8297   qol.asm          새 회차 = 엔딩 기록
-  $02:A4D1   29 FF 00 85 30         22 65 82 1A EA NewSlot $1A:8265   qol.asm          새 슬롯 기록 초기화
-  $01:F3BB   C2 30 AD BF 1B         22 4C 80 1A EA BacklogIn $1A:804C qol.asm          되감기 들어갈 때 노란 글씨
-  $01:F421   A9 C0 00 8D 2D 0A      22 5B 80 1A EA EA  BacklogOut $1A:805B  qol.asm  되감기 나올 때 색 되돌리기
-  $02:B955   20 6B B9 20 89 B9 …    22 87 80 1A EA… ShioriSlot $1A:8087 qol.asm         책갈피 화면에 마지막 장 제목
-  $00:CE3F   22 00 80 02            22 14 80 1A    BootLogo $1A:8014  qol.asm          켤 때 SRAM 기록 초기화
-  분기표 $00:F390 + 코드 × 2
-   {44}      A955 → FAB0 (Cmd44Tramp → Cmd44 $1A:848C), 인자 표 0000 → 0001     메뉴 동작
-   {39}-{3D} A8F1 A8FE A8F8 A908 A926 → FAC6 FAD1 FADF FAE9 FAF7               반복음 기록 후 원래 처리
- - $00:FAB0-$00:FB07: bank $00 안에서 불러야 하는 연결 코드 (원래 FF로 채워진 곳)
- - asar 주의: 상대 분기가 범위를 넘으면 빌드가 실패합니다. 반대 조건 + JMP로 바꿨습니다.
+■ All hook points [verified: org lines in the asm sources, Japanese and v1.2 ROM bytes, asar symbols]
+  address    original bytes (JP)    v1.2           new code           source           does
+  $00:A777   C2 30 18 AD 83 1A      22 00 80 1E…   WordWrap $1E:8000  wordwrap.asm     word-level line breaks
+  $02:A54F   A5 13 9F AF 05 70      22 00 80 18…   MarkNew $18:8000   savecompat.asm   v1.1 marker in a new slot
+  $02:A83B   AD 5D 00 8F B1 05      22 13 80 18…   MarkSave $18:8013  savecompat.asm   marker on autosave
+  $02:A6D3   AF AC 05 70            22 22 80 18    LoadSave $18:8022  savecompat.asm   convert old save positions
+  $00:9CF9   A5 CC 29 00 80         22 45 84 1A EA SelCheck $1A:8445  qol.asm          Select during input wait → flowchart
+  $02:A79C   AD BF 1B 0A 0A         22 B7 83 1A EA AutoSave $1A:83B7  qol.asm          record chapters read, skip autosave inside the menu
+  $02:C120   A5 10 85 52            5C D2 83 1A    JumpHook $1A:83D2  qol.asm          restore menu values on a jump
+  $02:A56F   C2 30 29 FF 00         22 97 82 1A EA LapHook $1A:8297   qol.asm          new playthrough = ending record
+  $02:A4D1   29 FF 00 85 30         22 65 82 1A EA NewSlot $1A:8265   qol.asm          reset records for a new slot
+  $01:F3BB   C2 30 AD BF 1B         22 4C 80 1A EA BacklogIn $1A:804C qol.asm          yellow text when entering rewind
+  $01:F421   A9 C0 00 8D 2D 0A      22 5B 80 1A EA EA  BacklogOut $1A:805B  qol.asm  restore colour when leaving rewind
+  $02:B955   20 6B B9 20 89 B9 …    22 87 80 1A EA… ShioriSlot $1A:8087 qol.asm         last chapter title on the bookmark screen
+  $00:CE3F   22 00 80 02            22 14 80 1A    BootLogo $1A:8014  qol.asm          reset SRAM records at power-on
+  branch table $00:F390 + code × 2
+   {44}      A955 → FAB0 (Cmd44Tramp → Cmd44 $1A:848C), argument table 0000 → 0001     menu action
+   {39}-{3D} A8F1 A8FE A8F8 A908 A926 → FAC6 FAD1 FADF FAE9 FAF7               record looping sounds, then the original handler
+ - $00:FAB0-$00:FB07: glue code that must be called from within bank $00 (originally filled with FF)
+ - asar caveat: a relative branch out of range fails the build. Those were changed to the opposite condition + JMP.
 
-■ v1.0 후킹 [실측: 일본판·v1.0 롬 비교, Mesen 2]
- - v1.0은 일본판 코드 7곳을 JML로 바꿨습니다. v1.1·v1.2도 그대로 둡니다.
-  주소       일본판           v1.0
+■ v1.0 hooks [verified: comparing the Japanese and v1.0 ROMs, Mesen 2]
+ - v1.0 replaced 7 places in the Japanese code with JML. v1.1 and v1.2 leave them as they are.
+  address    Japanese         v1.0
   $00:B472   AB 4C AB 86      5C F0 A5 16   → $16:A5F0
   $00:C436   AD D0 19 D0      5C 0B E5 15   → $15:E50B
-  $00:C4EC   AD D0 19 D0      5C 99 E4 15   → $15:E499 (화면 갱신)
+  $00:C4EC   AD D0 19 D0      5C 99 E4 15   → $15:E499 (screen update)
   $00:D585   C2 30 A9 01      5C 00 92 16   → $16:9200
   $02:B521   22 3B 93 00      5C 20 A6 16   → $16:A620
   $02:B54B   C2 30 A9 5C      5C 3B AE 16   → $16:AE3B
   $02:BCF9   C2 30 9C 9E      5C 4F A6 16   → $16:A64F
- - 후킹 코드가 $0100에 1-3을 적으면 화면 갱신 후킹($15:E499)이 DMA로 그래픽을 VRAM에 올립니다.
-   1 = $16:8000 0x1200바이트 → VRAM $5700 (켠 직후)
-   2 = $16:A67B 0x580바이트 → VRAM $4840 (책갈피 화면 앞)
-   3 = $16:AC7B 0x1C0바이트 → VRAM $4330 (이름 입력 화면 앞)
- - $15:E401-$15:E52A 부근도 v1.0 코드입니다.
+ - When hook code writes 1-3 to $0100, the screen update hook ($15:E499) DMAs graphics to VRAM.
+   1 = $16:8000 0x1200 bytes → VRAM $5700 (right after power-on)
+   2 = $16:A67B 0x580 bytes → VRAM $4840 (before the bookmark screen)
+   3 = $16:AC7B 0x1C0 bytes → VRAM $4330 (before the name entry screen)
+ - The area around $15:E401-$15:E52A is v1.0 code too.
 ```
 
-## 6. 세이브
+## 6. Saves
 
 ```text
-■ 슬롯 형식 (일본판·v1.0·v1.1·v1.2 같음) [실측]
- - 불러오기($02:A642)는 슬롯을 0번으로 복사한 뒤 읽고, 자동 저장($02:A795)은 0번에 쓴 뒤 원래 슬롯으로 복사합니다.
- - 아래 주소는 0번 슬롯 기준입니다. n번 슬롯은 n × 0x5E3을 더합니다. (게임 코드도 X = 슬롯 × 0x5E3으로 씁니다)
- - 체크섬: $700022부터 0x5E1바이트의 합 ($02:A76B, $02:A8B7)
-  주소              뜻
-  $700022           작업 사본이 속한 슬롯 번호
-  $700024           회차 ($1BC3)
-  $700026           골라 본 선택지 수 ($1BC1)
-  $700028           페이지 수 ($1BC5)
-  $70002A-$7003D5   백로그 페이지 시작 위치, 4바이트씩 (24비트 위치 + $55), 235개까지
-  $7003D6-          대본 변수 0x1A4바이트 ($1BEF-)
-  $70059A-$7005B3   그 밖의 상태 ($1BBF 백로그 개수, $1BB1-$1BB7, $5B, $1BBD, $1BE9, $1A55, 위치)
-  $7005AC           이어서 읽을 위치 (24비트), $7005AF = $55
+■ Slot format (same in Japanese, v1.0, v1.1, v1.2) [verified]
+ - Loading ($02:A642) copies the slot to slot 0 and then reads it; autosave ($02:A795) writes slot 0 and then copies it to the original slot.
+ - The addresses below are for slot 0. Add n × 0x5E3 for slot n. (The game code also uses X = slot × 0x5E3)
+ - Checksum: sum of 0x5E1 bytes from $700022 ($02:A76B, $02:A8B7)
+  address           meaning
+  $700022           slot number the working copy belongs to
+  $700024           playthrough count ($1BC3)
+  $700026           number of choices made ($1BC1)
+  $700028           page count ($1BC5)
+  $70002A-$7003D5   backlog page start positions, 4 bytes each (24-bit position + $55), up to 235
+  $7003D6-          script variables, 0x1A4 bytes ($1BEF-)
+  $70059A-$7005B3   other state ($1BBF backlog count, $1BB1-$1BB7, $5B, $1BBD, $1BE9, $1A55, position)
+  $7005AC           position to continue reading from (24-bit), $7005AF = $55
   $7005B1           $5D
-  $7005B3           장면 번호 ($1A55)
-  $7005B5           v1.1 표식 $C311 (게임은 안 쓰는 2바이트, 새 슬롯을 만들 때 0)
-  $7005D5           이름 ($5F)
-  $7005E5           화면 상태 30바이트 ($18DD)
+  $7005B3           scene number ($1A55)
+  $7005B5           v1.1 marker $C311 (2 bytes the game does not use, 0 when a new slot is made)
+  $7005D5           name ($5F)
+  $7005E5           screen state, 30 bytes ($18DD)
 
- - 위치의 뜻: 일본판 = 허프만 비트열의 바이트 주소($15-$1D) + $55 비트 번호
-   (비트 오프셋 = (파일 오프셋 - 0xAE401) × 8 + $55), v1.0/v1.1 = 2바이트 대본의 LoROM 주소($20-$35)
+ - Meaning of the position: Japanese = byte address in the Huffman bit stream ($15-$1D) + $55 bit number
+   (bit offset = (file offset - 0xAE401) × 8 + $55), v1.0/v1.1 = LoROM address in the 2-byte script ($20-$35)
 
-■ 옛 세이브 이어하기 (v1.1) [실측]
- - 변환표: v1.0용 $17:8000, 일본판용 $19:8000. 2바이트 개수(4,854) 뒤에 (옛 24비트, 새 24비트)가 옛 주소 순으로. $XX:F1C5에서 끝
- - 불러올 때 표식이 없으면 위치를 뱅크로 일본판/v1.0을 구분해 이진 탐색, "그 위치 이하인 마지막 항목"으로 바꾼 뒤 표식을 쓰고 체크섬을 다시 계산
- - 일본판 세이브의 이름은 기본 이름 公平(코헤이)로 바꿉니다.
+■ Continuing old saves (v1.1) [verified]
+ - Conversion tables: $17:8000 for v1.0, $19:8000 for the Japanese version. A 2-byte count (4,854) followed by (old 24-bit, new 24-bit) pairs in old-address order. Ends at $XX:F1C5
+ - On load, if the marker is missing, the bank of the position tells Japanese from v1.0, a binary search replaces the position with "the last entry at or below it", then the marker is written and the checksum recomputed
+ - The name in a Japanese save is replaced with the default name 公平 (Kohei).
 
-■ v1.2 기록 $70:1800 [실측]
-  $70:1800       표식 $514C. 없으면 켤 때 $70:1800-$70:184F를 0으로 지우고 씀
-  $70:1810 + (슬롯 - 1) × 16   슬롯 1-3
-    +0  4바이트  이번 회차에 읽은 장 (장 하나 = 1비트)
-    +4  4바이트  지금까지 읽은 장
-    +8  4바이트  본 엔딩
-    +12 1바이트  마지막으로 읽은 장
-    +13 1바이트  장에 들어갈 때의 변수 17
-    +14 1바이트  그 값이 있는지
- - 장을 읽었는지는 자동 저장 때 위치가 장의 줄 범위에 들어가는지로 판단합니다.
- - 엔딩은 새 회차가 시나리오를 고르는 순간($02:A56F)의 위치로 판단합니다.
+■ v1.2 records $70:1800 [verified]
+  $70:1800       marker $514C. If missing, $70:1800-$70:184F is cleared to 0 at power-on and the marker written
+  $70:1810 + (slot - 1) × 16   slots 1-3
+    +0  4 bytes  chapters read in this playthrough (1 bit per chapter)
+    +4  4 bytes  chapters read so far
+    +8  4 bytes  endings seen
+    +12 1 byte   last chapter read
+    +13 1 byte   variable 17 on entering the chapter
+    +14 1 byte   whether that value is present
+ - Whether a chapter was read is judged by whether the position at autosave falls into the chapter's line range.
+ - An ending is judged by the position at the moment a new playthrough picks its scenario ($02:A56F).
 ```
 
-## 7. 쓴 공간과 남은 공간
+## 7. Space used and space left
 
 ```text
-■ v1.1·v1.2가 쓴 롬 (0이 아닌 마지막 바이트까지) [실측]
-  위치                  소스                     내용
-  $00:FAB0-$00:FB07     asm/qol.asm              bank $00 연결 코드
-  $17:8000-$17:F1C5     tools/savemap.py         v1.0 세이브 위치 변환표
-  $18:8000-$18:81CF     asm/savecompat.asm       세이브 호환 코드
-  $19:8000-$19:F1C5     tools/savemap.py         일본판 세이브 위치 변환표
-  $1A:8000-$1A:96D0     asm/qol.asm, flow.asm    편의 기능 코드
-  $1B:8000-$1B:8F39     tools/qol.py             장 범위($1B:8000), 장 시작($1B:8200), 엔딩($1B:8300), 메뉴 문자열($1B:8400-)
-  $1B:F000-$1B:F21F     tools/qol.py             장마다 장면 코드, 반복음 목록, 반복음 비트맵
-  $1C:8000-$1C:E627     tools/flow.py            노드($1C:8010, 16바이트씩), 장면($1C:C000), 음악($1C:D000), 장별 행($1C:E000)
-  $1E:8000-$1E:80C9     asm/wordwrap.asm         단어 줄바꿈 코드
-  $1E:F000-$1E:F7FF     tools/mkfont.py          글자 폭 표
-  $1F:8000-$1F:D457     tools/mkfont.py          v1.1 폰트
-  $20:8000-$35:AF66     tools/assemble.py        v1.1 대본
+■ ROM used by v1.1 and v1.2 (up to the last non-zero byte) [verified]
+  location              source                   contents
+  $00:FAB0-$00:FB07     asm/qol.asm              bank $00 glue code
+  $17:8000-$17:F1C5     tools/savemap.py         v1.0 save position conversion table
+  $18:8000-$18:81CF     asm/savecompat.asm       save compatibility code
+  $19:8000-$19:F1C5     tools/savemap.py         Japanese save position conversion table
+  $1A:8000-$1A:96D0     asm/qol.asm, flow.asm    convenience feature code
+  $1B:8000-$1B:8F39     tools/qol.py             chapter ranges ($1B:8000), chapter starts ($1B:8200), endings ($1B:8300), menu strings ($1B:8400-)
+  $1B:F000-$1B:F21F     tools/qol.py             scene code per chapter, looping sound list, looping sound bitmap
+  $1C:8000-$1C:E627     tools/flow.py            nodes ($1C:8010, 16 bytes each), scenes ($1C:C000), music ($1C:D000), rows per chapter ($1C:E000)
+  $1E:8000-$1E:80C9     asm/wordwrap.asm         word wrap code
+  $1E:F000-$1E:F7FF     tools/mkfont.py          glyph width table
+  $1F:8000-$1F:D457     tools/mkfont.py          v1.1 font
+  $20:8000-$35:AF66     tools/assemble.py        v1.1 script
 
-■ 0이 이어진 구간 (4KB 이상) [실측: v1.2 롬. 비어 있다는 보장은 아님]
+■ Zero runs (4KB or more) [verified: v1.2 ROM. Not a guarantee that they are free]
   $15:E52B-$16:8069, $16:AE4F-$16:FFFF, $18:81D0-$18:FFFF, $1A:96D1-$1A:FFFF, $1B:8F3A-$1B:EFFF,
   $1C:A944-$1C:BFFF, $1C:E628-$1D:FFFF, $1E:80CA-$1E:EFFF, $1F:D458-$1F:FFFF, $35:AF67-$3F:FFFF
- - 0이 이어졌다고 비어 있는 것은 아닙니다. 표의 일부가 0일 수 있습니다. 쓰기 전에 위 소스들이 그 주소를 쓰는지 확인하세요.
- - $1F 뒤쪽은 폰트 디코더가 읽는 범위라 새 그룹 데이터만 두는 게 안전합니다. [추정]
+ - A run of zeros is not necessarily free; part of a table can be 0. Before using one, check that none of the sources above write to those addresses.
+ - The back of $1F is within the range the font decoder reads, so it is safest to put only new group data there. [inferred]
 ```
 
-## 8. 확인 방법
+## 8. How it was checked
 
 ```text
- - Mesen 2 --testrunner + Lua (lua/). Lua 파일 입출력은 설정의 AllowIoOsAccess를 켜야 하고, LIBDIR은 절대 경로여야 합니다.
-   세이브스테이트 저장·불러오기는 CPU 실행 콜백 안에서만 됩니다. (lua/lib.lua)
- - 멈춤 찾기: 프레임마다 PC 기록(lua/qol/pcs.lua) → 의심 RAM 쓰기 감시(lua/qol/wtrace.lua) → 정상 경로와 비교
- - 회귀: 같은 세이브에서 A를 3만 프레임 연타했을 때 자동 저장 위치($7005AC)의 순서가 v1.1과 같은지 비교
- - 빌드마다 build/waits.tsv(입력 대기 위치 비교)와 build/overflow.tsv(9줄 초과)가 0건인지 확인
- - 에뮬레이터: compat/lr.py(libretro 코어를 직접 불러 같은 입력을 넣음)
-   최종 v1.2(CRC32 2C31A0B2)로 코어 6개 × 7가지: 새 게임(헤더 없음/있음), v1.1·v1.0·일본판 세이브 이어하기, 장 목록, 플로차트
-  에뮬레이터          결과
-  bsnes               정상 (7가지 모두)
-  bsnes-hd beta       정상 (7가지 모두). 화면을 224줄이 아닌 216줄로 내보냄
-  snes9x, snes9x2010  정상 (7가지 모두)
-  Beetle Supafaust    정상 (7가지 모두)
-  Mesen-S 코어        판정 불가. 7가지 모두 exit 139로 바로 종료. 일본판 원본도 같음
-  Mesen 2             정상 (1~4회차, 모든 세이브 종류 이어하기. 이 재측정 전에 직접 확인)
-   정상인 코어는 끝까지 같은 장면과 선택지로 갔고, 차이는 글자가 찍히는 타이밍 몇 프레임뿐이었습니다.
+ - Mesen 2 --testrunner + Lua (lua/). Lua file I/O needs AllowIoOsAccess turned on in the settings, and LIBDIR must be an absolute path.
+   Saving and loading savestates only works inside a CPU execution callback. (lua/lib.lua)
+ - Finding hangs: PC log every frame (lua/qol/pcs.lua) → write watch on suspicious RAM (lua/qol/wtrace.lua) → compare with the normal path
+ - Regression: from the same save, mash A for 30,000 frames and check that the sequence of autosave positions ($7005AC) matches v1.1
+ - For every build, check that build/waits.tsv (input wait positions compared) and build/overflow.tsv (over 9 lines) have 0 entries
+ - Emulators: compat/lr.py (loads libretro cores directly and feeds the same input)
+   With the final v1.2 (CRC32 2C31A0B2), 6 cores × 7 cases: new game (without/with header), continuing v1.1, v1.0 and Japanese saves, chapter list, flowchart
+  emulator            result
+  bsnes               OK (all 7)
+  bsnes-hd beta       OK (all 7). Outputs 216 lines instead of 224
+  snes9x, snes9x2010  OK (all 7)
+  Beetle Supafaust    OK (all 7)
+  Mesen-S core        undetermined. All 7 exit immediately with exit 139. Same with the Japanese original
+  Mesen 2             OK (playthroughs 1-4, continuing every kind of save. Checked by hand before this re-measurement)
+   The cores that passed reached the same scenes and choices to the end; the only difference was the timing of text printing, a few frames.
 ```
 
-## 9. 확인하지 않은 것
+## 9. Not checked
 
 ```text
- - 실기(실제 슈퍼 패미컴, 플래시 카트리지)에서 돌려 본 기록은 작업 노트에 없습니다. 위 에뮬레이터 결과만 있습니다.
- - 줄 수·입력 대기·점프는 도구로 모든 갈래를 계산했습니다. 에뮬레이터 화면으로는 장 30개의 첫 화면,
-   시나리오 3개를 3만 프레임씩 진행한 결과, 1~4회차 시작을 확인했습니다.
- - WRAM 빈 곳은 쓰기 감시를 돌린 장면에서만 확인했습니다. 감시에 걸리지 않은 장면이 쓸 가능성은 남아 있습니다. (2장)
- - 태스크 1($1989)이 소리를 미리 준비하는 태스크라는 것은 동작을 보고 한 해석입니다. (5장)
- - {23}/{24}가 읽던 표는 주소가 0으로 지워져 있어, 원래 어떤 장면을 고를 수 있었는지는 알 수 없습니다. (3장)
+ - The work notes have no record of running on real hardware (an actual Super Famicom, a flash cartridge). Only the emulator results above.
+ - Line counts, input waits and jumps were computed for every branch with the tools. On emulator screens, the first screen of all 30 chapters,
+   30,000 frames of each of the 3 scenarios, and the start of playthroughs 1-4 were checked.
+ - Free WRAM was checked only in the scenes the write watch ran through. A scene the watch did not cover may still use it. (section 2)
+ - That task 1 ($1989) prepares sounds in advance is an interpretation from its behaviour. (section 5)
+ - The table {23}/{24} read has its address cleared to 0, so which scenes could originally be picked is unknown. (section 3)
 
-사용한 도구 (작업한 환경에서 확인한 버전)
- - asar 1.91, Mesen 2.1.1, Python 3.9.6 + Pillow 11.3.0, macOS Vision (tools/ocr/, macOS에서만 동작)
+Tools used (versions checked in the working environment)
+ - asar 1.91, Mesen 2.1.1, Python 3.9.6 + Pillow 11.3.0, macOS Vision (tools/ocr/, macOS only)
 ```

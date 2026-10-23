@@ -1,94 +1,96 @@
-# [SFC] 드래곤볼 Z 초오공전: 돌격편 롬 분석 자료 (한글패치 v1.2 작업 기록)
+# [SFC] Dragon Ball Z: Super Gokuden – Totsugeki-hen ROM analysis (Korean patch v1.2 work notes)
+
+English | [한국어](ANALYSIS.ko.md)
 
 ```text
-v1.1·v1.2 한글패치를 작업하면서 확인한 롬 구조와 작업 방법을 정리했습니다.
-이 롬을 다시 분석하거나 패치를 이어 고칠 분을 위한 기록입니다.
-같은 엔진을 쓰는 초오공전 각성편의 분석 자료와 함께 보시면 도움이 될 것입니다.
-패치 페이지: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/
-각성편 페이지: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/
+The ROM structure and methods confirmed while working on the Korean patches v1.1 and v1.2.
+A record for anyone who analyses this ROM again or continues fixing the patch.
+It is best read together with the analysis of Super Gokuden Kakusei-hen, which uses the same engine.
+Patch page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/
+Kakusei-hen page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/
 
- - 대상 롬: 일본판 원본, 헤더 없음, 2,097,152바이트 (LoROM)
+ - Target ROM: Japanese original, no header, 2,097,152 bytes (LoROM)
    CRC32 D531289B / MD5 8BD89634D1B2205B1E7EF016485C0076
- - v1.0 롬: 일본판 + v1.0/v1.0.ips = CRC32 52FEF8C3
- - v1.1 롬: CRC32 7405D969 (v1.1 도구 묶음의 tools/build.sh 결과)
- - v1.2 롬: tools/build.sh 결과 = CRC32 81DAD733
- - 아래 주소 표기
-   · $XX:YYYY = SNES 주소 (뱅크:주소)
-   · 파일 0xNNNNN = 헤더 없는 롬 파일 기준 오프셋
-   · LoROM 변환: 파일 오프셋 = (뱅크 & 0x7F) × 0x8000 + (주소 & 0x7FFF)
- - 표시
-   · [실측] 롬 바이트를 읽거나 역어셈블하거나 에뮬레이터로 돌려 확인한 것
-   · [노트]  작업 중에 확인해 노트에 적었지만, 이 문서를 쓰며 다시 확인하지는 않은 것
-   · [추정] 코드 모양이나 정황으로 짐작한 것. 고치기 전에 직접 확인하세요.
+ - v1.0 ROM: Japanese + v1.0/v1.0.ips = CRC32 52FEF8C3
+ - v1.1 ROM: CRC32 7405D969 (output of tools/build.sh in the v1.1 tool bundle)
+ - v1.2 ROM: output of tools/build.sh = CRC32 81DAD733
+ - Address notation below
+   · $XX:YYYY = SNES address (bank:address)
+   · file 0xNNNNN = offset in the headerless ROM file
+   · LoROM conversion: file offset = (bank & 0x7F) × 0x8000 + (address & 0x7FFF)
+ - Markers
+   · [verified] checked by reading ROM bytes, disassembling, or running in an emulator
+   · [notes]    checked during the work and written in the notes, but not rechecked while writing this document
+   · [inferred] guessed from the shape of the code or circumstances. Check it yourself before changing anything.
 ```
 
-## 0. 롬 헤더와 메모리
+## 0. ROM header and memory
 
 ```text
-■ 롬 헤더 (파일 0x7FC0-0x7FFF) [실측]
-  0x7FC0  이름        "SFX DBZ TOTSUGEKIHEN " (21바이트)
-  0x7FD5  맵 모드     30   LoROM, FastROM
-  0x7FD6  카트리지    02   ROM + RAM + 배터리
-  0x7FD7  롬 크기     0B   2^11 KB = 2MB
-  0x7FD8  SRAM 크기   03   2^3 KB = 8KB
-  0x7FD9  지역        00   일본
-  0x7FDA  제조사      33   (확장 헤더 사용 표시)
-  0x7FDB  버전        00
-  0x7FDC  체크섬 보수 / 0x7FDE 체크섬 (리틀 엔디언)
-          일본판 EF0F / 10F0, v1.1 D498 / 2B67
-  리셋 벡터(0x7FFC) $8000, NMI 벡터(0x7FEA) $818D
+■ ROM header (file 0x7FC0-0x7FFF) [verified]
+  0x7FC0  title       "SFX DBZ TOTSUGEKIHEN " (21 bytes)
+  0x7FD5  map mode    30   LoROM, FastROM
+  0x7FD6  cartridge   02   ROM + RAM + battery
+  0x7FD7  ROM size    0B   2^11 KB = 2MB
+  0x7FD8  SRAM size   03   2^3 KB = 8KB
+  0x7FD9  region      00   Japan
+  0x7FDA  maker       33   (marks an extended header)
+  0x7FDB  version     00
+  0x7FDC  checksum complement / 0x7FDE checksum (little-endian)
+          Japanese EF0F / 10F0, v1.1 D498 / 2B67
+  reset vector (0x7FFC) $8000, NMI vector (0x7FEA) $818D
 
-■ 메모리
-  롬    2MB   뱅크 $80-$BF, 뱅크마다 $8000-$FFFF (32KB × 64)
+■ Memory
+  ROM   2MB   banks $80-$BF, $8000-$FFFF in each bank (32KB × 64)
   WRAM  128KB
   VRAM  64KB
-  SRAM  8KB   롬 헤더의 SRAM 크기 값
+  SRAM  8KB   the SRAM size value in the ROM header
 
-■ 이 문서에 나오는 WRAM 변수
-  $4D     지금 띄울 대사 ID (대사 뱅크 분기 $81:AC4C가 읽음) [실측]
-          그래픽 읽기 루틴($81:A703, $81:A8B0)도 이 자리를 잠깐 씁니다. [실측]
-  $0200   렌더러가 그리고 있는 글자 코드 ($B7:9767에서 저장) [실측]
-  $0208   지금 줄에서 이번 글자가 시작하는 x 위치(px) [실측]
-  $020A   창 폭(px) = $020E × 8 ($B7:9737에서 저장) [실측]
-  $020E   창 폭(8px 칸 수) [실측]
-  $0210   창 높이(8px 줄 수). 대사 창은 6 = 글자 3줄 [실측]
-  $32     지금 줄의 위치(8px 줄 수, 한 줄마다 2씩 늚) [실측]
-  $7E:0263  디버그 메뉴의 ADV(시나리오) 번호, 1바이트 [노트]
-  $011C   0일 때 대사 대기 중 START로 스토리 현황이 열림 [노트]
-  $0119   세이브 슬롯 번호 [노트]
+■ WRAM variables in this document
+  $4D     dialogue ID to show now (read by the dialogue bank dispatch $81:AC4C) [verified]
+          The graphics loading routines ($81:A703, $81:A8B0) also use this location briefly. [verified]
+  $0200   character code the renderer is drawing (stored at $B7:9767) [verified]
+  $0208   x position (px) where this character starts on the current line [verified]
+  $020A   window width (px) = $020E × 8 (stored at $B7:9737) [verified]
+  $020E   window width (in 8px cells) [verified]
+  $0210   window height (in 8px rows). 6 for dialogue windows = 3 lines of text [verified]
+  $32     current line position (in 8px rows, +2 per line) [verified]
+  $7E:0263  ADV (scenario) number of the debug menu, 1 byte [notes]
+  $011C   when 0, START while dialogue waits opens the story status [notes]
+  $0119   save slot number [notes]
 ```
 
-## 1. 부팅과 디버그 메뉴
+## 1. Boot and debug menu
 
 ```text
-■ 디버그 메뉴를 건너뛰는 자리 [실측]
-리셋 뒤 도는 루프($80:805E-$80:8078)에 이런 바이트가 있습니다.
+■ Where the debug menu is skipped [verified]
+The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
 
-  $80:8061 (파일 0x61)  80 04        BRA $8067    무조건 4바이트 건너뜀
-  $80:8063 (파일 0x63)  22 B0 86 82  JSL $8286B0  디버그 메뉴 루틴
-  $80:8067 (파일 0x67)  22 00 80 82  JSL $828000  제품판은 바로 여기로 감
+  $80:8061 (file 0x61)  80 04        BRA $8067    always skips 4 bytes
+  $80:8063 (file 0x63)  22 B0 86 82  JSL $8286B0  debug menu routine
+  $80:8067 (file 0x67)  22 00 80 82  JSL $828000  the retail game goes straight here
 
- - 파일 0x61의 80 04를 EA EA (NOP NOP)로 바꾸면 디버그 메뉴가 열립니다.
- - 메뉴: TITLE / FMAP / BATTLE / ADVENTURE / DATA / VOICE / ADVSE / BTLSE
+ - Changing 80 04 at file 0x61 to EA EA (NOP NOP) opens the debug menu.
+ - Menu: TITLE / FMAP / BATTLE / ADVENTURE / DATA / VOICE / ADVSE / BTLSE
  - ADVENTURE: MESS CHECK / FLAG ON/OFF / SCENARIO SELECT / SCENARIO START / AREAMAP PICTURE
-   · SCENARIO SELECT에서 ADV 번호($7E:0263)를 고르고 A로 확정
-     → SCENARIO START로 그 시나리오를 실제 플레이와 같이 시작합니다. [실측]
-   · 번호 0x00-0xFF가 모두 유효합니다. [노트]
-   · 장면 진행 플래그가 초기화된 상태로 시작하므로, 대화 장면은 실제 플레이와 같게 나옵니다. [노트]
- - DATA의 다섯 번째 항목(ENDING)으로 엔딩을 처음부터 볼 수 있습니다. [실측]
- - 배포한 v1.1 IPS는 이 바이트를 바꾸지 않습니다. 디버그 메뉴는 따로 고친 롬에서만 열립니다.
+   · Pick an ADV number ($7E:0263) in SCENARIO SELECT and confirm with A
+     → SCENARIO START starts that scenario as in real play. [verified]
+   · Numbers 0x00-0xFF are all valid. [notes]
+   · It starts with the scene progress flags reset, so dialogue scenes come out as in real play. [notes]
+ - The fifth item of DATA (ENDING) shows the ending from the start. [verified]
+ - The released v1.1 IPS does not change this byte. The debug menu opens only in a separately modified ROM.
 ```
 
-## 2. 대사
+## 2. Dialogue
 
 ```text
-■ ID와 뱅크 [실측]
- - ID 0x000-0x14F9 (5,370줄). 마지막 뱅크($8E)는 표 첫 포인터까지를 표로 봅니다.
- - 분기 루틴 $81:AC4C: $4D의 ID를 CMP #$14AD, #$121F … #$025C 순서로 비교해
-   뱅크를 고르고, LDA $A88000,X 처럼 그 뱅크의 표에서 포인터를 읽습니다.
+■ IDs and banks [verified]
+ - IDs 0x000-0x14F9 (5,370 lines). For the last bank ($8E), the table is taken to run up to the first pointer.
+ - Dispatch routine $81:AC4C: compares the ID in $4D with CMP #$14AD, #$121F … #$025C in that order
+   to pick the bank, then reads the pointer from that bank's table, as in LDA $A88000,X.
 
-     ID 범위        뱅크  포인터 표     v1.1 문자열 영역 사용량
-     000-25B        A8    $A8:8000      27,164 / 31,520바이트
+     ID range       bank  pointer table  v1.1 string area use
+     000-25B        A8    $A8:8000      27,164 / 31,520 bytes
      25C-570        A9    $A9:87D6      25,284 / 29,144
      571-81B        AB    $AB:8000      27,742 / 31,328
      81C-A64        9D    $9D:8000      28,376 / 31,484
@@ -96,380 +98,381 @@ v1.1·v1.2 한글패치를 작업하면서 확인한 롬 구조와 작업 방법
      CC7-F57        B2    $B2:8000      27,452 / 31,380
      F58-121E       B4    $B4:8000      27,184 / 31,312
      121F-14AC      B5    $B5:8000      28,058 / 31,430
-     14AD-14F9      8E    $8E:B67A       4,284 /  4,774 (전투 외침 7개 포함)
+     14AD-14F9      8E    $8E:B67A       4,284 /  4,774 (including 7 battle shouts)
 
-   사용량의 분모는 일본판 문자열이 차지하던 영역입니다(빌드 로그).
-   $A9:8000-$A9:87D5에는 선택지 표와 문자열이 있습니다.
+   The denominator is the area the Japanese strings occupied (build log).
+   $A9:8000-$A9:87D5 holds the choice table and strings.
 
- - 포인터는 2바이트, 같은 뱅크 안 주소입니다. 대사가 뱅크 밖으로 나갈 수 없습니다.
- - v1.1은 뱅크마다 일본어 문자열 영역 전체를 처음부터 다시 채웠습니다.
-   똑같은 문자열은 하나만 두고 포인터 여러 개가 같이 가리킵니다.
-   그래서 한 문자열을 제자리에서 고치면 다른 ID도 같이 바뀔 수 있습니다.
+ - Pointers are 2 bytes, addresses within the same bank. Dialogue cannot leave its bank.
+ - v1.1 refilled each bank's whole Japanese string area from the start.
+   Identical strings are stored once and shared by several pointers.
+   So fixing one string in place can change other IDs too.
 
-■ 문자열 형식 [실측]
- - 글자 하나 = 16비트 리틀 엔디언 코드
- - 0x000A = 줄바꿈, 0x0000 = 끝
- - 최상위 비트(0x8000)가 켜진 코드는 작은 글자(폭 8px/12px)로 그립니다.
- - 빈칸은 0x02C5, 「‥」 0x016B, 「！」 0x016C (v1.0·v1.1 글자 표 기준)
+■ String format [verified]
+ - One character = 16-bit little-endian code
+ - 0x000A = line break, 0x0000 = end
+ - Codes with the top bit (0x8000) set are drawn as small characters (8px/12px wide).
+ - Space is 0x02C5, 「‥」 0x016B, 「！」 0x016C (per the v1.0/v1.1 character table)
 
-■ 예: 대사 0x006 「어떻게/잡아 볼까‥」 (v1.1) [실측]
-  1) 0x006은 000-25B 범위 → 뱅크 $A8, 표 $A8:8000
-  2) $A8:8000 + 0x006 × 2 = $A8:800C (파일 0x14000C) → FE 85 → $85FE
-  3) $A8:85FE (파일 0x1405FE)부터 문자열
-       F3 08  어      B5 06  떻      27 05  게      0A 00  줄바꿈
-       A1 09  잡      C6 08  아      C5 02  빈칸    E5 07  볼
-       85 05  까      6B 01  ‥      00 00  끝
-  4) 창 정보: $8E:C9BA + 0x006 × 2 = $8E:C9C6 (파일 0x749C6) → 19 06
+■ Example: dialogue 0x006 「어떻게/잡아 볼까‥」 (v1.1) [verified]
+  1) 0x006 is in range 000-25B → bank $A8, table $A8:8000
+  2) $A8:8000 + 0x006 × 2 = $A8:800C (file 0x14000C) → FE 85 → $85FE
+  3) the string starts at $A8:85FE (file 0x1405FE)
+       F3 08  어      B5 06  떻      27 05  게      0A 00  line break
+       A1 09  잡      C6 08  아      C5 02  space   E5 07  볼
+       85 05  까      6B 01  ‥      00 00  end
+  4) window info: $8E:C9BA + 0x006 × 2 = $8E:C9C6 (file 0x749C6) → 19 06
 
-■ 창 정보와 창 폭
- - 대사마다 2바이트 창 정보가 $8E:C9BA + ID × 2에 있습니다. [실측]
- - 창 크기를 정하는 코드: $81:AD51-$81:ADDD [실측]
-   창 정보 첫 바이트($0239에 저장)로 갈립니다.
-     FF          나레이션 창  $020E = 0x16 (22칸 = 176px), $0210 = 6
-     FE          $020E = 0x10 (16칸 = 128px), $0210 = 6. 얼굴 창과 달리
-                 $81:B004·$81:D046·$81:D047 호출을 건너뜀 (화면은 확인하지 않음)
-     FD          창을 열지 않고 끝냄 ($81:AE07)
-     그 밖       얼굴 창      $020E = 0x10 (128px), $0210 = 6. 둘째 바이트는 $023F
-   일본판 대사 5,370줄 가운데 FF 38줄, FE 347줄, FD 0줄, 그 밖 4,985줄입니다.
-   이어서 $B7:9621 → $B7:9729가 $020A = $020E × 8을 넣고 $0208·$32를 0으로 만듭니다.
- - 각성편의 같은 코드는 $80:B879입니다(나레이션 0x15칸, 얼굴 0x10칸).
-   돌격편 나레이션 창은 각성편보다 1칸(8px) 넓습니다.
- - 글자 폭은 표가 아니라 렌더러 안의 비교문으로 정해집니다. ($B7:97DC-$B7:9846) [실측]
-     코드 0xBE4 / 0xBE5 / 0xBE6 / 0xBE7   2 / 4 / 6 / 7px
-     0x8000이 켜진 작은 글자              0x500 미만 8px, 이상 12px
-     0x500 이상                           13px (한자 자리 = 한글)
+■ Window info and window width
+ - Each dialogue has 2 bytes of window info at $8E:C9BA + ID × 2. [verified]
+ - Code that sets the window size: $81:AD51-$81:ADDD [verified]
+   It branches on the first byte of the window info (stored in $0239).
+     FF          narration window  $020E = 0x16 (22 cells = 176px), $0210 = 6
+     FE          $020E = 0x10 (16 cells = 128px), $0210 = 6. Unlike the face window it
+                 skips the calls to $81:B004, $81:D046 and $81:D047 (screen not checked)
+     FD          ends without opening a window ($81:AE07)
+     other       face window   $020E = 0x10 (128px), $0210 = 6. The second byte goes to $023F
+   Of the 5,370 Japanese dialogue lines, 38 are FF, 347 FE, 0 FD and 4,985 other.
+   Then $B7:9621 → $B7:9729 sets $020A = $020E × 8 and clears $0208 and $32.
+ - The same code in Kakusei-hen is at $80:B879 (narration 0x15 cells, face 0x10 cells).
+   The Totsugeki-hen narration window is one cell (8px) wider than Kakusei-hen's.
+ - Character widths are set by comparisons inside the renderer, not by a table. ($B7:97DC-$B7:9846) [verified]
+     codes 0xBE4 / 0xBE5 / 0xBE6 / 0xBE7  2 / 4 / 6 / 7px
+     small characters with 0x8000 set     8px below 0x500, 12px from 0x500
+     0x500 and above                      13px (kanji slots = Hangul)
      0x2C7, 0x2A2                         5px
      0x2C6                                4px
-     그 밖(0x100-0x4FF 가나 자리)         9px
-   tools/width1.py가 같은 규칙입니다.
- - 자동 줄바꿈 [실측]
-     $B7:9846  CLC / ADC $0208     이번 글자 폭 + 지금 x = 이번 글자의 오른쪽 끝
-     $B7:984A  CMP $020A           창 폭과 비교
-     $B7:984D  BEQ / BCC $B79890   같거나 작으면 그대로 그림
-     $B7:9851  INC $32 ×2          크면 다음 줄로 ($32 += 2)
-     $B7:9857  CMP $0210           $32가 $0210 이상이면 페이지 대기($B7:985E) 뒤 새 페이지
-   그래서 한 줄은 글자 폭 합이 창 폭과 같을 때까지 들어갑니다.
-   나레이션 176px, 얼굴 창 128px이 한계이고, 1px이라도 넘으면 마지막 글자가 다음 줄로 갑니다.
- - Mesen 2 확인: v1.1 롬의 대사 0x000(나레이션)을 시험 줄로 바꿔 새 게임에서 띄웠습니다.
-     「어」×8 + 「！」×8 = 176px   한 줄에 다 나옴
-     「어」×6 + 「！」×11 = 177px  마지막 「！」가 셋째 줄로 넘어감 ($B7:9851 실행)
-   창 정보를 19 00(얼굴 창)으로 바꾼 롬에서는 128px이 들어가고 129px에서 넘어갔습니다.
-   한 줄이 폭을 넘으면 마지막 글자들이 다음 줄로 밀리고,
-   그 줄이 4번째 줄이면 다음 페이지에 혼자 나옵니다. [실측: 대사 0x1022 화면]
- - v1.1 롬에서 가장 긴 줄은 나레이션 174px, 얼굴 창 128px, FE 창 127px입니다.
-   일본판은 나레이션 대사 0x000의 첫 줄이 정확히 176px입니다. [실측]
- - v1.0 롬에서 위 규칙(창 정보 첫 바이트 FF=176px, 아니면 128px)으로 세면
-   폭을 넘는 대사가 13줄 있었습니다(ID 033A 05C1 0D62-0D69 0EA6 0F3F 1022). [실측]
-   v1.1은 0줄입니다(tools/layout1.py).
+     other (0x100-0x4FF, kana slots)      9px
+   tools/width1.py follows the same rules.
+ - Automatic line breaks [verified]
+     $B7:9846  CLC / ADC $0208     this character's width + current x = right edge of this character
+     $B7:984A  CMP $020A           compare with the window width
+     $B7:984D  BEQ / BCC $B79890   if equal or less, draw it as is
+     $B7:9851  INC $32 ×2          if greater, go to the next line ($32 += 2)
+     $B7:9857  CMP $0210           if $32 is $0210 or more, page wait ($B7:985E) then a new page
+   So a line holds characters until the sum of their widths equals the window width.
+   The limits are 176px for narration and 128px for the face window; 1px over and the last character moves to the next line.
+ - Checked in Mesen 2: dialogue 0x000 (narration) of the v1.1 ROM was replaced with test lines and shown in a new game.
+     「어」×8 + 「！」×8 = 176px   fits on one line
+     「어」×6 + 「！」×11 = 177px  the last 「！」 moves to the third line ($B7:9851 runs)
+   In a ROM with the window info changed to 19 00 (face window), 128px fit and 129px wrapped.
+   When a line exceeds the width, its last characters are pushed to the next line,
+   and if that is the fourth line they appear alone on the next page. [verified: screen of dialogue 0x1022]
+ - The longest lines in the v1.1 ROM are 174px for narration, 128px for the face window and 127px for FE windows.
+   In the Japanese ROM, the first line of narration dialogue 0x000 is exactly 176px. [verified]
+ - Counting the v1.0 ROM with the rules above (first window info byte FF = 176px, otherwise 128px),
+   13 dialogue lines exceeded the width (IDs 033A 05C1 0D62-0D69 0EA6 0F3F 1022). [verified]
+   v1.1 has 0 (tools/layout1.py).
 ```
 
-## 3. 그 밖의 텍스트 (포인터 표)
+## 3. Other text (pointer tables)
 
 ```text
- tools/textsets.py에 정리했습니다. 모두 16비트 포인터, 뱅크 안 주소입니다. [실측]
+ Collected in tools/textsets.py. All are 16-bit pointers, addresses within the bank. [verified]
 
-     이름        뱅크  표            개수   v1.1 사용량       내용
-     battle      B1    $B1:9C34      769   15,338 / 19,820   전투 대사
-     event       AD    $AD:8000      204    4,706 /  8,770   스토리 현황 이벤트 목록
-     choice      A9    $A9:8000      117    1,826 /  5,632   선택지
-     minigame    98    $98:8000       56    1,422 /  3,456   미니게임
-     place       87    $87:8000      100    1,210 /  3,166   장소 이름
-     map         82    $82:B306       54        -            맵 이름 (v1.1에서 안 바꿈)
-     tech        84    $84:B605     (자동)  1,394 /  6,053   기술명
-     advice      9F    $9F:8000     (자동)  8,704 / 11,642   동료 코멘트 (232칸, 고유 132개)
-     enemy       AE    $AE:C910       55      462 /  2,108   전투 중 적 이름
-     save        81    (LDA # 피연산자 12곳)  544 /    840   세이브 장면 대사
+     name        bank  table         count   v1.1 use          contents
+     battle      B1    $B1:9C34      769   15,338 / 19,820   battle dialogue
+     event       AD    $AD:8000      204    4,706 /  8,770   event list in the story status
+     choice      A9    $A9:8000      117    1,826 /  5,632   choices
+     minigame    98    $98:8000       56    1,422 /  3,456   mini-games
+     place       87    $87:8000      100    1,210 /  3,166   place names
+     map         82    $82:B306       54        -            map names (unchanged in v1.1)
+     tech        84    $84:B605     (auto)  1,394 /  6,053   technique names
+     advice      9F    $9F:8000     (auto)  8,704 / 11,642   ally comments (232 entries, 132 unique)
+     enemy       AE    $AE:C910       55      462 /  2,108   enemy names in battle
+     save        81    (12 LDA # operands)    544 /    840   save scene dialogue
 
- (자동) = 첫 문자열 주소까지를 표로 봅니다.
- save는 표가 없고 $81 뱅크 코드의 LDA #$xxxx 피연산자가 곧 포인터입니다.
- 피연산자 위치(파일): D85A D860 D8C1 D86E D874 D882 D6AE D6BF D6D0 D6E1 D6F2 DA23
- 전투 외침 7개는 $8E에 있고, 포인터는 $81의 LDA # 피연산자입니다.
- 피연산자 위치(파일): E300 E380 E43F E573 E69B EB14 EB80 [실측]
+ (auto) = the table is taken to run up to the address of the first string.
+ save has no table; the LDA #$xxxx operands in bank $81 code are the pointers.
+ Operand locations (file): D85A D860 D8C1 D86E D874 D882 D6AE D6BF D6D0 D6E1 D6F2 DA23
+ The 7 battle shouts are in $8E; their pointers are LDA # operands in $81.
+ Operand locations (file): E300 E380 E43F E573 E69B EB14 EB80 [verified]
 
- 동료 코멘트창은 128px이고, 첫 줄에 이름이 붙어 나옵니다. [노트]
+ The ally comment window is 128px, and the name is attached to the first line. [notes]
 ```
 
-## 4. 폰트 (가변폭)
+## 4. Font (variable width)
 
 ```text
-■ 위치 [실측]
- - 렌더러 $B7:9763. 코드 범위로 시트를 고른 뒤 $B7:97D6에서 이어서 그립니다.
+■ Location [verified]
+ - Renderer $B7:9763. It picks a sheet by code range and continues drawing at $B7:97D6.
 
-     코드          크기    위치                          시트를 고르는 곳
-     0x100-0x4FF   8x16    $83:DE00 + (코드-0x100)*16    $B7:9785
-     0x500-0x7EF   16x16   $83:8000 + (코드-0x500)*32    $B7:97A0
-     0x7F0-0xBEF   16x16   $BF:8000 + (코드-0x7F0)*32    $B7:97BC
-     0xC00-0xFFF   16x16   v1.1에서 추가한 블록 (아래)   $B7:FA00
+     code          size    location                      where the sheet is picked
+     0x100-0x4FF   8x16    $83:DE00 + (code-0x100)*16    $B7:9785
+     0x500-0x7EF   16x16   $83:8000 + (code-0x500)*32    $B7:97A0
+     0x7F0-0xBEF   16x16   $BF:8000 + (code-0x7F0)*32    $B7:97BC
+     0xC00-0xFFF   16x16   blocks added in v1.1 (below)  $B7:FA00
 
- - 시트 한 줄 = 0x100바이트. 16x16 글자는 0x200바이트에 8개, 아래 절반은 +0x100.
-   (코드 - 시작 코드) ÷ 8 이 짝수인 코드만 글자 시작입니다.
- - 2bpp: 타일 한 줄은 2바이트(플레인 0, 플레인 1).
-   글자 픽셀 = 플레인 0만 1 (색 1), 그림자 픽셀 = 두 플레인 모두 1 (색 3).
-   그림자는 글자 픽셀의 오른쪽·아래·오른쪽 아래 칸 가운데 글자가 아닌 칸입니다.
-   v1.1이 새로 그린 글자는 모두 이 규칙과 맞습니다(tools/text_patch1.py의 draw_glyph).
+ - One sheet row = 0x100 bytes. 8 16x16 glyphs per 0x200 bytes, the lower half at +0x100.
+   Only codes where (code - start code) ÷ 8 is even start a glyph.
+ - 2bpp: one tile row is 2 bytes (plane 0, plane 1).
+   Glyph pixel = only plane 0 set (colour 1), shadow pixel = both planes set (colour 3).
+   The shadow is whichever of the right, lower and lower-right neighbours of a glyph pixel is not itself a glyph pixel.
+   Every glyph v1.1 drew follows this rule (draw_glyph in tools/text_patch1.py).
 
-■ v1.0이 쓴 자리 [노트]
- - 한자 자리 850개와 가나 자리 160개를 한글로 바꿔 썼습니다(1,010자).
- - 가나 자리 가운데 0x100-0x166, 0x180-0x1E6, 0x200-0x261은 8px 폭 한글입니다
-   (메뉴용, tools/kr1.py의 NARROW_HANGUL).
+■ Slots used by v1.0 [notes]
+ - It replaced 850 kanji slots and 160 kana slots with Hangul (1,010 characters).
+ - Of the kana slots, 0x100-0x166, 0x180-0x1E6 and 0x200-0x261 are 8px-wide Hangul
+   (for menus, NARROW_HANGUL in tools/kr1.py).
 
-■ v1.1 글자 추가 (tools/fontext1.py) [실측]
- - 후킹: $B7:97BC (파일 0x1B97BC)
-     일본판  38 E9 F0 07   SEC / SBC #$07F0
-     v1.1    5C 00 FA B7   JML $B7FA00
- - 새 코드: $B7:FA00-$B7:FA77 (파일 0x1BFA00, 0x78바이트, 일본판은 0xFF)
-     +0x00  CMP #$0C00 / BCS ext, 아니면 원래 $BF 처리 후 JML $B797D6
-     +0x23  ext: 0xC00을 빼고 0x80으로 나눠 블록 번호, 나머지 × 32 = 블록 안 위치
-     +0x60  블록 주소 표 (2바이트 × 8)
-     +0x70  블록 뱅크 표 (1바이트 × 8)
- - 블록 하나 4KB = 128코드(글자 64개), 블록 8개 = 512자
-     블록  코드         위치        파일       v1.1
-     0     C00-C7F      $81:EF00    0x0EF00    사용
-     1     C80-CFF      $84:EE00    0x26E00    사용
-     2     D00-D7F      $86:E000    0x36000    사용 (v1.1 D57까지, v1.2 D60까지)
-     3     D80-DFF      $86:F000    0x37000    비어 있음
-     4     E00-E7F      $A6:E600    0x136600   비어 있음
-     5     E80-EFF      $AE:EA00    0x176A00   비어 있음
-     6     F00-F7F      $B1:E500    0x18E500   비어 있음
-     7     F80-FFF      $B6:E600    0x1B6600   비어 있음
-   8곳 모두 일본판과 v1.0에서 4KB 전부 0xFF였습니다.
- - 폭 계산은 원래 0x500 이상을 모두 13px로 보므로 고칠 필요가 없었습니다.
- - v1.1이 새로 그린 글자 213자
-   · 안 쓰게 된 칸 37개 (0x587, 0x6F5 … 0xBE3. 빌드 로그 "new glyph")
-   · 새 블록 176자 (0xC00-0xD57)
-   v1.2이 「펴」 1자를 0xD60에 더 그렸습니다(11절).
-   새 글자는 Galmuri11 12px로 그리고 그림자를 위 규칙으로 붙였습니다.
- - 예: 「쫓」 = 0xCE5
-     0xCE5 - 0xC00 = 0xE5 → 블록 1($84:EE00), 블록 안 0x65
-     $84:EE00 + 0x65 × 32 = $84:FAA0 (파일 0x27AA0)
-     위 타일 0x27AA0·0x27AB0, 아래 타일 0x27BA0·0x27BB0
+■ Glyphs added in v1.1 (tools/fontext1.py) [verified]
+ - Hook: $B7:97BC (file 0x1B97BC)
+     Japanese  38 E9 F0 07   SEC / SBC #$07F0
+     v1.1      5C 00 FA B7   JML $B7FA00
+ - New code: $B7:FA00-$B7:FA77 (file 0x1BFA00, 0x78 bytes, 0xFF in the Japanese ROM)
+     +0x00  CMP #$0C00 / BCS ext, otherwise the original $BF handling then JML $B797D6
+     +0x23  ext: subtract 0xC00, divide by 0x80 for the block number, remainder × 32 = position in the block
+     +0x60  block address table (2 bytes × 8)
+     +0x70  block bank table (1 byte × 8)
+ - One block is 4KB = 128 codes (64 glyphs); 8 blocks = 512 glyphs
+     block code         location    file       v1.1
+     0     C00-C7F      $81:EF00    0x0EF00    used
+     1     C80-CFF      $84:EE00    0x26E00    used
+     2     D00-D7F      $86:E000    0x36000    used (v1.1 up to D57, v1.2 up to D60)
+     3     D80-DFF      $86:F000    0x37000    empty
+     4     E00-E7F      $A6:E600    0x136600   empty
+     5     E80-EFF      $AE:EA00    0x176A00   empty
+     6     F00-F7F      $B1:E500    0x18E500   empty
+     7     F80-FFF      $B6:E600    0x1B6600   empty
+   All 8 locations were 0xFF for the full 4KB in the Japanese ROM and v1.0.
+ - The width calculation already treats everything from 0x500 as 13px, so it needed no change.
+ - 213 glyphs newly drawn by v1.1
+   · 37 slots that fell out of use (0x587, 0x6F5 … 0xBE3. "new glyph" in the build log)
+   · 176 in the new blocks (0xC00-0xD57)
+   v1.2 drew one more, 「펴」, at 0xD60 (section 11).
+   New glyphs were drawn with Galmuri11 at 12px, with the shadow added by the rule above.
+ - Example: 「쫓」 = 0xCE5
+     0xCE5 - 0xC00 = 0xE5 → block 1 ($84:EE00), 0x65 within the block
+     $84:EE00 + 0x65 × 32 = $84:FAA0 (file 0x27AA0)
+     upper tiles 0x27AA0 and 0x27AB0, lower tiles 0x27BA0 and 0x27BB0
 ```
 
-## 5. 타이틀 화면
+## 5. Title screen
 
 ```text
- - 압축: LZSS, 각성편과 같은 형식 (tools/lz.py) [실측]
-   형식 풀이는 각성편 페이지의 「압축된 타이틀 그림」 절에 있습니다.
- - 해제 루틴 [실측]
-     $81:DF4F   A = 압축 자료 주소, X(8비트) = 뱅크. $7E:8000에 풀고 크기를 $F0에 남김
-     $81:DFE7   $81:DF4F를 부른 뒤 $81:DFEB에서 16바이트 타일마다 플레인 순서를 바꿈
-   일본판에서 JSL $81DF4F는 15곳($81:DFE7 안의 1곳 제외), JSL $81DFE7은 26곳입니다.
-   타이틀은 아래 두 읽기 루틴이 부릅니다.
-     $81:A703   표 $81:A743 (5바이트 항목)의 A번째 → $81:DF4F → JSL $81DFEB (타일)
-     $81:A8B0   표 $81:A8EC (5바이트 항목)의 A번째 → $81:DF4F (배치표 등)
-   Mesen 2에서 부팅 뒤 기록한 순서(일본판과 v1.1 같음):
-     프레임 114  $81:A703 4번 → $B7:ACCF     프레임 126  $81:A703 3번 → $B7:9EB1 (타이틀 타일)
-     프레임 135·137·139  $81:A8B0 → $B7:BAB9, $B7:BD47, $B7:B94F
-     프레임 536  $81:A8B0 39번 → $B7:BE7F (타이틀 배치표)
- - lz.py 머리말의 $80:9CFA·$80:9DA7은 각성편의 해제 루틴 주소입니다.
-   돌격편 $80:9CFA는 메뉴 커서 코드 중간입니다. 형식은 같아서 lz.py는 그대로 맞습니다.
- - 타이틀 BG3 자료 2개, 5바이트 항목(주소 하위, 주소 상위, 뱅크, 크기 하위, 크기 상위) [실측]
-     자료              항목 위치(파일)   데이터       압축 크기 일본판 → v1.1
-     2bpp 타일         0xA752            $B7:9EB1     0xE1D → 0xCA5 (3,613 → 3,237바이트)
-     32x32 타일맵      0xA9AF            $B7:BE7F     0x30D → 0x30B (781 → 779바이트)
- - v1.1은 두 자료 모두 다시 압축해 제자리에 넣었습니다. 항목은 일본판 그대로입니다. [실측]
-   더 길어지면 title.py가 빈 영역(파일 0x13F300 = $A7:F300, 0x17FB40 = $AF:FB40)으로
-   옮기고 항목을 고치게 되어 있습니다. 두 곳은 일본판에서 0xFF이고 v1.1에서도 비어 있습니다.
- - 셀 배치가 각성편과 똑같아서 각성편 v1.2의 도구를 주소만 바꿔 썼습니다.
- - "DRAGON BALL Z" 로고와 "(c) BANDAI 1995"는 원본 그대로입니다.
-   이 (c) 타일은 저작권 첫 줄과 같이 쓰므로 건드리면 안 됩니다. [노트]
+ - Compression: LZSS, the same format as Kakusei-hen (tools/lz.py) [verified]
+   The format is explained in the "Compressed title graphics" section of the Kakusei-hen page.
+ - Decompression routines [verified]
+     $81:DF4F   A = compressed data address, X (8-bit) = bank. Decompresses to $7E:8000 and leaves the size in $F0
+     $81:DFE7   calls $81:DF4F, then at $81:DFEB swaps the plane order of every 16-byte tile
+   In the Japanese ROM, JSL $81DF4F appears 15 times (excluding the 1 inside $81:DFE7) and JSL $81DFE7 26 times.
+   The title is loaded by the two loading routines below.
+     $81:A703   entry A of table $81:A743 (5-byte entries) → $81:DF4F → JSL $81DFEB (tiles)
+     $81:A8B0   entry A of table $81:A8EC (5-byte entries) → $81:DF4F (tilemaps etc.)
+   Order recorded in Mesen 2 after boot (same in the Japanese ROM and v1.1):
+     frame 114  $81:A703 #4 → $B7:ACCF     frame 126  $81:A703 #3 → $B7:9EB1 (title tiles)
+     frames 135, 137, 139  $81:A8B0 → $B7:BAB9, $B7:BD47, $B7:B94F
+     frame 536  $81:A8B0 #39 → $B7:BE7F (title tilemap)
+ - $80:9CFA and $80:9DA7 in the header comment of lz.py are the Kakusei-hen decompression routine addresses.
+   In Totsugeki-hen, $80:9CFA is in the middle of menu cursor code. The format is the same, so lz.py works as is.
+ - Two BG3 data sets for the title, 5-byte entries (address low, address high, bank, size low, size high) [verified]
+     data              entry (file)      data         compressed size Japanese → v1.1
+     2bpp tiles        0xA752            $B7:9EB1     0xE1D → 0xCA5 (3,613 → 3,237 bytes)
+     32x32 tilemap     0xA9AF            $B7:BE7F     0x30D → 0x30B (781 → 779 bytes)
+ - v1.1 recompressed both and put them back in place. The entries are unchanged from the Japanese ROM. [verified]
+   If they grow, title.py moves them to free space (file 0x13F300 = $A7:F300, 0x17FB40 = $AF:FB40)
+   and fixes the entries. Both locations are 0xFF in the Japanese ROM and still empty in v1.1.
+ - The cell layout is identical to Kakusei-hen, so the Kakusei-hen v1.2 tool was reused with only the addresses changed.
+ - The "DRAGON BALL Z" logo and "(c) BANDAI 1995" are left as in the original.
+   This (c) tile is shared with the first copyright line, so do not touch it. [notes]
 ```
 
-## 6. 메뉴 문자열 (포인터 표 밖) [노트]
+## 6. Menu strings (outside the pointer tables) [notes]
 
 ```text
- tables/ui-fixes.tsv: 파일 오프셋, 현재 문자열, 새 문자열[, 최대 코드 수]
- - 타이틀 메뉴: 파일 0x6F17 (NEW GAME / OPTION), 0x6F3D (CONTINUE / NEW GAME / OPTION)
-   선택 강조는 글자 위치를 따라가므로 칸만 맞추면 됩니다.
- - 이벤트 목록 머리글 $80:F530(v1.0이 옮긴 위치), 바닥글 첫 문자열 $80:BE3A
-   v1.0 코드가 바닥글 두 번째 문자열을 $80:F54A+X에서 읽으므로
-   첫 문자열 길이(8코드)를 바꾸면 안 됩니다.
- - 엔딩 크레딧: 줄마다 B7 뱅크의 고정 칸 (출연진 파일 0x1BDE83부터, 스태프 0x1BE5F1부터)
-   칸 크기가 일본어 줄 길이로 정해져 있어 그보다 길게 쓸 수 없습니다.
-   출연진 열 중심: 3열 48/128/208px, 2열 88/168px (tools/credits1.py)
+ tables/ui-fixes.tsv: file offset, current string, new string[, maximum code count]
+ - Title menu: file 0x6F17 (NEW GAME / OPTION), 0x6F3D (CONTINUE / NEW GAME / OPTION)
+   The selection highlight follows the text position, so only the cells need to line up.
+ - Event list header $80:F530 (location v1.0 moved it to), first footer string $80:BE3A
+   v1.0 code reads the second footer string from $80:F54A+X,
+   so the length of the first string (8 codes) must not change.
+ - Ending credits: a fixed slot in bank B7 per line (cast from file 0x1BDE83, staff from 0x1BE5F1)
+   The slot sizes are set by the Japanese line lengths, so a line cannot be longer.
+   Cast column centres: 3 columns 48/128/208px, 2 columns 88/168px (tools/credits1.py)
 ```
 
-## 7. 클리어 표 이벤트 목록 문제 (v1.1에서 수정)
+## 7. Clear table event list problem (fixed in v1.1)
 
 ```text
- - 들어가는 방법: 대사가 떠 있을 때 START → 스토리 현황($80:C218)
-   → 오른쪽 메뉴 「클리어 표」 → 기술습득표에서 B → 이벤트 목록
-   (대사 대기 루프 $81:BE6F에서 START, $011C가 0일 때) [노트]
- - 아래로 내리는 조건은 $80:BC8A의 CMP #$00CD(205)입니다. 이벤트는 204개(0-203)입니다. [실측]
- - 맨 아래에서는 숨은 205번째 줄(번호 204)을 그리는데,
-   이 줄의 포인터 자리($AD:8198, 파일 0x168198)에는 첫 이벤트 이름의 글자 코드가 있습니다.
-   이것을 주소로 읽어서 WRAM 그 자리의 값을 문자열로 출력합니다.
-     일본판 A5 05 → $05A5,  v1.0 86 06 → $0686,  v1.1 FA 93 → $AD:93FA (00 00, 빈 문자열) [실측]
- - 그 자리에 끝 표시가 늦게 나오면 줄이 넘쳐서, B로 목록을 닫을 수 없게 됩니다.
-   이때 A를 누르면 기술 설정 화면으로 넘어갑니다.
-   v1.0은 디버그 시나리오 0x00-0xF8(8 간격) 중 0xC0에서 실제로 목록이 닫히지 않았고,
-   v1.1은 같은 장면에서 B 두 번으로 게임에 돌아옵니다. [실측, lua/eventlist.lua]
- - 이벤트 이름은 번호 앞머리(64px)를 뺀 160px 안에 들어가야 합니다. [노트]
+ - How to get there: START while dialogue is shown → story status ($80:C218)
+   → 「클리어 표」 (clear table) in the right-hand menu → B on the technique table → event list
+   (START in the dialogue wait loop $81:BE6F, when $011C is 0) [notes]
+ - The scroll-down condition is CMP #$00CD (205) at $80:BC8A. There are 204 events (0-203). [verified]
+ - At the bottom it draws a hidden 205th row (number 204);
+   the pointer slot for this row ($AD:8198, file 0x168198) holds the character code of the first event name.
+   It is read as an address, and the WRAM value at that address is printed as a string.
+     Japanese A5 05 → $05A5,  v1.0 86 06 → $0686,  v1.1 FA 93 → $AD:93FA (00 00, empty string) [verified]
+ - If the end marker comes late at that address, the row overflows and B can no longer close the list.
+   Pressing A then goes to the technique setup screen.
+   In v1.0 the list actually failed to close at 0xC0 among debug scenarios 0x00-0xF8 (every 8),
+   and in v1.1 two presses of B return to the game in the same scene. [verified, lua/eventlist.lua]
+ - Event names must fit in the 160px left after the number prefix (64px). [notes]
 ```
 
-## 8. 회귀 테스트 (Mesen 2)
+## 8. Regression tests (Mesen 2)
 
 ```text
- - 대사마다 창 정보($8E:C9BA + ID*2)를 읽으므로, 이 영역의 읽기를 감시해 대사 ID를 기록합니다.
- - 256개 시나리오를 일본판과 v1.1에서 A 연타로 8000프레임씩 진행하고
-   나온 대사 ID 순서를 비교했습니다. (lua/scenario.lua, tools/rgcmp1.py) [실측]
-   순서가 다르거나 v1.1에서 먼저 멈춘 시나리오는 없었습니다.
-   (한글 대사가 짧아 v1.1이 같은 시간에 더 진행한 경우만 있었습니다)
- - A 버튼을 여러 프레임 누르고 있으면 글자 출력 완료와 페이지 넘김이 한꺼번에 일어나
-   페이지가 화면에 다 나오지 않습니다. 촬영할 때는 1프레임만 눌렀습니다.
- - 스크린샷은 3프레임마다 찍고, 아래 절반의 흰 글자가 지워지기 직전 화면을
-   페이지 완성 화면으로 골랐습니다. (tools/pages1.py)
- - 줄 폭 한계 확인: tools/wintest1.py로 시험 롬을 만들고 lua/wintest.lua로 새 게임을 돌립니다.
+ - Every dialogue reads its window info ($8E:C9BA + ID*2), so watching reads of this area records the dialogue IDs.
+ - All 256 scenarios were played for 8000 frames each with A mashing on the Japanese ROM and v1.1,
+   and the sequences of dialogue IDs compared. (lua/scenario.lua, tools/rgcmp1.py) [verified]
+   No scenario had a different order or stopped earlier on v1.1.
+   (The only differences were cases where v1.1 got further in the same time because the Korean lines are shorter)
+ - Holding A for several frames finishes the text output and turns the page at once,
+   so the page is never fully shown. Captures used single-frame presses.
+ - Screenshots were taken every 3 frames, and the frame just before the white text in the lower half is erased
+   was picked as the finished page. (tools/pages1.py)
+ - Checking the line width limit: build test ROMs with tools/wintest1.py and run a new game with lua/wintest.lua.
      python3 tools/wintest1.py super-gokuden-kr-v1.1.smc wt
      SHOT_DIR=wt/narr Mesen --testrunner wt/narr.smc lua/wintest.lua
-   wt/narr/log.txt에 WINSET(창 크기), chk($B7:984A의 비교 값), WRAP(줄 넘김)이 남습니다.
+   wt/narr/log.txt records WINSET (window size), chk (the value compared at $B7:984A) and WRAP (line wrap).
 
-■ 에뮬레이터 호환성 [실측]
- - compat/lr.py: libretro 코어를 직접 불러 같은 입력을 넣는 작은 프로그램.
-   compat/run_all.sh가 코어마다 새 게임(s_new.txt)과 이어하기(s_cont.txt, v1.0 세이브)를 돌립니다.
-   Mesen 2는 compat/mesen.lua로 같은 입력 파일을 재생합니다.
+■ Emulator compatibility [verified]
+ - compat/lr.py: a small program that loads libretro cores directly and feeds them the same input.
+   compat/run_all.sh runs a new game (s_new.txt) and a continue (s_cont.txt, v1.0 save) on each core.
+   Mesen 2 plays the same input file with compat/mesen.lua.
      SCRIPT=compat/s_cont.txt SRM=roms/save.srm SHOT_DIR=out Mesen --testrunner v11.sfc compat/mesen.lua
- - 롬: 일본판, v1.0, v1.1, v1.2, 헤더 붙은 v1.1·v1.2(512바이트). 16,000프레임.
-   v1.2은 이름 입력 화면(프레임 2,000-4,000)에서 글자판 다섯 칸이 다른 것 말고는
-   모든 코어에서 v1.1과 같은 화면, 같은 대사 ID 순서였습니다.
-     Mesen 2.1.1              정상. 이어하기 대사 ID($4D) 순서가 여섯 롬 모두 같음
-     bsnes, bsnes-hd beta     정상 (bsnes-hd beta는 216줄로 출력)
-     snes9x, snes9x2010       정상. snes9x2010도 이어하기 대사 ID 순서가 여섯 롬 모두 같음
-     Beetle Supafaust         정상. 새 게임은 몇 프레임 어긋나 필드에서 다른 길로 감
-                              (일본판도 코어마다 같은 정도로 갈라짐)
-     Mesen-S 코어             판정 불가. 일본판 원본도 lr.py에서 바로 종료(exit 139)
- - libretro 코어 다섯 개에서 헤더 있는 v1.1과 없는 v1.1의 화면이 픽셀까지 같았습니다.
- - 이어하기는 대사가 끝난 뒤(약 4,700프레임) 검은 화면이 이어집니다.
-   일본판도 모든 에뮬레이터에서 같은 곳에서 같은 화면이라 패치와 관계없습니다.
-   이때 CPU는 $80:8147(프레임 대기 루프)에 있습니다.
- - bsnes, bsnes-hd beta, Supafaust 코어는 lr.py에 WRAM을 내주지 않아 wram.log가 비고,
-   화면으로만 비교했습니다.
+ - ROMs: Japanese, v1.0, v1.1, v1.2, and headered v1.1 and v1.2 (512 bytes). 16,000 frames.
+   Apart from five different cells of the character board on the name entry screen (frames 2,000-4,000),
+   v1.2 gave the same screens and the same dialogue ID order as v1.1 on every core.
+     Mesen 2.1.1              OK. Continue dialogue ID ($4D) order identical on all six ROMs
+     bsnes, bsnes-hd beta     OK (bsnes-hd beta outputs 216 lines)
+     snes9x, snes9x2010       OK. snes9x2010 also has the same continue dialogue ID order on all six ROMs
+     Beetle Supafaust         OK. The new game drifts by a few frames and takes a different path on the field
+                              (the Japanese ROM diverges by the same amount between cores)
+     Mesen-S core             undetermined. Even the Japanese original exits immediately in lr.py (exit 139)
+ - On five libretro cores, headered and headerless v1.1 gave pixel-identical screens.
+ - In the continue run, a black screen follows after the dialogue ends (about 4,700 frames).
+   The Japanese ROM shows the same screen at the same point on every emulator, so it is unrelated to the patch.
+   At that point the CPU is at $80:8147 (frame wait loop).
+ - The bsnes, bsnes-hd beta and Supafaust cores do not expose WRAM to lr.py, so wram.log is empty
+   and only the screens were compared.
 ```
 
-## 9. 세이브(SRAM)
+## 9. Saves (SRAM)
 
 ```text
- - SRAM 8KB (롬 헤더 0x7FD8 = 03) [실측]
- - 저장 루틴 $81:D210 (슬롯 번호 $0119), 불러오기 $81:D3A9 [노트]
-   두 주소를 부르는 JSL이 롬에 있습니다($81:D8B2, $B7:90E4). [실측]
- - v1.1은 세이브 구조를 바꾸지 않았습니다.
-   v1.0에서 만든 세이브를 v1.1에서 불러와 이어서 진행되는 것을 확인했습니다. [실측]
+ - SRAM 8KB (ROM header 0x7FD8 = 03) [verified]
+ - Save routine $81:D210 (slot number $0119), load $81:D3A9 [notes]
+   JSLs calling both addresses are in the ROM ($81:D8B2, $B7:90E4). [verified]
+ - v1.1 did not change the save structure.
+   A save made in v1.0 was loaded in v1.1 and play continued. [verified]
 ```
 
-## 10. v1.1이 쓴 빈 공간과 바꾼 뱅크
+## 10. Free space used by v1.1 and banks changed
 
 ```text
- - "0xFF가 이어진 곳 = 빈 공간"으로 보면 안 됩니다.
-   원본 롬에서도 0xFF인지, 바로 앞에 0xFFFF를 끝 표시로 쓰는 자료가 없는지 확인해야 합니다.
-   (각성편 v1.1이 이것을 놓쳐 우주선이 맵 밖으로 나가는 버그를 냈습니다.)
- - v1.1이 새로 쓴 빈 공간 [실측]
-     $B7:FA00-$B7:FA77   글자 블록 찾는 코드와 표
-     $81:EF00-$81:FEFF   글자 블록 0
-     $84:EE00-$84:FDFF   글자 블록 1
-     $86:E000-$86:EBFF   글자 블록 2 (3KB만 씀)
-     $86:EC00-$86:EC1F, $86:ED00-$86:ED1F   v1.2의 「펴」(0xD60, 위·아래 절반)
-   대사·텍스트는 각 뱅크의 원래 문자열 영역 안에서만 다시 채웠습니다.
- - v1.0 롬과 v1.1 롬을 비교해 바이트가 바뀐 뱅크 [실측]
-     80 메뉴 문자열·체크섬      81 세이브 대사·전투 외침 포인터·글자 블록 0
-     83 폰트(안 쓰게 된 칸)      84 기술명·글자 블록 1      86 글자 블록 2
-     87 장소 이름               8E 대사                  98 미니게임
-     9D 9E A8 A9 AB B2 B4 B5 대사 (A9는 선택지도)          9F 동료 코멘트
-     AD 이벤트 목록·204번 포인터  AE 적 이름                B1 전투 대사
-     B7 후킹·새 코드·타이틀 그림·엔딩 크레딧                BF 폰트(안 쓰게 된 칸)
- - 롬 헤더 체크섬: 파일 0x7FDC-0x7FDF (보수 2바이트 + 체크섬 2바이트)
-   롬을 고친 뒤 다시 계산했습니다. (tools/fixsum.py)
+ - Do not assume "a run of 0xFF = free space".
+   Check that it is 0xFF in the original ROM too, and that no data right before it uses 0xFFFF as an end marker.
+   (Kakusei-hen v1.1 missed this and caused a bug where the spaceship flies off the map.)
+ - Free space newly used by v1.1 [verified]
+     $B7:FA00-$B7:FA77   glyph block lookup code and tables
+     $81:EF00-$81:FEFF   glyph block 0
+     $84:EE00-$84:FDFF   glyph block 1
+     $86:E000-$86:EBFF   glyph block 2 (only 3KB used)
+     $86:EC00-$86:EC1F, $86:ED00-$86:ED1F   v1.2's 「펴」 (0xD60, upper and lower halves)
+   Dialogue and text were refilled only within each bank's original string area.
+ - Banks whose bytes changed between the v1.0 and v1.1 ROMs [verified]
+     80 menu strings, checksum     81 save dialogue, battle shout pointers, glyph block 0
+     83 font (slots out of use)    84 technique names, glyph block 1    86 glyph block 2
+     87 place names                8E dialogue              98 mini-games
+     9D 9E A8 A9 AB B2 B4 B5 dialogue (A9 also choices)     9F ally comments
+     AD event list, pointer 204    AE enemy names           B1 battle dialogue
+     B7 hooks, new code, title graphics, ending credits     BF font (slots out of use)
+ - ROM header checksum: file 0x7FDC-0x7FDF (2-byte complement + 2-byte checksum)
+   Recomputed after changing the ROM. (tools/fixsum.py)
 ```
 
-## 11. 각성편으로 넘기는 암호 (v1.2에서 수정)
+## 11. Password carried over to Kakusei-hen (fixed in v1.2)
 
 ```text
- - v1.2 엔딩은 데이터 암호 대신 고정 암호 「손오공은사이어인」을 보여 줍니다(tools/endpw1.py). [실측]
-   각성편 v1.3(CRC32 B9F14962)에 이 여덟 글자를 넣으면 통과해 이름 화면으로 갑니다.
-   이름은 넘어가지 않아 각성편 기본 이름 「엑소버드」입니다(Mesen 2). [실측]
-   · $81:D169-$81:D1C4(쌍 바꾸기 $81:D169-$81:D19B, 다섯 자씩 옮기기 $81:D19C-$81:D1C4)를
-     복사 루프(LDX #0 / LDA $81:D17D,X / BEQ / STA $0A00,X / INX INX / BRA, TXY, BRL $81:D1C5)와
-     문자열로 바꿨습니다. 남는 자리는 0xFF.
-   · 문자열($81:D17D): 000A, 82C5×5, 8182 81A7 8106 81AF 8221 81C1 81A2 81C2, 000A 000A, 0000
-     창은 18칸(144px) × 14줄. 작은 글자는 8px라 여덟 글자 64px을 빈칸 다섯(40px) 뒤에 두어 가운데에 놓고,
-     둘째 줄에 씁니다. $81:D1C5의 원래 코드가 줄바꿈과 " TO BE CONTINUED"를 다섯째 줄에 붙입니다.
-   · $1F00의 데이터 바이트와 합계는 그대로 만들어지지만 화면에는 나오지 않습니다.
- - 아래는 원래 데이터 암호의 형식과, v1.2에서 tools/endpw1.py만 빼고 만든 실험용 롬으로 확인한 결과입니다.
+ - The v1.2 ending shows the fixed password 「손오공은사이어인」 ("Son Goku is a Saiyan") instead of the data password (tools/endpw1.py). [verified]
+   Entering these eight characters in Kakusei-hen v1.3 (CRC32 B9F14962) passes and goes to the name screen.
+   No name is carried over, so it is Kakusei-hen's default name 「엑소버드」 (Mesen 2). [verified]
+   · $81:D169-$81:D1C4 (pair swapping $81:D169-$81:D19B, moving five characters at a time $81:D19C-$81:D1C4) was replaced
+     with a copy loop (LDX #0 / LDA $81:D17D,X / BEQ / STA $0A00,X / INX INX / BRA, TXY, BRL $81:D1C5)
+     and the string. The leftover bytes are 0xFF.
+   · String ($81:D17D): 000A, 82C5×5, 8182 81A7 8106 81AF 8221 81C1 81A2 81C2, 000A 000A, 0000
+     The window is 18 cells (144px) × 14 lines. Small characters are 8px, so the eight characters (64px) follow five spaces (40px)
+     to be centred, on the second line. The original code at $81:D1C5 appends a line break and " TO BE CONTINUED" on the fifth line.
+   · The data bytes and sum at $1F00 are still produced but not shown on screen.
+ - What follows is the format of the original data password and results checked with an experimental ROM
+   built from v1.2 without tools/endpw1.py.
 
- - 돌격편 엔딩 마지막 화면(TO BE CONTINUED)에 가나 50자(5자씩 10묶음) 암호가 나옵니다.
-   각성편은 새 게임 → 「突激編のつづき」(한글판 「암호」)에서 이 암호를 넣습니다.
-   입력 화면은 히라가나 판이고 X로 가타카나 판으로 바꿉니다. [실측]
- - 암호 문자열은 WRAM $7E:0A00에 있습니다. 가나 코드에 0x8000을 켠 작은 글자 코드이고,
-   5자마다 0x82C5(빈칸), 끝에 0x000A와 「TO BE CONTINUED」가 붙습니다. [실측]
- - 두 글자가 1바이트입니다. 쌍 표 $B7:F09F(256쌍 × 코드 2개, 일본판 그대로)에서
-   순번이 바이트 값입니다. 25쌍 = 23바이트 + 합계 2바이트. [실측]
-   바이트 7-16은 주인공 이름(16비트 글자 코드 5개)입니다.
-   이름은 WRAM $7E:0B01부터 13바이트 간격으로 5명(주인공, 라이벌, 부하, 나쁜놈, 조언자)입니다. [실측]
- - 디버그 메뉴 DATA → ENDING 암호(일본판·v1.1·v1.2 모두 같은 코드) [실측]
+ - The last screen of the Totsugeki-hen ending (TO BE CONTINUED) shows a 50-kana password (10 groups of 5).
+   Kakusei-hen takes it at new game → 「突激編のつづき」 (「암호」 in the Korean version).
+   The entry screen is the hiragana board; X switches to the katakana board. [verified]
+ - The password string is in WRAM $7E:0A00. It uses small-character codes (kana codes with 0x8000 set),
+   with 0x82C5 (space) every 5 characters and 0x000A and 「TO BE CONTINUED」 at the end. [verified]
+ - Two characters make one byte. The byte value is the index in the pair table $B7:F09F
+   (256 pairs × 2 codes, unchanged from the Japanese ROM). 25 pairs = 23 bytes + 2-byte sum. [verified]
+   Bytes 7-16 are the hero's name (five 16-bit character codes).
+   Names are stored for 5 characters (hero, rival, henchman, villain, adviser) from WRAM $7E:0B01, 13 bytes apart. [verified]
+ - The debug menu DATA → ENDING password (same codes in the Japanese ROM, v1.1 and v1.2) [verified]
      あにあにあ にあにあに あにあにぺ とあにぺと あにぺとあ
      にぺとあに ぺとあにぺ とのれあに リナノレあ にばタあに
-   한글판 화면:  가녕가녕가 녕가녕가녕 가녕가녕성 너가녕성너 가녕성너가
-                 녕성너가녕 성너가녕성 너누똑가녕 잘건와전가 녕브알가녕
-   암호를 만드는 루틴의 주소는 찾지 않았습니다.
- - 한글판 화면 글자 [실측]
-   v1.0이 가나 자리(0x100-0x166, 0x180-0x1E6, 0x200-0x261)에 8px 한글을 그려 넣어서
-   한글판은 암호를 한글로 보여 줍니다. 픽셀로 읽은 대응은 tables/password.tsv에 있습니다.
-   v1.1까지는 서로 다른 가나 다섯 개가 다른 글자와 같거나 거의 같은 모양이었습니다.
-     へ(0x12C) = つ(0x121) 「나」     も(0x142) = ら(0x146) 「등」   (픽셀까지 같음)
-     を(0x14C)·ん(0x14D) ≈ わ(0x14B) 「러」     ル(0x1C8) ≈ ォ(0x1E2) 「지」
-   글자 표(tables/kr-v1.0.txt)는 이 다섯 자리를 다·동·레·렉·저로 적고 있어서,
-   v1.2은 tools/pwglyph1.py로 다섯 자리를 그 글자로 다시 그렸습니다.
-   폭 8px, 1px 획, 그림자 판 없음으로 이웃 글자와 같은 방식이고, 모양은 Galmuri11을 참고했습니다.
-   이름 입력 글자판(파일 0x7005, v1.0이 쓴 16비트 문자열)도 같은 코드를 쓰므로
-   다섯 칸이 다·동·레·렉·저로 바뀌고, 글자판 160칸에 같은 모양이 없어집니다.
- - 글자 표 이름과 픽셀이 다른 자리는 다섯 자리 말고도 넷 있습니다.
+   Korean screen:  가녕가녕가 녕가녕가녕 가녕가녕성 너가녕성너 가녕성너가
+                   녕성너가녕 성너가녕성 너누똑가녕 잘건와전가 녕브알가녕
+   The address of the routine that builds the password was not looked for.
+ - Characters on the Korean screen [verified]
+   v1.0 drew 8px Hangul into the kana slots (0x100-0x166, 0x180-0x1E6, 0x200-0x261),
+   so the Korean version shows the password in Hangul. The mapping read from the pixels is in tables/password.tsv.
+   Up to v1.1, five different kana had the same or nearly the same shape as another character.
+     へ(0x12C) = つ(0x121) 「나」     も(0x142) = ら(0x146) 「등」   (pixel-identical)
+     を(0x14C), ん(0x14D) ≈ わ(0x14B) 「러」     ル(0x1C8) ≈ ォ(0x1E2) 「지」
+   The character table (tables/kr-v1.0.txt) names these five slots 다, 동, 레, 렉 and 저,
+   so v1.2 redrew the five slots as those characters with tools/pwglyph1.py.
+   8px wide, 1px strokes and no shadow plane, the same style as the neighbouring glyphs, with shapes modelled on Galmuri11.
+   The name entry character board (file 0x7005, a 16-bit string written by v1.0) uses the same codes,
+   so five cells change to 다, 동, 레, 렉 and 저, and the 160-cell board no longer has duplicate shapes.
+ - Besides these five, four more slots have pixels different from their name in the character table.
      0x120 깨→께, 0x1A4 언→건, 0x246 티→띠, 0x248 펴→떠
-   v1.2는 tables/kr-v1.0.txt를 v1.0 픽셀대로 고쳤습니다(아홉 자리 모두: 12C 나, 142 등, 14C 러, 14D 러,
-   1C8 지, 120 께, 1A4 건, 246 띠, 248 떠). 다시 그린 다섯 자리의 새 이름은 tables/kr-v1.2-glyphs.txt가
-   그 위에 덮습니다(tools/kr1.py table()). 대조 덤프(*-v1.0.tsv)에는 이 아홉 코드를 쓴 줄이 없어 바뀌지 않습니다.
-   v1.1은 대사 0x5D5 「펴‥평범한」과 0x101B 「살펴봐」에 0x248을 써서 「떠」로 보였고,
-   v1.2은 「펴」를 새 16px 글자(0xD60)로 그립니다(두 줄 모두 창 폭 안).
-   엔딩 크레딧 「디렉터」는 0x14D를 써서 v1.1에서 「디러터」로 보였고, 다시 그린 뒤 「디렉터」로 보입니다.
- - 빌드 검사 (tools/pwglyph1.py, 실패하면 빌드가 멈춤)
-   · 다섯 자리는 정해 둔 그림과 같고, 나머지 암호 글자 158자는 픽셀이 바뀌지 않았다
-   · 암호 글자 163자가 모두 서로 다른 모양이다
-   · 글자 표가 암호 글자마다 화면 글자(또는 일본판 가나)로 적혀 있다
-   · 글자 표에서 이름이 다른 두 코드가 같은 그림(플레인 0에서 플레인 1 그림자를 뺀 것)을
-     그리지 않는다. 0x280 「0」과 0x2A8 「O」는 일본판부터 같은 그림이라 예외
-   · 이름 입력 글자판에 같은 모양이 두 칸 없다
- - 각성편 v1.3과의 확인 (Mesen 2, 위 실험용 롬) [실측]
-   디버그 ENDING 화면의 한글을 각성편 v1.3 입력 칸에서 같은 한글을 찾아 누르면
-   통과해 이름 화면으로 갑니다. 엔딩 직전 상태에서 주인공 이름($7E:0B01)을
-   다동레렉저(0x12C 0x142 0x14C 0x14D 0x1C8)로 바꾼 암호와 녕노제똑고로 바꾼 암호
-   (다시 그린 글자가 암호에 나옴)도 통과했고, 각성편 이름 화면에 그 이름이 그대로 나왔습니다.
-   각성편 쪽 수정(입력 칸·쌍 표·이름 변환 표 $83:AEB0)은 각성편 v1.3 묶음에 있습니다.
- - 일본판끼리: 디버그 ENDING 암호를 일본판 각성편에 히라가나 ぺ로 넣으면 틀린 암호입니다.
-   각성편 쌍 표의 같은 자리가 가타카나 ペ라서 그렇다는 것을 각성편 작업에서 확인했습니다.
- - 돌격편에도 가나 입력 화면 코드가 있습니다: $80:99D6 (호출 $82:9D7C, $0216 = 1일 때의 분기).
-   파일 0x61-0x66을 EA EA 22 D6 99 80으로 바꿔 부팅 직후 부르면 글자판이 반쯤 깨진 채 열립니다.
-   정상 플레이에서 열리는 길은 찾지 못했습니다. [실측]
+   v1.2 corrected tables/kr-v1.0.txt to match the v1.0 pixels (all nine slots: 12C 나, 142 등, 14C 러, 14D 러,
+   1C8 지, 120 께, 1A4 건, 246 띠, 248 떠). tables/kr-v1.2-glyphs.txt overlays the new names of the five redrawn slots
+   (table() in tools/kr1.py). The comparison dumps (*-v1.0.tsv) have no lines using these nine codes, so they do not change.
+   v1.1 used 0x248 in dialogue 0x5D5 「펴‥평범한」 and 0x101B 「살펴봐」, where it showed as 「떠」;
+   v1.2 draws 「펴」 as a new 16px glyph (0xD60) (both lines stay within the window width).
+   「디렉터」 (director) in the ending credits used 0x14D and showed as 「디러터」 in v1.1; after the redraw it shows as 「디렉터」.
+ - Build checks (tools/pwglyph1.py; the build stops if one fails)
+   · the five slots match the prepared drawings, and the pixels of the other 158 password characters are unchanged
+   · all 163 password characters have distinct shapes
+   · the character table names every password character by its on-screen character (or the Japanese kana)
+   · no two codes with different names in the character table draw the same picture (plane 0 minus the plane 1 shadow).
+     0x280 「0」 and 0x2A8 「O」 are the same picture since the Japanese ROM and are an exception
+   · no two cells of the name entry board have the same shape
+ - Checked against Kakusei-hen v1.3 (Mesen 2, the experimental ROM above) [verified]
+   Finding and pressing the same Hangul from the debug ENDING screen on the Kakusei-hen v1.3 entry board
+   passes and goes to the name screen. Passwords made just before the ending with the hero's name ($7E:0B01)
+   changed to 다동레렉저 (0x12C 0x142 0x14C 0x14D 0x1C8) and to 녕노제똑고
+   (so the redrawn characters appear in the password) also passed, and the name appeared unchanged on the Kakusei-hen name screen.
+   The Kakusei-hen side of the fix (entry board, pair table, name conversion table $83:AEB0) is in the Kakusei-hen v1.3 bundle.
+ - Between the Japanese versions: entering the debug ENDING password into Japanese Kakusei-hen with hiragana ぺ gives a wrong password.
+   The Kakusei-hen work confirmed this is because the same slot of the Kakusei-hen pair table is katakana ペ.
+ - Totsugeki-hen also has kana entry screen code: $80:99D6 (called from $82:9D7C, the branch taken when $0216 = 1).
+   Changing file 0x61-0x66 to EA EA 22 D6 99 80 calls it right after boot, and the board opens half broken.
+   No way to open it in normal play was found. [verified]
 ```
 
-## 12. 확인하지 않은 것과 알려진 한계
+## 12. Not checked, and known limits
 
 ```text
- - 실제 슈퍼 패미컴이나 플래시 카트리지에서 돌려 본 기록은 없습니다.
-   에뮬레이터 결과는 8절에 있습니다.
- - 창 정보 첫 바이트 FE(347줄): 코드상 128px 창이고 얼굴 그림 루틴을 건너뛰지만, 화면은 보지 않았습니다.
- - 각성편 데이터 암호: 끝까지 플레이한 엔딩의 암호로는 확인하지 않았습니다(디버그 ENDING과 이름만 바꾼 암호로 확인).
-   v1.2 엔딩은 고정 암호만 보여 주므로 이 경로는 각성편 쪽 호환을 위해 남아 있습니다.
- - tools/lz.py 머리말의 $80:9CFA·$80:9DA7은 각성편 주소입니다(5절). 파일은 배포 때 그대로 둡니다.
- - WRAM $4D는 그래픽 읽기 루틴도 잠깐 씁니다. 대사 기록은 창 정보 표 읽기를 감시하는 쪽이 정확합니다.
- - 새 글자 블록 3-7의 5곳(320자)이 통째로 비어 있습니다. 글자를 더 넣을 때 그대로 쓸 수 있습니다.
+ - There is no record of running on an actual Super Famicom or a flash cartridge.
+   The emulator results are in section 8.
+ - Window info first byte FE (347 lines): by the code it is a 128px window that skips the face drawing routine, but the screen was not looked at.
+ - Kakusei-hen data password: not checked with the password from an ending reached by playing through (checked with the debug ENDING and name-only changes).
+   The v1.2 ending only shows the fixed password, so this path remains for compatibility on the Kakusei-hen side.
+ - $80:9CFA and $80:9DA7 in the header comment of tools/lz.py are Kakusei-hen addresses (section 5). The file is left as released.
+ - WRAM $4D is also used briefly by the graphics loading routines. Watching reads of the window info table records dialogue more accurately.
+ - Five of the new glyph blocks, 3-7 (320 glyphs), are entirely empty. They can be used as is for more glyphs.
 ```
 
-## 13. 쓴 도구
+## 13. Tools used
 
 ```text
  - Python 3.9.6, Pillow 11.3.0, numpy 2.0.2 (macOS)
-   이 묶음과 일본판 롬만으로 tools/build.sh를 돌려 CRC32 81DAD733이 나오는 것을 확인했습니다.
- - Mesen 2.1.1 (Lua 스크립트, --testrunner)
- - libretro 코어: bsnes, bsnes-hd beta, snes9x, snes9x2010, Beetle Supafaust, Mesen-S (compat/)
- - 새 글자 그림: Galmuri11 2.404 (tools/fonts/)
- - 타이틀 글꼴: BM영성체 (macOS 시스템 글꼴, tools/title.py의 TITLE_FONT)
- - 역어셈블: tools/dis65816.py (직접 만든 65c816 역어셈블러)
+   Running tools/build.sh with only this bundle and the Japanese ROM was confirmed to give CRC32 81DAD733.
+ - Mesen 2.1.1 (Lua scripts, --testrunner)
+ - libretro cores: bsnes, bsnes-hd beta, snes9x, snes9x2010, Beetle Supafaust, Mesen-S (compat/)
+ - New glyph drawing: Galmuri11 2.404 (tools/fonts/)
+ - Title font: BM YeongSung (macOS system font, TITLE_FONT in tools/title.py)
+ - Disassembly: tools/dis65816.py (a home-made 65c816 disassembler)
 ```

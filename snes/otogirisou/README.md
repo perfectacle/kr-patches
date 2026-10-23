@@ -1,5 +1,7 @@
 # Otogirisou (SFC) Korean patch v1.2
 
+English | [한국어](README.ko.md)
+
 Source of the Korean translation patch for the Japanese *Otogirisou*
 (Super Famicom). v1.1 rebuilds the script and font on top of the Korean v1.0
 patch; v1.2 adds a chapter select and an ending list to the v1.1 ROM.
@@ -7,7 +9,7 @@ patch; v1.2 adds a chapter select and an ending list to the v1.1 ROM.
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/otogirisou/>
 
 ROM layout, memory, script and font formats, hooks, save format and free space
-are documented in [docs/ANALYSIS.md](docs/ANALYSIS.md) (Korean).
+are documented in [docs/ANALYSIS.md](docs/ANALYSIS.md).
 
 ## Base ROM
 
@@ -97,13 +99,3 @@ Code (asm, Python, shell, Lua): MIT, see the top-level `LICENSE`. The Korean
 script, code tables and glyphs are fan translation data, distributed
 non-commercially and not covered by the MIT license. Galmuri
 (`tools/fonts/`) is under the SIL Open Font License 1.1.
-
-## 한국어 요약
-
-제절초(오토기리소우, 일본판) 한글패치 소스입니다. v1.1은 v1.0 한글판 위에 대본과 폰트를 다시 만들고, v1.2는 그 위에 장 선택과 엔딩 목록을 더합니다.
-
-- 준비물: 일본판 롬(헤더 제목 `OTOGIRISOU`, CRC32 `8E4BEFD0`)을 이 폴더에 `Otogirisou (Japan).sfc` 로, asar 1.91을 `tools/asar` 로 둡니다.
-- `zsh tools/build.sh && zsh tools/release-v1.2.sh` 를 실행하면 `release/v1.2/` 에 배포한 것과 같은 IPS가 나옵니다(롬 CRC32 `2C31A0B2`).
-- 일본어 대본(`tables/script-jp.txt`)은 저장소에 없고, 첫 빌드 때 가진 롬에서 뽑습니다.
-- 롬 분석 노트는 [docs/ANALYSIS.md](docs/ANALYSIS.md) 에 있습니다.
-- 코드는 MIT, 한글 대본·코드표·글리프는 비상업 배포하는 번역 데이터로 MIT와 별개입니다.

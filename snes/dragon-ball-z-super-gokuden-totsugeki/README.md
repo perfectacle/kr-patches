@@ -1,5 +1,7 @@
 # Dragon Ball Z: Super Gokuden – Totsugeki-hen (SFC) Korean patch v1.2
 
+English | [한국어](README.ko.md)
+
 Source of the Korean translation patch v1.2 for the Japanese *Dragon Ball Z:
 Super Gokuden – Totsugeki-hen* (Super Famicom). The build starts from the
 Japanese ROM with the Korean v1.0 patch applied, then replaces the title
@@ -9,7 +11,7 @@ and shows a fixed ending password.
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
 ROM header, memory, text and font formats, hooks, free space used and the
-debug menu are documented in [docs/ANALYSIS.md](docs/ANALYSIS.md) (Korean).
+debug menu are documented in [docs/ANALYSIS.md](docs/ANALYSIS.md).
 
 ## Base ROM
 
@@ -107,13 +109,3 @@ Code (Python, shell, Lua): MIT, see the top-level `LICENSE`. The Korean text,
 code tables and graphics are fan translation data, distributed
 non-commercially and not covered by the MIT license. Galmuri is under the SIL
 Open Font License 1.1.
-
-## 한국어 요약
-
-드래곤볼 Z 초오공전 돌격편(일본판) 한글패치 v1.2의 소스입니다. 일본판에 v1.0 패치를 적용한 롬에서 시작해 타이틀, 대사·메뉴, 암호 글자, 엔딩 암호를 고칩니다.
-
-- 준비물: 일본판 롬(헤더 제목 `SFX DBZ TOTSUGEKIHEN`, CRC32 `D531289B`)을 이 폴더에 `super-gokuden-jp.smc` 로 둡니다. 타이틀 글꼴 BM영성체는 macOS 시스템 글꼴에서 읽습니다.
-- `zsh tools/build.sh` 를 실행하면 `super-gokuden-kr-v1.2.smc`(CRC32 `81DAD733`)와 배포한 것과 같은 IPS 두 개가 `release/v1.2/` 에 나옵니다.
-- Lua 스크립트는 `LIBDIR=$(krpatch snes lua)` 로 툴킷의 `lib.lua` 를 씁니다.
-- 롬 분석 노트는 [docs/ANALYSIS.md](docs/ANALYSIS.md) 에 있습니다.
-- 코드는 MIT, 한글 대사·코드표·그래픽은 비상업 배포하는 번역 데이터로 MIT와 별개입니다.

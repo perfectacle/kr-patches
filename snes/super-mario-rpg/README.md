@@ -1,5 +1,7 @@
 # Super Mario RPG (SFC) Korean patch v1.2
 
+English | [한국어](README.ko.md)
+
 Source of the Korean translation patch v1.2 for the Japanese *Super Mario RPG*
 (Super Famicom). v1.2 is built on top of the Korean v1.0 patch: it
 replaces the item, special and enemy names, rewrites the English item names
@@ -8,7 +10,7 @@ left in v1.0's dialogue, and fixes the battle result window and other menus.
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/super-mario-rpg/>
 
 ROM layout, memory, text and font formats, hooks, free space used and debug
-features are documented in [docs/ANALYSIS.md](docs/ANALYSIS.md) (Korean).
+features are documented in [docs/ANALYSIS.md](docs/ANALYSIS.md).
 
 ## Base ROM
 
@@ -113,13 +115,3 @@ Code (asm, Python, shell, Lua): MIT, see the top-level `LICENSE`. The Korean
 text, name tables and graphics are fan translation data, distributed
 non-commercially and not covered by the MIT license. Galmuri is under the SIL
 Open Font License 1.1.
-
-## 한국어 요약
-
-슈퍼 마리오 RPG(일본판) 한글패치 v1.2의 소스입니다. v1.0 한글판 롬 위에 덧씌워 빌드합니다.
-
-- 준비물: 일본판 롬(헤더 제목 `SUPER MARIO RPG`, CRC32 `5527071E`)을 `rom/smrpg_jp.sfc`로, asar 1.91을 `tools/asar`로 둡니다.
-- `v1.0/` 의 IPS로 v1.0 롬(CRC32 `F4305A06`)을 `rom/smrpg_kr_v1.sfc`로 만들고 `zsh tools/make.sh` 를 실행하면 `build/test.sfc`(CRC32 `05DBCBE6`)가 나옵니다.
-- IPS는 `krpatch ips make --gap 7` 로 만듭니다. 배포한 IPS와 바이트 단위로 같습니다.
-- 롬 분석 노트는 [docs/ANALYSIS.md](docs/ANALYSIS.md) 에 있습니다.
-- 코드는 MIT, 한글 대사·이름표·그래픽은 비상업 배포하는 번역 데이터로 MIT와 별개입니다.

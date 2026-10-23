@@ -1,28 +1,30 @@
-# [SFC] 드래곤볼 Z 초오공전: 각성편 롬 분석 자료 (한글패치 v1.2·v1.3 작업 기록)
+# [SFC] Dragon Ball Z: Super Gokuden – Kakusei-hen ROM analysis (Korean patch v1.2/v1.3 work notes)
+
+English | [한국어](ANALYSIS.ko.md)
 
 ```text
-v1.2와 v1.3 한글패치를 작업하면서 확인한 롬 구조와 작업 방법을 정리했습니다.
-같은 게임이나 같은 엔진(초오공전 돌격편 등)을 분석하실 때 참고가 되었으면 합니다.
-패치 페이지: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/
+The ROM structure and methods confirmed while working on the Korean patches v1.2 and v1.3.
+I hope it helps anyone analysing the same game or the same engine (Super Gokuden Totsugeki-hen and others).
+Patch page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/
 
- - 대상 롬: 일본판 원본, 헤더 없음, 2,097,152바이트 (LoROM)
+ - Target ROM: Japanese original, no header, 2,097,152 bytes (LoROM)
    CRC32 3172CD4F / MD5 8502A3E5C0FDC56B6495A644ACA54413
- - 아래 주소 표기
-   · $XX:YYYY = SNES 주소 (뱅크:주소)
-   · 파일 0xNNNNN = 헤더 없는 롬 파일 기준 오프셋
-   · LoROM 변환: 파일 오프셋 = (뱅크 & 0x7F) × 0x8000 + (주소 & 0x7FFF)
- - 첨부한 도구는 Python 3 (Pillow 필요)와 Mesen 2 (Lua 스크립트)로 작성했습니다.
+ - Address notation below
+   · $XX:YYYY = SNES address (bank:address)
+   · file 0xNNNNN = offset in the headerless ROM file
+   · LoROM conversion: file offset = (bank & 0x7F) × 0x8000 + (address & 0x7FFF)
+ - The included tools were written in Python 3 (needs Pillow) and for Mesen 2 (Lua scripts).
 ```
 
-## 1. 대사 텍스트
+## 1. Dialogue text
 
 ```text
-■ 대사 ID와 포인터 테이블
-스크립트의 대사 명령(0x08)이 16비트 대사 ID를 지정합니다.
-ID별로 뱅크가 나뉘어 있고, 각 뱅크 앞부분에 16비트 포인터 테이블이 있습니다.
-(ID 분기 루틴: $83:BA13)
+■ Dialogue IDs and pointer tables
+The dialogue command (0x08) of the script names a 16-bit dialogue ID.
+IDs are split across banks, and each bank starts with a 16-bit pointer table.
+(ID dispatch routine: $83:BA13)
 
-  ID 범위        뱅크   포인터 테이블
+  ID range       bank   pointer table
   000 - 3DF      $99    $99:8000
   3E0 - 5B6      $9A    $9A:8000
   5B7 - 7AE      $9B    $9B:8000
@@ -32,525 +34,525 @@ ID별로 뱅크가 나뉘어 있고, 각 뱅크 앞부분에 16비트 포인터 
   D16 - ED3      $9F    $9F:8000
   ED4 - F94      $98    $98:C1C8
 
- - 포인터는 같은 뱅크 안의 16비트 주소입니다.
-   따라서 대사를 다른 뱅크로 옮길 수 없습니다.
-   늘어난 대사는 같은 뱅크의 빈 공간(0xFF)으로 옮기고 포인터만 고쳤습니다.
- - 여러 ID가 같은 문자열을 가리키는 경우가 있습니다.
-   이런 문자열은 제자리에서 고치지 말고 새 위치에 따로 써야 합니다.
- - 대사 ID 0x200 이상은 $98:8000 테이블에 ID마다 2바이트씩 정보가 있고,
-   첫 바이트가 화자 번호입니다.
+ - Pointers are 16-bit addresses within the same bank.
+   So dialogue cannot move to another bank.
+   Lengthened dialogue was moved to free space (0xFF) in the same bank and only its pointer fixed.
+ - Several IDs can point to the same string.
+   Such strings must not be edited in place but written separately at a new location.
+ - For dialogue IDs 0x200 and above, the $98:8000 table has 2 bytes of information per ID,
+   and the first byte is the speaker number.
 
-■ 문자열 형식
- - 글자 하나 = 16비트 리틀 엔디언 코드
- - 0x000A = 줄바꿈, 0x0000 = 문자열 끝
- - 코드의 최상위 비트(0x8000)는 떼고 글자 코드로 읽었습니다.
-   [실측] 일본판의 실제 대사에는 이 비트가 켜진 코드가 하나도 없습니다.
- - 한 페이지는 4줄입니다. 빈 줄(줄바꿈 연속)로 페이지를 채워 다음 페이지로 넘깁니다.
- - 한 줄 글자 수: 얼굴 그림이 있는 창 10자, 나레이션 창 14자 [실측]
-   · 창은 $80:B879에서 고릅니다. 대사 ID($3F)가 0x200 미만이거나
-     화자 번호($98:8000 + (ID-0x200)×2의 첫 바이트)가 0xFF가 아니면
-     $020E=0x10, $0210=8 (얼굴 창), 0xFF면 $020E=0x15, $0210=8 (나레이션 창)을
-     넣고 $81:8000을 부릅니다. $81:8000은 8×8 타일 $020E칸 × $0210줄로
-     창 타일맵을 깝니다.
-   · 글자를 찍는 $80:9B2C는 글자마다 12픽셀씩 나아가고, 다음 글자가
-     $020E × 8픽셀을 넘으면 줄을 바꿉니다(0x100 미만 코드는 찍지 않고 건너뜀).
-     0x10칸 = 128픽셀 = 10자, 0x15칸 = 168픽셀 = 14자. [실측, 코드]
-   · 시험용 롬에서 ID 200(나레이션)과 201(얼굴) 대사를 14–17자, 10–13자 줄로
-     바꿔 띄우면 얼굴 창은 11번째, 나레이션 창은 15번째 글자부터 엔진이 다음 줄로
-     넘깁니다. 넘친 글자가 줄 하나를 더 쓰므로 페이지가 밀립니다.
-   · 일본판에도 넘치는 줄이 2개(ID 7C0 12자, E59 11자) 있고,
-     일본판 롬에서도 "‥!"과 "‥"가 혼자 다음 줄에 찍힙니다.
-   · ID 000–056 중 81개는 화자 번호가 없는 짧은 감탄사이고 늘 얼굴 창입니다.
-     그 뒤 057–1FF는 폰트 시험용 줄입니다.
-   · v1.2의 문제(v1.3에서 고침): 나레이션 창을 15자로 잘못 알고 줄을 나눠,
-     ID 600, 83E, 881, 883, 895(2줄), F84, F86, F87의 9줄이 15자였습니다.
-     마지막 글자가 다음 줄로 떨어지는 것을 장면 084, 08D, 0B8에서 확인했습니다.
-     v1.3은 기존 줄 나눔 원칙(7장)대로 14자 안으로 다시 나눴고, 페이지 수는
-     그대로입니다. 얼굴 창 줄은 모두 10자 안이고, v1.1에서 넘치던 6줄
-     (ID 228, 2AB, 449, 530, 952, F8D)은 v1.2에서 모두 고쳤습니다.
-   · tools/check_width.py가 빌드 마지막에 대사와 전투 말풍선(8장) 줄을 모두
-     창 크기와 비교하고, 넘으면 빌드를 멈춥니다. v1.2 롬에 돌리면 대사 8개,
-     말풍선 4개(1022, 10DC, 1194, 11CE)로 실패합니다. 일본판에 돌리면
-     7C0, E59, 118D(말풍선 13자)가 걸립니다. 원작도 넘치는 줄입니다.
- - "!!", "!?"처럼 두 글자를 한 칸에 그린 글리프가 있습니다.
+■ String format
+ - One character = 16-bit little-endian code
+ - 0x000A = line break, 0x0000 = end of string
+ - The top bit of a code (0x8000) was stripped and the rest read as the character code.
+   [verified] No actual dialogue in the Japanese ROM has a code with this bit set.
+ - One page is 4 lines. Empty lines (consecutive line breaks) fill the page to move to the next one.
+ - Characters per line: 10 in a window with a face picture, 14 in the narration window [verified]
+   · The window is chosen at $80:B879. If the dialogue ID ($3F) is below 0x200 or
+     the speaker number (first byte of $98:8000 + (ID-0x200)×2) is not 0xFF, it sets
+     $020E=0x10, $0210=8 (face window); if 0xFF, $020E=0x15, $0210=8 (narration window),
+     then calls $81:8000. $81:8000 lays out the window tilemap as $020E 8×8 tiles
+     × $0210 rows.
+   · $80:9B2C, which prints characters, advances 12 pixels per character and breaks the line
+     when the next character would pass $020E × 8 pixels (codes below 0x100 are skipped, not printed).
+     0x10 cells = 128 pixels = 10 characters, 0x15 cells = 168 pixels = 14 characters. [verified, code]
+   · In a test ROM with dialogue ID 200 (narration) and 201 (face) changed to lines of 14–17 and 10–13 characters,
+     the engine moves to the next line from the 11th character in the face window and from the 15th in the narration window.
+     The overflowing characters take one more line, so the page is pushed.
+   · The Japanese ROM also has 2 overflowing lines (ID 7C0, 12 characters; E59, 11 characters),
+     and in the Japanese ROM too "‥!" and "‥" are printed alone on the next line.
+   · 81 of IDs 000–056 are short exclamations without a speaker number and always use the face window.
+     057–1FF after them are font test lines.
+   · The v1.2 problem (fixed in v1.3): lines were split assuming a 15-character narration window,
+     so 9 lines in IDs 600, 83E, 881, 883, 895 (2 lines), F84, F86 and F87 had 15 characters.
+     The last character dropping to the next line was confirmed in scenes 084, 08D and 0B8.
+     v1.3 re-split them to 14 characters or fewer following the existing line splitting rules (section 7);
+     the page count is unchanged. All face window lines are within 10 characters, and the 6 lines that overflowed in v1.1
+     (IDs 228, 2AB, 449, 530, 952, F8D) were all fixed in v1.2.
+   · tools/check_width.py compares every line of the dialogue and the battle speech bubbles (section 8) with its window size
+     at the end of the build and stops the build if one overflows. Run on the v1.2 ROM it fails with 8 dialogue lines
+     and 4 bubbles (1022, 10DC, 1194, 11CE). Run on the Japanese ROM it flags
+     7C0, E59 and 118D (a 13-character bubble). These lines overflow in the original too.
+ - Some glyphs draw two characters in one cell, such as "!!" and "!?".
 
-■ 폰트
-16×16 글자, 2bpp 8×8 타일로 저장되어 있습니다.
+■ Font
+16×16 characters, stored as 2bpp 8×8 tiles.
 
-  코드 범위      파일 오프셋
+  code range     file offset
   100 - 4FF      0x1B00A0
   500 - 8FF      0x1B8000
-  900 - FFF      0x1B3CA0  (첫 시트의 2E0 이후 영역과 같은 데이터)
+  900 - FFF      0x1B3CA0  (same data as the area after 2E0 in the first sheet)
 
- - 시트 한 줄 = 타일 16개 = 글자 8개
-   글자 위쪽 절반은 (코드 - 시작 코드) × 32 위치, 아래쪽 절반은 0x100바이트 뒤
- - (코드 - 시작 코드) ÷ 8 이 짝수인 코드만 실제 글자입니다.
-   홀수 줄은 아래쪽 절반 타일이므로 글자 코드로 쓰지 않습니다.
- - 단색 폰트이며, 플레인 0과 플레인 1에 같은 값이 들어 있습니다.
- - v1.2에서 새로 필요한 글자 11자는
-   어떤 대사에서도 쓰지 않는 글리프 자리에 Galmuri11 폰트로 그려 넣었습니다.
-   [실측] 빌드 결과(코드 = 글자, 괄호는 원래 글자):
+ - One sheet row = 16 tiles = 8 characters
+   The upper half of a character is at (code - start code) × 32, the lower half 0x100 bytes later
+ - Only codes where (code - start code) ÷ 8 is even are real characters.
+   Odd rows are lower-half tiles and are not used as character codes.
+ - The font is single-colour; plane 0 and plane 1 hold the same values.
+ - The 11 new characters v1.2 needed were drawn with the Galmuri11 font
+   into glyph slots no dialogue uses.
+   [verified] Build output (code = character, original character in parentheses):
    123=깨(겄) 133=꽉(겸) 140=꾼(곡) 237=닿(뜸) 530=렁(씹) 546=롭(얄)
    562=벅(엎) 586=빡(왈) 5B7=뻐(읏) 641=셋(쩡) 642=씻(쪄)
-   v1.3도 같은 자리에 같은 글자가 들어갑니다. 말풍선은 새 글자 없이
-   이미 있는 글자만 썼습니다. 돌격편 암호(11장)에 필요한 2자는
-   tools/password.py가 다음 빈자리에 그립니다: 644=뎀(쫄) 647=띠(찔)
- - v1.1 표(tables/kr.txt)에 이름이 없던 6글자도 끝에 더했습니다(글자 그림으로 확인):
-   2D1=딩 2D2=렉 805=션 2D4=창 277=펙 A37=홍. v1.1이 암호 격자용으로 그린 글자입니다.
+   v1.3 puts the same characters in the same slots. The bubbles use only existing characters,
+   with no new ones. The 2 characters needed for the Totsugeki-hen password (section 11)
+   are drawn by tools/password.py into the next free slots: 644=뎀(쫄) 647=띠(찔)
+ - 6 characters that had no name in the v1.1 table (tables/kr.txt) were also appended (checked by their pictures):
+   2D1=딩 2D2=렉 805=션 2D4=창 277=펙 A37=홍. These are characters v1.1 drew for the password grid.
 
-■ 글자 테이블
- - tables/jp.txt : 일본판 코드표
- - tables/kr-v1.3.txt : v1.3 코드표 (빌드할 때 새 글리프까지 반영해 생성)
- - v1.1 표(tables/kr.txt)에 없던 4글자를 v1.3에서 끝에 더했습니다:
-   297=P, 7E5=롱, 7F0=릭, 840=토. v1.1이 말풍선에 쓰던 코드이고 글자 그림으로
-   확인했습니다. 이 4줄을 더해도 v1.2 빌드 결과(E46C7A28)는 같습니다.
- - 주의: v1.1 테이블에서 922번은 "렁"으로 적혀 있었지만 실제 그림은 "렇"입니다.
+■ Character tables
+ - tables/jp.txt : Japanese code table
+ - tables/kr-v1.3.txt : v1.3 code table (generated at build time, including the new glyphs)
+ - 4 characters missing from the v1.1 table (tables/kr.txt) were appended in v1.3:
+   297=P, 7E5=롱, 7F0=릭, 840=토. They are codes v1.1 used in the bubbles, checked by
+   their pictures. Adding these 4 lines leaves the v1.2 build output (E46C7A28) the same.
+ - Caution: the v1.1 table lists code 922 as "렁", but the actual picture is "렇".
 ```
 
-## 2. v1.1의 진행 버그 원인 (우주선이 맵 밖을 헤매는 현상)
+## 2. Cause of the v1.1 progression bug (the spaceship wandering off the map)
 
 ```text
-v1.1에서 길어진 한글 크레딧·지명 문자열을 0xFF로 채워진 빈 공간에 넣었습니다.
-그런데 두 곳 모두 실제 데이터가 끝나기 몇 바이트 전부터 덮어썼습니다.
+v1.1 put the lengthened Korean credit and place name strings into free space filled with 0xFF.
+But in both places it overwrote real data starting a few bytes before that data ended.
 
- 1) $83:F3AF (파일 0x1F3AF)
-    컷신 캐릭터 X 좌표 테이블의 마지막 항목(0xFFFF)이 덮였습니다.
-    이 테이블은 $83:E44F, $83:E755에서 읽습니다.
-    결과: 캐릭터가 엉뚱한 좌표(x=0x2A5) 쪽으로 미끄러져 갑니다.
+ 1) $83:F3AF (file 0x1F3AF)
+    The last entry (0xFFFF) of the cutscene character X coordinate table was overwritten.
+    This table is read at $83:E44F and $83:E755.
+    Result: characters slide off towards a wrong coordinate (x=0x2A5).
 
- 2) $88:FFAE (파일 0x47FAE)
-    $88:FFAA 이동 경로 레코드의 끝 표시(0xFFFF)와
-    $88:FFB0 레코드 전체가 덮였습니다. (경로 포인터 테이블: $88:FC80)
-    결과: 맵 이동 루틴이 지명 문자열 바이트를 경로로 읽어, 우주선이 맵 밖으로 나갑니다.
+ 2) $88:FFAE (file 0x47FAE)
+    The end marker (0xFFFF) of the movement path record at $88:FFAA and
+    the whole record at $88:FFB0 were overwritten. (path pointer table: $88:FC80)
+    Result: the map movement routine reads the place name string bytes as a path, and the spaceship leaves the map.
 
-[실측] v1.1이 이 두 곳에 넣은 것은 대사 뱅크의 대사가 아니라
-    $83:F3AF: 엔딩 크레딧 문자열 (포인터 $83:9009/900B/900D, $83:94AB/94C5)
-    $88:FFAE: 지명 문자열 (포인터 $88:800C/8018/801C/8048)
-입니다. 대사 8뱅크($98–$9F)의 한글 대사는 v1.1에서도 각 뱅크 안에 들어 있었습니다.
+[verified] What v1.1 put in these two places was not dialogue from the dialogue banks but
+    $83:F3AF: ending credit strings (pointers $83:9009/900B/900D, $83:94AB/94C5)
+    $88:FFAE: place name strings (pointers $88:800C/8018/801C/8048)
+The Korean dialogue of the 8 dialogue banks ($98–$9F) stayed within each bank in v1.1 as well.
 
-수정: 원본 바이트를 복구하고, 그 자리에 있던 문자열을 뒤로 밀고,
-해당 문자열을 가리키는 포인터를 같은 만큼 고쳤습니다. (tools/fix_overwrites.py)
-교훈: "0xFF가 이어진 곳 = 빈 공간"으로 보면 안 됩니다.
-0xFFFF를 끝 표시로 쓰는 데이터가 바로 앞에 있을 수 있습니다.
-빈 공간 앞뒤로 여유를 두고, 원본에서도 0xFF인지 확인해야 합니다.
+Fix: restore the original bytes, push the strings that were there further back,
+and adjust the pointers to those strings by the same amount. (tools/fix_overwrites.py)
+Lesson: do not assume "a run of 0xFF = free space".
+Data that uses 0xFFFF as an end marker may sit right before it.
+Leave margins around free space and check that it is 0xFF in the original as well.
 ```
 
-## 3. 타이틀 화면
+## 3. Title screen
 
 ```text
- - 압축: LZSS, 해제 루틴 $80:9CFA
-   · 앞 2바이트 = 풀었을 때 크기
-   · 이후 플래그 바이트 1개 + 항목 8개씩 반복 (플래그는 하위 비트부터)
-   · 플래그 1 = 리터럴 1바이트
-   · 플래그 0 = 16비트 워드: 길이 = (워드 & 0xF) + 3, 거리 = 워드 >> 4
-     거리가 출력 시작보다 앞을 가리키면 0으로 읽습니다.
-   · $80:9DA7 변형은 해제 후 타일마다 플레인 순서를 재배열합니다.
-     (플레인0 8줄 + 플레인1 8줄 → SNES 2bpp 순서)
- - 타이틀 BG3 자료 2개, 5바이트 항목(주소 하위, 주소 상위, 뱅크, 크기 하위, 크기 상위)으로 지정됩니다.
-   · 2bpp 타일 (타일 0x000-0x134): $89:9B9D, 항목 위치 파일 0xD720
-   · 32×32 타일맵: $89:C4F3, 항목 위치 파일 0xD95F
- - 다시 압축했을 때 원래보다 길어지면 파일 0x4C801-0x4FFFF(전부 0xFF) 영역으로 옮기고 항목을 고쳤습니다.
- - "DRAGON BALL Z" 로고와 "(c) BANDAI 1995"는 원본 그대로입니다.
-   이 (c) 타일은 저작권 첫 줄과 같이 쓰므로 건드리면 안 됩니다.
- - 로고 아래 가타카나(ドラゴンボール) 줄은 빈 타일(0xFF, 타일맵에서 쓰지 않음)로 지웠습니다.
+ - Compression: LZSS, decompression routine $80:9CFA
+   · first 2 bytes = decompressed size
+   · then one flag byte + 8 items, repeated (flags from the low bit)
+   · flag 1 = 1 literal byte
+   · flag 0 = 16-bit word: length = (word & 0xF) + 3, distance = word >> 4
+     A distance pointing before the start of the output reads as 0.
+   · The $80:9DA7 variant rearranges the plane order of every tile after decompression.
+     (8 rows of plane 0 + 8 rows of plane 1 → SNES 2bpp order)
+ - Two BG3 data sets for the title, given by 5-byte entries (address low, address high, bank, size low, size high).
+   · 2bpp tiles (tiles 0x000-0x134): $89:9B9D, entry at file 0xD720
+   · 32×32 tilemap: $89:C4F3, entry at file 0xD95F
+ - When recompressed data was longer than the original, it was moved to file 0x4C801-0x4FFFF (all 0xFF) and the entry fixed.
+ - The "DRAGON BALL Z" logo and "(c) BANDAI 1995" are left as in the original.
+   This (c) tile is shared with the first copyright line, so do not touch it.
+ - The katakana line under the logo (ドラゴンボール) was erased with blank tiles (0xFF, not used by the tilemap).
 ```
 
-## 4. 엔딩 크레딧
+## 4. Ending credits
 
 ```text
- - 출력 루틴: $83:8669
- - 이름 줄 포인터 테이블: $83:949D (파일 0x1949D), 16비트 포인터 21개
- - 문자열 형식은 대사와 같고(16비트 코드), 0x0000으로 끝납니다.
- - 원래보다 긴 줄은 파일 0x1F510(일본판에서도 쓰지 않는 0xFF 영역)으로 옮기고 포인터를 고쳤습니다.
-   (v1.2: "MR. 포포" → "미스터 포포")
+ - Output routine: $83:8669
+ - Name line pointer table: $83:949D (file 0x1949D), 21 16-bit pointers
+ - The string format is the same as dialogue (16-bit codes), ending with 0x0000.
+ - Lines longer than the original were moved to file 0x1F510 (a 0xFF area unused in the Japanese ROM too) and their pointers fixed.
+   (v1.2: "MR. 포포" → "미스터 포포", "Mr. Popo")
 ```
 
-## 5. 숨겨진 디버그 메뉴
+## 5. Hidden debug menu
 
 ```text
-일본판 정식 롬 안에 디버그 메뉴가 남아 있습니다.
- - 켜는 방법: 파일 0x5C의 80 0C (BRA)를 EA EA (NOP NOP)로 바꿉니다.
- - 부팅하면 ADVENTURE / BATTLE / SOUND 메뉴가 나옵니다.
- - ADVENTURE에는 시나리오 선택, 플래그 편집, 메시지/얼굴/맵/BG 보기 기능이 있습니다.
- - ADVENTURE → スタート를 누르면 $7E029C에 든 장면 번호부터 시작합니다.
-   맵도 그 장면에 맞게 불러옵니다. (맵 번호 $02A0, 테이블 $80:C67B)
- - 장면 진행 플래그가 초기화된 상태로 시작하므로, 일반 대화 장면은 실제 플레이와 같게 나옵니다.
- - 패치노트 스크린샷과 전체 장면 회귀 테스트(376개 장면)를 모두 이 방법으로 찍었습니다.
+A debug menu remains in the retail Japanese ROM.
+ - To enable it: change 80 0C (BRA) at file 0x5C to EA EA (NOP NOP).
+ - On boot, the ADVENTURE / BATTLE / SOUND menu appears.
+ - ADVENTURE has scenario select, flag editing, and message/face/map/BG viewers.
+ - ADVENTURE → スタート starts from the scene number in $7E029C.
+   It also loads the map that fits the scene. (map number $02A0, table $80:C67B)
+ - It starts with the scene progress flags reset, so ordinary conversation scenes come out as in real play.
+ - Both the patch note screenshots and the full scene regression test (376 scenes) were done this way.
    (lua/dbgscene.lua)
- - 장면 중간에 나오는 DBZ 퀴즈는 X 버튼으로 넘겨야 진행됩니다.
+ - The DBZ quiz that appears in the middle of a scene must be skipped with the X button to continue.
 ```
 
-## 6. 세이브(SRAM)
+## 6. Saves (SRAM)
 
 ```text
- - 슬롯 본체: 0x100 / 0x300 / 0x500, 각 0x134바이트
- - 슬롯 요약 정보: 0x800부터 0x20 간격 (0x13바이트)
-                  0x860부터 0x20 간격 (0x0C바이트, "Gokuden2nd" + 체크값)
- - 빈 슬롯은 0x60으로 채워져 있습니다.
- - 슬롯을 지울 때는 본체만 지우면 안 되고, 요약 정보 두 곳도 같이 지워야 합니다.
- - v1.2와 v1.3은 세이브 구조를 바꾸지 않았으므로 v1.1 세이브와 호환됩니다.
+ - Slot bodies: 0x100 / 0x300 / 0x500, 0x134 bytes each
+ - Slot summaries: from 0x800, every 0x20 (0x13 bytes)
+                   from 0x860, every 0x20 (0x0C bytes, "Gokuden2nd" + check value)
+ - Empty slots are filled with 0x60.
+ - Erasing a slot means erasing both summary areas as well, not just the body.
+ - v1.2 and v1.3 did not change the save structure, so they are compatible with v1.1 saves.
 ```
 
-## 7. 기타
+## 7. Other
 
 ```text
- - 롬 헤더 체크섬: 파일 0x7FDC-0x7FDF (보수 2바이트 + 체크섬 2바이트)
-   롬을 고친 뒤 다시 계산했습니다. (tools/fixsum.py)
- - 대사 줄바꿈 원칙 (v1.2)
-   · 단어 중간에서 끊지 않습니다.
-   · 위아래 줄 길이를 비슷하게 맞춥니다.
-   · 필요한 것보다 줄을 많이 쓰지 않습니다.
-   · 더듬는 말("주‥죽어")은 한 줄에 둡니다.
+ - ROM header checksum: file 0x7FDC-0x7FDF (2-byte complement + 2-byte checksum)
+   Recomputed after changing the ROM. (tools/fixsum.py)
+ - Dialogue line splitting rules (v1.2)
+   · Do not break in the middle of a word.
+   · Keep the upper and lower lines about the same length.
+   · Do not use more lines than needed.
+   · Keep stammered speech ("주‥죽어", "d-die") on one line.
 ```
 
-## 8. 롬 지도 (일본판 / v1.1 / v1.2 비교) [실측]
+## 8. ROM map (Japanese / v1.1 / v1.2 compared) [verified]
 
 ```text
-세 롬을 바이트 단위로 비교해 뱅크($80–$BF, 각 32KB)마다 바뀐 곳을 셌습니다.
-v1.1 롬 = 일본판 + v1.1/v1.1.ips (CRC32 32219BC3)
+The three ROMs were compared byte by byte and the changes counted per bank ($80–$BF, 32KB each).
+v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
 
- - v1.1이 바꾼 뱅크
-   $80  디버그 메뉴 문구($80:C96F), 롬 헤더 이름($80:FFC0)
-        일본판 "スーパーゴクウデン カクセイヘン"(반각) → "DBZ SUPER GOKUDEN 2"
-   $81–$84 메뉴·글자판·상태 창($84:86BE)·기술 이름($84:C234)·세이브 메뉴($83:AA0E)
-        전투 안내 문구($82:F6D3 "공격 입력" 등)
-   $83  엔딩 크레딧, $83:F3AF 빈 곳(위 2장)
-   $88  지명($88:8000 포인터 표), $88:FFAE(위 2장)
-   $89  $89:9989 "プレイヤーチェンジ" → " 플레이어 체인지" (16비트 문자열,
-        $89:964C에서 $0A00 버퍼로 복사해 창에 띄움)
-   $98–$9F 대사 8뱅크
-   $B4  전투 말풍선 대사: 대사 ID 1000–13FF, $B4:8000에 포인터 1,024개,
-        문자열은 $B4:8800부터. 실제 대사 898개, 나머지 126개는 폰트 시험용 줄.
-        여러 ID가 한 문자열을 같이 가리켜 실제 문자열은 729개입니다.
-        · 전투 스크립트(뱅크 $B5, 데이터 뱅크 = $B5, 위치 $0FC9)의 명령 01/02/03
-          뒤 2바이트가 말풍선 ID입니다. 명령 표는 $82:D14C(명령 00 = 끝).
-          명령 길이: 01–03·0A·12 = 3, 04–09·0B = 1, 0C·0D = 2, 0E–11 = 4
-          (0E–11은 조건이 맞으면 뒤 2바이트 주소로 건너뜀).
-          스크립트 시작 표: $B5:BA7E, $B5:C5AC, $B5:CC74, $B5:D141 (각 80개,
-          $82:D099/D0DE/D0EF/D125가 $0E2B 전투 번호로 읽음).
-        · 명령 01 = $82:D172: $82:D19C에서 포인터를 읽어 $0A00에 복사,
-          $020E=0x0C, $0210=0x0A → 96픽셀 = 8자 × 5줄.
-          명령 02/03 = $82:D1DC: $82:D206에서 읽고 $020E=0x12, $0210=6
-          → 144픽셀 = 12자 × 3줄. 글자 찍기는 대사와 같은 $80:9B2C(1장).
-        · [실측] 시작 표 4개에서 분기까지 따라가면 말풍선 ID 592개가 나오고,
-          한 ID가 두 크기로 쓰이는 경우는 없습니다. 376개 장면 실행 중 실제로
-          뜬 말풍선 230개의 읽은 코드 주소($82:D1A0 = 명령 01, $82:D20A = 02/03)도
-          모두 이 결과와 같습니다. 8자 × 5줄 창은 1033, 1034, 10DD/10DE(계왕권
-          설명), 1189(치치의 설명)뿐입니다.
-          나머지 306개 ID는 어느 스크립트에서도 부르지 않습니다.
-        · [실측] 시험용 줄을 넣어 장면 00A에서 띄우면(ID 1000 = 11·12·13자,
-          1001 = 12·13·14자) 12자 창에서 13번째 글자부터 다음 줄로 넘어가고,
-          넘친 줄은 창 밖이라 보이지 않습니다.
-        · 장면 00A(천하제일무도회)의 전투에서 ID 1000 "너 정말로 누구야?"가
-          이 표에서 나오는 것을 확인했습니다.
-        · v1.2는 손대지 않았고, v1.3에서 일본어 원문과 대조해 문자열 443개
-          (ID 719개)를 고쳤습니다. tables/bubbles-v1.3.tsv, tools/bubble_patch.py.
-          ID 137B–1381의 7줄은 v1.1이 엔딩 인사와 한글화 참여자 이름을 넣은
-          자리라 그대로 두었습니다(10장).
-   $B6–$B7 대사 폰트
- - v1.2가 바꾼 뱅크 (v1.1 대비)
-   $80  헤더 체크섬 4바이트($80:FFDC)
-   $83  $83:F3AF 끝 표시 4바이트, 크레딧 블록 이동, $83:F510 "미스터 포포" 줄
-   $88  $88:FFAE 끝 표시·레코드 8바이트, 지명 블록 이동
-   $89  타이틀 타일($89:9B9D)·타일맵($89:C4F3) 다시 압축
-   $98–$9F 대사 782줄
-   $B6–$B7 새 글자 11자
- - v1.3이 바꾼 뱅크 (v1.2 대비)
-   $80  헤더 체크섬 4바이트
-   $98, $9B, $9C  나레이션 대사 8개 줄바꿈(늘어난 줄바꿈 코드만큼 다시 배치)
-   $B4  전투 말풍선 문자열 443개, 그중 185개는 같은 뱅크의 빈 곳으로 옮김
-        (빌드 뒤 $B4 빈 곳 3,669바이트)
-   $81  암호·이름 입력 칸 코드표 $81:8D56, $81:8E00 (11장)
-   $83  암호 쌍 표 $83:A60E, 이름 변환 표 $83:AEB0 (11장)
-   $84  암호·이름 입력 격자 $84:A3E0, $84:A4D0 (11장)
-   $B7  새 글자 4자 (딩 띠 렉 창)
- - 나머지 뱅크($85–$87, $8A–$97, $A0–$B3, $B5, $B8–$BF)는 세 롬이 같습니다.
+ - Banks changed by v1.1
+   $80  debug menu text ($80:C96F), ROM header title ($80:FFC0)
+        Japanese "スーパーゴクウデン カクセイヘン" (half-width) → "DBZ SUPER GOKUDEN 2"
+   $81–$84 menus, character board, status window ($84:86BE), technique names ($84:C234), save menu ($83:AA0E)
+        battle guidance text ($82:F6D3 "공격 입력" (attack input) etc.)
+   $83  ending credits, free area at $83:F3AF (section 2 above)
+   $88  place names ($88:8000 pointer table), $88:FFAE (section 2 above)
+   $89  $89:9989 "プレイヤーチェンジ" → " 플레이어 체인지" (player change) (16-bit string,
+        copied by $89:964C to the $0A00 buffer and shown in a window)
+   $98–$9F the 8 dialogue banks
+   $B4  battle speech bubble dialogue: dialogue IDs 1000–13FF, 1,024 pointers at $B4:8000,
+        strings from $B4:8800. 898 real lines; the other 126 are font test lines.
+        Several IDs share one string, so there are 729 actual strings.
+        · In the battle script (bank $B5, data bank = $B5, position $0FC9), the 2 bytes after commands 01/02/03
+          are the bubble ID. The command table is $82:D14C (command 00 = end).
+          Command lengths: 01–03, 0A, 12 = 3; 04–09, 0B = 1; 0C, 0D = 2; 0E–11 = 4
+          (0E–11 jump to the 2-byte address that follows if the condition holds).
+          Script start tables: $B5:BA7E, $B5:C5AC, $B5:CC74, $B5:D141 (80 each,
+          read by $82:D099/D0DE/D0EF/D125 with the battle number in $0E2B).
+        · Command 01 = $82:D172: reads the pointer at $82:D19C and copies it to $0A00,
+          $020E=0x0C, $0210=0x0A → 96 pixels = 8 characters × 5 lines.
+          Commands 02/03 = $82:D1DC: reads at $82:D206, $020E=0x12, $0210=6
+          → 144 pixels = 12 characters × 3 lines. Characters are printed by the same $80:9B2C as dialogue (section 1).
+        · [verified] Following the 4 start tables through every branch gives 592 bubble IDs,
+          and no ID is used with both sizes. The read code addresses ($82:D1A0 = command 01, $82:D20A = 02/03)
+          of the 230 bubbles that actually appeared while running the 376 scenes
+          all agree with this. The only 8-character × 5-line windows are 1033, 1034, 10DD/10DE (Kaio-ken
+          explanation) and 1189 (Chi-Chi's explanation).
+          The other 306 IDs are not called by any script.
+        · [verified] With test lines shown in scene 00A (ID 1000 = 11, 12, 13 characters;
+          1001 = 12, 13, 14 characters), the 12-character window moves to the next line from the 13th character,
+          and the overflowing line is outside the window and not visible.
+        · In the battle of scene 00A (World Martial Arts Tournament), ID 1000 "너 정말로 누구야?" ("Who are you, really?")
+          was confirmed to come from this table.
+        · v1.2 did not touch them; v1.3 fixed 443 strings
+          (719 IDs) against the Japanese original. tables/bubbles-v1.3.tsv, tools/bubble_patch.py.
+          The 7 lines at IDs 137B–1381 are where v1.1 put an ending farewell and the names of the translation team,
+          so they were left as they are (section 10).
+   $B6–$B7 dialogue font
+ - Banks changed by v1.2 (against v1.1)
+   $80  4 header checksum bytes ($80:FFDC)
+   $83  4 end-marker bytes at $83:F3AF, credit block moved, "미스터 포포" line at $83:F510
+   $88  8 bytes of end marker and record at $88:FFAE, place name block moved
+   $89  title tiles ($89:9B9D) and tilemap ($89:C4F3) recompressed
+   $98–$9F 782 dialogue lines
+   $B6–$B7 11 new characters
+ - Banks changed by v1.3 (against v1.2)
+   $80  4 header checksum bytes
+   $98, $9B, $9C  line breaks of 8 narration lines (relocated by the number of added line break codes)
+   $B4  443 battle bubble strings, 185 of them moved to free space in the same bank
+        (3,669 bytes free in $B4 after the build)
+   $81  code tables of the password/name entry cells $81:8D56, $81:8E00 (section 11)
+   $83  password pair table $83:A60E, name conversion table $83:AEB0 (section 11)
+   $84  password/name entry grids $84:A3E0, $84:A4D0 (section 11)
+   $B7  4 new characters (딩 띠 렉 창)
+ - The other banks ($85–$87, $8A–$97, $A0–$B3, $B5, $B8–$BF) are identical in all three ROMs.
 
-■ 대사 뱅크별 v1.3 재배치 (tools/build.sh 출력)
-  782줄 중 432줄은 제자리에 안 들어가 같은 뱅크 안으로 옮겼습니다.
-  (v1.2 빌드는 436줄, $9C 70줄·4,831바이트, $98 30줄·3,224바이트였습니다.)
+■ v1.3 relocation per dialogue bank (tools/build.sh output)
+  Of 782 lines, 432 did not fit in place and were moved within the same bank.
+  (The v1.2 build moved 436 lines; $9C 70 lines and 4,831 bytes, $98 30 lines and 3,224 bytes.)
 
-  뱅크   옮긴 줄   빌드 뒤 남은 빈 곳
-  $99      76      2,526바이트
-  $9A      61      4,680바이트
-  $9B      78      3,715바이트
-  $9C      67      4,840바이트
-  $9D      48      3,700바이트
-  $9E      27      3,476바이트
-  $9F      46      3,463바이트
-  $98      29      3,226바이트
+  bank   lines moved   free space left after the build
+  $99      76      2,526 bytes
+  $9A      61      4,680 bytes
+  $9B      78      3,715 bytes
+  $9C      67      4,840 bytes
+  $9D      48      3,700 bytes
+  $9E      27      3,476 bytes
+  $9F      46      3,463 bytes
+  $98      29      3,226 bytes
 
- - "빈 곳"은 첫 문자열부터 뱅크 끝까지의 0xFF 구간을 합친 값이며,
-   살아 있는 데이터 옆 1바이트 여유를 뺐습니다. (dialogue_patch.py와 같은 기준)
- - v1.1의 한글 대사는 일본어보다 짧아 뱅크마다 끝쪽에 0xFF가 남아 있었습니다.
+ - "Free space" is the total of the 0xFF runs from the first string to the end of the bank,
+   minus a 1-byte margin next to live data. (The same rule as dialogue_patch.py)
+ - The Korean dialogue of v1.1 was shorter than the Japanese, so every bank had 0xFF left at its end.
 
-■ 그 밖에 남은 빈 공간
- - 파일 0x4C801–0x4FFFF (14,335바이트): 일본판과 v1.2 모두 0xFF.
-   타이틀 자료가 길어질 때 옮길 자리로 두었고 v1.2는 쓰지 않았습니다.
- - 파일 0x1F53C–0x1FFFF (2,756바이트): 일본판과 v1.2 모두 0xFF.
-   v1.2 크레딧 줄이 0x1F510–0x1F53B를 씁니다.
+■ Other free space left
+ - File 0x4C801–0x4FFFF (14,335 bytes): 0xFF in both the Japanese ROM and v1.2.
+   Kept for moving the title data if it grows; v1.2 does not use it.
+ - File 0x1F53C–0x1FFFF (2,756 bytes): 0xFF in both the Japanese ROM and v1.2.
+   The v1.2 credit line uses 0x1F510–0x1F53B.
 ```
 
-## 9. Mesen 2 스크립트 사용법
+## 9. Using the Mesen 2 scripts
 
 ```text
- - 실행: Mesen --testrunner <롬> <스크립트.lua>
-   Lua 파일 입출력을 쓰므로 Mesen 설정에서 AllowIoOsAccess를 켜야 합니다.
- - lua/dbgscene.lua (디버그 메뉴를 켠 롬에서 실행)
-   · 430프레임째 $7E029C에 장면 번호를 넣고 A로 시작합니다.
-   · 환경 변수: TARGET(장면 번호, 16진수), MAXF(끝 프레임, 기본 3000),
-     PERIOD(A 연타 간격, 기본 70), EVERY(캡처 간격), QUIZ=1(DBZ 퀴즈를 X로 넘김),
-     SHOT_DIR(화면과 ids.txt를 쓸 폴더)
-   · 대사 포인터 표 8개와 $B4:8000(전투 말풍선) 표 읽기를 감시해
-     ids.txt에 "프레임 대사ID 종류 읽은코드주소"를 적습니다.
-     종류 d = 대사, b = 전투 말풍선. 대사 표를 읽는 코드는 $83:BB0A, $83:BADA,
-     $83:BAC0, $83:BA56, 말풍선 표는 $82:D1A0(명령 01)과 $82:D20A(명령 02/03)
-     였습니다. 기록되는 주소는 읽은 명령의 다음 명령 주소입니다.
-   · 전투 중 대사처럼 긴 장면은 MAXF를 30000까지 늘려야 했습니다.
- - lua/crjump.lua: 장면 0x050으로 시작한 뒤 $80:822D 실행 순간에
-   PC를 $83:8669(크레딧 출력 루틴)로 바꿔 엔딩 크레딧을 바로 띄웁니다.
- - lua/lib.lua에서 알게 된 것
-   · 버튼 입력은 inputPolled 이벤트에서 넣어야 게임이 읽습니다.
-   · 세이브스테이트 저장·불러오기는 exec 콜백 안에서만 됩니다. (M.defer)
-   · Lua 콜백 오류는 조용히 실패합니다. pcall로 감싸고 memType 인자를 정확히 주세요.
-   · Lua로 쓴 SRAM은 저장되지 않습니다.
-     ~/Library/Application Support/Mesen2/Saves/<롬 이름>.srm에 직접 복사했습니다.
- - 창 폭 시험: 대사 ID 200(나레이션)과 201(얼굴)의 포인터를 $99의 빈 곳으로
-   돌려 시험용 줄을 넣고 장면 000을 시작하면 744프레임쯤 ID 200,
-   1237프레임쯤(PERIOD=120) ID 201이 뜹니다.
- - lua/compat.lua: compat/의 입력 스크립트(아래 10장)를 Mesen 2에서 그대로
-   재생합니다. 환경 변수 SCRIPT, SHOT_DIR, LUA_DIR(lib.lua가 있는 폴더).
+ - Run: Mesen --testrunner <ROM> <script.lua>
+   The scripts use Lua file I/O, so AllowIoOsAccess must be turned on in the Mesen settings.
+ - lua/dbgscene.lua (run on a ROM with the debug menu enabled)
+   · At frame 430 it puts the scene number in $7E029C and starts with A.
+   · Environment variables: TARGET (scene number, hex), MAXF (last frame, default 3000),
+     PERIOD (A mashing interval, default 70), EVERY (capture interval), QUIZ=1 (skip the DBZ quiz with X),
+     SHOT_DIR (folder for screenshots and ids.txt)
+   · It watches reads of the 8 dialogue pointer tables and the $B4:8000 (battle bubble) table and
+     writes "frame dialogueID kind readCodeAddress" to ids.txt.
+     kind d = dialogue, b = battle bubble. The code reading the dialogue tables was $83:BB0A, $83:BADA,
+     $83:BAC0 and $83:BA56; for the bubble table, $82:D1A0 (command 01) and $82:D20A (commands 02/03).
+     The address recorded is that of the instruction after the one that read.
+   · Long scenes such as dialogue during battle needed MAXF raised to 30000.
+ - lua/crjump.lua: starts at scene 0x050, then the moment $80:822D executes it changes
+   PC to $83:8669 (the credit output routine) to show the ending credits right away.
+ - Lessons from lua/lib.lua
+   · Button input must be set in the inputPolled event for the game to read it.
+   · Saving and loading savestates only works inside an exec callback. (M.defer)
+   · Errors in Lua callbacks fail silently. Wrap them in pcall and pass the memType argument exactly.
+   · SRAM written from Lua is not saved.
+     It was copied directly to ~/Library/Application Support/Mesen2/Saves/<ROM name>.srm.
+ - Window width test: redirect the pointers of dialogue ID 200 (narration) and 201 (face) to free space in $99,
+   put in test lines and start scene 000; ID 200 appears around frame 744
+   and ID 201 around frame 1237 (PERIOD=120).
+ - lua/compat.lua: plays the input scripts in compat/ (section 10 below) as they are on Mesen 2.
+   Environment variables SCRIPT, SHOT_DIR, LUA_DIR (folder containing lib.lua).
 ```
 
-## 10. 다음 사람에게
+## 10. For the next person
 
 ```text
- - [그대로 둠] 말풍선 ID 137B–1381(7줄)은 v1.1이 일본어 대사 대신 엔딩 인사와
-   한글화 참여자 이름을 넣은 자리입니다. v1.3도 바꾸지 않았습니다.
-     137B い‥生きていたのか!!                 → 자 이제 슬슬/작별할 시간이다!
-     137C それじゃ そろそろ/おわかれの時間だ! → 지금까지 이 게임을/즐겨주셔서 감사합니다!!
-     137D ここまで やりこんで/くれた キミとなら/次もきっと会えるよな!! → 한글화/엑소버드/PERFECTACLE
-     137E そ‥孫‥/だれと 話てるんだ‥?        → 번역/김태준/라헬
-     137F 打ち所がわるかったか‥               → 번역/별소리/양동이
-     1380 うるせえぞピッコロ!/だまらねえと魔封波で/封じこめんぞ!! → 번역/UNKNOWN
+ - [left as is] Bubble IDs 137B–1381 (7 lines) are where v1.1 put an ending farewell and the names of the
+   translation team instead of the Japanese dialogue. v1.3 did not change them either.
+     137B い‥生きていたのか!!                 → 자 이제 슬슬/작별할 시간이다! (Well then,/time to say goodbye!)
+     137C それじゃ そろそろ/おわかれの時間だ! → 지금까지 이 게임을/즐겨주셔서 감사합니다!! (Thank you for/playing this game!!)
+     137D ここまで やりこんで/くれた キミとなら/次もきっと会えるよな!! → 한글화/엑소버드/PERFECTACLE (Korean translation/Exobird/PERFECTACLE)
+     137E そ‥孫‥/だれと 話てるんだ‥?        → 번역/김태준/라헬 (Translation/Kim Taejun/Rahel)
+     137F 打ち所がわるかったか‥               → 번역/별소리/양동이 (Translation/Byeolsori/Yangdongi)
+     1380 うるせえぞピッコロ!/だまらねえと魔封波で/封じこめんぞ!! → 번역/UNKNOWN (Translation/UNKNOWN)
      1381 じゃあな みんな!/また会おうなーーー!! → THANK YOU/FOR PLAYING
- - [미확인] 어느 전투 스크립트도 부르지 않는 말풍선 306개가 실제로 뜨는지는
-   확인하지 않았습니다. check_width.py는 일본어가 4줄 이상이면 8자 × 5줄,
-   아니면 12자 × 3줄 창으로 보고 검사합니다. 일본어부터 어느 창에도 맞지 않는
-   10AF, 10C6, 11CF, 11FD는 경고만 냅니다.
- - [주의] bubble_patch.py는 dialogue_patch.py가 만든 글자 표만 씁니다.
-   dialogue_patch.py는 빈 글자 자리를 고를 때 입력 롬의 말풍선(v1.1)만 보므로,
-   새 글자를 더 넣을 때는 그 자리가 v1.3 말풍선에 쓰였는지 먼저 확인하세요.
- - 장면 회귀 (lua/dbgscene.lua, 장면마다 12,000프레임, A 40프레임 간격, QUIZ=1)
-   대사 ID가 뜬 순서 전체를 비교합니다.
-   · v1.2 대 일본판: 376개 중 342개 같음. 다른 34개 중 30개는 전투가 시작된
-     뒤부터 갈림(대사 길이가 달라 입력 순간이 바뀌면 전투 결과가 바뀜),
-     3개(045–047)는 공룡 추격 장면의 같은 대사 반복 횟수, 1개(052)는
-     12,000프레임 안에 v1.2가 대사 4개를 더 봄.
-   · v1.3 대 v1.2: 360개 같음. 다른 16개는 모두 전투가 시작된 뒤 한쪽이 아직
-     전투 중이라 대사가 덜 나온 경우. 16개를 30,000프레임으로 다시 돌리면
-     13개가 같아지고, 남은 01D, 01E, 11D는 같은 입력에도 한쪽이 전투를 더 오래
-     끄는 경우(28,000프레임에도 전투 화면). Mesen 테스트 모드가 약 100초에
-     끝나 30,000프레임 실행은 28,000프레임 무렵까지 기록됩니다.
-   · v1.3 대 일본판: 348개 같음.
- - 에뮬레이터 호환성 (compat/run_all.sh, lua/compat.lua)
-   같은 입력 스크립트(compat/s_*.txt)를 Mesen 2와 libretro 코어에 넣었습니다.
-   new = 새 게임 9,000프레임(헤더 없는 롬, 헤더 있는 롬),
-   cont = 배포한 100% 세이브로 이어하기 6,000프레임(일본판, v1.2, v1.3),
-   narration = 디버그 메뉴 장면 084, bubble = 장면 00A (일본판, v1.3),
-   pwjp/pwko = 새 게임 → 암호에서 돌격편 디버그 ENDING 암호 입력 (일본판은
-   가나로, v1.2·v1.3은 돌격편 v1.1 화면 글자와 같은 칸을 찾아서, 11장),
-   pwdebug/phrase = 디버그 ENDING 암호 / 「손오공은사이어인」을 넣고 이름을 정한 뒤
-   9,000프레임 진행, wrong = 「손오공은사이어」(7자), cheat = 「체력을늘려줘신룡」.
-   돌리려면 compat/cores/에 libretro 코어(.dylib)를, compat/roms/에 jp.sfc,
-   v12.sfc, v13.sfc, v13h.smc(헤더 있는 롬), jpd.sfc·v13d.sfc(파일 0x5C를
-   EA EA로 바꾼 디버그 롬), save.srm을 넣습니다. 롬과 코어는 들어 있지 않습니다.
-   디버그 장면은 430프레임째 $7E029C에 장면 번호를 씁니다. WRAM 포인터를 주지
-   않는 bsnes는 Pro Action Replay 치트로 40프레임 동안 그 값을 읽게 합니다.
+ - [unchecked] Whether the 306 bubbles no battle script calls ever appear was
+   not checked. check_width.py treats a bubble as an 8-character × 5-line window if the Japanese has 4 or more lines,
+   otherwise as a 12-character × 3-line window. 10AF, 10C6, 11CF and 11FD, whose Japanese already fits neither window,
+   only produce warnings.
+ - [caution] bubble_patch.py uses only the character table dialogue_patch.py produced.
+   dialogue_patch.py looks only at the bubbles of the input ROM (v1.1) when picking free glyph slots,
+   so before adding more characters, check that the slot is not used by the v1.3 bubbles.
+ - Scene regression (lua/dbgscene.lua, 12,000 frames per scene, A every 40 frames, QUIZ=1)
+   compares the whole order in which dialogue IDs appeared.
+   · v1.2 vs Japanese: 342 of 376 identical. Of the 34 that differ, 30 diverge after a battle starts
+     (different dialogue lengths shift the moment of input, which changes the battle outcome),
+     3 (045–047) differ in how often the same line repeats in the dinosaur chase scene, and 1 (052)
+     is v1.2 seeing 4 more lines within 12,000 frames.
+   · v1.3 vs v1.2: 360 identical. The other 16 are all cases where, after a battle starts, one side is still
+     in battle and shows fewer lines. Rerunning the 16 for 30,000 frames makes
+     13 identical; the remaining 01D, 01E and 11D are cases where one side drags the battle out longer with the same input
+     (still on the battle screen at 28,000 frames). Mesen's test mode ends after about 100 seconds,
+     so a 30,000-frame run is recorded up to about frame 28,000.
+   · v1.3 vs Japanese: 348 identical.
+ - Emulator compatibility (compat/run_all.sh, lua/compat.lua)
+   The same input scripts (compat/s_*.txt) were fed to Mesen 2 and libretro cores.
+   new = new game, 9,000 frames (headerless ROM, headered ROM),
+   cont = continue from the released 100% save, 6,000 frames (Japanese, v1.2, v1.3),
+   narration = debug menu scene 084, bubble = scene 00A (Japanese, v1.3),
+   pwjp/pwko = new game → password, entering the Totsugeki-hen debug ENDING password (in kana on the Japanese ROM;
+   on v1.2 and v1.3 by finding the cells matching the Totsugeki-hen v1.1 screen characters, section 11),
+   pwdebug/phrase = enter the debug ENDING password / 「손오공은사이어인」, set a name, then
+   play 9,000 frames, wrong = 「손오공은사이어」 (7 characters), cheat = 「체력을늘려줘신룡」.
+   To run them, put libretro cores (.dylib) in compat/cores/ and jp.sfc,
+   v12.sfc, v13.sfc, v13h.smc (headered ROM), jpd.sfc and v13d.sfc (debug ROMs with file 0x5C changed to
+   EA EA) and save.srm in compat/roms/. ROMs and cores are not included.
+   Debug scenes write the scene number to $7E029C at frame 430. For bsnes, which does not expose a WRAM pointer,
+   a Pro Action Replay cheat makes the game read that value for 40 frames.
 
-   에뮬레이터          결과
-   Mesen 2             정상 (모든 시나리오)
-   bsnes               정상 (치트로 장면 지정)
-   snes9x, snes9x2010  정상 (장면 번호 순서가 Mesen 2와 같음)
-   bsnes-hd beta       new·cont·암호 정상(216줄 출력). WRAM 포인터도 치트도 안 먹어
-                       디버그 장면은 판정 못 함
-   Beetle Supafaust    new·cont·암호 정상. 치트를 넣으면 코어가 예외로 종료해
-                       디버그 장면은 판정 못 함
-   Mesen-S 코어        판정 불가 (일본판 원본도 바로 exit 139)
+   emulator            result
+   Mesen 2             OK (all scenarios)
+   bsnes               OK (scene set by cheat)
+   snes9x, snes9x2010  OK (scene number order same as Mesen 2)
+   bsnes-hd beta       new, cont and passwords OK (outputs 216 lines). Neither WRAM pointer nor cheats work,
+                       so debug scenes are undetermined
+   Beetle Supafaust    new, cont and passwords OK. Adding a cheat makes the core exit with an exception,
+                       so debug scenes are undetermined
+   Mesen-S core        undetermined (even the Japanese original exits immediately with exit 139)
 
-   코어마다 다른 것은 글자가 찍히는 타이밍 몇 프레임과 화면 높이뿐이었습니다.
-   암호는 모든 코어에서 일본판·v1.3 통과(이름 화면), v1.2 거부로 같았습니다.
-   「손오공은사이어인」은 모든 코어에서 통과해 기본 이름(엑소버드) 이름 화면으로
-   가고, 이름을 정한 뒤 디버그 암호와 같은 장면(천하제일 무도회장의 DBZ 퀴즈)에
-   이릅니다. v1.2와 7자 문장은 거부, 「체력을늘려줘신룡」은 통과.
- - 회귀 표본: 최종 빌드로 63개 장면(6개마다 하나)을 다시 돌려 직전 v1.3 결과와
-   대사 ID 순서가 63/63 같았습니다.
- - 타이틀 한글 로고 폰트(BM 영성체)는 macOS 시스템 폰트 경로를 씁니다.
-   다른 환경에서는 tools/title.py의 TITLE_FONT를 바꿔야 같은 롬이 나옵니다.
- - 쓴 도구 버전 (이 버전으로 zip을 다시 빌드해 CRC32 B9F14962를 확인)
+   The only differences between cores were a few frames in text printing timing and the screen height.
+   Passwords behaved the same on every core: Japanese and v1.3 pass (name screen), v1.2 rejects.
+   「손오공은사이어인」 passes on every core, goes to the name screen with the default name (엑소버드),
+   and after setting a name reaches the same scene as the debug password (the DBZ quiz at the World Martial Arts Tournament).
+   v1.2 and the 7-character phrase are rejected; 「체력을늘려줘신룡」 passes.
+ - Regression sample: rerunning 63 scenes (one in every 6) with the final build gave
+   63/63 identical dialogue ID orders against the previous v1.3 results.
+ - The title Korean logo font (BM YeongSung) uses the macOS system font path.
+   On other systems, TITLE_FONT in tools/title.py must be changed to produce the same ROM.
+ - Tool versions used (the zip was rebuilt with these versions and CRC32 B9F14962 confirmed)
    · Python 3.9.6, Pillow 11.3.0
    · Mesen 2.1.1 (macOS)
 ```
 
-## 11. 돌격편에서 넘어오는 암호 (v1.3)
+## 11. Password carried over from Totsugeki-hen (v1.3)
 
 ```text
- - 새 게임 → 암호에서 돌격편 엔딩의 50자 암호를 넣으면 이름과 기록을 이어받습니다.
- - 검사 루틴 $83:A1F8 [실측]
-   · $1F00의 입력(16비트 코드, 0x272 = 빈칸)에서 빈칸을 빼고 $1E00에 모읍니다.
-   · 두 글자씩 $83:A60E 표(256쌍, 쌍마다 코드 2개)에서 같은 쌍을 찾아
-     그 순번(0–255)을 1바이트로 씁니다. 앞 23쌍 = 23바이트, 합계는 16비트.
-   · 24·25번째 쌍이 나타내는 두 바이트(하위, 상위)가 합계와 같으면 통과(0 반환).
-   · 통과하면 $83:A313이 바이트 6–15(16비트 글자 5개, 이름)를 $83:AD58(돌격편 코드 목록)에서
-     찾아 같은 순번의 $83:AEB0(각성편 코드)으로 바꿔 $0C00에 씁니다.
- - 23바이트의 내용 [실측: 돌격편 $81:D048(암호 만들기), 각성편 $83:A313(받기)]
-     바이트  돌격편에서 담는 값                 각성편이 하는 일
-     0–1     $0D99/$0D9B/$0D9D의 9비트          바이트 0 비트 2($0D99 & 0x200)가 켜져 있으면
-             (바이트 0 비트 0–7, 바이트 1 비트 0) $82:EDFB로 기술 15번 비트($0D2E bit 15)를 켬
-     2–4     $0C8B–$0C8D                        읽지 않음
-     5       $0B00                              읽지 않음
-     6–17    $0B01–$0B0C (이름, 16비트 6자)     6–15를 이름 5자로 바꿔 $0C00에
-     18–20   $0C91, $0C92, $0C90                읽지 않음
-     21–22   $022F–$0230                        $0266–$0267에 씀. $80:8610이 분($0266)이
-                                                 60이 되면 시($0267)를 올리는 플레이 시간
-     23–24   0–22의 합(16비트)                  검사
-   · 체력·전투력($0C86–$0C90, $0CAA–$0CB4)은 암호와 상관없이 정해진 값으로 시작합니다.
-   · 기술 15번은 기술습득표의 손오공 파워기술 「거북선인류최종오의」[실측: Mesen에서
-     $0D2E bit 15만 켜고 기술습득표를 열면 이 줄만 밝게 나옴. 익히지 않은 기술은
-     $81:CB8B가 팔레트 $1400으로 어둡게 그림].
-   · 돌격편에서 $0D99 비트 9(기술 9 「무천류 최종오의」, $84:B605 이름 표 9번)를
-     켜는 곳 [실측: 돌격편 v1.1 코드·스크립트 읽기]
-     - $0D99를 쓰는 코드는 새 게임 초기화($80:80F7, $0D99 = 0x37), 이벤트 스크립트
-       명령 1C–1E($81:99F9), 맵 스크립트 명령 0E($81:B81D, 켬)·0F($81:B868, 끔).
-       전투 보상 표($B0:F9ED)에는 플래그 9가 없고, 이벤트 스크립트에 1C–1E 09 00도 없음.
-     - 맵 스크립트 0E 09 00은 $B3:DB07 한 곳. ROM의 다른 0E 09 00 다섯 곳 중
-       $90:9DCE, $92:BBC8, $97:DD04는 맵 스크립트가 있는 뱅크가 아니고, $AC:9239는
-       명령 38의 피연산자 0E 뒤에 이어지는 09 명령, $8A:C7D7은 앞뒤가 스크립트
-       문법에 맞지 않아 데이터로 봄[추정].
-     - $B3:DA41의 선택지(0x6F 「마신다」 / 0x70 「마시지 않는다」)가 카린탑 초신수
-       장면. 「마신다」 쪽 끝: 0E 0D 00, 0E 0F 00, 0E 0C 00 (기술 13·15·12: 초에네르기파,
-       에네르기파 공격, 유도 에네르기파) → 0D 96 00 07 DB (명령 0D, $81:B7C3: 이벤트
-       플래그 $0D79의 0x96이 켜져 있으면 $DB07로) → 꺼져 있으면 3B(스크립트 끝,
-       $81:AA2B) → 켜져 있으면 0E 09 00 후 3B.
-     - 플래그 0x96: $B6:BEF1에서 0C 96 00(끔, $81:B771) 후 아라레 퀴즈(메시지 0x0F58,
-       선택지 0x72–0x74), 세 번째 답(0x74, 일본판 「ほひょ！？」, 돌격편 한글판
-       「PERFECTACLE」)만 $B6:BF0E의 0B 96 00(켬, $81:B726)을 지남.
-     - 따라서 비트 9는 아라레 퀴즈를 맞히고 초신수를 마셔야 켜지며, 돌격편을 끝까지
-       깨도 꺼져 있을 수 있습니다.
-   · 돌격편 디버그 ENDING 암호의 값: 바이트 0 = 0, 이름 = あ×6(0x100),
-     18 = 100, 20 = 50, 21–22 = 2 (0시간 2분), 나머지 0.
- - 글자 암호 [실측]
-   · 입력완료를 누르면 $83:A1F8보다 먼저 $83:A408이 입력을 문장 6개와 비교합니다.
-     $83:B008 「체력을늘려줘신룡」 → 시작 체력·전투력, $83:B046 「하드코어한플레이를
-     하고싶어신룡」 → 낮은 시작 능력치, $83:B0A4 「이회차플레이를하고싶어신룡」 → 결과 2
-     (다시 시작), $83:B10E 「콜렉션좀많이모아줘신룡」 → $0CCE·$0D9E 표를 FFFF로,
-     $83:B182 「모든기술을알려줘신룡」 → 기술 비트 전부, $83:B1E2
-     「모든세이브를클리어해줘신룡」 → 세이브 3칸 지움. (일본판은 가나 문장, v1.1이 한글로 바꿈)
-   · v1.3의 칸 재배치로 룡·션·싶·플·해·회가 격자에서 빠지므로, 암호 글자가 아닌
-     칸(ぼ ぽ ボ ポ와 빈칸)에 넣어 여섯 문장을 계속 칠 수 있게 했습니다.
-   · v1.3에서 더한 문장 「손오공은사이어인」(돌격편 한글판 엔딩이 보여 주는 암호):
-     $83:A4D0(문장 없음 → 0 반환)을 JMP $83:FE00으로 바꾸고, 새 루틴이 입력을
-     $83:FE80의 8자와 비교합니다. 맞으면 기술 15번을 켜고, $83:A313과 같은 시작 체력·
-     전투력을 넣고, $0266 = 2(0시간 2분)를 쓴 뒤 1을 돌려줍니다. 1은 글자 암호가
-     맞았다는 뜻이라 $81:9276으로 가고, 이름 변환($83:A313)을 하지 않아 이름 화면에
-     각성편 기본 이름이 나옵니다.
-     · 기본값을 고른 이유: 체력·전투력은 원작도 고정값. 기술 15번은 위 조건(아라레
-       퀴즈 정답 + 초신수)을 채워야 켜지는 비트지만, 이 암호는 돌격편을 빠짐없이
-       마친 상태를 대신하므로 켬. 플레이 시간 0시간 2분은 정할 근거가 없어 임의로
-       고른 값이며, 디버그 ENDING 암호의 값을 빌렸습니다.
-     · 문장 코드(각성편): A27 577 144 5B4 A04 5C2 552 5C4 (손오공은사이어인)
-       돌격편이 같은 글자를 그리는 코드: 182 1A7 106 1AF 221 1C1 1A2 1C2
- - 입력 화면 [실측]
-   · 칸이 넣는 코드: $81:8D56 히라가나 85칸, $81:8E00 가타카나 85칸
-     (순번 = 줄 × 15 + 칸, $81:91F9가 읽음). 같은 표를 이름 입력 화면도 씁니다.
-   · 화면 격자: $84:A3E0, $84:A4D0 (16비트 문자열, 한 줄 = 빈칸+5칸+빈칸+5칸
-     +빈칸+5칸+줄바꿈, $81:8B74가 그림). 입력 모드 진입에 A, 히라/가타 전환 X.
- - v1.1(~v1.2)의 문제 [실측]
-   · 칸과 격자는 한글 코드로 바꾸고 $83:A60E 쌍 표는 일본어 코드 그대로 두어,
-     어떤 암호도 통과하지 못했습니다.
-   · 칸 글자 배열이 돌격편 엔딩 화면과 달라, 암호 글자 칸 156개 중 돌격편과 같은
-     글자를 보여 주는 칸은 25개였습니다.
-   · $83:AEB0도 37번째 항목부터 한 칸씩 밀려 171자 중 136자가 달랐습니다.
- - v1.3의 수정 (tools/password.py, tables/totsugeki-password.tsv)
-   · 돌격편 v1.1 롬의 쌍 표($B7:F09F, 돌격편 코드)와 각성편 쌍 표를 같은 자리끼리
-     맞춰 암호 글자 152개를 찾고, 돌격편 폰트(8×16, $83:DE00)를 픽셀로 그려 각
-     글자가 돌격편 화면에서 어떤 한글로 보이는지 읽었습니다. (글자 표 이름과 다른
-     것: ち=께, ナ=건, デ=띠, バ=떠)
-   · 글자마다 각성편 코드 하나를 정해 쌍 표, 입력 칸 170개, 격자 두 개, 이름 표
-     171자에 모두 넣었습니다. 암호 글자가 아닌 칸(ぼ, ぽ, ー 등)은 이름 표의
-     글자를, や·わ 줄의 빈칸은 일본판처럼 빈칸을 둡니다.
- - 확인 (Mesen 2, compat/run_all.sh의 pwjp·pwko)
-   · 돌격편 디버그 메뉴 ENDING 암호를 돌격편 v1.1 화면 글자 그대로 찾아 누르면
-     v1.3은 통과해 이름 화면(가가가가가)으로, v1.2는 「건」 칸이 없고 틀린 암호.
-   · 쌍 표 전체를 쓰는 다른 암호(23바이트 임의 값 + 합계)도 v1.3에서 통과.
-   · 「손오공은사이어인」: 통과해 이름 화면(기본 이름 엑소버드). 이름을 정한 뒤의
-     장면 순서는 디버그 ENDING 암호와 같았고, 메모리 차이는 이름과 $0D2E bit 15뿐.
-     「손오공은사이어」(7자)는 틀린 암호. 「체력을늘려줘신룡」도 v1.3에서 통과.
-   · 이름 바이트(6–15)에 돌격편 코드 0x186 0x225 0x1C2 0x14C 0x12C를 넣어 만든
-     암호를 v1.3에 넣으면 이름 화면에 「스서인레다」가 나옵니다(이름 변환 확인).
- - 원작에서도 생기는 일 [실측]
-   · 돌격편은 0x227(ぺ, 히라가나)을 쓰는데 각성편 쌍 표의 같은 자리는 가타카나 ペ.
-     화면 모양이 같아 히라가나로 치면 일본판에서도 틀립니다(디버그 ENDING 암호가
-     일본판에서 거부된 이유). 가타카나로 치면 통과합니다.
-   · 돌격편 쌍 표는 152글자, 각성편은 151글자. 돌격편이 り(0x147)를 쓰는
-     3자리(값 0x4C, 0x73, 0x7B)를 각성편은 リ(0x1E7)로 받습니다.
-   · 한글판 v1.3은 쌍 표를 돌격편 쌍 표와 같은 자리끼리 맞춰 새로 쓰므로,
-     돌격편 화면의 ぺ(성)와 り(디)를 그대로 쳐도 통과합니다. 일본판의 원래
-     코드는 tables/totsugeki-password.tsv의 쌍 표와 각성편 롬 $83:A60E를
-     비교하면 알 수 있습니다.
- - 돌격편 v1.1 화면에서는 서로 다른 암호 글자가 같은 모양이었습니다.
-   つ·へ = 나(픽셀 동일), も·ら = 등(픽셀 동일), ル·ォ = 지, わ·を·ん = 러.
-   각성편 v1.3은 돌격편 글자 표가 정한 대로 へ=다, も=동, ル=저, を=레, ん=렉을
-   보여 주고, 돌격편 v1.2도 같은 대응으로 그립니다. 두 게임이 함께
-   쓰는 대응은 tables/totsugeki-password.tsv의 넷째 열(각성편 칸에 보일 한글)이며,
-   163글자 모두 서로 다릅니다. 모양이 표 이름과 다르지만 겹치지 않는
-   ち=께, ナ=건, デ=띠, バ=떠는 돌격편 v1.1 모양을 그대로 씁니다.
- - [미확인] 실제로 돌격편을 끝까지 플레이한 세이브가 없어, 확인한 암호는
-   디버그 메뉴 ENDING 암호와 만든 암호 두 개뿐입니다.
- - [미확인] 돌격편에서 초신수를 마시지 않아도 엔딩까지 갈 수 있는지. 기술 15번의
-   조건은 스크립트와 명령 처리 코드를 읽어 찾은 것이고 플레이로 확인하지 않았습니다.
+ - Entering the 50-character password from the Totsugeki-hen ending at new game → password carries over the name and records.
+ - Check routine $83:A1F8 [verified]
+   · Collects the input at $1F00 (16-bit codes, 0x272 = space) into $1E00 without the spaces.
+   · For each pair of characters it finds the same pair in the $83:A60E table (256 pairs, 2 codes per pair)
+     and writes its index (0–255) as 1 byte. The first 23 pairs = 23 bytes; the sum is 16-bit.
+   · It passes (returns 0) if the two bytes (low, high) given by the 24th and 25th pairs equal the sum.
+   · On a pass, $83:A313 looks up bytes 6–15 (five 16-bit characters, the name) in $83:AD58 (Totsugeki-hen code list),
+     replaces each with the entry at the same index in $83:AEB0 (Kakusei-hen codes) and writes them to $0C00.
+ - Contents of the 23 bytes [verified: Totsugeki-hen $81:D048 (makes the password), Kakusei-hen $83:A313 (takes it)]
+     bytes   value stored by Totsugeki-hen        what Kakusei-hen does
+     0–1     9 bits of $0D99/$0D9B/$0D9D          if byte 0 bit 2 ($0D99 & 0x200) is set,
+             (byte 0 bits 0–7, byte 1 bit 0)      sets technique 15's bit ($0D2E bit 15) via $82:EDFB
+     2–4     $0C8B–$0C8D                          not read
+     5       $0B00                                not read
+     6–17    $0B01–$0B0C (name, 6 16-bit chars)   converts 6–15 to a 5-character name at $0C00
+     18–20   $0C91, $0C92, $0C90                  not read
+     21–22   $022F–$0230                          written to $0266–$0267: the play time, where $80:8610
+                                                  raises the hours ($0267) when the minutes ($0266) reach 60
+     23–24   sum of 0–22 (16-bit)                 checked
+   · Health and battle power ($0C86–$0C90, $0CAA–$0CB4) start at fixed values regardless of the password.
+   · Technique 15 is Goku's power technique 「거북선인류최종오의」 (Turtle Hermit school ultimate secret) on the technique table
+     [verified: in Mesen, setting only $0D2E bit 15 and opening the technique table shows only this row lit. Unlearned techniques
+     are drawn darkened by $81:CB8B with palette $1400].
+   · Where Totsugeki-hen sets $0D99 bit 9 (technique 9 「무천류 최종오의」, entry 9 of the name table at $84:B605)
+     [verified: reading Totsugeki-hen v1.1 code and scripts]
+     - Code that writes $0D99: new game initialisation ($80:80F7, $0D99 = 0x37), event script
+       commands 1C–1E ($81:99F9), map script commands 0E ($81:B81D, set) and 0F ($81:B868, clear).
+       The battle reward table ($B0:F9ED) has no flag 9, and no event script has 1C–1E 09 00.
+     - Map script 0E 09 00 occurs once, at $B3:DB07. Of the five other 0E 09 00 in the ROM,
+       $90:9DCE, $92:BBC8 and $97:DD04 are not in banks with map scripts, $AC:9239 is
+       a 09 command following the operand 0E of command 38, and $8A:C7D7 does not fit the script grammar
+       before or after, so it is taken to be data [inferred].
+     - The choice at $B3:DA41 (0x6F 「마신다」 drink / 0x70 「마시지 않는다」 don't drink) is the Ultra Divine Water scene
+       at Korin Tower. The end of the 「마신다」 branch: 0E 0D 00, 0E 0F 00, 0E 0C 00 (techniques 13, 15, 12: Super Kamehameha,
+       Kamehameha attack, guided Kamehameha) → 0D 96 00 07 DB (command 0D, $81:B7C3: go to $DB07 if event
+       flag 0x96 of $0D79 is set) → if clear, 3B (end of script,
+       $81:AA2B) → if set, 0E 09 00 then 3B.
+     - Flag 0x96: at $B6:BEF1, 0C 96 00 (clear, $81:B771), then the Arale quiz (message 0x0F58,
+       choices 0x72–0x74); only the third answer (0x74, 「ほひょ！？」 in Japanese, 「PERFECTACLE」 in the Korean
+       Totsugeki-hen) passes 0B 96 00 (set, $81:B726) at $B6:BF0E.
+     - So bit 9 is set only by answering the Arale quiz correctly and drinking the Ultra Divine Water; it can be clear
+       even after finishing Totsugeki-hen.
+   · Values in the Totsugeki-hen debug ENDING password: byte 0 = 0, name = あ×6 (0x100),
+     18 = 100, 20 = 50, 21–22 = 2 (0 hours 2 minutes), the rest 0.
+ - Phrase passwords [verified]
+   · When 입력완료 (done) is pressed, $83:A408 compares the input with 6 phrases before $83:A1F8 runs.
+     $83:B008 「체력을늘려줘신룡」 → starting health and battle power, $83:B046 「하드코어한플레이를
+     하고싶어신룡」 → low starting stats, $83:B0A4 「이회차플레이를하고싶어신룡」 → result 2
+     (restart), $83:B10E 「콜렉션좀많이모아줘신룡」 → $0CCE and $0D9E tables set to FFFF,
+     $83:B182 「모든기술을알려줘신룡」 → all technique bits, $83:B1E2
+     「모든세이브를클리어해줘신룡」 → erases the 3 save slots. (The Japanese version uses kana phrases; v1.1 changed them to Korean)
+   · The v1.3 cell rearrangement drops 룡, 션, 싶, 플, 해 and 회 from the grid, so they were put into cells that are not
+     password characters (ぼ ぽ ボ ポ and blanks) so all six phrases can still be typed.
+   · Phrase added in v1.3, 「손오공은사이어인」 (the password the Korean Totsugeki-hen ending shows):
+     $83:A4D0 (no phrase → return 0) was changed to JMP $83:FE00, and the new routine compares the input
+     with the 8 characters at $83:FE80. On a match it sets technique 15, puts in the same starting health and
+     battle power as $83:A313, writes $0266 = 2 (0 hours 2 minutes) and returns 1. 1 means a phrase password
+     matched, so it goes to $81:9276 and skips the name conversion ($83:A313), and the name screen shows
+     Kakusei-hen's default name.
+     · Why these defaults: health and battle power are fixed values in the original too. Technique 15 is a bit
+       that is set only when the conditions above (Arale quiz answer + Ultra Divine Water) are met, but this password
+       stands in for a fully completed Totsugeki-hen, so it is set. The play time of 0 hours 2 minutes has no basis
+       and was picked arbitrarily, borrowing the value from the debug ENDING password.
+     · Phrase codes (Kakusei-hen): A27 577 144 5B4 A04 5C2 552 5C4 (손오공은사이어인)
+       Codes Totsugeki-hen uses to draw the same characters: 182 1A7 106 1AF 221 1C1 1A2 1C2
+ - Entry screen [verified]
+   · Codes the cells enter: $81:8D56 hiragana, 85 cells; $81:8E00 katakana, 85 cells
+     (index = row × 15 + cell, read by $81:91F9). The name entry screen uses the same tables.
+   · Screen grids: $84:A3E0, $84:A4D0 (16-bit strings, one row = blank+5 cells+blank+5 cells
+     +blank+5 cells+line break, drawn by $81:8B74). A enters input mode, X switches hiragana/katakana.
+ - Problems in v1.1 (through v1.2) [verified]
+   · The cells and grids were changed to Korean codes while the $83:A60E pair table kept the Japanese codes,
+     so no password could pass.
+   · The character layout of the cells differed from the Totsugeki-hen ending screen: of the 156 password character cells,
+     only 25 showed the same character as Totsugeki-hen.
+   · $83:AEB0 was also shifted by one entry from the 37th entry on, so 136 of its 171 characters were wrong.
+ - The v1.3 fix (tools/password.py, tables/totsugeki-password.tsv)
+   · Matching the pair table of the Totsugeki-hen v1.1 ROM ($B7:F09F, Totsugeki-hen codes) slot by slot with the Kakusei-hen pair table
+     found 152 password characters; drawing the Totsugeki-hen font (8×16, $83:DE00) as pixels showed which Hangul
+     each character looks like on the Totsugeki-hen screen. (Those different from their name in the character table:
+     ち=께, ナ=건, デ=띠, バ=떠)
+   · One Kakusei-hen code was chosen per character and written into the pair table, the 170 entry cells, both grids and
+     the 171-character name table. Cells that are not password characters (ぼ, ぽ, ー etc.) get the characters of the name table,
+     and the blanks in the や and わ rows stay blank as in the Japanese version.
+ - Checks (Mesen 2, pwjp and pwko of compat/run_all.sh)
+   · Finding and pressing the Totsugeki-hen debug menu ENDING password exactly as the Totsugeki-hen v1.1 screen shows it:
+     v1.3 passes to the name screen (가가가가가); v1.2 has no 「건」 cell, so the password is wrong.
+   · Another password using the whole pair table (23 random bytes + sum) also passes on v1.3.
+   · 「손오공은사이어인」: passes to the name screen (default name 엑소버드). The scene order after setting a name
+     was the same as with the debug ENDING password, and the only memory differences were the name and $0D2E bit 15.
+     「손오공은사이어」 (7 characters) is a wrong password. 「체력을늘려줘신룡」 also passes on v1.3.
+   · A password made with Totsugeki-hen codes 0x186 0x225 0x1C2 0x14C 0x12C in the name bytes (6–15)
+     shows 「스서인레다」 on the v1.3 name screen (name conversion confirmed).
+ - Things that also happen in the original [verified]
+   · Totsugeki-hen uses 0x227 (ぺ, hiragana), but the same slot in the Kakusei-hen pair table is katakana ペ.
+     They look the same on screen, so typing the hiragana is wrong in the Japanese version too (the reason the debug ENDING
+     password was rejected in the Japanese version). Typing the katakana passes.
+   · The Totsugeki-hen pair table has 152 characters, Kakusei-hen 151. The 3 slots where Totsugeki-hen uses り (0x147)
+     (values 0x4C, 0x73, 0x7B) are taken as リ (0x1E7) by Kakusei-hen.
+   · Korean v1.3 rewrites the pair table slot by slot to match the Totsugeki-hen pair table,
+     so typing ぺ (성) and り (디) exactly as the Totsugeki-hen screen shows them passes. The original Japanese
+     codes can be found by comparing the pair table in tables/totsugeki-password.tsv with $83:A60E
+     of the Kakusei-hen ROM.
+ - On the Totsugeki-hen v1.1 screen, different password characters looked the same.
+   つ and へ = 나 (pixel-identical), も and ら = 등 (pixel-identical), ル and ォ = 지, わ, を and ん = 러.
+   Kakusei-hen v1.3 shows へ=다, も=동, ル=저, を=레, ん=렉 as the Totsugeki-hen character table names them,
+   and Totsugeki-hen v1.2 draws the same mapping. The mapping the two games share is the fourth column of
+   tables/totsugeki-password.tsv (the Hangul shown in the Kakusei-hen cell),
+   and all 163 characters are distinct. ち=께, ナ=건, デ=띠 and バ=떠, whose shapes differ from their table names but do not
+   collide, keep their Totsugeki-hen v1.1 shapes.
+ - [unchecked] There is no save from actually playing Totsugeki-hen to the end, so the only passwords checked are
+   the debug menu ENDING password and the constructed ones.
+ - [unchecked] Whether Totsugeki-hen can be finished without drinking the Ultra Divine Water. The condition for technique 15
+   was found by reading the scripts and the command handling code, not confirmed by playing.
 ```
 
-## 12. 첨부 파일
+## 12. Included files
 
 ```text
 gokuden2-kr-v1.3-tools.zip
- - tools/build.sh          : 전체 빌드 순서
-                              (일본판 + v1.1 IPS → 버그 수정 → 타이틀 → 대사 → 말풍선 → 암호
-                               → 크레딧 → 폭 검사 → 체크섬 → IPS 두 개)
- - tools/bubble_patch.py   : 전투 말풍선($B4) 삽입, 재배치
- - tools/check_width.py    : 대사·말풍선 줄이 창보다 넓으면 빌드 실패
- - tools/password.py       : 돌격편 암호 입력 칸·검사 표·이름 표 맞추기 (11장)
- - tables/totsugeki-password.tsv : 돌격편 v1.1 롬에서 꺼낸 암호 글자와 쌍 표
- - tools/dialogue.py       : 대사 포인터 테이블 읽기
- - tools/extract.py        : 일본어/한국어 대사 덤프 (TSV)
- - tools/dialogue_patch.py : 대사 삽입, 재배치, 새 글리프 그리기
- - tools/font.py           : 폰트 글리프 읽기
- - tools/lz.py             : LZSS 압축/해제
- - tools/title.py          : 타이틀 그래픽 생성 및 삽입
- - tools/fix_overwrites.py : v1.1 데이터 덮어쓰기 복구
- - tools/credits.py        : 엔딩 크레딧 수정
- - tools/fixsum.py         : 헤더 체크섬 재계산
- - tools/ips.py            : IPS 적용/생성
- - tools/fonts/            : Galmuri 폰트 (SIL OFL, LICENSE.txt 포함)
- - tools/usedsheet.py      : 대사에 쓰인 글리프 목록
- - tables/jp.txt          : 일본판 글자 코드표
- - tables/kr.txt          : v1.1 글자 코드표 (빌드 입력, 빠진 4글자 추가)
- - tables/kr-v1.3.txt   : v1.3 글자 코드표 (빌드 결과)
- - v1.1/v1.1.ips          : v1.1 패치 (빌드 입력)
- - tables/dialogue-v1.3.tsv : 고친 대사 782줄 (ID, 텍스트, "/" = 줄바꿈).
-                              v1.2 표에서 나레이션 8개의 줄바꿈만 다릅니다.
- - tables/bubbles-v1.3.tsv  : 고친 전투 말풍선 443개 (같은 문자열을 쓰는 ID 중 첫 ID)
- - lua/dbgscene.lua, lua/crjump.lua, lua/lib.lua, lua/compat.lua : Mesen 2 스크립트
-   (디버그 메뉴 장면 시작·대사 ID 기록, 엔딩 크레딧 바로 보기, 호환성 입력 재생)
- - compat/lr.py, compat/run_all.sh, compat/s_*.txt : libretro 코어에 같은 입력을
-   넣어 비교하는 도구와 입력 스크립트 (10장)
+ - tools/build.sh          : the whole build order
+                              (Japanese + v1.1 IPS → bug fixes → title → dialogue → bubbles → password
+                               → credits → width check → checksum → two IPS files)
+ - tools/bubble_patch.py   : inserts and relocates the battle speech bubbles ($B4)
+ - tools/check_width.py    : fails the build if a dialogue or bubble line is wider than its window
+ - tools/password.py       : aligns the Totsugeki-hen password entry cells, check table and name table (section 11)
+ - tables/totsugeki-password.tsv : password characters and pair table taken from the Totsugeki-hen v1.1 ROM
+ - tools/dialogue.py       : reads the dialogue pointer tables
+ - tools/extract.py        : Japanese/Korean dialogue dump (TSV)
+ - tools/dialogue_patch.py : inserts and relocates dialogue, draws new glyphs
+ - tools/font.py           : reads font glyphs
+ - tools/lz.py             : LZSS compression/decompression
+ - tools/title.py          : builds and inserts the title graphics
+ - tools/fix_overwrites.py : repairs the v1.1 data overwrites
+ - tools/credits.py        : fixes the ending credits
+ - tools/fixsum.py         : recomputes the header checksum
+ - tools/ips.py            : applies/creates IPS
+ - tools/fonts/            : Galmuri fonts (SIL OFL, LICENSE.txt included)
+ - tools/usedsheet.py      : list of glyphs used by the dialogue
+ - tables/jp.txt          : Japanese character code table
+ - tables/kr.txt          : v1.1 character code table (build input, 4 missing characters added)
+ - tables/kr-v1.3.txt   : v1.3 character code table (build output)
+ - v1.1/v1.1.ips          : v1.1 patch (build input)
+ - tables/dialogue-v1.3.tsv : 782 corrected dialogue lines (ID, text, "/" = line break).
+                              Only the line breaks of 8 narration lines differ from the v1.2 table.
+ - tables/bubbles-v1.3.tsv  : 443 corrected battle bubbles (the first ID among IDs sharing a string)
+ - lua/dbgscene.lua, lua/crjump.lua, lua/lib.lua, lua/compat.lua : Mesen 2 scripts
+   (debug menu scene start and dialogue ID logging, showing the ending credits directly, compatibility input playback)
+ - compat/lr.py, compat/run_all.sh, compat/s_*.txt : a tool that feeds the same input to libretro cores
+   for comparison, and its input scripts (section 10)
 
-참고 사항
- - 롬 파일은 포함하지 않았습니다.
-   빌드하려면 일본판 원본 롬을 super-gokuden-jp.smc 이름으로 압축 푼 폴더에 넣고
-   zsh tools/build.sh 를 실행하시면 됩니다. (결과 CRC32 B9F14962)
- - 타이틀 한글 로고에 쓴 BM 영성체 폰트는 macOS 시스템 폰트 경로를 사용하므로
-   다른 환경에서는 tools/title.py의 TITLE_FONT 경로를 바꿔야 합니다.
- - Lua 스크립트 첫 줄의 경로는 작업 환경 기준이므로 맞게 고쳐서 사용하시기 바랍니다.
+Notes
+ - ROM files are not included.
+   To build, put the Japanese original ROM named super-gokuden-jp.smc in the unzipped folder
+   and run zsh tools/build.sh. (Resulting CRC32 B9F14962)
+ - The BM YeongSung font used for the title Korean logo uses the macOS system font path,
+   so on other systems the TITLE_FONT path in tools/title.py must be changed.
+ - The paths in the first lines of the Lua scripts are for the working environment; adjust them before use.
 ```

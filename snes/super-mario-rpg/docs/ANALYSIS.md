@@ -1,751 +1,753 @@
-# [SFC] 슈퍼 마리오 RPG 롬 분석 자료 (한글패치 v1.1·v1.2 작업 기록)
+# [SFC] Super Mario RPG ROM analysis (Korean patch v1.1/v1.2 work notes)
+
+English | [한국어](ANALYSIS.ko.md)
 
 ```text
-v1.1과 v1.2 한글패치를 작업하면서 확인한 롬 구조와 작업 방법을 정리했습니다.
-이 롬을 다시 분석하거나 이 패치를 이어 고칠 사람이 같은 주소에서 다시 시작할 수 있게 남기는 기록입니다.
-패치 페이지: https://perfectacle.github.io/games/kr-patches/sfc/super-mario-rpg/#making
-v1.0 배포 글: https://blog.naver.com/perfectacle/220297115483
+The ROM structure and methods confirmed while working on the Korean patches v1.1 and v1.2.
+A record so that anyone who analyses this ROM again or continues fixing this patch can pick up at the same addresses.
+Patch page: https://perfectacle.github.io/games/kr-patches/sfc/super-mario-rpg/#making
+v1.0 release post: https://blog.naver.com/perfectacle/220297115483
 
- - 표시
-   · [실측] 롬 바이트를 직접 읽거나 Mesen 2로 실행해 확인한 것
-   · [추정] 근거는 있지만 실행해서 확인하지 못한 것
-   · [출처] 외부 문서(주로 북미판 기준)에 적힌 것. 출처 주소는 7장 끝에 있습니다.
-   · 표시가 없는 항목은 이 패치를 만들며 롬과 Mesen 2로 확인한 것입니다.
+ - Markers
+   · [verified] checked by reading ROM bytes directly or by running it in Mesen 2
+   · [inferred] has supporting evidence but was not confirmed by running it
+   · [source]   stated in external documents (mostly for the North American version). The source URLs are at the end of section 7.
+   · Items without a marker were checked against the ROM and in Mesen 2 while making this patch.
 
- - 대상 롬: 일본판 원본, 헤더 없음, 4,194,304바이트 (SA-1)
+ - Target ROM: Japanese original, no header, 4,194,304 bytes (SA-1)
    CRC32 5527071E / MD5 59483FEB9EB20207E3241E005FBDDE7E
- - v1.1은 v1.0 한글롬(일본판 + v1.0 IPS, CRC32 F4305A06) 위에 덧씌워 빌드했습니다.
-   결과 롬: CRC32 ABD8AC13 / MD5 8E5320631EDCF274BF5C7A62C0417C55
- - v1.2는 v1.1에 세 가지를 고쳤습니다: 전투 메시지 속 이름, 전투 이름 띠(3장),
-   대사 폰트 코드 충돌(2장 "대사 폰트 코드 충돌").
-   결과 롬: CRC32 05DBCBE6 / MD5 B7F488D4F448304890A4BCE8000248E2
-   v1.1 롬과 다른 곳 [실측]
-   · 파일 0x7FDC-0x7FDF 헤더 체크섬
-   · 0x15693, 0x156A8-0x156BE, 0x156DF-0x156F5 (전투 메시지와 1C 38), 0x241D5-0x241DB, 0x24209-0x2420F (이름 띠)
-   · 0x60B4: v1.1의 JSL KoDlgName($C0:60B3) 주소. 아래 이유로 $E2 뒤쪽 표와 코드가 2바이트 당겨졌습니다.
-   · $E2:B400 이후 이름 표·코드: 새 코드($E2:FDE2-$E2:FF6C), 해피쉘·파이어쉘·힐쉘·천둥콰르릉
-   · 대사 폰트 글자 2개(0x2490E8-0x2490FE 콰, 0x2494D8-0x2494EC 힐)
-   · 메뉴 동적 글자: 248자 → 249자 (셸이 빠지고 힐·휠이 들어옴, 2장 "메뉴 폰트 코드표의 틀린 두 줄") 번호와 그림이 바뀜
- - 아래 주소 표기
-   · $XX:YYYY = SNES 주소 (뱅크:주소)
-   · 파일 0xNNNNNN = 헤더 없는 롬 파일 기준 오프셋
-   · $C0-$FF 뱅크 변환: 파일 오프셋 = (뱅크 & 0x3F) × 0x10000 + 주소
-     예) $E2:B400 = 파일 0x22B400, $C1:06AF = 파일 0x106AF
- - 첨부한 도구는 Python 3 (Pillow 필요), asar 1.91 (65816 어셈블러), Mesen 2 (Lua 스크립트)로 작성했습니다.
-   정확한 버전은 10장에 있습니다.
+ - v1.1 was built on top of the v1.0 Korean ROM (Japanese + v1.0 IPS, CRC32 F4305A06).
+   Resulting ROM: CRC32 ABD8AC13 / MD5 8E5320631EDCF274BF5C7A62C0417C55
+ - v1.2 fixed three things in v1.1: names in battle messages, the battle name banner (section 3),
+   and a dialogue font code collision (section 2 "Dialogue font code collision").
+   Resulting ROM: CRC32 05DBCBE6 / MD5 B7F488D4F448304890A4BCE8000248E2
+   Differences from the v1.1 ROM [verified]
+   · file 0x7FDC-0x7FDF header checksum
+   · 0x15693, 0x156A8-0x156BE, 0x156DF-0x156F5 (battle messages and 1C 38), 0x241D5-0x241DB, 0x24209-0x2420F (name banner)
+   · 0x60B4: the address of v1.1's JSL KoDlgName ($C0:60B3). For the reason below, the tables and code at the back of $E2 moved 2 bytes earlier.
+   · name tables and code from $E2:B400: new code ($E2:FDE2-$E2:FF6C), 해피쉘 (Happy Shell), 파이어쉘 (Fire Shell), 힐쉘 (Heal Shell), 천둥콰르릉 (Thunderbolt)
+   · 2 dialogue font glyphs (0x2490E8-0x2490FE 콰, 0x2494D8-0x2494EC 힐)
+   · menu dynamic glyphs: 248 → 249 (셸 removed, 힐 and 휠 added; section 2 "Two wrong lines in the menu font code table"), numbers and pictures changed
+ - Address notation below
+   · $XX:YYYY = SNES address (bank:address)
+   · file 0xNNNNNN = offset in the headerless ROM file
+   · $C0-$FF bank conversion: file offset = (bank & 0x3F) × 0x10000 + address
+     e.g. $E2:B400 = file 0x22B400, $C1:06AF = file 0x106AF
+ - The included tools were written in Python 3 (needs Pillow), asar 1.91 (65816 assembler) and for Mesen 2 (Lua scripts).
+   Exact versions are in section 10.
 ```
 
-## 0. 롬 헤더와 메모리
+## 0. ROM header and memory
 
 ```text
-■ 롬 헤더 (파일 0x7FC0-0x7FDF) [실측]
+■ ROM header (file 0x7FC0-0x7FDF) [verified]
 
-  위치      일본판                  v1.1                    뜻
-  0x7FC0    "SUPER MARIO RPG      " "SUPER MARIO RPG (K)  " 게임 이름 21바이트
-  0x7FD5    23                      23                      맵 모드 (SA-1)
-  0x7FD6    35                      35                      카트리지 종류 (SA-1 + 롬 + RAM + 배터리)
-  0x7FD7    0C                      0C                      롬 크기 2^12 KB = 4MB
-  0x7FD8    05                      05                      RAM 크기 2^5 KB = 32KB (BW-RAM)
-  0x7FD9    00                      00                      지역 (일본)
-  0x7FDB    00                      00                      버전
-  0x7FDC    8A BA                   32 90                   체크섬 보수
-  0x7FDE    75 45                   CD 6F                   체크섬 (일본판 4575, v1.1 6FCD)
+  offset    Japanese                v1.1                    meaning
+  0x7FC0    "SUPER MARIO RPG      " "SUPER MARIO RPG (K)  " game title, 21 bytes
+  0x7FD5    23                      23                      map mode (SA-1)
+  0x7FD6    35                      35                      cartridge type (SA-1 + ROM + RAM + battery)
+  0x7FD7    0C                      0C                      ROM size 2^12 KB = 4MB
+  0x7FD8    05                      05                      RAM size 2^5 KB = 32KB (BW-RAM)
+  0x7FD9    00                      00                      region (Japan)
+  0x7FDB    00                      00                      version
+  0x7FDC    8A BA                   32 90                   checksum complement
+  0x7FDE    75 45                   CD 6F                   checksum (Japanese 4575, v1.1 6FCD)
 
- - v1.2는 0x7FDC-0x7FDF가 C3 D4 3C 2B입니다. (체크섬 2B3C)
+ - In v1.2, 0x7FDC-0x7FDF is C3 D4 3C 2B. (checksum 2B3C)
 
- - 0x7FB0-0x7FBF 확장 헤더는 두 롬 모두 30 31 41 52 57 4A ...("01ARWJ")입니다.
- - Mesen 2가 만드는 세이브 파일(.srm)도 32,768바이트였습니다.
- - 카트리지 종류 바이트의 뜻은 SNES 헤더 사양을 따른 해석입니다.
+ - The extended header 0x7FB0-0x7FBF is 30 31 41 52 57 4A ... ("01ARWJ") in both ROMs.
+ - The save file (.srm) Mesen 2 creates was also 32,768 bytes.
+ - The meaning of the cartridge type byte is interpreted per the SNES header specification.
 
-■ 이 문서에서 쓰는 메모리
+■ Memory used in this document
 
-  이름      크기     주소                     비고
-  롬        4MB      $C0:0000-$FF:FFFF        1MB 창 4개 (3장 "롬 크기를 4MB로 유지한 이유")
-  WRAM      128KB    $7E:0000-$7F:FFFF        패치 변수는 $7E:0C00-$17FF
-  VRAM      64KB     (PPU)                    필드 메뉴 동적 글자 칸 $6000-$7FFF
-  BW-RAM    32KB     $40:xxxx (SA-1 쪽)       전투 메뉴 비트맵 $40:7000, 이름 버퍼 $40:6800
+  name      size     address                  notes
+  ROM       4MB      $C0:0000-$FF:FFFF        four 1MB windows (section 3 "Why the ROM stays 4MB")
+  WRAM      128KB    $7E:0000-$7F:FFFF        patch variables at $7E:0C00-$17FF
+  VRAM      64KB     (PPU)                    field menu dynamic glyph cells $6000-$7FFF
+  BW-RAM    32KB     $40:xxxx (SA-1 side)     battle menu bitmap $40:7000, name buffer $40:6800
 
-■ S-CPU에서 본 $00:3000번대와 $00:6000번대 [실측]
+■ $00:3000-range and $00:6000-range as seen from the S-CPU [verified]
  - S-CPU $00:3000-$37FF = SA-1 I-RAM 0-$7FF.
-   Mesen 2에서 두 메모리를 바이트 단위로 비교해 2048/2048바이트가 같았습니다.
- - S-CPU $00:6000-$7FFF = BW-RAM 8KB 블록 하나. 블록 번호는 레지스터 $2224(BMAPS)가 정하고,
-   게임은 $C0:089C에서 01을 씁니다. 그래서 $00:6000 = BW-RAM $2000, $00:7000 = BW-RAM $3000 = SA-1 $40:3000입니다.
- - 필드와 전투 두 장면에서 확인했습니다. (test/probe.lua의 MAPCHECK=1)
- - 현재 방 번호 $00:3030은 SA-1 I-RAM $30, 이벤트 변수 $00:7000번대는 BW-RAM $3000번대입니다.
+   Comparing the two memories byte by byte in Mesen 2 matched 2048/2048 bytes.
+ - S-CPU $00:6000-$7FFF = one 8KB BW-RAM block. The block number is set by register $2224 (BMAPS),
+   and the game writes 01 at $C0:089C. So $00:6000 = BW-RAM $2000, $00:7000 = BW-RAM $3000 = SA-1 $40:3000.
+ - Checked in two scenes, field and battle. (MAPCHECK=1 of test/probe.lua)
+ - The current room number $00:3030 is SA-1 I-RAM $30; the event variables in $00:7000-range are BW-RAM $3000-range.
 ```
 
-## 1. 대사 텍스트
+## 1. Dialogue text
 
 ```text
-■ 대사 ID와 포인터 테이블
-대사 ID는 0x000-0xFFF (4096개)이고, 주소 계산 루틴은 $C0:5800입니다.
+■ Dialogue IDs and pointer table
+Dialogue IDs are 0x000-0xFFF (4096), and the address calculation routine is $C0:5800.
 
- - 포인터 테이블: $F7:E000 (파일 0x37E000), ID마다 16비트
-   이 값은 절대 주소가 아니라 "그룹 시작 주소로부터의 오프셋"입니다.
- - 그룹 = ID >> 9 (512개씩 8그룹)
- - 그룹 시작 주소는 뱅크 $E2부터 각 뱅크 첫머리의 헤더에 있습니다.
-   · 헤더 첫 16비트 = 헤더 크기 (이 값이 곧 그 뱅크 첫 그룹의 시작 주소)
-   · 이어서 다음 그룹들의 시작 주소 (16비트씩)
-   · 헤더에 다 못 들어간 그룹은 다음 뱅크로 넘어갑니다.
+ - Pointer table: $F7:E000 (file 0x37E000), 16 bits per ID
+   The value is not an absolute address but an "offset from the group start address".
+ - Group = ID >> 9 (8 groups of 512)
+ - Group start addresses are in a header at the start of each bank from $E2.
+   · first 16 bits of the header = header size (this value is also the start address of the bank's first group)
+   · then the start addresses of the following groups (16 bits each)
+   · groups that do not fit in the header continue in the next bank.
 
-  ID 범위        뱅크   그룹
+  ID range       bank   groups
   000 - 7FF      $E2    0 - 3
   800 - DFF      $E3    4 - 6
   E00 - FFF      $E4    7
 
- - 예: 대사 ID 0x204 (v1.1 롬) [실측]
-   · 그룹 = 0x204 >> 9 = 1
-   · $E2 헤더 = 08 00 F5 03 15 33 6D 67 → 헤더 크기 0x0008(그룹 4개), 그룹 1 시작 = $03F5
-   · 포인터 $F7:E000 + 0x204 × 2 = $F7:E408 (파일 0x37E408)에 25 00 → 0x0025
-   · $E2:03F5 + 0x25 = $E2:041A (파일 0x22041A)
-   · 문자열: 1B 07 20 1D 07 1D 22 21 00 = 「<아이템 이름>」을 획득!
-     ($1B 07 = 이름 + 「」 + 가운데 정렬 + 을/를, 20 = 빈칸, 1D07 = 획, 1D22 = 득, 21 = !, 00 = 끝)
-   · 같은 ID의 v1.0 문자열(파일 0x220510): 09 3B 1A 3C 8F 20 1D 07 1D 22 21 00
-     (09 = 탭 3칸, 3B/3C = 「」, 1A = 이름, 8F = 을)
- - 대사를 다른 뱅크로 옮길 수 없고, 그룹 순서도 유지해야 합니다.
- - $E4 뱅크의 대사 바로 뒤 $E4:2800부터는 메뉴 폰트이므로 대사가 넘어가면 안 됩니다.
+ - Example: dialogue ID 0x204 (v1.1 ROM) [verified]
+   · group = 0x204 >> 9 = 1
+   · $E2 header = 08 00 F5 03 15 33 6D 67 → header size 0x0008 (4 groups), group 1 start = $03F5
+   · pointer at $F7:E000 + 0x204 × 2 = $F7:E408 (file 0x37E408): 25 00 → 0x0025
+   · $E2:03F5 + 0x25 = $E2:041A (file 0x22041A)
+   · string: 1B 07 20 1D 07 1D 22 21 00 = 「<item name>」을 획득! ("Got 「<item name>」!")
+     ($1B 07 = name + 「」 + centred + 을/를, 20 = space, 1D07 = 획, 1D22 = 득, 21 = !, 00 = end)
+   · v1.0 string of the same ID (file 0x220510): 09 3B 1A 3C 8F 20 1D 07 1D 22 21 00
+     (09 = 3-cell tab, 3B/3C = 「」, 1A = name, 8F = 을)
+ - Dialogue cannot move to another bank, and the group order must be kept.
+ - In bank $E4, the menu font starts at $E4:2800 right after the dialogue, so the dialogue must not run past it.
 
-■ 문자열 형식과 제어 코드
-1바이트 코드와 2바이트 코드가 섞여 있습니다.
+■ String format and control codes
+1-byte and 2-byte codes are mixed.
 
-  코드          의미
-  00            대사 끝
-  01            줄바꿈
-  02 - 04       창 넘김
-  (00 - 06은 모두 줄을 끝내는 코드로 취급했습니다)
-  08 / 09 / 0A  탭 (각각 2 / 3 / 4칸)
-  0B xx, 0D xx  뒤에 1바이트 파라미터가 붙는 코드
-  1A            아이템 이름 삽입 ($0234의 아이템 번호)
-  1B            원판에서 쓰지 않는 코드 (v1.1에서 이름 삽입용으로 사용, 아래 참조)
-  1C xx         숫자 삽입 (1바이트 파라미터)
-  1D-1F xx      2바이트 글자
-  20 - FF       1바이트 글자
+  code          meaning
+  00            end of dialogue
+  01            line break
+  02 - 04       window advance
+  (00 - 06 were all treated as codes that end a line)
+  08 / 09 / 0A  tab (2 / 3 / 4 cells)
+  0B xx, 0D xx  codes followed by a 1-byte parameter
+  1A            insert item name (item number in $0234)
+  1B            unused in the original (used in v1.1 for name insertion, see below)
+  1C xx         insert number (1-byte parameter)
+  1D-1F xx      2-byte characters
+  20 - FF       1-byte characters
   3B / 3C       「 」
   3D / 3E       『 』
 
- - 대사 글자 한 칸과 탭 단위는 모두 10픽셀입니다. 한 줄은 22칸을 기준으로 맞췄습니다.
- - 탭 코드는 하나마다 글자 출력이 약 30프레임 늦어집니다.
-   그래서 가운데 정렬은 "탭 코드 1개 + 공백"으로 맞췄습니다.
- - 제어 코드 분기 테이블에서 $1B의 처리 주소는 $624E (아무 것도 하지 않고 다음으로 진행)였습니다.
+ - One dialogue character cell and the tab unit are both 10 pixels. Lines were fitted to 22 cells.
+ - Each tab code delays character output by about 30 frames.
+   So centring was done with "one tab code + spaces".
+ - In the control code branch table, the handler address of $1B was $624E (does nothing and moves on).
 
-■ 아이템 이름 삽입 코드 ($1A, $1B)
- - 원판 $1A: 아이템 이름 테이블의 바이트를 MVN으로 $7E:2D00에 복사한 뒤,
-   그곳을 하위 문자열로 삼아 출력을 이어갑니다.
- - v1.1은 $C0:60B2를 고쳐 한글 이름(대사 인코딩)을 $7E:2D00에 씁니다.
-   · $0221 = 이름 바이트 수 (대사 엔진은 바이트 단위로 셉니다. 2바이트 글자는 2)
-   · $021C = 하위 문자열 주소 ($2D00)
- - 쓰이지 않던 $1B의 분기 주소($C0:6896)를 $1A와 같은 처리 루틴($60A6)으로 바꿨습니다.
-   처리 루틴은 코드 바이트를 보고 둘을 구분하고, $1B 뒤에는 플래그 1바이트가 붙습니다.
-   · 1 = 이름을 「」로 감쌈
-   · 2 = 줄 가운데 정렬 (줄의 나머지 글자 수를 미리 읽어 앞에 공백을 채움)
-   · 4 = 이름 뒤에 을/를을 받침에 맞게 붙임
- - 빌드할 때 대사의 「{1A}」, 「{1A}」을, 「{1A}」(을)를 같은 패턴을 $1B + 플래그로 바꿨습니다.
-   이름 길이는 실행 중에야 정해지므로, 획득 메시지 가운데 정렬도 실행 중에 해야 합니다.
+■ Item name insertion codes ($1A, $1B)
+ - Original $1A: copies the bytes of the item name table to $7E:2D00 with MVN,
+   then continues output using that as a substring.
+ - v1.1 changed $C0:60B2 to write the Korean name (dialogue encoding) to $7E:2D00.
+   · $0221 = name byte count (the dialogue engine counts bytes; a 2-byte character counts 2)
+   · $021C = substring address ($2D00)
+ - The branch address of the unused $1B ($C0:6896) was changed to the same handler as $1A ($60A6).
+   The handler tells them apart by the code byte, and $1B is followed by a 1-byte flag.
+   · 1 = wrap the name in 「」
+   · 2 = centre the line (reads ahead the remaining characters of the line and pads spaces in front)
+   · 4 = append 을/를 after the name, matching its final consonant
+ - At build time, patterns such as 「{1A}」, 「{1A}」을 and 「{1A}」(을)를 in the dialogue were changed to $1B + flag.
+   The name length is only known at run time, so centring of the "obtained" messages must also happen at run time.
 
-■ 대사 재배치
- - v1.0은 아이템 이름을 대사 본문에 영문으로 직접 적었습니다. (예: 『MUSHROOM』을 얻었습니다)
-   이것을 한글 이름으로 바꾸고, 그룹 순서는 그대로 둔 채 뱅크별로 다시 채웠습니다.
- - 다시 채운 뒤 뱅크 헤더(그룹 시작 주소)와 $F7:E000 포인터 테이블을 새로 만듭니다.
- - 여러 ID가 같은 주소를 가리키는 경우가 있습니다. 주소 단위로 한 번만 쓰고 포인터를 모두 고쳤습니다.
- - 결과 (v1.0 대비): $E2 -7,584바이트, $E3 -9,136바이트, $E4 -2,133바이트
-   영문 이름보다 한글 이름이 짧고, 아래의 쓰레기 바이트가 빠졌기 때문입니다.
+■ Dialogue relocation
+ - v1.0 wrote item names directly into the dialogue text in English. (e.g. 『MUSHROOM』을 얻었습니다, "Got 『MUSHROOM』")
+   These were replaced with Korean names, and each bank was refilled keeping the group order.
+ - After refilling, the bank headers (group start addresses) and the $F7:E000 pointer table are rebuilt.
+ - Several IDs can point to the same address. Each address was written once and all pointers fixed.
+ - Result (against v1.0): $E2 -7,584 bytes, $E3 -9,136 bytes, $E4 -2,133 bytes
+   because Korean names are shorter than the English ones and the junk bytes below were dropped.
 
-■ v1.0이 남긴 문제
- - 대사 끝 코드(00) 뒤에 화면에 나오지 않는 바이트가 남아 있었습니다.
-   v1.0이 원문 위에 덮어쓰면서 남은 원문 조각입니다. 재배치할 때 끝 코드 뒤를 버렸습니다.
- - 대사가 이어져야 하는 곳에 끝 코드가 들어가 있던 곳이 있습니다. (일본판 원문으로 확인)
-   · ID 498: 비어 있음 (원문: 개구리 코인 획득 메시지)
-   · ID 8B4: 비어 있음 (원문: 피치의 "쉿" 대사)
-   · ID E85: 첫 줄 뒤에서 끊김 (원문은 두 줄)
-   교훈: 대사 길이가 0이거나 원문보다 눈에 띄게 짧은 항목은 원문과 대조해 볼 필요가 있습니다.
+■ Problems v1.0 left
+ - Bytes not shown on screen remained after the end code (00) of dialogue.
+   They are fragments of the original text left when v1.0 overwrote it. Relocation discarded everything after the end code.
+ - Some places had an end code where the dialogue should continue. (checked against the Japanese original)
+   · ID 498: empty (original: frog coin received message)
+   · ID 8B4: empty (original: Peach's "shh" line)
+   · ID E85: cut after the first line (the original has two lines)
+   Lesson: entries of length 0 or noticeably shorter than the original are worth comparing with the original.
 
-■ 대사 말고도 같은 인코딩을 쓰는 텍스트
+■ Other text that uses the same encoding as dialogue
 
-  내용             포인터 테이블              개수   처리
-  전투 대사        $F9:6554 (뱅크 $F9 주소)   256    다시 채움
-  아이템 설명      $FA:2F20 (뱅크 $FA 주소)   177    다시 채움
-  메뉴 문구        $FE:EF00 ($FE:F000 기준)   118    제자리 수정
-  전투 메시지      $FA:26F1 ($FA:0000 기준)    46    제자리 수정
-  무슨 생각하니    $F9:9411 ($F9:0000 기준)   256    제자리 수정
+  contents          pointer table              count  handling
+  battle dialogue   $F9:6554 (bank $F9 addr)   256    refilled
+  item descriptions $FA:2F20 (bank $FA addr)   177    refilled
+  menu text         $FE:EF00 (base $FE:F000)   118    fixed in place
+  battle messages   $FA:26F1 (base $FA:0000)    46    fixed in place
+  "what's on your mind" $F9:9411 (base $F9:0000) 256  fixed in place
 
- - 메뉴 문구 영역에는 포인터가 가리키지 않는 데이터가 섞여 있습니다.
-   그래서 문자열을 옮기지 않고 제자리에서 고쳤습니다.
-   길어진 문자열만 뒤의 0 바이트를 쓰거나, 남는 공간($FE:F61C-$FE:F6FF)으로 옮기고 포인터를 고쳤습니다.
- - 전투 메시지와 무슨 생각하니 영역은 옮길 남는 공간을 찾지 못해,
-   문자열 뒤의 0 바이트 안에서만 늘어나게 고쳤습니다.
+ - The menu text area contains data no pointer points to.
+   So strings were fixed in place rather than moved.
+   Only strings that grew used the 0 bytes after them, or were moved to spare space ($FE:F61C-$FE:F6FF) with the pointer fixed.
+ - No spare space to move into was found for the battle message and "what's on your mind" areas,
+   so they were only allowed to grow into the 0 bytes after each string.
 ```
 
-## 2. 폰트
+## 2. Fonts
 
 ```text
-■ 메뉴 폰트 (아이템/메뉴 화면, 1바이트 코드)
- - $E4:2800 (파일 0x242800), 256코드 × 24바이트, 8×12 2bpp
-   코드 c의 글리프 = $E4:2B00 + (c - 0x20) × 24 (00-1F는 비어 있음)
- - 메뉴를 열 때 외곽선/그림자를 붙여 8×16 4bpp로 바꾸고 ($C3:6D74, 외곽선 루틴 $C3:6869)
-   VRAM BG1에 256글자 전부를 올려 둡니다. 타일 번호 = (c - 0x20) × 2 (위), +1 (아래)
- - v1.0은 0x20-0xFF를 빈칸 없이 모두 사용했습니다. (한글 165자, data/tbl/korTBL2.tbl)
-   교훈: 아이템 이름을 한글로 못 넣은 이유는 롬 용량이 아니라
-   "1바이트 코드 = VRAM에 상주하는 256칸" 구조였습니다.
+■ Menu font (item/menu screens, 1-byte codes)
+ - $E4:2800 (file 0x242800), 256 codes × 24 bytes, 8×12 2bpp
+   glyph of code c = $E4:2B00 + (c - 0x20) × 24 (00-1F are empty)
+ - When a menu opens, an outline/shadow is added to make 8×16 4bpp ($C3:6D74, outline routine $C3:6869)
+   and all 256 characters are uploaded to VRAM BG1. Tile number = (c - 0x20) × 2 (upper), +1 (lower)
+ - v1.0 used all of 0x20-0xFF with no gaps. (165 Hangul, data/tbl/korTBL2.tbl)
+   Lesson: the reason item names could not be put in Korean was not ROM space but
+   the "1-byte code = 256 cells resident in VRAM" structure.
 
-■ 대사 폰트 (가변폭 출력, 1바이트 + 2바이트 코드)
- - $E4:4000 (파일 0x244000), 글자당 24바이트
- - 글리프 번호
-   · 1바이트 코드 c: c - 0x20
-   · 2바이트 코드 (p, l): 0xE0 + (p - 0x1D) × 0x100 + l
-   → 0x000-0x3DF, 992글자
- - v1.0 코드표: data/tbl/korTBL.tbl
-   2바이트 코드 768개가 전부 매핑되어 있어 빈 코드가 없습니다.
+■ Dialogue font (variable-width output, 1-byte + 2-byte codes)
+ - $E4:4000 (file 0x244000), 24 bytes per character
+ - Glyph number
+   · 1-byte code c: c - 0x20
+   · 2-byte code (p, l): 0xE0 + (p - 0x1D) × 0x100 + l
+   → 0x000-0x3DF, 992 characters
+ - v1.0 code table: data/tbl/korTBL.tbl
+   All 768 2-byte codes are mapped, so there are no free codes.
 
-■ 쓰이지 않는 2바이트 코드 재활용
-아이템 이름에 필요한데 대사 폰트에 없는 글자가 21자 있었습니다.
-그래서 어떤 텍스트에서도 쓰지 않는 2바이트 코드 21개를 찾아 그 자리에 새 글자를 그렸습니다.
+■ Reusing unused 2-byte codes
+21 characters needed for item names were missing from the dialogue font.
+So 21 2-byte codes that no text uses were found, and the new characters drawn in their place.
 
   1D12=캔  1DD4=깃  1DF5=널  1E00=닉  1E1C=링  1E47=몽  1E9A=샷
   1EFE=샹  1F04=셜  1F13=셸  1F15=쉘  1F44=캡  1F5B=핸  1F5C=훈
   1F87=슐  1F8D=싹  1F93=쑥  1FA0=잣  1FA7=츠  1FBD=퀸  1FF2=탕
 
- - "안 쓰는 코드" 판정에는 대사뿐 아니라 같은 인코딩을 쓰는 모든 영역을 포함해야 합니다.
-   (대사, 전투 대사, 아이템 설명, 메뉴 문구, 전투 메시지, 무슨 생각하니, 적 공격 이름,
-    레벨업/액션 커맨드 안내 문구) tools/py/textusage.py
-   교훈: 대사만 보고 고르면 메뉴 튜토리얼의 「봅」처럼 다른 영역에서 쓰는 글자가 깨집니다.
-   빌드할 때 재활용 코드가 v1.0 텍스트에 쓰이면 빌드를 멈추게 했습니다.
+ - Deciding "unused" must include every area that uses the same encoding, not just dialogue.
+   (dialogue, battle dialogue, item descriptions, menu text, battle messages, "what's on your mind", enemy attack names,
+    level-up/action command guidance text) tools/py/textusage.py
+   Lesson: picking by dialogue alone breaks characters used elsewhere, such as 「봅」 in the menu tutorial.
+   The build stops if a reused code appears in v1.0 text.
 
-■ 대사 폰트 코드 충돌 (v1.2에서 고침) [실측]
- - 위 21개 중 1F44는 원래 "힐", 1FA0은 원래 "콰" 자리였습니다. v1.0 텍스트에는 두 글자가 없어 재활용 대상이
-   됐지만, v1.1이 새로 넣은 이름 "힐셸"(아이템 0x43, v1.2부터 "힐쉘")과 "천둥콰르릉"(필살기 0x18)이 korTBL의 원래 코드를
-   그대로 써서 대사 폰트로 그리는 곳(결과 창, 레벨업 화면, 대사 속 이름, 요시쿠키 메시지, 이름 띠)에서
-   "캡셸", "천둥잣르릉"으로 나왔습니다. 메뉴는 메뉴 폰트라 바르게 나왔습니다.
-   (v1.0 롬의 글리프 1FA0은 "콰", v1.1 롬은 "잣"인 것을 폰트 비트맵으로 확인)
- - 2바이트 코드 768개 중 v1.0 텍스트가 747개, 재활용이 21개라 빈 코드가 없었습니다.
-   빌드된 v1.1 롬의 모든 텍스트 영역(textusage.py와 같은 범위 + KoDlgNames, KoLvSkills)을 다시 훑으니
-   v1.0에서 쓰이다 v1.1에서 쓰이지 않게 된 코드가 정확히 두 개였습니다.
-     1F7F = 줏 ("줏어" → "주워" 맞춤법 수정으로 사라짐)
-     1FA9 = 궈 ("잠궈" → "잠가" 맞춤법 수정으로 사라짐)
- - v1.2는 아이템 0x43의 이름을 "레이지쉘"(0x21, 0x46)과 맞춰 "힐쉘"로 바꿨습니다. (data/name_overrides.json)
-   해피셸(0x30)·파이어셸(0x3E)도 같은 방식으로 "해피쉘", "파이어쉘"로 맞췄습니다.
-   쉘은 대사 폰트 1F15(재활용분), 메뉴에서는 동적 글자를 씁니다. 이제 셸을 쓰는 이름은 없지만 1F13은 셸 그대로
-   둡니다. (tools/build.py DLG_PINNED: 출시한 롬의 재활용 코드 배정을 코드별로 고정해, 필요 없어진 음절이 생겨도
-   다른 음절의 코드가 밀리지 않습니다)
- - v1.2: 1F7F에 "콰", 1FA9에 "힐"을 그렸습니다. (tools/build.py DLG_REUSE_FIXED) 접두가 1F라 결과 창
-   (KoResultChar, 접두 1D-1F만 읽음)도 그립니다. 기존 21자의 코드는 그대로입니다.
-   · 재활용 코드에 원래 매핑된 음절은 "폰트에 없는 음절"로 보고 새 코드를 받습니다.
-   · 이름(아이템, 필살기, 대사 속 이름, 대사 수정 문구)의 음절이 재활용 코드로 가거나,
-     줏/궈가 새 텍스트에 다시 나오면 빌드가 멈춥니다.
-   · build/dlg_tbl.json에는 줏/궈를 맨 뒤에 남깁니다. dlg_rewrite.py가 v1.0 대사를 이 표의 역방향
-     (코드마다 마지막 음절)으로 해독해 "잠궈" 같은 수정 대상을 찾기 때문입니다.
- - 확인: 이름 182개(한글 이름 전부)를 빌드된 표에서 화면 글자로 되돌려 대조해 모두 일치,
-   verify_dialogue.py 결과는 v1.1과 같음(대사 영역 바이트 변화 없음), Mesen 2 전후 화면(결과 창 캡셸 → 힐쉘,
-   레벨업 화면과 이름 띠의 천둥콰르릉).
+■ Dialogue font code collision (fixed in v1.2) [verified]
+ - Of the 21 above, 1F44 was originally "힐" and 1FA0 originally "콰". The v1.0 text did not use them, so they became reuse
+   candidates, but the names newly added by v1.1, "힐셸" (item 0x43, "힐쉘" from v1.2) and "천둥콰르릉" (special 0x18), used the
+   original korTBL codes, so wherever they were drawn with the dialogue font (result window, level-up screen, names in dialogue,
+   Yoshi Cookie message, name banner) they appeared as "캡셸" and "천둥잣르릉". Menus use the menu font and showed them correctly.
+   (Confirmed from the font bitmap: glyph 1FA0 is "콰" in the v1.0 ROM and "잣" in the v1.1 ROM)
+ - Of 768 2-byte codes, v1.0 text used 747 and 21 were reused, so none were free.
+   Rescanning every text area of the built v1.1 ROM (the same range as textusage.py + KoDlgNames, KoLvSkills)
+   found exactly two codes used in v1.0 but no longer used in v1.1.
+     1F7F = 줏 (gone after the spelling fix "줏어" → "주워")
+     1FA9 = 궈 (gone after the spelling fix "잠궈" → "잠가")
+ - v1.2 renamed item 0x43 to "힐쉘" to match "레이지쉘" (0x21, 0x46). (data/name_overrides.json)
+   해피셸 (0x30) and 파이어셸 (0x3E) were made "해피쉘" and "파이어쉘" the same way.
+   쉘 uses dialogue font 1F15 (one of the reused codes) and a dynamic glyph in menus. No name uses 셸 any more, but 1F13 stays
+   셸. (tools/build.py DLG_PINNED: pins the reused code assignment of the released ROM per code, so a syllable that is no longer
+   needed does not shift the codes of other syllables)
+ - v1.2: drew "콰" at 1F7F and "힐" at 1FA9. (tools/build.py DLG_REUSE_FIXED) The prefix is 1F, so the result window
+   (KoResultChar, which reads only prefixes 1D-1F) draws them too. The codes of the existing 21 characters are unchanged.
+   · A syllable originally mapped to a reused code is treated as "not in the font" and gets a new code.
+   · The build stops if a syllable of a name (items, specials, names in dialogue, dialogue fix text) goes to a reused code,
+     or if 줏/궈 appears again in new text.
+   · build/dlg_tbl.json keeps 줏/궈 at the very end, because dlg_rewrite.py decodes v1.0 dialogue with this table in reverse
+     (the last syllable per code) to find fix targets such as "잠궈".
+ - Checks: all 182 names (every Korean name) converted from the built table back to screen characters matched;
+   verify_dialogue.py gives the same result as v1.1 (no byte changes in the dialogue area); Mesen 2 before/after screens (result window 캡셸 → 힐쉘,
+   천둥콰르릉 on the level-up screen and the name banner).
 
-■ 대사 폰트 확장 (글리프 0x3E0 이후)
- - 대사 폰트 마지막 글리프(0x3DF) 바로 뒤 $E4:9D00 (파일 0x249D00)이 0으로 비어 있습니다.
-   여기에 32글자 자리를 잡았습니다. (v1.1에서 5자 사용: 솟 쑤 웨 휠 릉)
- - 대사 엔진은 이 글자를 출력하지 못합니다. (2바이트 접두 코드가 1D-1F뿐)
-   레벨업 화면의 필살기 이름만 접두 $20으로 이 영역을 씁니다. (4장 참조)
+■ Dialogue font extension (glyphs from 0x3E0)
+ - $E4:9D00 (file 0x249D00), right after the last dialogue font glyph (0x3DF), is empty (zeros).
+   32 glyph slots were reserved there. (v1.1 uses 5: 솟 쑤 웨 휠 릉)
+ - The dialogue engine cannot print these glyphs. (the 2-byte prefix codes are only 1D-1F)
+   Only the special names on the level-up screen use this area, with prefix $20. (see section 4)
 
-■ 메뉴 폰트 코드표의 틀린 두 줄 (v1.2에서 고침) [실측]
- - korTBL2는 5F=힐, FF=휠로 적혀 있지만 롬의 그림은 0x5F가 점(●), 0xFF가 "빼"입니다.
-   v1.1은 이 표를 그대로 써서 메뉴(필드, 전투 공통 데이터)에서 "힐셸"이 "●셸", "지노휠"이 "지노빼"로 나왔습니다.
-   (대사 폰트 쪽 이름은 맞았음)
- - 메뉴 폰트 한글 165자를 코드표 글자 옆에 그려 전부 눈으로 대조했고, 틀린 것은 이 둘뿐이었습니다.
- - v1.2: tools/build.py MENU_TBL_WRONG으로 두 줄을 빼서 힐, 휠을 동적 글리프로 그립니다.
- - 검사: tools/py/check_menu_names.py (tools/make.sh 마지막 단계, 틀리면 빌드 실패)
-   빌드된 롬에서 KoNames, KoSkills, KoEnemies, KoGlyphOffs를 다시 읽어 아이템, 필살기, 적 이름 414개를 글자 단위로 대조합니다.
-   · 동적 글리프: 롬의 그림 = Galmuri로 다시 그린 그림 (완전히 같아야 함)
-   · 메뉴 폰트 코드: data/tbl/menu_font_audit.txt(눈으로 확인한 186개 코드, 글자, 그림 sha1)에 같은 글자로 있고
-     그림도 같아야 함
-   · MENU_REUSE 85/9B/DF: build.py가 그린 Galmuri 그림과 같아야 함
-   전투 메뉴(SA-1, KoFetch/KoGlyphX)도 같은 표와 그림을 읽으므로 같이 확인됩니다.
- - Galmuri와 v1.0 메뉴 폰트는 디자인이 달라, 그림끼리 닮은 정도로 판정하면 165자 중 89자 이상을 잘못
-   골랐습니다. 그래서 메뉴 폰트는 한 번 눈으로 확인한 목록과 그림 해시를 기준으로 삼았습니다.
- - 지노휠은 지노가 동료인 세이브스테이트가 없어 화면으로는 확인하지 못했고, 위 검사로 확인했습니다.
+■ Two wrong lines in the menu font code table (fixed in v1.2) [verified]
+ - korTBL2 lists 5F=힐 and FF=휠, but in the ROM the picture at 0x5F is a dot (●) and at 0xFF is "빼".
+   v1.1 used the table as it was, so menus (field and the shared battle data) showed "힐셸" as "●셸" and "지노휠" (Geno Whirl) as "지노빼".
+   (Names in the dialogue font were right)
+ - All 165 Hangul of the menu font were drawn next to their code table characters and compared by eye; these two were the only wrong ones.
+ - v1.2: tools/build.py MENU_TBL_WRONG drops the two lines so 힐 and 휠 are drawn as dynamic glyphs.
+ - Check: tools/py/check_menu_names.py (the last step of tools/make.sh; the build fails on a mismatch)
+   It reads KoNames, KoSkills, KoEnemies and KoGlyphOffs back from the built ROM and compares 414 item, special and enemy names character by character.
+   · dynamic glyphs: picture in the ROM = picture redrawn with Galmuri (must be identical)
+   · menu font codes: must be listed with the same character in data/tbl/menu_font_audit.txt (186 codes checked by eye, character, picture sha1)
+     and have the same picture
+   · MENU_REUSE 85/9B/DF: must equal the Galmuri pictures build.py drew
+   The battle menu (SA-1, KoFetch/KoGlyphX) reads the same tables and pictures, so it is covered too.
+ - Galmuri and the v1.0 menu font differ in design; judging by how similar the pictures look picked wrong for 89 or more of
+   the 165 characters. So the menu font is judged against a list checked once by eye and picture hashes.
+ - 지노휠 could not be checked on screen because there is no savestate with Geno in the party; it was checked with the test above.
 
-■ 메뉴 폰트 재활용 (MENU_REUSE)
- - 필드 필살기 화면의 안내 문구는 동적 글리프를 쓸 수 없는 곳이라(6장),
-   필요한 글자 3자를 메뉴 폰트에 직접 넣었습니다.
- - 메뉴 문구, 아이템/필살기/적 이름 어디에도 쓰지 않는 코드 85, 9B, DF를 골라
-   되(85), 운(9B), 웁(DF)으로 바꿨습니다.
+■ Menu font reuse (MENU_REUSE)
+ - The guidance text on the field special screen cannot use dynamic glyphs (section 6),
+   so the 3 characters it needs were put directly into the menu font.
+ - Codes 85, 9B and DF, unused by menu text and by item/special/enemy names, were picked
+   and changed to 되 (85), 운 (9B) and 웁 (DF).
 
-■ 새 글리프
- - Galmuri11 Condensed (SIL OFL)를 12픽셀로 그려 8×12 크기로 만들었습니다.
- - 한 줄당 2바이트(두 번째 바이트는 0) × 12줄 = 24바이트
+■ New glyphs
+ - Galmuri11 Condensed (SIL OFL) drawn at 12 pixels, made into 8×12.
+ - 2 bytes per row (second byte 0) × 12 rows = 24 bytes
 ```
 
-## 3. 아이템 / 필살기 / 적 이름
+## 3. Item / special / enemy names
 
 ```text
-■ 원판 이름 테이블 (v1.0은 여기에 영문 대문자로 이름을 넣었습니다)
+■ Original name tables (v1.0 put names here in English capitals)
 
-  내용        주소                       항목 크기   구조
-  아이템      $FA:41FC (파일 0x3A41FC)   15바이트    아이콘 1 + 이름 10 + 미사용 4
-  필살기      $FA:137F (파일 0x3A137F)   15바이트    아이템과 같은 형식
-  적          $F9:8C11 (파일 0x398C11)    8바이트    이름 8
+  contents    address                    entry size  structure
+  items       $FA:41FC (file 0x3A41FC)   15 bytes    icon 1 + name 10 + unused 4
+  specials    $FA:137F (file 0x3A137F)   15 bytes    same format as items
+  enemies     $F9:8C11 (file 0x398C11)    8 bytes    name 8
 
- - 필살기 테이블의 앞 27개(0x00-0x1A)가 아군 필살기입니다.
-   그 뒤는 적 공격 이름이고, v1.0에서 이미 한글입니다.
+ - The first 27 entries of the special table (0x00-0x1A) are the party's specials.
+   The rest are enemy attack names, already in Korean in v1.0.
 
-■ 새 이름 테이블 ($E2:B400 = 파일 0x22B400부터)
-대사 뱅크 $E2의 데이터 뒤는 일본판에서도 0x230000까지 0으로 비어 있습니다.
+■ New name tables (from $E2:B400 = file 0x22B400)
+After the data of dialogue bank $E2, the space is zero up to 0x230000 in the Japanese ROM too.
 
-  KoNames      256 × 21바이트   아이콘 1 + 16비트 글자 10개
-  KoSkills      64 × 21바이트   같은 형식
-  KoEnemies    256 × 16바이트   16비트 글자 8개
-  KoDlgNames   256 × 22바이트   대사 인코딩 이름 (헤더 1바이트 + 이름 + 0)
-  KoParticles                    을 / 를 (대사 인코딩)
-  KoLvSkills    64 × 16바이트   레벨업 화면용 필살기 이름
+  KoNames      256 × 21 bytes   icon 1 + 10 16-bit characters
+  KoSkills      64 × 21 bytes   same format
+  KoEnemies    256 × 16 bytes   8 16-bit characters
+  KoDlgNames   256 × 22 bytes   names in dialogue encoding (1-byte header + name + 0)
+  KoParticles                    을 / 를 (dialogue encoding)
+  KoLvSkills    64 × 16 bytes   special names for the level-up screen
 
- - 16비트 글자 코드
-   · 0x0000-0x00FF: 메뉴 폰트 1바이트 코드 그대로
-   · 0x8000 | n: 동적 글리프 n번 (메뉴 폰트에 없는 글자)
- - KoDlgNames / KoLvSkills 헤더 = 이름 바이트 수 | 0x80 (마지막 글자에 받침이 있으면)
- - 이름은 화면 칸이 모자라서 띄어쓰기를 빼고 넣었습니다.
+ - 16-bit character codes
+   · 0x0000-0x00FF: the menu font 1-byte code as is
+   · 0x8000 | n: dynamic glyph n (a character not in the menu font)
+ - KoDlgNames / KoLvSkills header = name byte count | 0x80 (if the last character has a final consonant)
+ - Names were put in without spaces because the screen cells are too few.
 
-■ 동적 글리프 데이터
- - 메뉴 폰트에 없는 249자를 8×12 2bpp(24바이트)로 넣었습니다.
- - 전투 렌더러가 "$E4:2B00 + 16비트 오프셋"으로 글리프를 읽기 때문에,
-   데이터는 파일 0x242B00-0x252AFF 안에 있어야 합니다.
-   그 범위 안에서 일본판과 v1.0 모두 0인 구간에 나눠 넣었습니다.
-   (0x24EDD8, 0x2511C2, 0x252534, 0x251D48 순서로 채움)
- - 글리프 번호 → 오프셋 표: KoGlyphOffs (16비트)
+■ Dynamic glyph data
+ - The 249 characters missing from the menu font were stored as 8×12 2bpp (24 bytes).
+ - The battle renderer reads glyphs at "$E4:2B00 + 16-bit offset",
+   so the data must lie within file 0x242B00-0x252AFF.
+   Within that range, it was split across stretches that are 0 in both the Japanese ROM and v1.0.
+   (filled in the order 0x24EDD8, 0x2511C2, 0x252534, 0x251D48)
+ - Glyph number → offset table: KoGlyphOffs (16-bit)
 
-■ 필드 메뉴 (S-CPU)
+■ Field menu (S-CPU)
 
-  후킹 위치    내용
-  $C3:7990     아이템 이름 그리기 → DrawItemName
-  $C3:799D     필살기 이름 그리기 → DrawSkillName
-  $C3:0102     메뉴 NMI의 JSR $013E → NmiUpload (원래 작업 실행 후 글리프 업로드)
-  $C3:6D74     메뉴를 열 때 폰트를 만드는 루틴 시작 → ResetSlots
-  $C3:2078     캐릭터에게 가져가는 아이템 이름(스프라이트) → HeldName
+  hook         contents
+  $C3:7990     draw item name → DrawItemName
+  $C3:799D     draw special name → DrawSkillName
+  $C3:0102     JSR $013E in the menu NMI → NmiUpload (runs the original jobs, then uploads glyphs)
+  $C3:6D74     start of the routine that builds the font when a menu opens → ResetSlots
+  $C3:2078     name of the item being carried to a character (sprite) → HeldName
 
- - 메뉴 폰트에 있는 글자는 원래처럼 타일 (c - 0x20) × 2를 씁니다.
- - 없는 글자는 VRAM $6000-$7FFF (BG1 타일 $200-$2FF) 128칸 중 하나를 배정합니다.
-   이 영역은 필드 메뉴 화면에서 참조하지 않고, 메뉴를 열 때 다시 로드됩니다.
-   그래서 메뉴를 열 때 슬롯 표도 같이 비웁니다.
- - 배정한 글자는 게임의 외곽선 루틴($C3:6869)으로 변환해 WRAM에 모아 두고(최대 12자),
-   NMI에서 DMA로 VRAM에 올립니다.
- - 패치 변수는 WRAM $7E:0C00-$17FF에 둡니다. (메뉴, 전투, 대사 어디에서도 게임이 쓰지 않음)
- - 아이템을 들고 갈 때 나오는 이름 스프라이트는 $7E:8000 + (c - 0x20) × 32에서 글리프를 읽습니다.
-   코드 00-1F는 $7E:9C00-$9FFF를 가리키므로, 동적 글자는 거기에 변환해 두고 00번부터 씁니다.
- - 교훈 1: 메뉴 NMI 작업 슬롯($A0-$A7)이 가득 차면 등록 루틴($015B)은
-   사운드 명령을 보내고 등록을 포기합니다. (토드의 메뉴 튜토리얼에서 음악이 바뀌는 증상)
-   그래서 슬롯을 쓰지 않고 NMI 루틴을 직접 후킹했습니다.
- - 교훈 2: 처음에 잡았던 변수 영역 $7E:F580-$F8FF는 아이템 스프라이트 버퍼였습니다.
-   "평소에 0인 WRAM"도 특정 화면에서는 쓰일 수 있습니다.
+ - Characters in the menu font use tile (c - 0x20) × 2 as before.
+ - Missing characters are assigned one of 128 cells in VRAM $6000-$7FFF (BG1 tiles $200-$2FF).
+   The field menu screen does not reference this area, and it is reloaded when a menu opens.
+   So the slot table is cleared when a menu opens, too.
+ - Assigned characters are converted with the game's outline routine ($C3:6869) and collected in WRAM (up to 12),
+   then DMAed to VRAM in the NMI.
+ - Patch variables live in WRAM $7E:0C00-$17FF. (the game does not use it in menus, battle or dialogue)
+ - The name sprite shown while carrying an item reads glyphs from $7E:8000 + (c - 0x20) × 32.
+   Codes 00-1F point to $7E:9C00-$9FFF, so dynamic characters are converted there and used from 00.
+ - Lesson 1: when the menu NMI job slots ($A0-$A7) are full, the registration routine ($015B)
+   sends a sound command and gives up registering. (the symptom: music changes in Toad's menu tutorial)
+   So the NMI routine was hooked directly instead of using a slot.
+ - Lesson 2: the variable area first chosen, $7E:F580-$F8FF, was the item sprite buffer.
+   "WRAM that is normally 0" can still be used on particular screens.
 
-■ 전투 메뉴 (SA-1)
- - $C1:6A3F가 $308C 포인터로 11글자를 읽어 BW-RAM 비트맵에 그립니다.
-   글리프는 $E4:2B00 + (c - 0x20) × 24에서 직접 읽습니다.
+■ Battle menu (SA-1)
+ - $C1:6A3F reads 11 characters via the $308C pointer and draws them into a BW-RAM bitmap.
+   Glyphs are read directly from $E4:2B00 + (c - 0x20) × 24.
 
-  후킹 위치    내용
-  $C1:6AC7     글자 읽기 → KoFetch (아이템/필살기 테이블 주소면 KoNames에서 읽음)
-  $C1:6AFA     글리프 주소 계산 → KoGlyphX
-  $C1:6C6D     이름을 $40:6800 버퍼에 복사 → KoCopy (아이템/적 테이블이면 한글로 씀)
+  hook         contents
+  $C1:6AC7     read a character → KoFetch (reads from KoNames when the address is in the item/special table)
+  $C1:6AFA     glyph address calculation → KoGlyphX
+  $C1:6C6D     copy the name into the $40:6800 buffer → KoCopy (writes Korean for the item/enemy tables)
 
- - $40:6800 버퍼 안에서 동적 글자는 2바이트로 씁니다.
-   $1C-$1F + 하위 바이트 = 동적 글리프 ((코드 - $1C) << 8) | 하위 바이트
- - 메뉴 폰트에서 쓰지 않는 코드 $1F를 "동적 글자 표시"로 써서 렌더러에 넘깁니다.
+ - In the $40:6800 buffer, dynamic characters are written as 2 bytes.
+   $1C-$1F + low byte = dynamic glyph ((code - $1C) << 8) | low byte
+ - Code $1F, unused by the menu font, serves as the "dynamic character" marker passed to the renderer.
 
-■ 롬 크기를 4MB로 유지한 이유
- - SA-1 MMC는 $C0-$FF의 1MB 창 4개에 각각 고른 블록을 보여 줍니다.
-   4MB 너머를 읽으려면 실행 중에 창 하나를 바꿔야 하는데,
-   S-CPU와 SA-1이 동시에 돌기 때문에 바꾸는 사이 다른 쪽이 원래 블록을 읽으면 오동작합니다.
- - 그래서 확장하지 않고 원본에서도 비어 있는 공간만 썼습니다. (9장 참조)
+■ Why the ROM stays 4MB
+ - The SA-1 MMC shows a chosen block in each of four 1MB windows at $C0-$FF.
+   Reading beyond 4MB would mean switching a window at run time,
+   and since the S-CPU and SA-1 run at the same time, the other side reading the original block during the switch would misbehave.
+ - So the ROM was not expanded, and only space that is empty in the original as well was used. (see section 9)
 
-■ 대사 속 아이템 이름
- - KoDlgNames의 대사 인코딩 이름을 $1A/$1B 처리 루틴(1장)이 $7E:2D00에 복사합니다.
- - 이름 뒤의 을/를은 헤더의 받침 비트로 고릅니다. (을 = $8F, 를 = $76)
+■ Item names in dialogue
+ - The $1A/$1B handler (section 1) copies the dialogue-encoded name from KoDlgNames to $7E:2D00.
+ - 을/를 after the name is chosen by the final-consonant bit of the header. (을 = $8F, 를 = $76)
 
-■ 전투 메시지 속 이름 (v1.2) [실측]
- - 화면 위 띠에 나오는 전투 메시지는 $C1:5680의 해석기가 대사 폰트로 그립니다.
-   제어 코드 1C xx는 xx - $30번째 항목으로 $C1:5683 분기 표를 따라갑니다.
-   1C 31 = 아이템 $FA06의 이름 ($C1:56A8), 1C 37 = 필살기 $FA14의 이름 ($C1:56DF)
- - 원판 루틴은 원판 이름 표($FA:41FC, $FA:137F)를 바로 읽습니다. ($C1:56B4의 ADC $FA000A 등)
-   v1.0이 그 표에 영문을 넣어 두었고 v1.1도 이 두 곳은 손대지 않아서,
-   요시쿠키로 몬스터가 아이템으로 바뀌면 "몬스터는 MUSHROOM 모습이 됐다!"가 나왔습니다. (v1.0부터)
- - v1.2는 두 루틴을 그 자리에서 바꿨습니다. (src/main.asm org $C156A8, org $C156DF)
-     LDA $FA06 (또는 $FA14) / JSL KoBtlItem (또는 KoBtlSkill)
-     반복: JSL KoBtlNext / BCS 끝 / JSR $5769
-   · KoBtlItem: KoDlgNames의 이름을 버퍼 $7E:1110에 복사합니다.
-   · KoBtlSkill: 0x00-0x1A 아군 필살기는 KoLvSkills, 0x1B 이후 적 공격은 원판 표(v1.0부터 한글)를 그대로 씁니다.
-   · KoBtlNext: 다음 글자를 A에 넣습니다. 접두 $1D-$20인 2바이트 글자는 (접두 - $1C) << 8 | 하위 바이트로
-     바꿔 넘기므로, 접두 $20(대사 폰트 확장 영역)의 글자도 그려집니다. 이름 끝이면 carry를 켭니다.
-   · $C1:5769는 원래 해석기의 글자 그리기 루틴입니다.
- - 새 코드 $E2:FDE2-$E2:FF6C(띠 수정 포함), 변수 $7E:1100-$7E:1105, 이름 버퍼 $7E:1110-$7E:1124,
-   띠 문자열 $7E:1128-$7E:112E
- - 확인: Mesen 2에서 "몬스터는 버섯 모습이 됐다!", bsnes·bsnes-hd beta·Supafaust 코어에서
-   "몬스터는 단단해져라 모습이 됐다!"가 나왔습니다. (8장 에뮬레이터)
-   1C 37을 쓰는 메시지는 실제 장면에서 보지 못했습니다.
+■ Names in battle messages (v1.2) [verified]
+ - Battle messages in the banner at the top of the screen are drawn with the dialogue font by the interpreter at $C1:5680.
+   Control code 1C xx follows the $C1:5683 branch table at entry xx - $30.
+   1C 31 = name of item $FA06 ($C1:56A8), 1C 37 = name of special $FA14 ($C1:56DF)
+ - The original routines read the original name tables ($FA:41FC, $FA:137F) directly. (ADC $FA000A at $C1:56B4 etc.)
+   v1.0 had put English there and v1.1 did not touch these two places either,
+   so when a Yoshi Cookie turned a monster into an item, "몬스터는 MUSHROOM 모습이 됐다!" ("The monster turned into a MUSHROOM!") appeared. (since v1.0)
+ - v1.2 replaced both routines in place. (src/main.asm org $C156A8, org $C156DF)
+     LDA $FA06 (or $FA14) / JSL KoBtlItem (or KoBtlSkill)
+     loop: JSL KoBtlNext / BCS end / JSR $5769
+   · KoBtlItem: copies the name from KoDlgNames to the buffer at $7E:1110.
+   · KoBtlSkill: party specials 0x00-0x1A use KoLvSkills; enemy attacks from 0x1B use the original table (Korean since v1.0) as is.
+   · KoBtlNext: puts the next character in A. 2-byte characters with prefix $1D-$20 are passed as (prefix - $1C) << 8 | low byte,
+     so characters with prefix $20 (the dialogue font extension area) are drawn too. Sets carry at the end of the name.
+   · $C1:5769 is the character drawing routine of the original interpreter.
+ - New code $E2:FDE2-$E2:FF6C (including the banner fix), variables $7E:1100-$7E:1105, name buffer $7E:1110-$7E:1124,
+   banner string $7E:1128-$7E:112E
+ - Check: Mesen 2 showed "몬스터는 버섯 모습이 됐다!" (turned into a 버섯, Mushroom), and the bsnes, bsnes-hd beta and Supafaust cores showed
+   "몬스터는 단단해져라 모습이 됐다!" (turned into a 단단해져라). (section 8, emulators)
+   A message using 1C 37 was not seen in an actual scene.
 
-■ 전투 이름 띠 (전투 애니메이션 명령 $63) [실측]
- - 전투 애니메이션 스크립트 해석기: $C2:0C43이 [$60]에서 명령 바이트를 읽고 JMP ($0D31,X)로 갑니다.
-   표 $C2:0D31의 $63번째 값이 $4131이고, $C2:4131이 이름 띠 명령입니다. 명령은 63 xx 두 바이트입니다.
- - xx로 갈래를 고르고, 번호는 $40:0060,X(개체의 번호 칸, $E0에 복사)입니다.
-     0  적 공격 이름  $F9:59F4 (주소는 $F9:0012에 있음)  13바이트 간격  $C2:41A5
-     1  필살기·마법   $FA:137F ($FA:0008)               15바이트 간격  $C2:41D9
-     2  아이템        $FA:41FC ($FA:000A)               15바이트 간격  $C2:420D
-   결과를 $0B86(주소)/$0B88(뱅크)/$0B8A(글자 수)에 넣고 $0B80 = 3, $0B84 = 4로 둡니다.
- - $C1:51A7이 [$0B86]에서 32바이트를 $7E:05E0으로 복사하고 $0B8A 자리에 00을 넣습니다.
-   이 글은 전투 메시지 해석기($C1:5598)가 그립니다. 해석기는 1D-1F 접두 2바이트 글자는 그리지만
-   $20은 빈칸이라, 대사 폰트 확장 영역(접두 $20)의 글자는 못 그립니다.
- - v1.1 롬에서 강제로 띄운 결과: 적 공격 0x22 "허수아비의 종소리", 마법 0x40 "파이어볼"은 한글,
-   아이템 0x6D "YOSICOOKIE", 필살기 0x00 "JUMP", 0x0E "CRUSH"는 영문.
- - 평소 플레이에서 갈래 1의 아군 필살기(0x00-0x1A)와 갈래 2가 나오는지 [실측 + 바이트 검색]
-   · 몬스터 행동 스크립트: 뱅크 $F9, 포인터 표 $F9:30AA(주소는 $F9:0010), 해석기 $C2:A38C.
-     0xE0 미만 = 공격, E0-FF는 $C2:A3C3 분기 표. 행동 종류는 $072A(공격 2, 마법 3), 번호는 $072C.
-     마법 명령 EF xx / F0 xx yy zz의 번호는 모두 0x40 이상입니다. (아군 필살기 번호 없음)
-     행동 종류 4를 만드는 E1은 스크립트 전체에서 바이트 하나뿐이고, 그것도 E3 E1(대사 번호)의 인자입니다.
-   · 애니메이션 데이터: 63 01은 $F5:252C 한 곳(적 마법이 공통으로 부르는 부분, 바로 앞 $F5:2524는 63 00).
-     롬 전체에서 앞 바이트가 11 또는 69인 63 0x를 찾았을 때 63 02는 스크립트 영역에 없었습니다.
-     스크립트를 명령 길이대로 모두 따라가지는 않았습니다. [추정]
-   · 적이 일반 공격만 하는 전투, test/states의 세이브스테이트 15개, 아군의 아이템·필살기 사용에서
-     이 갈래는 실행되지 않았습니다.
-   그래서 영문 띠는 평소에는 나오지 않는 것으로 봅니다.
- - v1.2 수정 (src/main.asm org $C241D5, $C24209, $C15693, $C156BB, $C156F2)
+■ Battle name banner (battle animation command $63) [verified]
+ - Battle animation script interpreter: $C2:0C43 reads the command byte from [$60] and goes to JMP ($0D31,X).
+   Entry $63 of table $C2:0D31 is $4131, and $C2:4131 is the name banner command. The command is the two bytes 63 xx.
+ - xx picks the branch, and the number is $40:0060,X (the entity's number slot, copied to $E0).
+     0  enemy attack names  $F9:59F4 (address stored at $F9:0012)  13-byte entries  $C2:41A5
+     1  specials, magic     $FA:137F ($FA:0008)                    15-byte entries  $C2:41D9
+     2  items               $FA:41FC ($FA:000A)                    15-byte entries  $C2:420D
+   The result goes into $0B86 (address) / $0B88 (bank) / $0B8A (character count), with $0B80 = 3 and $0B84 = 4.
+ - $C1:51A7 copies 32 bytes from [$0B86] to $7E:05E0 and puts 00 at position $0B8A.
+   This text is drawn by the battle message interpreter ($C1:5598). The interpreter draws 2-byte characters with prefixes 1D-1F,
+   but $20 is a space, so it cannot draw characters from the dialogue font extension area (prefix $20).
+ - Forcing it to show in the v1.1 ROM: enemy attack 0x22 "허수아비의 종소리" and magic 0x40 "파이어볼" in Korean,
+   item 0x6D "YOSICOOKIE", specials 0x00 "JUMP" and 0x0E "CRUSH" in English.
+ - Whether branch 1 with party specials (0x00-0x1A) and branch 2 appear in normal play [verified + byte search]
+   · Monster behaviour scripts: bank $F9, pointer table $F9:30AA (address at $F9:0010), interpreter $C2:A38C.
+     Below 0xE0 = attack; E0-FF go through the branch table at $C2:A3C3. The action kind is $072A (attack 2, magic 3), the number $072C.
+     The numbers of the magic commands EF xx / F0 xx yy zz are all 0x40 or above. (no party special numbers)
+     E1, which produces action kind 4, occurs as a single byte in all the scripts, and that is the argument of E3 E1 (dialogue number).
+   · Animation data: 63 01 occurs only at $F5:252C (a part enemy magic calls in common; right before it, $F5:2524 is 63 00).
+     Searching the whole ROM for 63 0x preceded by 11 or 69 found no 63 02 in the script area.
+     The scripts were not all followed by command length. [inferred]
+   · In battles where enemies only use normal attacks, in the 15 savestates in test/states, and when the party used items and specials,
+     this branch did not run.
+   So the English banner is taken not to appear in normal play.
+ - The v1.2 fix (src/main.asm org $C241D5, $C24209, $C15693, $C156BB, $C156F2)
    · $C2:41D5, $C2:4209: JSL KoBanSkill / KoBanItem; JMP $0C53
-     KoBanSkill은 번호 0x1B 이상(적 마법)이면 원래대로 $FA:137F를 가리킵니다.
-     그 밖에는 WRAM $7E:1128에 20 1C 38 A5 <종류 1|2> <번호> 00을 쓰고 $0B86/$0B88이 그곳을 가리키게 합니다.
-   · 1C 표($C1:5683)의 8번 항목(원래 0번과 같은 $56A3)을 $C1:56BB(JML KoBtlBanner)로 바꿨습니다.
-     KoBtlBanner는 다음 바이트가 A5가 아니면 원래 처리($C1:56A3)로 갑니다. A5면 종류와 번호를 읽고
-     KoBtlItem/KoBtlSkill + KoBtlNext로 이름을 한 글자씩 $C1:56F2(JSR $5769; RTL)에 넘깁니다.
-     해석기는 Y를 그리는 위치로 쓰므로(바이트를 읽는 $C1:55BB도 PHY/PLY) KoBtlBanner도 Y를 지킵니다.
-   · KoBtlNext는 $20 다음 바이트가 $20 미만일 때만 $20을 확장 글자 접두로 봅니다.
-     영문으로 남은 미사용 아이템 이름("KILL BOMB" 등)의 빈칸 때문입니다.
- - 확인 (테스트 롬: 굼바(6)·가시돌이(1)의 행동 스크립트 맨 앞을 EF 40 FF FF로 바꿈. 아이템은 $F5:252D도 02로)
-   · 적 마법 0x40은 원래 경로로 "파이어볼".
-   · Mesen 2에서 $C2:4166(STA $E0)의 쓰기 값을 바꿔 아군 필살기 27개, 아이템 165개(이름 있는 155개 +
-     영문 10개)를 실제 경로로 띄웠습니다. $C1:56F2에 넘긴 글자 코드를 기록해 코드표로 되돌린 결과가
-     이름과 모두 같았습니다(v1.2 최종 빌드, 192개). 확장 글자(솟아나라쑤욱, 지노웨이브, 지노휠, 천둥콰르릉의 릉)도
-     그려집니다. 처음 돌렸을 때 힐셸·천둥콰르릉만 달랐던 것이 2장 "대사 폰트 코드 충돌"입니다.
-   · 도구: test/probe.lua(EXEC, ONCE), 띠 번호 바꾸기와 글자 코드 기록 스크립트는 test/banner_ids.lua,
-     대조는 tools/py/check_banner.py
+     KoBanSkill points to $FA:137F as before for numbers 0x1B and up (enemy magic).
+     Otherwise it writes 20 1C 38 A5 <kind 1|2> <number> 00 to WRAM $7E:1128 and points $0B86/$0B88 there.
+   · Entry 8 of the 1C table ($C1:5683) (originally $56A3, same as entry 0) was changed to $C1:56BB (JML KoBtlBanner).
+     KoBtlBanner goes to the original handling ($C1:56A3) if the next byte is not A5. If it is A5, it reads the kind and number
+     and passes the name one character at a time to $C1:56F2 (JSR $5769; RTL) via KoBtlItem/KoBtlSkill + KoBtlNext.
+     The interpreter uses Y as the drawing position ($C1:55BB, which reads the bytes, also does PHY/PLY), so KoBtlBanner preserves Y too.
+   · KoBtlNext treats $20 as the extension character prefix only when the byte after it is below $20.
+     This is because of the spaces in unused item names left in English ("KILL BOMB" etc.).
+ - Check (test ROM: the start of the behaviour scripts of Goomba (6) and Spikey (1) changed to EF 40 FF FF; for items also $F5:252D set to 02)
+   · Enemy magic 0x40 shows "파이어볼" through the original path.
+   · In Mesen 2, changing the value written at $C2:4166 (STA $E0) showed all 27 party specials and 165 items (155 with names +
+     10 in English) through the real path. Recording the character codes passed to $C1:56F2 and converting them back with the code table
+     matched every name (final v1.2 build, 192). Extension characters (솟아나라쑤욱, 지노웨이브, 지노휠, 릉 of 천둥콰르릉)
+     are drawn too. On the first run only 힐셸 and 천둥콰르릉 differed; that is section 2 "Dialogue font code collision".
+   · Tools: test/probe.lua (EXEC, ONCE); the script that changes the banner number and records character codes is test/banner_ids.lua;
+     the comparison is tools/py/check_banner.py
 ```
 
-## 4. 조사 자동 선택
+## 4. Automatic particle selection
 
 ```text
-■ 대사
- - $1B 플래그 4: 이름 끝 글자의 받침 유무로 을/를을 붙입니다.
- - 빌드할 때 이름을 바꾸면서 바로 뒤 조사도 같이 고쳤습니다.
+■ Dialogue
+ - $1B flag 4: appends 을/를 depending on whether the last character of the name has a final consonant.
+ - At build time, the particle right after a renamed name was fixed together with it.
    (이/가, 을/를, 은/는, 과/와, 아/야, 으로/로, tools/py/textfix.py)
-   숫자로 끝나면 0, 1, 3, 6, 7, 8을 받침 있음으로 봤습니다.
+   For names ending in a digit, 0, 1, 3, 6, 7 and 8 were treated as having a final consonant.
 
-■ 레벨업 화면 (SA-1)
- - 레벨업 화면 문장에서 코드 $03이 필살기 이름을 넣습니다.
-   원래는 아이템 형식 테이블(v1.0은 영문)에서 이름을 가져왔습니다.
- - 글리프 목록 항목 = 코드 | 종류 << 8, 렌더러는 대사 폰트의 (코드 - 0x20)번 글리프를 그립니다.
+■ Level-up screen (SA-1)
+ - In the level-up screen sentence, code $03 inserts the special's name.
+   Originally the name came from the item-format table (English in v1.0).
+ - Glyph list entry = code | kind << 8; the renderer draws dialogue font glyph number (code - 0x20).
 
-  후킹 위치    내용
-  $C2:D3CF     필살기 이름 → KoLvSkill (KoLvSkills에서 읽고 을/를을 붙임)
-  $C2:D4EA     숫자를 그린 직후 → KoLvAfterNum ("(이)가"면 하나만 그림)
-  $C2:D734     글리프 종류 해석 → KoLvAttr (2바이트 글자 처리)
+  hook         contents
+  $C2:D3CF     special name → KoLvSkill (reads from KoLvSkills and appends 을/를)
+  $C2:D4EA     right after drawing a number → KoLvAfterNum (draws only one of "(이)가")
+  $C2:D734     glyph kind decoding → KoLvAttr (handles 2-byte characters)
 
- - 2바이트 글자는 접두 바이트($1D-$20)를 종류 바이트에 넣고, KoLvAttr가 글리프 번호로 되돌립니다.
-   접두 $20은 대사 폰트 확장 영역(0x3E0 이후)입니다.
- - 원래 문장 "(을)를 배웠습니다."는 "배웠습니다."로 바꿨습니다. ($C2:D300-$C2:D800 범위에서 찾아 수정)
- - 숫자 뒤 이/가: 마지막 자리가 2, 4, 5, 9면 "가", 그 밖(0, 1, 3, 6, 7, 8)은 "이"
-   (레벨 10, 20... 은 "십"이므로 "이")
+ - For 2-byte characters the prefix byte ($1D-$20) goes into the kind byte, and KoLvAttr turns it back into a glyph number.
+   Prefix $20 is the dialogue font extension area (0x3E0 and up).
+ - The original sentence "(을)를 배웠습니다." was changed to "배웠습니다." ("learned"). (found and fixed within $C2:D300-$C2:D800)
+ - 이/가 after a number: "가" if the last digit is 2, 4, 5 or 9, otherwise (0, 1, 3, 6, 7, 8) "이"
+   (levels 10, 20... end in "십", so "이")
 ```
 
-## 5. 전투 결과 창
+## 5. Battle result window
 
 ```text
- - 획득 아이템 이름은 $7E:05E0에 복사된 뒤 대사 폰트($E4:4000)로 그려집니다.
+ - The name of an item received is copied to $7E:05E0 and drawn with the dialogue font ($E4:4000).
 
-  후킹 위치    내용
-  $C1:779A     이름 복사 → KoResultName (KoDlgNames를 복사하고 위치를 정함)
-  $C1:787E     글자 읽기 → KoResultChar (2바이트 글자를 글리프 하나로)
-  $C1:7161     창 크기 선택 → KoResultGeom
+  hook         contents
+  $C1:779A     copy the name → KoResultName (copies from KoDlgNames and sets the position)
+  $C1:787E     read a character → KoResultChar (turns a 2-byte character into one glyph)
+  $C1:7161     window size choice → KoResultGeom
 
- - 원판은 아이템 이름을 항상 "아이템" 다음 줄 왼쪽에 둡니다.
-   v1.1은 숫자 끝(오른쪽 끝 180픽셀)에 맞춰 오른쪽 정렬하고,
-   이름이 5글자 이하면 "아이템"과 같은 줄에 두고 창을 한 줄 줄였습니다.
+ - The original always places the item name at the left of the line below "아이템" (item).
+   v1.1 right-aligns it to the end of the numbers (right edge 180 pixels),
+   and if the name is 5 characters or fewer, puts it on the same line as "아이템" and makes the window one line shorter.
 
-  배치   조건                     창
-  0      $3F8E가 0이 아님         원판 큰 창
-  1      아이템 없음              원판 작은 창
-  2      이름 5글자 이하          같은 줄, 한 줄 작은 창
-  3      이름 6글자 이상          다음 줄, 원판 큰 창
+  layout  condition                window
+  0       $3F8E is not 0           original large window
+  1       no item                  original small window
+  2       name of 5 chars or fewer same line, window one line smaller
+  3       name of 6 chars or more  next line, original large window
 
- - 창 범위 = [$3F90 - r, $3F92 + r + 1] × [$3F94 - r, $3F94 + r + 1], r = 3 × $3FB4 - 3 (실측)
- - asar에 -Dres_ui=0을 주면 원판 배치로 빌드됩니다. (전후 비교 스크린샷용)
+ - Window bounds = [$3F90 - r, $3F92 + r + 1] × [$3F94 - r, $3F94 + r + 1], r = 3 × $3FB4 - 3 (verified)
+ - Passing -Dres_ui=0 to asar builds with the original layout. (for before/after screenshots)
 ```
 
-## 6. 필드 필살기 화면의 다음 기술 안내
+## 6. Next-technique hint on the field special screen
 
 ```text
- - 원판은 이름을 4칸 칸에 그리고 그 뒤에 메뉴 문구 $1C를 이어 그립니다.
-   그래서 이름이 짧으면 "マロ　　が…"처럼 빈칸이 생겼습니다.
- - 이 화면의 문구 목록은 $C3:33B5입니다.
-   이 첫 바이트를 1로 바꿔 $1C만 그리게 하고, 나머지 줄은 패치 루틴이 그립니다.
+ - The original draws the name in a 4-cell slot and then draws menu text $1C after it.
+   So short names left gaps like "マロ　　が…".
+ - The text list of this screen is $C3:33B5.
+   Its first byte was changed to 1 so that only $1C is drawn; the patch routine draws the other lines.
 
-  위치          내용
-  $C3:77F6      메뉴 문구 그리기 시작 → KoSpecialHint ($1C를 이름 바로 뒤로 당김)
-  $C3:33B5      문구 목록 첫 바이트 → 1
-  $C3:35F0      레벨 숫자 위치 → 둘째 줄 ($7E:5D8E)
-  $FE:F0A9      메뉴 문구 $1C → "는" (코드 $76)
+  location      contents
+  $C3:77F6      start of drawing the menu text → KoSpecialHint (pulls $1C right after the name)
+  $C3:33B5      first byte of the text list → 1
+  $C3:35F0      level number position → second line ($7E:5D8E)
+  $FE:F0A9      menu text $1C → "는" (code $76)
 
- - 결과: "<이름>는 / 레벨 N이 되면 / 새로운 기술을 배웁니다"
-   숫자가 한 자리면 "레벨 " 바로 뒤로 당기고, 이/가는 마지막 자리로 고릅니다.
- - 이 문구가 그려지는 레이어는 동적 글리프를 쓸 수 없어서,
-   필요한 글자(되, 운, 웁)를 메뉴 폰트에 직접 넣었습니다. (2장 메뉴 폰트 재활용)
+ - Result: "<name>는 / 레벨 N이 되면 / 새로운 기술을 배웁니다" ("<name> / learns a new technique / at level N")
+   A one-digit number is pulled right after "레벨 ", and 이/가 is chosen by the last digit.
+ - The layer this text is drawn on cannot use dynamic glyphs,
+   so the needed characters (되, 운, 웁) were put directly into the menu font. (section 2, menu font reuse)
 ```
 
-## 7. 디버그 기능과 RAM
+## 7. Debug features and RAM
 
 ```text
-주소는 S-CPU에서 본 주소입니다. 일본판 기반 한글 롬을 Mesen 2로 돌려 확인했습니다.
+Addresses are as seen from the S-CPU. Checked by running the Korean ROM based on the Japanese version in Mesen 2.
 
-■ 전투 디버그 메뉴 [실측]
- - 파일 0x106A9부터 AF AE FF 00 05 80 F0 01 60 (LDA $00FFAE / ORA $80 / BEQ +1 / RTS)입니다.
-   0x106AF의 F0(BEQ)을 80(BRA)으로 바꾸면 전투 중 내 턴에 Start로 메뉴가 열립니다.
-   북미판 PAR 코드 C106AF80과 같은 위치입니다. [출처]
+■ Battle debug menu [verified]
+ - From file 0x106A9: AF AE FF 00 05 80 F0 01 60 (LDA $00FFAE / ORA $80 / BEQ +1 / RTS).
+   Changing F0 (BEQ) at 0x106AF to 80 (BRA) makes Start open the menu on your turn in battle.
+   Same location as the North American PAR code C106AF80. [source]
    Mesen 2 Lua: emu.write(0x106AF, 0x80, emu.memType.snesPrgRom)
- - 항목: SCENE / OBJ / BG / (빈 줄) / HPMAX / MUSIC / SE / LINE / (빈 줄) / EFFECT / EVT 1-3 / TEST
-   일본판 기반 한글 롬에서 하나씩 실행한 결과입니다. (test/states/battle_menu.mss + Start) [실측]
-     OBJ     오브젝트 보기
-     BG      "BG NO." 창
-     HPMAX   HP가 이미 가득 찬 상태에서 시험해 변화가 보이지 않음
-     MUSIC   "NO." 창, "MAX.5F"
-     SE      효과음 시험으로 보임 [추정]
-     LINE    화면 위쪽에 검은 가로선 (CPU 사용량 표시로 보임 [추정])
-     EFFECT  "BG ANIME" 창
-     EVT 1   쿠파성 샹들리에 장면과 피치의 "쿠파를 조심해요 마리오 씨!!"
-     EVT 2   샹들리에 위 붉은 옷 적과 전투
-     EVT 3, TEST   확인하지 못함
-   항목 사이 빈 줄에도 커서가 멈추고, 거기서 A를 누르면 메뉴만 닫힙니다.
- - SCENE: 화면에 SCENE / NO. xxx / 00이 나오고 번호는 16진수입니다.
-   위아래로 번호를 바꾸고 A로 그 편성을 불러옵니다.
-   고른 번호는 $7E:052A, 불러온 뒤 $7E:FA0E에 들어갑니다.
- - 마법 연출 테스트 메뉴: 파일 0x106D1이 20 B3 AF (JSR $AFB3)이고,
-   북미판 코드 C106D2F3 C106D307이 바꾸는 위치와 같습니다. 실행은 해 보지 않았습니다. [추정]
+ - Items: SCENE / OBJ / BG / (blank) / HPMAX / MUSIC / SE / LINE / (blank) / EFFECT / EVT 1-3 / TEST
+   Results of running each one on the Korean ROM based on the Japanese version. (test/states/battle_menu.mss + Start) [verified]
+     OBJ     object viewer
+     BG      "BG NO." window
+     HPMAX   tried with HP already full, so no visible change
+     MUSIC   "NO." window, "MAX.5F"
+     SE      appears to be a sound effect test [inferred]
+     LINE    a black horizontal line at the top of the screen (appears to be a CPU usage display [inferred])
+     EFFECT  "BG ANIME" window
+     EVT 1   the Bowser's Keep chandelier scene and Peach's "쿠파를 조심해요 마리오 씨!!" ("Watch out for Bowser, Mario!!")
+     EVT 2   battle with the red-clothed enemy on the chandelier
+     EVT 3, TEST   not checked
+   The cursor also stops on the blank lines between items; pressing A there just closes the menu.
+ - SCENE: the screen shows SCENE / NO. xxx / 00; the number is hex.
+   Up/down changes the number, and A loads that formation.
+   The chosen number goes to $7E:052A, and after loading to $7E:FA0E.
+ - Magic effect test menu: file 0x106D1 is 20 B3 AF (JSR $AFB3),
+   the same location the North American codes C106D2F3 C106D307 change. Not tried. [inferred]
 
-■ 필드 디버그 메뉴 [실측]
- - 북미판 PAR D4AFC100 D4AFC226 DF000001을 켜고 마리오 집의 NPC(북미판 이름 Fungi Light)와 대화 [출처]
- - 파일 0x14AFC1-0x14AFC2: 일본판 값 73 25, 북미판 코드는 00 26을 씁니다.
-   방별 NPC 포인터 표(파일 0x148000)로 따라가 보면 방 0xBD의 두 번째 NPC 레코드 안입니다.
-   NPC 이벤트 번호를 0x573에서 0x600으로 바꾸는 코드로 보입니다. [추정]
- - 파일 0x1F0000 (일본판 00 0C): 뱅크 $1F 이벤트 포인터 표 첫 항목입니다.
- - 일본판 기반 롬에서 세 자리를 롬 바이트로 바꿔(0x14AFC1-0x14AFC2 = 00 26, 0x1F0000 = 01) 열었습니다.
-   방 0xBD(마리오 집)의 램프 앞 (6,16)에서 북쪽, 또는 (5,15)에서 북동쪽을 보고 A를 누릅니다.
- - 메뉴: EVENT / 데모 / 옵션 → 다음 / 어묵브리지 / 파타부대 → 다음 / 광차이후 / 와인강
- - 예전에 방 0xBD로 워프했을 때 화면이 검게 나온 것은 도착 좌표 탓이었습니다. 이 방의 진짜 입구는 (2,16)입니다.
+■ Field debug menu [verified]
+ - Enable the North American PAR D4AFC100 D4AFC226 DF000001 and talk to the NPC in Mario's house (North American name Fungi Light) [source]
+ - File 0x14AFC1-0x14AFC2: Japanese value 73 25; the North American code writes 00 26.
+   Following the per-room NPC pointer table (file 0x148000), this is inside the second NPC record of room 0xBD.
+   It appears to change the NPC event number from 0x573 to 0x600. [inferred]
+ - File 0x1F0000 (Japanese 00 0C): the first entry of the bank $1F event pointer table.
+ - On the ROM based on the Japanese version, the three locations were changed as ROM bytes (0x14AFC1-0x14AFC2 = 00 26, 0x1F0000 = 01) and the menu opened.
+   In room 0xBD (Mario's house), face north from (6,16) in front of the lamp, or north-east from (5,15), and press A.
+ - Menu: EVENT / 데모 (demo) / 옵션 (option) → next / 어묵브리지 / 파타부대 → next / 광차이후 / 와인강
+ - The black screen seen earlier when warping to room 0xBD was due to the arrival coordinates. The real entrance of this room is (2,16).
 
-■ 방 워프와 디버그 룸 [실측]
- - $00:3030 (16비트) = 현재 방 번호. 문이나 출구를 지날 때 S-CPU가 씁니다.
-   예) 상점 0x002F → 문 밖 0x0017
- - Mesen 2의 쓰기 콜백에서 값을 반환하면 그 값이 실제로 기록됩니다.
-   이것으로 출구를 지날 때 원하는 방 번호로 바꿔 워프했습니다.
-   미리 emu.write로 써 두는 방식은 게임이 덮어써서 효과가 없습니다.
+■ Room warps and the debug room [verified]
+ - $00:3030 (16-bit) = current room number. The S-CPU writes it when passing a door or exit.
+   e.g. shop 0x002F → outside the door 0x0017
+ - Returning a value from a Mesen 2 write callback makes that value the one actually written.
+   This was used to change the room number to the desired one when passing an exit, to warp.
+   Writing it beforehand with emu.write has no effect because the game overwrites it.
 
-     local T = 0x0000   -- 목적지 방 번호
+     local T = 0x0000   -- destination room number
      emu.addMemoryCallback(function(addr, val)
        if addr == 0x3030 then return T & 0xFF else return (T >> 8) & 0xFF end
      end, emu.callbackType.write, 0x3030, 0x3031, emu.cpuType.snes, emu.memType.snesMemory)
 
- - 방 번호 0x0000 = 디버그 룸
-   "임시 WORLD MAP입니다. 말을 걸어서 가고 싶은 곳으로 가세요." 배너, 토드 여러 명과 쿠파가 있습니다.
-   토드마다 세이브, 님버스 랜드, 바렐 화산 등으로 보내 준다고 합니다. [출처]
- - 그 밖에 시험한 방: 0x0045 동굴 맵, 0x0001 파란 화면, 0x00BD 검은 화면
- - 도착 좌표와 방향은 원래 출구 데이터를 그대로 쓰므로, 맵에 따라 화면이 비어 보일 수 있습니다.
-   콜백은 한 번 쓰고 해제해야 합니다. 걸어 두면 이후 모든 방 이동이 같은 방으로 갑니다.
- - 방별 NPC 데이터 포인터: 파일 0x148000 (16비트 × 512, 값이 계속 커지는 표)
- - 북미판의 디버그 룸 PAR 7FF40400 7FF40501은 일본판에서 시험하지 않았습니다.
+ - Room number 0x0000 = debug room
+   A "임시 WORLD MAP입니다. 말을 걸어서 가고 싶은 곳으로 가세요." ("This is a temporary WORLD MAP. Talk to go where you want.") banner, several Toads and Bowser.
+   Each Toad reportedly sends you to save, Nimbus Land, Barrel Volcano and so on. [source]
+ - Other rooms tried: 0x0045 cave map, 0x0001 blue screen, 0x00BD black screen
+ - The arrival coordinates and direction come from the original exit data, so depending on the map the screen can look empty.
+   The callback must be removed after one use. If left in place, every later room change goes to the same room.
+ - Per-room NPC data pointers: file 0x148000 (16-bit × 512, an increasing table)
+ - The North American debug room PAR 7FF40400 7FF40501 was not tried on the Japanese version.
 
-■ 전투 편성 강제 [실측]
- - $7E:FA0E (16비트) = 편성(formation) 번호. 전투에 들어갈 때 씁니다.
-   위와 같은 쓰기 콜백(주소 0x7EFA0E-0x7EFA0F)으로 바꾸면 다른 적 구성으로 전투가 시작됩니다.
-   예) 필드 굼바의 원래 값 0x000E를 0x0022, 0x0100으로 바꿔 다른 편성이 나왔습니다.
- - 해외 RAM 맵에 적힌 $7E:0048 / $7E:D123은 일본판에서는 전투 진입 때 쓰이지 않았습니다.
+■ Forcing battle formations [verified]
+ - $7E:FA0E (16-bit) = formation number. Written when entering a battle.
+   Changing it with the same kind of write callback as above (addresses 0x7EFA0E-0x7EFA0F) starts the battle with a different set of enemies.
+   e.g. changing a field Goomba's original value 0x000E to 0x0022 or 0x0100 gave different formations.
+ - $7E:0048 / $7E:D123 from overseas RAM maps were not written on entering battle in the Japanese version.
 
-■ RAM [실측: 표시한 것 / 나머지는 출처와 일본판 관찰이 일치]
+■ RAM [verified: those marked / the rest: sources and observations of the Japanese version agree]
 
-  $00:3030     현재 방 번호 (16비트) [실측]
-  $00:3112     메뉴 열기 허용 (FF로 쓰면 메뉴가 막힌 곳에서도 열림) [실측]
-  $7E:052A     전투 디버그 메뉴 SCENE 번호 [실측]
-  $7E:FA0E     전투 편성 번호 (16비트) [실측]
-  $7F:F800     마리오 능력치 (0x14바이트) [실측: Lv1 HP 20/20]
-               +0 레벨, +1 HP(16비트), +3 최대 HP(16비트), +5 스피드, +6 공격, +7 방어,
-               +8 마법 공격, +9 마법 방어, +0A 경험치(16비트), +0C 무기, +0D 방어구, +0E 장신구,
-               +12 배운 필살기 비트
-  $7F:F814 / F828 / F83C / F850   피치 / 쿠파 / 지노 / 마로
-  $7F:F864     장비 인벤토리
-  $7F:F882     아이템 인벤토리 (30칸, 빈칸 FF)
-  $7F:F8AF     코인 (16비트) [실측]
-  $7F:F8B1 / F8B2   현재 FP / 최대 FP [실측]
+  $00:3030     current room number (16-bit) [verified]
+  $00:3112     menu open permission (writing FF lets the menu open where it is normally blocked) [verified]
+  $7E:052A     SCENE number of the battle debug menu [verified]
+  $7E:FA0E     battle formation number (16-bit) [verified]
+  $7F:F800     Mario's stats (0x14 bytes) [verified: Lv1 HP 20/20]
+               +0 level, +1 HP (16-bit), +3 max HP (16-bit), +5 speed, +6 attack, +7 defence,
+               +8 magic attack, +9 magic defence, +0A experience (16-bit), +0C weapon, +0D armour, +0E accessory,
+               +12 learned special bits
+  $7F:F814 / F828 / F83C / F850   Peach / Bowser / Geno / Mallow
+  $7F:F864     equipment inventory
+  $7F:F882     item inventory (30 slots, empty FF)
+  $7F:F8AF     coins (16-bit) [verified]
+  $7F:F8B1 / F8B2   current FP / max FP [verified]
 
- - 아이템 메뉴를 바로 보려면 매 프레임 $00:3112 = FF, $7F:F882 = 아이템 번호를 쓰고 X로 메뉴를 엽니다.
-   (tools/run_seq.sh의 POKE="003112=FF;7FF882=60")
- - 이벤트 변수: 이벤트 스크립트가 쓰는 $7000-$71FF(16비트 변수, $7040 이후 플래그 비트)는 [출처]입니다.
-   S-CPU $00:7000은 BW-RAM $3000(SA-1 $40:3000)입니다. (0장) [실측]
- - $C3:0010에 "JAPANESE VER. by M.YOSHIOKA" 문자열이 있습니다. [실측]
+ - To see the item menu right away, write $00:3112 = FF and $7F:F882 = item number every frame and open the menu with X.
+   (POKE="003112=FF;7FF882=60" of tools/run_seq.sh)
+ - Event variables: $7000-$71FF used by the event scripts (16-bit variables, flag bits from $7040) are [source].
+   S-CPU $00:7000 is BW-RAM $3000 (SA-1 $40:3000). (section 0) [verified]
+ - The string "JAPANESE VER. by M.YOSHIOKA" is at $C3:0010. [verified]
 
-■ 출처
+■ Sources
  - TCRF: https://tcrf.net/Super_Mario_RPG:_Legend_of_the_Seven_Stars
  - Data Crystal RAM map: https://datacrystal.tcrf.net/wiki/Super_Mario_RPG:_Legend_of_the_Seven_Stars/RAM_map
- - smrpgpatchbuilder (이벤트 명령, 변수 범위): https://github.com/pidgezero-one/smrpgpatchbuilder
+ - smrpgpatchbuilder (event commands, variable ranges): https://github.com/pidgezero-one/smrpgpatchbuilder
 ```
 
-## 8. 테스트와 스크린샷 방법
+## 8. Testing and screenshots
 
 ```text
- - 모두 Mesen 2의 --testrunner 모드와 Lua 스크립트로 자동화했습니다.
-   · Lua 파일 입출력을 쓰려면 Mesen 설정의 AllowIoOsAccess를 켜야 합니다.
-   · 버튼 입력은 inputPolled 이벤트에서 emu.setInput으로 넣어야 게임이 인식합니다.
-   · 세이브스테이트 저장/불러오기는 CPU 실행 콜백 안에서만 할 수 있어, 다음 명령 실행 시점으로 미뤄 처리했습니다.
+ - Everything was automated with Mesen 2's --testrunner mode and Lua scripts.
+   · Lua file I/O needs AllowIoOsAccess turned on in the Mesen settings.
+   · Button input must be set with emu.setInput in the inputPolled event for the game to see it.
+   · Savestates can only be saved/loaded inside a CPU execution callback, so this was deferred to the next instruction.
    (test/lib.lua, test/seq.lua)
- - 보기 어려운 장면은 기존 세이브스테이트에 RAM 값을 써서 새 스테이트를 만들었습니다. (tools/make_states.sh)
-   예) 경험치를 레벨업 직전으로 → 다음 전투에서 레벨업 화면
-       이벤트 플래그를 "아직 안 봄"으로 → 방에 다시 들어가면 컷신 재생
- - 아무 대사나 바로 보기: 테스트 전용 롬(build/harness.sfc)
-   $C0:5809를 후킹해, $7E:17F0 = $A55A이면 다음에 열리는 대사를 $7E:17F2의 ID로 바꿉니다.
-   상점 주인 대사 자리에 원하는 대사를 띄워 v1.0과 v1.1을 같은 조건에서 찍었습니다.
+ - Scenes that are hard to reach were made into new states by writing RAM values into existing savestates. (tools/make_states.sh)
+   e.g. experience set to just before a level-up → level-up screen in the next battle
+        an event flag set to "not seen yet" → the cutscene plays on re-entering the room
+ - Showing any dialogue right away: a test-only ROM (build/harness.sfc)
+   It hooks $C0:5809 and, if $7E:17F0 = $A55A, replaces the next dialogue opened with the ID in $7E:17F2.
+   The desired dialogue was shown in place of a shopkeeper's line, to capture v1.0 and v1.1 under the same conditions.
    (test/harness/harness.asm, tools/py/dlg_shots.py)
- - 특정 장소로 가기: 출구 레코드 하나를 바꾼 테스트 전용 롬
-   산적의 길 3 (방 0x4D)의 출구 레코드(파일 0x1D34E2, 9바이트)의 목적지 방 번호와 도착 좌표를 바꿔
-   두더지 마을 등 원하는 위치에 원하는 방향으로 도착하게 했습니다. (tools/py/scene_rom.py)
- - 화면 전환 중 모자이크 때문에 스크린샷이 깨질 때는 VRAM 덤프에서 직접 그려 확인했습니다. (tools/py/bgrender.py)
- - 대사 회귀 검사: 수정 목록 밖에서 바뀐 대사가 0건인지 확인 (tools/py/verify_dialogue.py)
- - 실행 지점 기록과 값 강제: test/probe.lua (EXEC = 그 주소가 실행될 때 기록·화면 저장,
-   POKE = 매 프레임 쓰기, ONCE = 한 프레임만 쓰기, MAPCHECK = 0장의 메모리 대응 비교)
+ - Going to a particular place: a test-only ROM with one exit record changed
+   The destination room number and arrival coordinates of the exit record of Bandit's Way 3 (room 0x4D) (file 0x1D34E2, 9 bytes) were changed
+   to arrive at a chosen place, such as Moleville, facing a chosen direction. (tools/py/scene_rom.py)
+ - When the mosaic during screen transitions broke screenshots, the screen was drawn directly from a VRAM dump. (tools/py/bgrender.py)
+ - Dialogue regression check: confirms 0 dialogue changes outside the fix list (tools/py/verify_dialogue.py)
+ - Logging execution points and forcing values: test/probe.lua (EXEC = log and save the screen when that address executes,
+   POKE = write every frame, ONCE = write for one frame only, MAPCHECK = compare the memory correspondence of section 0)
 
-■ 에뮬레이터 (v1.2) [실측]
- - compat/lr.py: libretro 코어를 직접 불러 같은 입력을 넣는 작은 프로그램. compat/run_all.sh가 코어마다
-   일본판, v1.1, v1.2에 같은 시나리오를 돌립니다. Mesen 2는 같은 시나리오 파일을 compat/mesen_run.lua로
-   읽습니다. 결과는 compat/results.txt.
-   · new: 전원을 켜고 새 게임, A를 연타해 쿠파성까지 (9000프레임)
-   · cont: v1.1 세이브를 이어하기 → 가시돌이 무리와 전투 → 요시쿠키를 3턴 사용
-   · cont_long: cont와 같고 요시쿠키를 30턴 사용
- - 세이브: Mesen 2 세이브스테이트의 BW-RAM을 뜬 것(compat/dumpsrm.lua)에 요시쿠키 6개를 넣었습니다.
-   (compat/make_save.py) 슬롯 1은 BW-RAM $0000-$07FF이고, $07FC의 16비트 값이
-   $0000-$07FB 바이트 합의 보수입니다. 맞지 않으면 그 슬롯은 빈 칸으로 나옵니다.
+■ Emulators (v1.2) [verified]
+ - compat/lr.py: a small program that loads libretro cores directly and feeds them the same input. compat/run_all.sh runs
+   the same scenarios on the Japanese ROM, v1.1 and v1.2 for each core. Mesen 2 reads the same scenario files with
+   compat/mesen_run.lua. Results are in compat/results.txt.
+   · new: power on, new game, mash A up to Bowser's Keep (9000 frames)
+   · cont: continue a v1.1 save → battle a group of Spikeys → use a Yoshi Cookie for 3 turns
+   · cont_long: same as cont, using a Yoshi Cookie for 30 turns
+ - Save: 6 Yoshi Cookies were added (compat/make_save.py) to the BW-RAM taken from a Mesen 2 savestate (compat/dumpsrm.lua).
+   Slot 1 is BW-RAM $0000-$07FF, and the 16-bit value at $07FC is
+   the complement of the byte sum of $0000-$07FB. If it does not match, the slot shows as empty.
 
-  에뮬레이터              결과
-  Mesen 2 2.1.1           new·cont 끝까지. cont에서 세 롬 모두 bsnes와 같은 프레임에 같은 변신 메시지.
-                          세이브스테이트에서 요시쿠키 메시지 "버섯", 필드 메뉴 회귀 11케이스 통과.
-                          같은 롬을 다시 돌려도 몇 픽셀 다른 화면이 있어(적·커서 움직임) 롬끼리 비교는 메시지로 함
-  bsnes 115               new·cont 끝까지. cont에서 변신 메시지: 일본판 "カタクナール", v1.1 "BRACER",
-                          v1.2 "단단해져라". new 화면 14장은 v1.1과 v1.2가 같음
-  bsnes-hd beta 10.6      bsnes와 같음. 다만 new는 쿠파성 오프닝(모드 7)부터 캡처가 검게 나옴. 일본판도 같음
-  Snes9x 1.63             new·cont·cont_long 끝까지. 30턴 동안 변신이 한 번도 나오지 않음(일본판도 같음).
-                          화면 301장 모두 v1.1과 v1.2가 같음
-  Snes9x 2010 1.52.4      Snes9x와 같음
-  Beetle Supafaust 1.29.0 cont_long에서 변신 3번, 세 롬 모두 같은 프레임. v1.2는 "단단해져라"
-  Mesen-S 0.4.0           일본판 포함 모든 실행이 exit 139로 끝남
+  emulator                result
+  Mesen 2 2.1.1           new and cont to the end. In cont, all three ROMs show the same transformation message on the same frame as bsnes.
+                          Yoshi Cookie message "버섯" from a savestate; 11 field menu regression cases pass.
+                          Rerunning the same ROM gives some screens a few pixels apart (enemy and cursor motion), so ROMs were compared by message
+  bsnes 115               new and cont to the end. Transformation message in cont: Japanese "カタクナール", v1.1 "BRACER",
+                          v1.2 "단단해져라". The 14 new screens are the same for v1.1 and v1.2
+  bsnes-hd beta 10.6      same as bsnes, except that in new the captures go black from the Bowser's Keep opening (mode 7). Same for the Japanese ROM
+  Snes9x 1.63             new, cont and cont_long to the end. No transformation in 30 turns (same for the Japanese ROM).
+                          All 301 screens are the same for v1.1 and v1.2
+  Snes9x 2010 1.52.4      same as Snes9x
+  Beetle Supafaust 1.29.0 3 transformations in cont_long, on the same frame for all three ROMs. v1.2 shows "단단해져라"
+  Mesen-S 0.4.0           every run, including the Japanese ROM, ends with exit 139
 
- - 표를 만든 뒤 고친 이름 표기(셸 → 쉘)와 메뉴 글자(힐, 휠)는 bsnes와 Snes9x에서 new·cont를 다시 돌려
-   화면 84장이 표의 실행과 모두 같은 것으로 확인했습니다.
- - 변신 성공 여부는 난수라 코어마다 다릅니다. 같은 코어에서는 세 롬이 같은 프레임에 같은 결과를 냈습니다.
- - 실기(실제 슈퍼 패미컴, 플래시 카트리지)에서는 시험하지 않았습니다.
+ - The name spelling (셸 → 쉘) and menu characters (힐, 휠) fixed after the table was made were checked by rerunning new and cont on bsnes and Snes9x:
+   all 84 screens were the same as the runs in the table.
+ - Whether a transformation succeeds is random, so it differs by core. On the same core, the three ROMs gave the same result on the same frame.
+ - Not tested on real hardware (an actual Super Famicom, a flash cartridge).
 ```
 
-## 9. 기타
+## 9. Other
 
 ```text
- - 롬 헤더: 파일 0x7FC0 (SA-1, 맵 모드 $23, 바이트별 값은 0장)
-   체크섬은 파일 0x7FDC-0x7FDF (보수 2바이트 + 체크섬 2바이트)이며,
-   asar의 --fix-checksum=on으로 다시 계산했습니다. (v1.0 C88A → v1.1 6FCD → v1.2 2B3C)
- - 롬 크기는 원본과 같은 4MB이고, 헤더의 SRAM 크기와 세이브 구조는 바꾸지 않았습니다.
-   v1.1·v1.0 세이브 파일을 그대로 쓸 수 있습니다.
- - 사용한 빈 공간 (모두 일본판 원본에서 0 또는 0xFF)
+ - ROM header: file 0x7FC0 (SA-1, map mode $23, per-byte values in section 0)
+   The checksum is at file 0x7FDC-0x7FDF (2-byte complement + 2-byte checksum)
+   and was recomputed with asar's --fix-checksum=on. (v1.0 C88A → v1.1 6FCD → v1.2 2B3C)
+ - The ROM size is the same 4MB as the original, and the SRAM size in the header and the save structure are unchanged.
+   v1.1 and v1.0 save files work as they are.
+ - Free space used (all 0 or 0xFF in the Japanese original)
 
-  위치                     용도                                   v1.2 롬에서 남은 곳 [실측]
-  $C3:F000-$C3:F3FF        필드 메뉴 코드 (원본 0xFF)             $C3:F2E2부터 286바이트
-  $C3:FC40-$C3:FFFF        전투 메뉴, 결과 창 코드 (원본 0xFF)    $C3:FF29부터 215바이트
-  $E2:B400-$E2:FFFF        새 이름 테이블, 레벨업/필살기 화면/대사 코드, 전투 메시지·이름 띠 코드
-                                                                  $E2:FF6D부터 147바이트
-  $C1:56BB-$C1:56BE        1C 38 처리 입구 (v1.2가 바꾼 루틴이 남긴 자리)   다 씀
-  $C1:56F2-$C1:56F5        JSR $5769; RTL (같은 사정)                          다 씀
-  $E4:9D00-$E4:9DFF        대사 폰트 확장 32자                    27자 (5자 사용)
-  $E4:EDD8 등              동적 글리프 249자                      100자 (아래)
-  $FE:F61C-$FE:F6FF        길어진 메뉴 문구                       $FE:F633부터 205바이트
+  location                 use                                    left in the v1.2 ROM [verified]
+  $C3:F000-$C3:F3FF        field menu code (originally 0xFF)      286 bytes from $C3:F2E2
+  $C3:FC40-$C3:FFFF        battle menu, result window code (0xFF) 215 bytes from $C3:FF29
+  $E2:B400-$E2:FFFF        new name tables, level-up/special screen/dialogue code, battle message and name banner code
+                                                                  147 bytes from $E2:FF6D
+  $C1:56BB-$C1:56BE        1C 38 entry (space left by the routine v1.2 replaced)   all used
+  $C1:56F2-$C1:56F5        JSR $5769; RTL (same reason)                            all used
+  $E4:9D00-$E4:9DFF        dialogue font extension, 32 glyphs     27 glyphs (5 used)
+  $E4:EDD8 etc.            249 dynamic glyphs                     100 glyphs (below)
+  $FE:F61C-$FE:F6FF        lengthened menu text                   205 bytes from $FE:F633
 
- - 동적 글리프는 tools/build.py의 FREE_RUNS 네 구간을 순서대로 채웁니다.
-   파일 0x24EDD8(4,648바이트)은 다 찼고, 0x2511C2(1,601바이트)는 0x251701까지 썼습니다.
-   남은 곳은 0x251702부터 10자, 0x252534(1,484바이트) 61자, 0x251D48(697바이트) 29자입니다. [계산]
-   전투 렌더러가 $E4:2B00 + 16비트로 읽으므로 이 범위(파일 0x242B00-0x252AFF) 밖으로는 못 늘립니다.
- - 남은 바이트 수는 구간 끝에서부터 0 또는 0xFF가 이어지는 길이로 셌습니다.
+ - Dynamic glyphs fill the four FREE_RUNS stretches of tools/build.py in order.
+   File 0x24EDD8 (4,648 bytes) is full, and 0x2511C2 (1,601 bytes) is used up to 0x251701.
+   What remains is 10 glyphs from 0x251702, 61 glyphs at 0x252534 (1,484 bytes) and 29 glyphs at 0x251D48 (697 bytes). [computed]
+   The battle renderer reads $E4:2B00 + 16 bits, so this cannot extend outside that range (file 0x242B00-0x252AFF).
+ - Remaining byte counts were measured as the length of the 0 or 0xFF run from the end of each stretch.
 
- - asar 주의: 분기 명령에 숫자 주소를 직접 쓰면(BRA $C16AD7 등) 상대 오프셋이 잘못 계산된 경우가 있었습니다.
-   같은 블록의 레이블로 분기하고, assert pc() == ...로 덮어쓴 범위를 확인했습니다.
- - 대사 줄바꿈 원칙
-   · 한 줄 22칸을 넘지 않습니다.
-   · "마리오님"처럼 이름 뒤 님/씨는 띄어 쓰되, 줄이 22칸을 넘으면 붙여 둡니다.
-   · 획득 메시지는 화면 가운데에 맞춥니다.
+ - asar caveat: writing a numeric address directly in a branch instruction (BRA $C16AD7 etc.) sometimes computed the relative offset wrongly.
+   Branches go to labels in the same block, and assert pc() == ... checks the overwritten range.
+ - Dialogue line splitting rules
+   · A line does not exceed 22 cells.
+   · 님/씨 after a name, as in "마리오님", is spaced, but kept attached if the line would exceed 22 cells.
+   · "Obtained" messages are centred on the screen.
 ```
 
-## 10. 다음 사람에게
+## 10. For the next person
 
 ```text
-■ 확인하지 않은 것
- - 마법 연출 테스트 메뉴 (7장): 바꿀 위치만 확인했고 실행하지 않았습니다.
- - 전투 디버그 메뉴의 EVT 3, TEST (7장)
- - 전투 애니메이션 스크립트를 명령 길이대로 모두 따라가 63 02가 없는지 확인하지는 않았습니다.
-   (3장 "전투 이름 띠": 바이트 꼴 검색과 몬스터 행동 스크립트 분석까지)
- - 전투 메시지 제어 코드 1C 37(필살기 이름)을 쓰는 메시지가 어디에 있는지 (3장)
+■ Not checked
+ - The magic effect test menu (section 7): only the location to change was checked; it was not run.
+ - EVT 3 and TEST of the battle debug menu (section 7)
+ - The battle animation scripts were not all followed by command length to confirm there is no 63 02.
+   (section 3 "Battle name banner": only byte pattern searches and analysis of the monster behaviour scripts)
+ - Where a message using battle message control code 1C 37 (special name) is (section 3)
 
-■ 알려진 한계
- - 롬은 4MB를 넘길 수 없습니다. (3장 "롬 크기를 4MB로 유지한 이유")
- - 대사 엔진의 2바이트 글자 접두는 $1D-$1F뿐이라 대사 폰트 확장 영역(글리프 0x3E0 이후)은 대사에서 못 씁니다.
-   대사에 새 글자가 더 필요하면 textusage.py로 쓰이지 않는 2바이트 코드를 더 찾아야 합니다.
- - 필드 메뉴 동적 글자 칸은 128칸이고, 한 번에 WRAM에 모아 두는 글자는 12자입니다.
- - 이름 길이: 아이템·필살기 10글자, 적 8글자 (원판 테이블 칸 크기)
- - 전투 메시지와 "무슨 생각하니" 텍스트는 옮길 빈 공간을 못 찾아 문자열 뒤 0 바이트 안에서만 늘렸습니다.
- - 메뉴 문구 영역에는 포인터가 가리키지 않는 데이터가 섞여 있어 문자열을 옮기면 안 됩니다.
+■ Known limits
+ - The ROM cannot exceed 4MB. (section 3 "Why the ROM stays 4MB")
+ - The dialogue engine's 2-byte prefixes are only $1D-$1F, so the dialogue font extension area (glyphs from 0x3E0) cannot be used in dialogue.
+   If dialogue needs more new characters, more unused 2-byte codes must be found with textusage.py.
+ - The field menu has 128 dynamic glyph cells, and at most 12 glyphs are collected in WRAM at a time.
+ - Name length: 10 characters for items and specials, 8 for enemies (the cell sizes of the original tables)
+ - No free space to move the battle message and "what's on your mind" text into was found, so they only grew into the 0 bytes after each string.
+ - The menu text area contains data no pointer points to, so its strings must not be moved.
 
-■ 쓴 도구 버전 [실측]
+■ Tool versions used [verified]
  - asar 1.91 (tools/asar --version)
- - Mesen 2.1.1 (빌드 137ae7ce3bf3f539d007e2c4ef3cb3b6c97672a1)
+ - Mesen 2.1.1 (build 137ae7ce3bf3f539d007e2c4ef3cb3b6c97672a1)
  - Python 3.9.6, Pillow 11.3.0
  - Galmuri11 Condensed 2.404
- - 호환성 확인용 libretro 코어: bsnes 115, bsnes-hd beta 10.6, Snes9x 1.63, Snes9x 2010 1.52.4,
-   Beetle Supafaust 1.29.0, Mesen-S 0.4.0 (8장)
+ - libretro cores for compatibility checks: bsnes 115, bsnes-hd beta 10.6, Snes9x 1.63, Snes9x 2010 1.52.4,
+   Beetle Supafaust 1.29.0, Mesen-S 0.4.0 (section 8)
 ```
 
-## 11. 첨부 파일
+## 11. Included files
 
 ```text
 Super_Mario_RPG_K_v1_2_tools.zip
- - README.txt                : 빌드 방법
- - ANALYSIS.txt              : 이 문서
- - tools/make.sh             : 전체 빌드 (이름/글리프 데이터 → 대사 재배치 → asar)
- - tools/build.py            : 이름 테이블, 동적 글리프, 대사 폰트 재활용, 레벨업/필살기 화면 문자열 생성
- - tools/py/dlg_rewrite.py   : 대사와 각종 텍스트 다시 채우기 ($1B 변환, 가운데 정렬, 끝 코드 복구)
- - tools/py/dialogue.py      : 대사 포인터 테이블 읽기
- - tools/py/textfix.py       : 대사 수정 적용 (문맥 확인, 조사 보정)
- - tools/py/textusage.py     : 텍스트에 쓰인 2바이트 코드 조사
- - tools/py/dump_text.py     : 텍스트 덤프
- - tools/py/render_jp.py     : 일본판 원문을 대사 폰트로 그려 보기
- - tools/py/verify_dialogue.py, verify_menu.py : 회귀 검사
- - tools/py/make_ips.py      : IPS 생성 (헤더 없음 / 헤더 있음)
- - tools/py/scene_rom.py     : 출구를 바꾼 테스트 롬 생성
- - tools/py/dlg_shots.py, patchnote_shots.py, patchnote_compose.py, shotcmp.py, bgrender.py 등
-                             : 스크린샷 촬영, 비교, VRAM 렌더링
- - tools/py/dis65816.py      : 간단한 65816 역어셈블러
- - tools/make_harness.sh, make_states.sh, run_seq.sh, test_menu.sh : 테스트 롬, 세이브스테이트, Mesen 실행
- - src/main.asm              : 모든 후킹 코드 (asar)
- - test/harness/harness.asm  : 테스트 전용 대사 바꿔치기 후킹
- - test/lib.lua, seq.lua, poke_state.lua, warp_seq.lua : Mesen 2 테스트 스크립트
- - test/probe.lua            : 실행 지점 기록, 값 강제, 메모리 대응 비교 (8장)
- - compat/                   : 에뮬레이터 호환성 확인 (lr.py, mesen_run.lua, run_all.sh, 시나리오 s_*.txt,
-                               make_save.py, dumpsrm.lua, results.txt) (8장)
- - data/items_ko.json, skills_ko.json, enemies_ko.json : 한글 이름 (아이템 165, 필살기 27, 적 232)
- - data/*_en.json            : v1.0 영문 이름
- - data/name_overrides.json  : 이름 예외 지정
- - data/dialogue_names.json  : 대사 속 영문 이름 → 한글
- - data/dialogue_fixes.json  : 대사 검수 수정 목록
- - data/honorifics.json      : 님/씨 띄어쓰기 대상
- - data/tbl/                 : v1.0 코드표 (korTBL = 대사 폰트, korTBL2 = 메뉴 폰트),
-                               menu_font_audit.txt (눈으로 확인한 메뉴 폰트 코드)
- - tools/py/check_menu_names.py : 메뉴가 그리는 글자로 모든 이름 대조 (빌드 마지막 단계)
- - tools/fonts/galmuri/      : Galmuri11 Condensed (SIL OFL, LICENSE.txt 포함)
- - v1.0/Super Mario RPG (K) (V1.0).ips : v1.0 패치 (빌드 입력)
+ - README.txt                : build instructions
+ - ANALYSIS.txt              : this document
+ - tools/make.sh             : the whole build (name/glyph data → dialogue relocation → asar)
+ - tools/build.py            : generates name tables, dynamic glyphs, dialogue font reuse, level-up/special screen strings
+ - tools/py/dlg_rewrite.py   : refills the dialogue and other text ($1B conversion, centring, end code repair)
+ - tools/py/dialogue.py      : reads the dialogue pointer table
+ - tools/py/textfix.py       : applies dialogue fixes (context checks, particle correction)
+ - tools/py/textusage.py     : surveys the 2-byte codes used in text
+ - tools/py/dump_text.py     : text dump
+ - tools/py/render_jp.py     : draws the Japanese original with the dialogue font
+ - tools/py/verify_dialogue.py, verify_menu.py : regression checks
+ - tools/py/make_ips.py      : IPS creation (headerless / headered)
+ - tools/py/scene_rom.py     : builds test ROMs with changed exits
+ - tools/py/dlg_shots.py, patchnote_shots.py, patchnote_compose.py, shotcmp.py, bgrender.py etc.
+                             : screenshot capture, comparison, VRAM rendering
+ - tools/py/dis65816.py      : a simple 65816 disassembler
+ - tools/make_harness.sh, make_states.sh, run_seq.sh, test_menu.sh : test ROMs, savestates, Mesen runs
+ - src/main.asm              : all hook code (asar)
+ - test/harness/harness.asm  : test-only dialogue substitution hook
+ - test/lib.lua, seq.lua, poke_state.lua, warp_seq.lua : Mesen 2 test scripts
+ - test/probe.lua            : execution point logging, value forcing, memory correspondence comparison (section 8)
+ - compat/                   : emulator compatibility checks (lr.py, mesen_run.lua, run_all.sh, scenarios s_*.txt,
+                               make_save.py, dumpsrm.lua, results.txt) (section 8)
+ - data/items_ko.json, skills_ko.json, enemies_ko.json : Korean names (165 items, 27 specials, 232 enemies)
+ - data/*_en.json            : v1.0 English names
+ - data/name_overrides.json  : name exceptions
+ - data/dialogue_names.json  : English names in dialogue → Korean
+ - data/dialogue_fixes.json  : dialogue review fix list
+ - data/honorifics.json      : 님/씨 spacing targets
+ - data/tbl/                 : v1.0 code tables (korTBL = dialogue font, korTBL2 = menu font),
+                               menu_font_audit.txt (menu font codes checked by eye)
+ - tools/py/check_menu_names.py : checks every name against the glyphs the menus draw (last build step)
+ - tools/fonts/galmuri/      : Galmuri11 Condensed (SIL OFL, LICENSE.txt included)
+ - v1.0/Super Mario RPG (K) (V1.0).ips : v1.0 patch (build input)
 
-참고 사항
- - 롬 파일, asar, Mesen은 포함하지 않았습니다.
- - 빌드하려면 일본판 원본에 v1.0 IPS를 적용한 롬을 rom/smrpg_kr_v1.sfc로 두고
-   asar 1.91 실행 파일을 tools/asar로 둔 뒤 zsh tools/make.sh 를 실행하시면 됩니다.
-   (결과 build/test.sfc, CRC32 05DBCBE6) 자세한 순서는 README.txt에 적었습니다.
- - tools/py/patchnote_compose.py는 macOS 시스템 폰트 경로를 쓰므로 다른 환경에서는 FONT 경로를 바꿔야 합니다.
- - 테스트 스크립트는 tools/Mesen.app (Mesen 2)과 test/states/의 세이브스테이트를 전제로 합니다.
-   세이브스테이트는 포함하지 않았습니다.
+Notes
+ - ROM files, asar and Mesen are not included.
+ - To build, put the Japanese original with the v1.0 IPS applied at rom/smrpg_kr_v1.sfc,
+   put the asar 1.91 executable at tools/asar, and run zsh tools/make.sh.
+   (Result build/test.sfc, CRC32 05DBCBE6) The detailed steps are in README.txt.
+ - tools/py/patchnote_compose.py uses a macOS system font path, so change the FONT path on other systems.
+ - The test scripts assume tools/Mesen.app (Mesen 2) and the savestates in test/states/.
+   The savestates are not included.
 ```
