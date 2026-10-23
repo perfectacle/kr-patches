@@ -483,6 +483,13 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
  - $80:9CFA and $80:9DA7 in the header comment of tools/lz.py are Kakusei-hen addresses (section 5). The file is left as released.
  - WRAM $4D is also used briefly by the graphics loading routines. Watching reads of the window info table records dialogue more accurately.
  - Five of the new glyph blocks, 3-7 (320 glyphs), are entirely empty. They can be used as is for more glyphs.
+ - 16px glyphs that differ by a single pixel [verified]: syllables with a horizontal vowel (ㅗ, ㅜ, ㅡ) and a final consonant
+   fit a 3-row initial, the vertical stroke, the bar, a gap and the final (ㄹ takes 5 rows) into 11 rows (rows 3-13),
+   so the vertical stroke of ㅗ and ㅜ is 1px and the initials ㄷ and ㅁ differ only by 1px on the right.
+   46 pairs of glyphs used in the text differ by one pixel (돌/들/둘/물/몰/틀, 올/울/을, 송/승, 중/증, 볼/불/블 and others).
+   Redrawing them with Galmuri11 at 12px gives almost the same shapes, and 41 pairs still differ by 1px.
+   Raising the initial by 1px and lengthening the vertical stroke to 2px separates 43 pairs, but those 200 glyphs
+   become 1px taller than their neighbours, so v1.2 keeps the v1.0 glyphs.
 ```
 
 ## 13. Tools used
