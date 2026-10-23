@@ -1,0 +1,15 @@
+[project]
+name = "kr-patches"
+version = "0"
+description = "Build and test tools for perfectacle's Korean translation patches"
+requires-python = ">=3.15"
+dependencies = [
+  # Pinned to a release tag so builds stay byte-identical when the toolkit changes.
+  "kr-patch-toolkit @ git+https://github.com/perfectacle/kr-patch-toolkit@v0.1.0",
+]
+
+[tool.uv]
+# Not a package: `uv sync` only builds the .venv the game scripts use.
+package = false
+# Supply-chain cooldown: resolve only releases at least a week old.
+exclude-newer = "7 days"

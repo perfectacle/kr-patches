@@ -30,3 +30,4 @@ compat/roms/
 __pycache__/
 *.pyc
 .DS_Store
+.omc/

@@ -24,11 +24,11 @@ folder. Patch pages and downloads: <https://perfectacle.github.io/games/kr-patch
 
 ## Setup
 
-Python 3.15 (`.python-version`) and the toolkit pinned in `requirements.txt`:
+Python 3.15 (`.python-version`) and the toolkit pinned in `pyproject.toml`,
+with every package version locked in `uv.lock`:
 
 ```sh
-uv venv -p 3.15.0 .venv
-uv pip install -p .venv -r requirements.txt
+uv sync --locked
 ```
 
 The game build scripts use `.venv/bin/python` and `.venv/bin/krpatch` at the
@@ -36,16 +36,19 @@ repository root; set `PYTHON` and `KRPATCH` to use another environment. Some
 builds also need [asar](https://github.com/RPGHacker/asar) 1.91, zsh, or the
 macOS system fonts; see each game's README.
 
-The toolkit is pinned to a release tag so that every build stays byte-identical to
-the released patches. When moving the pin, rebuild each game and compare its
-IPS with the released one before committing.
+The toolkit is pinned to a release tag and the rest (Pillow, which renders the
+fonts) by `uv.lock`, so that every build stays byte-identical to the released
+patches. When moving either, rebuild each game and compare its IPS with the
+released one before committing. `uv.lock` only takes releases at least seven
+days old.
 
 ## Checks
 
-`.github/workflows/ci.yml` runs what needs no ROM: Lua and shell syntax,
-Python compilation, the `kr_patch` imports used by the game scripts, and the
+`.github/workflows/ci.yml` runs what needs no ROM: no ROM files committed,
+an English and Korean version of every document, Lua and shell syntax, Python
+compilation, the `kr_patch` imports used by the game scripts, and the
 Totsugeki-hen dialogue layout check. Builds and IPS comparisons need the base
-ROMs and run locally.
+ROMs and run locally. Coding agents start from [AGENTS.md](AGENTS.md).
 
 ## License
 

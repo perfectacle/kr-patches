@@ -1,0 +1,67 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigestsToSemver"],
+  "timezone": "Asia/Seoul",
+  "labels": ["dependencies"],
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
+  "automerge": true,
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "automergeStrategy": "merge-commit",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null,
+    "labels": ["dependencies", "security"]
+  },
+  "packageRules": [
+    {
+      "description": "CI cannot rebuild the patches without the ROMs, so anything that can change build output waits for a local rebuild and IPS comparison",
+      "matchManagers": ["pep621", "pyenv"],
+      "automerge": false,
+      "addLabels": ["rebuild-needed"]
+    },
+    {
+      "description": "Lock maintenance can move Pillow, which renders the fonts",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "automerge": false,
+      "addLabels": ["rebuild-needed"]
+    },
+    {
+      "description": "Our own toolkit, pinned by tag: no supply-chain cooldown, and the PR only moves the tag in pyproject.toml, so run uv lock and rebuild before merging",
+      "matchPackageNames": ["kr-patch-toolkit"],
+      "minimumReleaseAge": null,
+      "automerge": false,
+      "addLabels": ["rebuild-needed"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "zizmor runs via pipx in the workflow",
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": ["ZIZMOR: zizmor==(?<currentValue>\\S+)"],
+      "depNameTemplate": "zizmor",
+      "datasourceTemplate": "pypi"
+    },
+    {
+      "customType": "regex",
+      "description": "kr-patch-toolkit is a git dependency, which the pep621 manager skips",
+      "managerFilePatterns": ["/^pyproject\\.toml$/"],
+      "matchStrings": [
+        "kr-patch-toolkit @ git\\+https://github\\.com/perfectacle/kr-patch-toolkit@(?<currentValue>v[^\"\\s]+)"
+      ],
+      "depNameTemplate": "kr-patch-toolkit",
+      "packageNameTemplate": "perfectacle/kr-patch-toolkit",
+      "datasourceTemplate": "github-tags"
+    }
+  ]
+}

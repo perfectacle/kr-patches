@@ -24,11 +24,11 @@ perfectacle 의 한글 패치 소스입니다. 게임 폴더마다 그 게임에
 
 ## 준비
 
-Python 3.15(`.python-version`)와 `requirements.txt` 에 고정한 툴킷이 필요합니다.
+Python 3.15(`.python-version`)와 `pyproject.toml` 에 고정한 툴킷이 필요하며,
+모든 패키지 버전은 `uv.lock` 에 고정되어 있습니다.
 
 ```sh
-uv venv -p 3.15.0 .venv
-uv pip install -p .venv -r requirements.txt
+uv sync --locked
 ```
 
 게임 빌드 스크립트는 저장소 최상위의 `.venv/bin/python` 과 `.venv/bin/krpatch`
@@ -36,15 +36,18 @@ uv pip install -p .venv -r requirements.txt
 [asar](https://github.com/RPGHacker/asar) 1.91, zsh, macOS 시스템 글꼴도
 필요합니다. 자세한 것은 각 게임 README 를 보세요.
 
-툴킷은 릴리스 태그로 고정해, 모든 빌드가 배포한 패치와 바이트 단위로 같게
-유지합니다. 고정 버전을 옮길 때는 커밋하기 전에 게임마다 다시 빌드해 IPS 를
-배포한 것과 비교하세요.
+툴킷은 릴리스 태그로, 나머지(폰트를 그리는 Pillow 등)는 `uv.lock` 으로 고정해
+모든 빌드가 배포한 패치와 바이트 단위로 같게 유지합니다. 둘 중 하나라도 옮길
+때는 커밋하기 전에 게임마다 다시 빌드해 IPS 를 배포한 것과 비교하세요.
+`uv.lock` 은 나온 지 7일이 지난 릴리스만 받습니다.
 
 ## 검사
 
-`.github/workflows/ci.yml` 은 롬 없이 되는 것만 돌립니다: Lua·셸 문법, Python
-컴파일, 게임 스크립트가 쓰는 `kr_patch` import, 돌격편 대사 배치 검사. 빌드와
-IPS 비교는 원본 롬이 있어야 하므로 로컬에서 돌립니다.
+`.github/workflows/ci.yml` 은 롬 없이 되는 것만 돌립니다: 롬 파일이 커밋되지
+않았는지, 모든 문서에 영어판과 한국어판이 있는지, Lua·셸 문법, Python 컴파일,
+게임 스크립트가 쓰는 `kr_patch` import, 돌격편 대사 배치 검사. 빌드와 IPS
+비교는 원본 롬이 있어야 하므로 로컬에서 돌립니다. 코딩 에이전트는
+[AGENTS.md](AGENTS.md) 에서 시작합니다.
 
 ## 라이선스
 
