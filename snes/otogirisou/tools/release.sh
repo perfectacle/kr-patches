@@ -11,7 +11,7 @@ JP="Otogirisou (Japan).sfc"
 OUT=build/otogirisou-kr-v1.1.sfc
 mkdir -p $R
 $KRPATCH ips make "$JP" $OUT "$R/Otogirisou (K) v1.1.ips"
-$PY - <<'PY'
+"$PY" - <<'PY'
 d = bytes(512)
 open('build/jp_headered.sfc', 'wb').write(d + open('Otogirisou (Japan).sfc', 'rb').read())
 open('build/kr_headered.sfc', 'wb').write(d + open('build/otogirisou-kr-v1.1.sfc', 'rb').read())
@@ -19,7 +19,7 @@ PY
 $KRPATCH ips make build/jp_headered.sfc build/kr_headered.sfc "$R/Otogirisou (K) v1.1 (Headered).ips"
 $KRPATCH ips apply "$JP" "$R/Otogirisou (K) v1.1.ips" build/check.sfc && cmp build/check.sfc $OUT
 $KRPATCH ips apply build/jp_headered.sfc "$R/Otogirisou (K) v1.1 (Headered).ips" build/check_h.sfc && cmp build/check_h.sfc build/kr_headered.sfc
-$PY - <<'PY'
+"$PY" - <<'PY'
 import hashlib, re, zlib
 d = open('build/otogirisou-kr-v1.1.sfc', 'rb').read()
 crc, md5 = '%08X' % zlib.crc32(d), hashlib.md5(d).hexdigest().upper()
