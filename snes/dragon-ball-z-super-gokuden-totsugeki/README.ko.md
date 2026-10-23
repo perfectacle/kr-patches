@@ -36,7 +36,7 @@
 zsh tools/build.sh
 ```
 
-결과물: `super-gokuden-kr-v1.2.smc`(CRC32 `E4E07D7C`)와 `release/v1.2/*.ips`
+결과물: `super-gokuden-kr-v1.2.smc`(CRC32 `A939C4F8`)와 `release/v1.2/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다.
 `tables/kr-v1.2.txt`(v1.2 코드표)는 빌드가 씁니다. 다른 환경을 쓰려면
 `PYTHON` 과 `KRPATCH` 를 지정하세요.

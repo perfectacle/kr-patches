@@ -13,7 +13,7 @@ Kakusei-hen page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball
    CRC32 D531289B / MD5 8BD89634D1B2205B1E7EF016485C0076
  - v1.0 ROM: Japanese + v1.0/v1.0.ips = CRC32 52FEF8C3
  - v1.1 ROM: CRC32 7405D969 (output of tools/build.sh in the v1.1 tool bundle)
- - v1.2 ROM: output of tools/build.sh = CRC32 E4E07D7C
+ - v1.2 ROM: output of tools/build.sh = CRC32 A939C4F8
  - Address notation below
    · $XX:YYYY = SNES address (bank:address)
    · file 0xNNNNN = offset in the headerless ROM file
@@ -303,7 +303,9 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
    · Categories in the technique list rows, $80:F317/F321/F32D/F339 (odd addresses): 4 codes per slot, written as four 16px glyphs.
    · Marks in the technique list and the event list: $80:40BC and $80:3D83 write one code to the row buffer ($0A00,Y),
      0xBA0/0xBA1 when learned/cleared, otherwise the blank glyph 0xAD5. v1.2 turns both into a JSL to routines at
-     $B7:FB00 and $B7:FB2A that write two 16px glyphs (or two blanks) and a narrow space ({sp4}, {sp7}) (tools/statusmenu1.py).
+     $B7:FB00 and $B7:FB32 that write two 16px glyphs (or two blanks) and the space after them (tools/statusmenu1.py).
+     So that the mark reads with its number rather than the next word, the space after the number (9px) becomes {sp4}
+     and the space after the mark is 9px in the technique list and 12px in the event list.
      Both lists are 224px (28 cells) wide; the longest rows are 224px (techniques) and 223px (events).
    · Some screens that join strings in WRAM read the next string right after the previous one, so code counts must not change:
      the achievement label $80:BAB2 (19 codes) and the first label of the status screen bottom line $80:C9C5 (5 codes; v1.0 code
@@ -389,7 +391,7 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
      $84:EE00-$84:FDFF   glyph block 1
      $86:E000-$86:EBFF   glyph block 2 (only 3KB used)
      $86:EC00-$86:EC7F, $86:ED00-$86:ED7F   v1.2's 「펴」, 「플」, 「딩」 and 「렉」 (0xD60-0xD63, upper and lower halves)
-     $B7:FB00-$B7:FB53   v1.2's technique/event list mark routines (section 6)
+     $B7:FB00-$B7:FB6B   v1.2's technique/event list mark routines (section 6)
    Dialogue and text were refilled only within each bank's original string area.
  - Banks whose bytes changed between the v1.0 and v1.1 ROMs [verified]
      80 menu strings, checksum     81 save dialogue, battle shout pointers, glyph block 0
@@ -496,7 +498,7 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
 
 ```text
  - Python 3.9.6, Pillow 11.3.0, numpy 2.0.2 (macOS)
-   Running tools/build.sh with only this bundle and the Japanese ROM was confirmed to give CRC32 E4E07D7C.
+   Running tools/build.sh with only this bundle and the Japanese ROM was confirmed to give CRC32 A939C4F8.
  - Mesen 2.1.1 (Lua scripts, --testrunner)
  - libretro cores: bsnes, bsnes-hd beta, snes9x, snes9x2010, Beetle Supafaust, Mesen-S (compat/)
  - New glyph drawing: Galmuri11 2.404 (tools/fonts/)

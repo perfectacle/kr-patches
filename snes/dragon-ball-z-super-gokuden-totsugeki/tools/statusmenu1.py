@@ -5,9 +5,11 @@ usage: statusmenu1.py rom.smc table.txt
 The technique list ($80:40BC) and the event list ($80:3D83) write one glyph in
 front of each row: 0x0BA0 / 0x0BA1 (v1.0 squeezed 습득 / 완료 into one 16x16
 glyph) or the blank 0x0AD5. Each site is replaced by a JSL to a routine in the
-free tail of bank B7 that writes two 16 px glyphs (or two blanks) and a narrow
-gap. Both rows are 224 px windows; the gap is chosen so the longest row still
-fits (technique 224 px, event 223 px with the 4- and 7-px spacers).
+free tail of bank B7 that writes two 16 px glyphs (or two blanks) and the gap
+after them. The routine also narrows the space the caller wrote after the row
+number to {sp4}, so the mark sits closer to its number than to the next word.
+Both rows are 224 px windows and keep their v1.2 widths (technique 224 px with
+a 9-px gap, event 223 px with a 12-px gap).
 
 v1.0 moved the category list of the technique menu to $80:B599 and updated the
 operand at $80:AAD5 but left the second user at $80:D803 pointing at $B5A3.
@@ -32,14 +34,18 @@ def w16(v):
     return [v & 0xFF, v >> 8]
 
 
-def mark_routine(first, second, gap, tail):
-    """BNE set; write BLANK twice; BRA; set: write first, second; then gap; RTL.
-    Entered with the Z flag of the earlier AND, A 16-bit, Y = row write index."""
+def mark_routine(first, second, gaps, number_gap):
+    """Replace the space before the mark with number_gap; BNE set; write BLANK twice;
+    BRA; set: write first, second; then the gaps; RTL. Entered with the Z flag of
+    the earlier AND, A 16-bit, Y = row write index just past that space."""
     put = lambda v: [0xA9] + w16(v) + [0x99, 0x00, 0x0A, 0xC8, 0xC8]  # noqa: E731  LDA #v / STA $0A00,Y / INY INY
     blank = [0xA9] + w16(BLANK) + [0x99, 0x00, 0x0A, 0xC8, 0xC8, 0x99, 0x00, 0x0A, 0xC8, 0xC8]
     done = put(first) + put(second)
-    code = [0xD0, len(blank) + 2] + blank + [0x80, len(done)] + done + put(gap) + tail
-    return bytes(code)
+    head = [0x08, 0xA9] + w16(number_gap) + [0x99, 0xFE, 0x09, 0x28]  # PHP / LDA #gap / STA $09FE,Y / PLP
+    code = head + [0xD0, len(blank) + 2] + blank + [0x80, len(done)] + done
+    for g in gaps:
+        code += put(g)
+    return bytes(code + [0x6B])
 
 
 def main():
@@ -51,8 +57,8 @@ def main():
     assert rom[EVENT_SITE:EVENT_SITE + len(EVENT_OLD)] == EVENT_OLD, "event list site differs"
     assert rom[CATEGORY_OPERAND - 1:CATEGORY_OPERAND + 2] == bytes.fromhex("a9a3b5"), "category operand differs"
 
-    tech = mark_routine(code("습"), code("득"), code("{sp4}"), [0x6B])
-    event = mark_routine(code("완"), code("료"), code("{sp7}"), [0x6B])
+    tech = mark_routine(code("습"), code("득"), [code(" ")], code("{sp4}"))
+    event = mark_routine(code("완"), code("료"), [code("{sp6}"), code("{sp6}")], code("{sp4}"))
     end = ROUTINE + len(tech) + len(event)
     assert all(b == 0xFF for b in rom[ROUTINE:end]), "routine area is not free"
     rom[ROUTINE:ROUTINE + len(tech)] = tech

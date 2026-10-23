@@ -37,7 +37,7 @@ the macOS system font assets (`TITLE_FONT`); on other systems add
 zsh tools/build.sh
 ```
 
-Output: `super-gokuden-kr-v1.2.smc` (CRC32 `E4E07D7C`) and
+Output: `super-gokuden-kr-v1.2.smc` (CRC32 `A939C4F8`) and
 `release/v1.2/*.ips` (plain and 512-byte copier header), identical to the
 released patches. `tables/kr-v1.2.txt` (the v1.2 code table) is written by the
 build. Set `PYTHON` and `KRPATCH` to use another environment.
