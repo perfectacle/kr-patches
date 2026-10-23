@@ -1,0 +1,2 @@
+# The toolkit is pinned to a commit so builds stay byte-identical when it changes.
+kr-patch-toolkit @ git+https://github.com/perfectacle/kr-patch-toolkit@1c9948fa12c0c8c042e82960a226c71ede7ca917
