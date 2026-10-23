@@ -1,2 +1,0 @@
-# The toolkit is pinned to a release tag so builds stay byte-identical when it changes.
-kr-patch-toolkit @ git+https://github.com/perfectacle/kr-patch-toolkit@v0.1.0
