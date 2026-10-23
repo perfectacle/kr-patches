@@ -36,14 +36,15 @@
 zsh tools/build.sh
 ```
 
-결과물: `super-gokuden-kr-v1.2.smc`(CRC32 `81DAD733`)와 `release/v1.2/*.ips`
+결과물: `super-gokuden-kr-v1.2.smc`(CRC32 `E4E07D7C`)와 `release/v1.2/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다.
 `tables/kr-v1.2.txt`(v1.2 코드표)는 빌드가 씁니다. 다른 환경을 쓰려면
 `PYTHON` 과 `KRPATCH` 를 지정하세요.
 
 단계: `krpatch ips apply`(v1.0) → `tools/title.py` → `tools/text_patch1.py`
-(대사, 그 밖의 텍스트 묶음, 메뉴 수정) → `tools/pwglyph1.py`(암호 글리프, 표와
-대조) → `tools/endpw1.py`(엔딩 암호) → `krpatch snes checksum --fix` →
+(대사, 그 밖의 텍스트 묶음, 메뉴 수정) → `tools/statusmenu1.py`(상태 화면
+목록의 습득·완료 표시) → `tools/pwglyph1.py`(암호 글리프, 표와 대조) →
+`tools/endpw1.py`(엔딩 암호) → `krpatch snes checksum --fix` →
 `krpatch ips make --headered`.
 
 ## 구성
@@ -52,10 +53,10 @@ zsh tools/build.sh
 | --- | --- |
 | `tools/` | 빌드·분석 스크립트(사용법은 각 파일 첫 줄들에) |
 | `tables/v1.1/` | v1.1 텍스트(id, 창 정보, 텍스트) |
-| `tables/ui-fixes.tsv` | 포인터 테이블 밖의 메뉴 문자열 |
+| `tables/ui-fixes.tsv` | 포인터 테이블 밖의 메뉴 문자열(상태 화면, 성적표, 엔딩 크레딧 포함) |
 | `tables/*-v1.0.tsv` | 일본어 텍스트와 v1.0 번역을 나란히 |
 | `tables/jp-verified.txt`, `kr-v1.0.txt` | 일본어 / v1.0 코드표 |
-| `tables/kr-v1.2-glyphs.txt` | v1.2 가 (`kr-v1.0.txt` 위에) 다시 그린 글리프 다섯 개의 이름 |
+| `tables/kr-v1.2-glyphs.txt` | v1.2 가 (`kr-v1.0.txt` 위에) 다시 그린 8px 암호 글리프 다섯 개의 이름 |
 | `tables/password.tsv` | 엔딩 암호 글자 163개(코드, 가나, v1.1·v1.2 화면) |
 | `v1.0/` | 빌드의 출발점인 v1.0 패치 |
 | `lua/` | 이 게임용 Mesen 2 스크립트 |
