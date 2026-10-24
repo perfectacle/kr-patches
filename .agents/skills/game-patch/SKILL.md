@@ -9,7 +9,7 @@ description: 게임 패치(어셈블리, 대본·이름 데이터, 코드표, �
 
 ## 구조
 
-게임은 기종 폴더 아래 `snes/<게임 slug>/` 에 둔다. 다른 기종은 `nds/` 처럼 폴더를 따로 둔다. 게임 폴더에 흔히 있는 것:
+게임은 기종 폴더 아래 `sfc/<게임 slug>/` 에 둔다. 다른 기종은 `nds/` 처럼 폴더를 따로 둔다. 게임 폴더에 흔히 있는 것:
 
 | 경로                          | 내용                                                       |
 | ----------------------------- | ---------------------------------------------------------- |
@@ -38,7 +38,7 @@ description: 게임 패치(어셈블리, 대본·이름 데이터, 코드표, �
    uv sync --locked
    git ls-files -z '*.lua' | xargs -0 -n1 luac -p
    git ls-files -z '*.sh' | xargs -0 -n1 zsh -n
-   .venv/bin/python -m compileall -q snes
+   .venv/bin/python -m compileall -q sfc
    ```
    완료: 전부 통과.
 6. **PR 로 올린다** — [git-workflow](../git-workflow/SKILL.md). 본문에 빌드 비교 결과(CRC32, 또는 롬이 없어 못 했다는 것)를 적는다. 새 버전을 배포하면 패치 파일과 패치 페이지는 블로그 저장소에서 따로 고친다.
@@ -48,7 +48,7 @@ description: 게임 패치(어셈블리, 대본·이름 데이터, 코드표, �
 
 ### ROM-01 — 롬 데이터 금지
 
-롬(`*.sfc`·`*.smc`), 세이브 RAM(`*.srm`), 세이브 스테이트(`*.mss`)와 롬에서 그대로 뽑은 덤프를 커밋하지 않는다. 사용자의 롬에서 빌드 때 만드는 파일(예: `snes/otogirisou/tables/script-jp.txt`)은 `.gitignore` 에 넣는다. CI 의 `No ROM data in the repository` 단계가 확장자로 검사한다.
+롬(`*.sfc`·`*.smc`), 세이브 RAM(`*.srm`), 세이브 스테이트(`*.mss`)와 롬에서 그대로 뽑은 덤프를 커밋하지 않는다. 사용자의 롬에서 빌드 때 만드는 파일(예: `sfc/otogirisou/tables/script-jp.txt`)은 `.gitignore` 에 넣는다. CI 의 `No ROM data in the repository` 단계가 확장자로 검사한다.
 
 - 이유: 저작물이고, 저장소가 공개다.
 
@@ -62,7 +62,7 @@ description: 게임 패치(어셈블리, 대본·이름 데이터, 코드표, �
 
 ### BASE-01 — 출발점 패치는 불변
 
-빌드의 출발점인 이전 버전 패치(`snes/super-mario-rpg/v1.0/*.ips`, `snes/otogirisou/Otogirisou(K).ips`, `snes/dragon-ball-z-super-gokuden-totsugeki/v1.0/v1.0.ips`, `snes/dragon-ball-z-super-gokuden-kakusei/v1.1/v1.1.ips`)는 바꾸지 않는다. `.gitignore` 가 `*.ips` 를 막고 이 파일들만 예외로 둔다.
+빌드의 출발점인 이전 버전 패치(`sfc/super-mario-rpg/v1.0/*.ips`, `sfc/otogirisou/Otogirisou(K).ips`, `sfc/dragon-ball-z-super-gokuden-totsugeki/v1.0/v1.0.ips`, `sfc/dragon-ball-z-super-gokuden-kakusei/v1.1/v1.1.ips`)는 바꾸지 않는다. `.gitignore` 가 `*.ips` 를 막고 이 파일들만 예외로 둔다.
 
 - 이유: 이미 배포된 패치라 바꾸면 그 위의 모든 빌드가 달라진다. 고칠 것은 그 위의 단계(스크립트)에서 고친다.
 

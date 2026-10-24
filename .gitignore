@@ -10,14 +10,14 @@ work/
 release/
 out/
 *.ips
-!snes/super-mario-rpg/v1.0/*.ips
-!snes/otogirisou/Otogirisou(K).ips
-!snes/dragon-ball-z-super-gokuden-totsugeki/v1.0/v1.0.ips
-!snes/dragon-ball-z-super-gokuden-kakusei/v1.1/v1.1.ips
+!sfc/super-mario-rpg/v1.0/*.ips
+!sfc/otogirisou/Otogirisou(K).ips
+!sfc/dragon-ball-z-super-gokuden-totsugeki/v1.0/v1.0.ips
+!sfc/dragon-ball-z-super-gokuden-kakusei/v1.1/v1.1.ips
 
 # generated from the user's own ROM at build time
-snes/otogirisou/tables/script-jp.txt
-snes/dragon-ball-z-super-gokuden-totsugeki/tables/kr-v1.2.txt
+sfc/otogirisou/tables/script-jp.txt
+sfc/dragon-ball-z-super-gokuden-totsugeki/tables/kr-v1.2.txt
 
 # local tools that are not distributed
 asar

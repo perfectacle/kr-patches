@@ -14,12 +14,12 @@ perfectacle 의 한글 패치 소스입니다. 게임 폴더마다 그 게임에
 
 | 게임 | 패치 | 원본 롬(헤더 제목, CRC32) |
 | --- | --- | --- |
-| [슈퍼 마리오 RPG](snes/super-mario-rpg/README.ko.md) | v1.2 | `SUPER MARIO RPG`, `5527071E` |
-| [제절초](snes/otogirisou/README.ko.md) | v1.2 | `OTOGIRISOU`, `8E4BEFD0` |
-| [드래곤볼 Z 초오공전: 돌격편](snes/dragon-ball-z-super-gokuden-totsugeki/README.ko.md) | v1.2 | `SFX DBZ TOTSUGEKIHEN`, `D531289B` |
-| [드래곤볼 Z 초오공전: 각성편](snes/dragon-ball-z-super-gokuden-kakusei/README.ko.md) | v1.3 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
+| [슈퍼 마리오 RPG](sfc/super-mario-rpg/README.ko.md) | v1.2 | `SUPER MARIO RPG`, `5527071E` |
+| [제절초](sfc/otogirisou/README.ko.md) | v1.2 | `OTOGIRISOU`, `8E4BEFD0` |
+| [드래곤볼 Z 초오공전: 돌격편](sfc/dragon-ball-z-super-gokuden-totsugeki/README.ko.md) | v1.2 | `SFX DBZ TOTSUGEKIHEN`, `D531289B` |
+| [드래곤볼 Z 초오공전: 각성편](sfc/dragon-ball-z-super-gokuden-kakusei/README.ko.md) | v1.3 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
 
-게임은 기종별 폴더(`snes/`)로 나눕니다. 다른 기종은 폴더를 따로 둡니다.
+게임은 기종별 폴더(`sfc/`)로 나눕니다. 다른 기종은 폴더를 따로 둡니다.
 패치 페이지와 내려받기: <https://perfectacle.github.io/games/kr-patches/>.
 
 ## 준비
@@ -59,5 +59,5 @@ uv sync --locked
 있는 게임의 팬 번역 데이터로, 직접 가진 카트리지와 함께 쓰도록 비상업으로
 배포합니다. 판매하거나 롬 이미지와 함께 배포하지 마세요.
 
-`snes/*/tools/fonts/` 의 Galmuri 글꼴은 SIL Open Font License 1.1 을 따릅니다
+`sfc/*/tools/fonts/` 의 Galmuri 글꼴은 SIL Open Font License 1.1 을 따릅니다
 (각 사본 옆의 `LICENSE.txt`).

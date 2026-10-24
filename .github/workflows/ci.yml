@@ -66,7 +66,7 @@ jobs:
       - run: uv sync --locked
 
       - name: Compile Python
-        run: .venv/bin/python -m compileall -q snes
+        run: .venv/bin/python -m compileall -q sfc
 
       - name: Check kr_patch imports
         run: |
@@ -88,7 +88,7 @@ jobs:
           PY
 
       - name: Totsugeki-hen dialogue layout
-        working-directory: snes/dragon-ball-z-super-gokuden-totsugeki
+        working-directory: sfc/dragon-ball-z-super-gokuden-totsugeki
         run: |
           "$GITHUB_WORKSPACE/.venv/bin/python" tools/layout1.py tables/v1.1/dialogue.tsv | tee /dev/stderr | tail -1 | grep -qx '0 lines with problems'
 

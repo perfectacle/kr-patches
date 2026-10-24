@@ -25,10 +25,10 @@ description: 한국어 문서(README.ko.md, docs/ANALYSIS.ko.md)를 쓰거나 �
 
 | 폴더                                     | 한국어 이름                       | 메모                                                    |
 | ---------------------------------------- | --------------------------------- | ------------------------------------------------------- |
-| `snes/super-mario-rpg`                   | 슈퍼 마리오 RPG                   | Mallow 는 「마로」, Bowyer 는 「유민파」(패치 표기)     |
-| `snes/otogirisou`                        | 제절초                            | 「오토기리소우」로 읽거나 덧붙이지 않는다. 폴더 이름·영어판의 Otogirisou 는 그대로 |
-| `snes/dragon-ball-z-super-gokuden-totsugeki` | 드래곤볼 Z 초오공전: 돌격편   | 시리즈 1편                                              |
-| `snes/dragon-ball-z-super-gokuden-kakusei`   | 드래곤볼 Z 초오공전: 각성편   | 시리즈 2편. 두 게임 문서는 같은 구성과 이어지는 시점을 유지한다 |
+| `sfc/super-mario-rpg`                    | 슈퍼 마리오 RPG                   | Mallow 는 「마로」, Bowyer 는 「유민파」(패치 표기)     |
+| `sfc/otogirisou`                         | 제절초                            | 「오토기리소우」로 읽거나 덧붙이지 않는다. 폴더 이름·영어판의 Otogirisou 는 그대로 |
+| `sfc/dragon-ball-z-super-gokuden-totsugeki`  | 드래곤볼 Z 초오공전: 돌격편   | 시리즈 1편                                              |
+| `sfc/dragon-ball-z-super-gokuden-kakusei`    | 드래곤볼 Z 초오공전: 각성편   | 시리즈 2편. 두 게임 문서는 같은 구성과 이어지는 시점을 유지한다 |
 
 ## 용어집
 
@@ -37,7 +37,7 @@ description: 한국어 문서(README.ko.md, docs/ANALYSIS.ko.md)를 쓰거나 �
 | 개념                                 | 쓸 말                                           |
 | ------------------------------------ | ----------------------------------------------- |
 | ROM / dump                           | 롬 / 덤프                                       |
-| Super Famicom                        | 슈퍼패미컴(SNES)                                |
+| Super Famicom                        | 슈퍼 패미콤(SFC)                                |
 | font(롬 안의 글자 데이터) / glyph    | 폰트 / 글리프                                   |
 | typeface(시스템·배포 서체)           | 글꼴                                            |
 | script(대사 전체) / line             | 대본 / 대사                                     |

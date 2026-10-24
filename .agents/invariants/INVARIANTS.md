@@ -9,7 +9,7 @@
 | ROM-01   | 롬·세이브 RAM·세이브 스테이트를 커밋하지 않는다(CI 검사)                                     | [game-patch §ROM-01](../skills/game-patch/SKILL.md#rom-01--롬-데이터-금지)                 |
 | BUILD-01 | 빌드는 배포한 패치와 바이트 단위로 같다. 결과가 바뀔 수 있는 변경은 게임마다 다시 빌드해 비교 | [game-patch §BUILD-01](../skills/game-patch/SKILL.md#build-01--배포한-패치와-같은-빌드)    |
 | BASE-01  | 빌드의 출발점인 이전 버전 IPS 는 바꾸지 않는다                                               | [game-patch §BASE-01](../skills/game-patch/SKILL.md#base-01--출발점-패치는-불변)          |
-| GAME-01  | 한 게임 전용은 `snes/<게임>/` 에, 여러 게임이 쓸 도구는 툴킷에                               | [game-patch §GAME-01](../skills/game-patch/SKILL.md#game-01--게임-폴더와-툴킷의-경계)     |
+| GAME-01  | 한 게임 전용은 `sfc/<게임>/` 에, 여러 게임이 쓸 도구는 툴킷에                               | [game-patch §GAME-01](../skills/game-patch/SKILL.md#game-01--게임-폴더와-툴킷의-경계)     |
 | DOC-01   | 문서는 `X.md`(영어)와 `X.ko.md`(한국어)가 짝이고 내용이 같다(CI 가 짝을 검사)               | [game-patch §DOC-01](../skills/game-patch/SKILL.md#doc-01--영어판과-한국어판)             |
 | LIC-01   | 코드는 MIT, 번역 데이터는 MIT 가 아니다. 새 종류의 파일은 README 라이선스 절에서 어느 쪽인지 밝힌다 | [game-patch §LIC-01](../skills/game-patch/SKILL.md#lic-01--코드와-번역-데이터)       |
 | COPY-01  | 한국어 문서는 합니다체, 번역투 없이, 용어집(게임 이름 포함)을 따른다                         | [korean-copy](../skills/korean-copy/SKILL.md)                                    |
