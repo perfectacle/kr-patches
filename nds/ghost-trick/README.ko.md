@@ -104,6 +104,18 @@ v1.1·일본판과 다름, 줄 넘침(초상화가 창 안에 있는 창 13자, 
 `tools/font_store.py` 는 대사 폰트(`fonts2bpp_new.imb`)를 툴킷 글리프
 저장소(JSON)로 뽑습니다.
 
+패치 페이지의 배경 음악(BGM054_B)은 녹음이 아니라 합성으로 만듭니다. 녹음은
+반복할 때마다 소리가 조금씩 달라 이음매가 맞지 않았습니다. `tools/bgm_dump.py` 는
+곡 후보를 효과음 없이 녹음하고(`play.py --wav`), `tools/sseq_render.py` 는 시퀀스
+하나를 DS 사운드 엔진 방식으로 합성해 반복 구간과 함께 적습니다.
+
+```sh
+# 곡 37번만, 효과음 없이 녹음
+../../.venv/bin/python tools/bgm_dump.py ghost-trick-jp.nds work/bgm 37 --quiet
+# 일본판에서 꺼낸 sound_data.sdat 의 시퀀스 37번 합성(work/bgm.json 에 반복 구간)
+../../.venv/bin/python tools/sseq_render.py work/jp/data/sound_data.sdat 37 work/bgm.wav --intro 4608 --loop 3072
+```
+
 ## 라이선스
 
 코드(Python, 셸): MIT, 최상위 `LICENSE` 참고. 한국어 대본, 코드표, v1.1 패치는

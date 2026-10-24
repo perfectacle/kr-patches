@@ -168,3 +168,25 @@ tools/stage_rom.py changes the start path st01/st01_root.xml in route.xml to ano
 first scene file that stage's root loads, so "new game" starts in that scene. Earlier scenes are
 skipped, so items and flags can differ from a real playthrough.
 ```
+
+## 7. Sound
+
+```text
+■ Patch page background music [verified]
+Sequence 37, SEQ_GHOST_BGM054_B, of sound_data.sdat (15,257,056 bytes, unchanged in v1.1 and v1.2).
+Bank 534, wave archive 1. Every track plays a 4,608-tick intro, then loops 3,072 ticks. Tempo 70.
+The only commands are notes, rests, program, C0 (pan), C1 (track volume), C7 (0), CA (0), E1 (tempo).
+Instrument types: PCM (1), drum set (0x10), key split (0x11). Waves are IMA-ADPCM.
+The sequencer and envelopes update at ARM7 33,513,982 Hz / (64 x 2,728) = about 191.96 Hz.
+
+desmume recordings sounded slightly different on every repeat because channel allocation changed,
+and the loop length found by correlation (55.51 s) was not the real one (54.87 s).
+tools/sseq_render.py renders repeats 2 and 3 sample-identical. At 48 kHz, loopStart is
+83.590563 s and loopEnd 138.460271 s.
+
+■ Test ROMs for recording [verified]
+tools/bgm_dump.py copies song K's SEQ record (10 bytes) in SDAT INFO over every SEQ record, so
+whatever song the game starts, song K plays. --quiet zeroes the volume byte (+6) of every SSAR
+record (12 bytes each from file +0x20, count at +0x1C) to mute sound effects.
+```
+

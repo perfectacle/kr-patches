@@ -1,6 +1,6 @@
 """desmume libretro 코어로 한 단계씩 조작하며 진행한다(세이브 스테이트를 이어 쓴다).
 
-    play.py ROM OUTDIR [--state IN.state] [--save OUT.state] [--cmd "..."] [SCRIPT]
+    play.py ROM OUTDIR [--state IN.state] [--save OUT.state] [--wav OUT.wav] [--cmd "..."] [SCRIPT]
 
 명령(한 줄에 하나, ; 로도 나눈다):
     wait N                     N 프레임 그대로
@@ -15,8 +15,10 @@ import argparse
 import ctypes as C
 import os
 
-from kr_patch.snes.libretro import (AUD_CB, AUDB_CB, ENV_CB, IN_CB, LOG_CB, POLL_CB, VID_CB, GameInfo, LogIface,
-                                    load_core, to_image)
+import wave
+
+from kr_patch.snes.libretro import (AUD_CB, AUDB_CB, ENV_CB, IN_CB, LOG_CB, POLL_CB, VID_CB, AvInfo, GameInfo,
+                                    LogIface, load_core, to_image)
 
 BUTTONS = {"b": 0, "y": 1, "select": 2, "start": 3, "up": 4, "down": 5, "left": 6, "right": 7,
            "a": 8, "x": 9, "l": 10, "r": 11}
@@ -25,8 +27,9 @@ W, H = 256, 384   # 위 화면 + 아래 화면, 사이 간격 없음
 
 
 class Player:
-    def __init__(self, core_path, rom, out):
+    def __init__(self, core_path, rom, out, wav=None):
         self.out = out
+        self.wav = None
         os.makedirs(out, exist_ok=True)
         self.core = load_core(core_path)
         self.held, self.touch = set(), None
@@ -78,8 +81,13 @@ class Player:
                     return 1
             return 0
 
+        def audio_batch(data, frames):
+            if self.wav and data:
+                self.wav.writeframesraw(C.string_at(data, frames * 4))
+            return frames
+
         self._keep = (sysdir, vars_, log_fn, log_iface, ENV_CB(env), VID_CB(video), AUD_CB(lambda l, r: None),
-                      AUDB_CB(lambda d, n: n), POLL_CB(lambda: None), IN_CB(inp))
+                      AUDB_CB(audio_batch), POLL_CB(lambda: None), IN_CB(inp))
         c = self.core
         c.retro_set_environment(self._keep[4])
         c.retro_set_video_refresh(self._keep[5])
@@ -94,6 +102,13 @@ class Player:
         if not c.retro_load_game(C.byref(gi)):
             raise SystemExit("core rejected the ROM")
         c.retro_serialize_size.restype = C.c_size_t
+        if wav:
+            av = AvInfo()
+            c.retro_get_system_av_info(C.byref(av))
+            self.wav = wave.open(wav, "wb")
+            self.wav.setnchannels(2)
+            self.wav.setsampwidth(2)
+            self.wav.setframerate(round(av.sample_rate))
 
     def run(self, n):
         for _ in range(n):
@@ -163,8 +178,9 @@ def main():
     ap.add_argument("--state")
     ap.add_argument("--save")
     ap.add_argument("--cmd", default="")
+    ap.add_argument("--wav", help="코어가 내는 소리를 이 파일에 녹음(16비트 스테레오)")
     a = ap.parse_args()
-    pl = Player(a.core, a.rom, a.out)
+    pl = Player(a.core, a.rom, a.out, a.wav)
     if a.state:
         pl.run(1)
         pl.load(a.state)
@@ -176,6 +192,8 @@ def main():
         pl.save(a.save)
     if pl.last:
         pl.shot("last")
+    if pl.wav:
+        pl.wav.close()
 
 
 if __name__ == "__main__":

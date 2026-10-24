@@ -112,6 +112,19 @@ after loading the ROM, so it is not used.
 `tools/font_store.py` dumps the dialogue font (`fonts2bpp_new.imb`) to a
 toolkit glyph store (JSON).
 
+The patch page's background music (BGM054_B) is synthesized, not recorded.
+Recordings differed slightly on every repeat, so the seam never matched.
+`tools/bgm_dump.py` records candidate songs without sound effects
+(`play.py --wav`), and `tools/sseq_render.py` renders one sequence the way the
+DS sound engine does and writes its loop points.
+
+```sh
+# Record song 37 alone, with sound effects muted
+../../.venv/bin/python tools/bgm_dump.py ghost-trick-jp.nds work/bgm 37 --quiet
+# Render sequence 37 of sound_data.sdat taken from the Japanese ROM (loop points in work/bgm.json)
+../../.venv/bin/python tools/sseq_render.py work/jp/data/sound_data.sdat 37 work/bgm.wav --intro 4608 --loop 3072
+```
+
 ## License
 
 Code (Python, shell): MIT, see the top-level `LICENSE`. The Korean script,
