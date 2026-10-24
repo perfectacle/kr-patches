@@ -10,7 +10,7 @@ Patch page: https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/
  - Target ROM: Japanese original, 134,217,728 bytes, game code BGTJ
    CRC32 105DDD9E / SHA-1 323901c81e6e9300e2221e5cc42289cc5be73dce
  - v1.1 ROM: Japanese + v1.1/v1.1.xdelta = 119,459,746 bytes, CRC32 D366A4D9
- - v1.2 ROM: output of tools/build.sh = 119,462,534 bytes, CRC32 EA51D7F3
+ - v1.2 ROM: output of tools/build.sh = 119,462,534 bytes, CRC32 4C863193
  - Markers
    · [verified] checked by reading ROM bytes or running in an emulator
    · [inferred] guessed from the shape of the data or circumstances. Check it yourself before changing anything.
@@ -141,7 +141,7 @@ The scene decides the window type, not the speaker code. tools/check.py guesses 
 ## 5. Graphics
 
 ```text
-■ cpac_3d.bin [inferred] (from the 2015 graphics analysis, not changed in v1.2)
+■ cpac_3d.bin [inferred] (from the 2015 graphics analysis; v1.2 changes only the title image below)
 0x20 header + 4 groups (start offsets aligned to 0x100). Each group has a fixed part
 18 00 00 00 02 00 00 00 … 'YEKB' … 'TADB', a base (the header size, e.g. 0x1000) and then
 (relative offset, size) pairs. A 0x80 top byte in a size has an unknown meaning.
@@ -151,6 +151,17 @@ Image header (u32 ×9): fixed value, image count?, ?, header size, image size, p
 ■ cpac_2d.bin [inferred]
 Same structure (6 top-level groups, section 3 is KEYB/BDAT). Many 2D entries do not start with 0x11,
 so they use another compression or none.
+
+■ Title screen [verified]
+The top-screen image is entry 461 of cpac_3d.bin group 0. Group 0 has a 508-entry table of
+(relative offset, size) after its base, and the entries are LZ11-compressed 'sdt.' images.
+  sdt. header  +0x0C pixel offset (0x24), +0x10 pixel size (0xC000), +0x14 palette offset (0xC024),
+               +0x18 palette size (0x200), +0x1C width (256), +0x20 height (192). Pixels are 8bpp,
+               the palette is 256 BGR555 colors.
+v1.1 drew two notice lines and "©KOREAN PATCHED BY …" on rows 137–177 of this image.
+tools/title.py puts those rows back from the same Japanese image (every Japanese color is in the
+v1.1 palette). The recompressed entry is smaller than its slot, so no other entry moves; only the
+size field changes.
 ```
 
 ## 6. Emulator

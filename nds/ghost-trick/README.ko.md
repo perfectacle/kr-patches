@@ -4,7 +4,8 @@
 
 일본판 닌텐도 DS *고스트 트릭* 한글패치 v1.2 의 소스입니다. 일본판 롬에
 한글패치 v1.1 을 적용한 롬에서 시작해, 대사 스크립트를 일본판 스크립트에서
-다시 만듭니다. 폰트와 그래픽은 v1.1 그대로입니다.
+다시 만듭니다. 폰트와 그래픽은 v1.1 그대로이고, 타이틀 화면에 v1.1 이 넣은 안내·제작자
+문구만 지웁니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/>
 
@@ -34,7 +35,7 @@
 zsh tools/build.sh
 ```
 
-결과물: `ghost-trick-kr-v1.2.nds`(119,462,534 바이트, CRC32 `EA51D7F3`)와
+결과물: `ghost-trick-kr-v1.2.nds`(119,462,534 바이트, CRC32 `4C863193`)와
 `release/v1.2/Ghost Trick (K) v1.2.xdelta`. 배포한 패치와 같습니다. 패치
 바이트는 `xdelta3` 버전에 따라 달라질 수 있으니 롬 CRC32 로 비교하세요.
 다른 환경을 쓰려면 `PYTHON`, `KRPATCH` 를 지정합니다.

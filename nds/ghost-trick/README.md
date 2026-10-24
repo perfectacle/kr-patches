@@ -5,7 +5,8 @@ English | [한국어](README.ko.md)
 Source of the Korean translation patch v1.2 for the Japanese *Ghost Trick*
 (Nintendo DS). The build starts from the Japanese ROM with the Korean v1.1
 patch applied and rebuilds the dialogue scripts from the Japanese scripts.
-Fonts and graphics stay as in v1.1.
+Fonts and graphics stay as in v1.1, except that the notice and credit lines v1.1
+put on the title screen are removed.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/>
 
@@ -36,7 +37,7 @@ zsh, and `xdelta3` on the PATH (checked with 3.2.2).
 zsh tools/build.sh
 ```
 
-Output: `ghost-trick-kr-v1.2.nds` (119,462,534 bytes, CRC32 `EA51D7F3`) and
+Output: `ghost-trick-kr-v1.2.nds` (119,462,534 bytes, CRC32 `4C863193`) and
 `release/v1.2/Ghost Trick (K) v1.2.xdelta`, identical to the released patch.
 The patch bytes can differ between `xdelta3` versions, so compare the ROM
 CRC32. Set `PYTHON` and `KRPATCH` to use another environment.
