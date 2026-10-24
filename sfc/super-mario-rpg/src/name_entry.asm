@@ -23,7 +23,6 @@
 !ne_sfx_back  = $02
 !ne_sfx_move  = $03
 !ne_sfx_no    = $58     ; the sound this screen plays when it refuses an empty name
-!fs_slot_word = $5E00   ; BG3 tile $1C0 (chr base $A000, 2bpp) as a VRAM word address
 !fs_slot_tile = $01C0
 !fs_slots     = 16
 
@@ -330,6 +329,14 @@ FsAlloc:
     BCC .room
     LDX #$0000          ; three names hold at most 12 such glyphs
 .room
+    LDA !fs_cnt
+    BNE +
+    LDA !fs_keepst
+    CMP #$A55A
+    BEQ +
+    LDA #$5AA5
+    STA !fs_keepst
++
     LDA !ne_t1
     STA !fs_tab,X
     TXA
@@ -357,6 +364,41 @@ FsAlloc:
 ; ---------------------------------------------------------------------------
 ; Name entry screen
 
+; New game goes from the file select to this screen without reloading BG3
+; tiles $1C0-$1DF, which hold this screen's window frame: put back what the
+; file select's slots covered.
+FsRestore:
+    LDA !fs_keepst
+    CMP #$A55A
+    BNE .done
+    STZ !fs_keepst
+    LDX #$0000          ; offset in !fs_keep
+.slot
+    LDY #$0000
+-
+    LDA !fs_keep,X
+    STA !font_tmp,Y
+    INX
+    INX
+    INY
+    INY
+    CPY #$0020
+    BCC -
+    PHX
+    TXA
+    SEC
+    SBC #$0020
+    LSR
+    CLC
+    ADC #!fs_slot_word
+    LDY #$0020
+    JSR QueueTmp
+    PLX
+    CPX #$0200
+    BCC .slot
+.done
+    RTS
+
 ; Replaces the syllable grid with the jamo grid and resets the state.
 NeInit:
     PHP
@@ -367,6 +409,7 @@ NeInit:
     PHA
     LDA $72
     PHA
+    JSR FsRestore
     STZ !ne_n
     STZ !ne_sp
     STZ !ne_gslot

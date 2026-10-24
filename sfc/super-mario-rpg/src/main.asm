@@ -45,6 +45,9 @@ sa1rom
 !fs_cnt   = $1280   ; file-select slots in use * 2
 !fs_tab   = $1282   ; 16 words, name glyph held by each file-select slot
 !ne_key   = $12A4   ; code of the key just chosen
+!fs_keepst = $12A6  ; $5AA5: read the file-select slot tiles at the next upload, $A55A: !fs_keep holds them
+!fs_keep  = $1300   ; 512 bytes: what VRAM held where the file select puts its slots
+!fs_slot_word = $5E00   ; BG3 tile $1C0 (chr base $A000, 2bpp) as a VRAM word address
 
 !font_tmp = $F500   ; input/output buffer of the outline routine
 
@@ -353,6 +356,7 @@ NmiUpload:
     BEQ .exit
     LDA.l $7E0000+!lock
     BNE .exit           ; Stage is filling an entry; retry next frame
+    JSR FsKeep
     SEP #$20
     LDA #$80
     STA $2115
@@ -394,6 +398,37 @@ NmiUpload:
     STA.l $7E0000+!pend
 .exit
     PLP
+    RTS
+
+; The file select is about to put its first slot over tiles the name entry
+; screen shows (its window frame) but does not reload: keep them.
+FsKeep:
+    LDA.l $7E0000+!fs_keepst
+    CMP #$5AA5
+    BNE .done
+    SEP #$20
+    LDA #$80
+    STA $2115
+    LDA #$81
+    STA $4300
+    LDA #$39
+    STA $4301
+    LDA #$7E
+    STA $4304
+    REP #$20
+    LDA.w #!fs_slot_word
+    STA $2116
+    LDA.w #!fs_keep
+    STA $4302
+    LDA #$0200
+    STA $4305
+    SEP #$20
+    LDA #$01
+    STA $420B
+    REP #$20
+    LDA #$A55A
+    STA.l $7E0000+!fs_keepst
+.done
     RTS
 
 ; Fills $0994/$0995 like $795C, from KoNames. Codes $00-$1F wrap to
