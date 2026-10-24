@@ -33,7 +33,7 @@ jobs:
 
       - name: No ROM data in the repository
         run: |
-          if git ls-files -- '*.sfc' '*.smc' '*.srm' '*.mss' | grep .; then
+          if git ls-files -- '*.sfc' '*.smc' '*.srm' '*.mss' '*.nds' '*.sav' '*.dsv' '*.state' | grep .; then
             echo '::error::ROMs, save RAM and save states are never committed'
             exit 1
           fi
@@ -66,7 +66,7 @@ jobs:
       - run: uv sync --locked
 
       - name: Compile Python
-        run: .venv/bin/python -m compileall -q snes
+        run: .venv/bin/python -m compileall -q snes nds
 
       - name: Check kr_patch imports
         run: |
