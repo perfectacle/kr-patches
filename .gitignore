@@ -3,6 +3,10 @@
 *.smc
 *.srm
 *.mss
+*.nds
+*.sav
+*.dsv
+*.state
 
 # build outputs
 build/
@@ -14,6 +18,8 @@ out/
 !snes/otogirisou/Otogirisou(K).ips
 !snes/dragon-ball-z-super-gokuden-totsugeki/v1.0/v1.0.ips
 !snes/dragon-ball-z-super-gokuden-kakusei/v1.1/v1.1.ips
+*.xdelta
+!nds/ghost-trick/v1.1/v1.1.xdelta
 
 # generated from the user's own ROM at build time
 snes/otogirisou/tables/script-jp.txt
@@ -22,8 +28,8 @@ snes/dragon-ball-z-super-gokuden-totsugeki/tables/kr-v1.2.txt
 # local tools that are not distributed
 asar
 Mesen.app/
-compat/cores/
-compat/roms/
+**/compat/cores/
+**/compat/roms/
 
 # Python
 .venv/
