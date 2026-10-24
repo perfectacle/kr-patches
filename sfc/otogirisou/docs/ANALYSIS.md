@@ -28,7 +28,7 @@ Address notation
   v1.0 (Japanese + v1.0 IPS)    2MB         C70A8E66
   v1.1                          2MB         27EE014E  (MD5 F45317CFAAAB68CCA5D8984AF8452535)
   v1.2                          2MB         2C31A0B2  (MD5 CD48C59B3B80D6C9E3C648E8BDD5A4E0)
-  v1.3                          2MB         3258FDFC  (MD5 84A82E0A88BF2EC9FAAA243C823D90E9)
+  v1.3                          2MB         DAE98F06  (MD5 3605777DAC6BE2AAFA011CEAA0429D91)
 
  - Rebuilding v1.2 with the included tools gives the same CRC32.
 
@@ -347,6 +347,8 @@ Address notation
      go to the next cell in the same column, or if the column has none, the nearest cell of the next row that has one (left on
      a tie). Left with no cell to the left goes to the menu. Entering the grid ($02:B15D) moves the cursor to the top left if
      its cell is empty on that page.
+   · Start ($02:B163 on the menu, $02:B264 on the grid → NeStart) no longer ends the entry; it moves the cursor to END,
+     where A ends it.
    · $02:B282: A on the Hangul page -> NeA. The composing states (initial, medial, final for each jamo typed) are stacked in WRAM $7F:E000,
      and the syllable being composed is always the last code of the name. Every write goes through $02:B334 (trampoline $02:D8BD);
      replacing the last character means decrementing $1AA3 and appending again.

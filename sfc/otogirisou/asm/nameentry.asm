@@ -93,6 +93,15 @@ org $02B20A
 org $02B220
     JML NeLeft
 
+; Start puts the cursor on END instead of ending the entry, so a stray press cannot
+; finish the name; A on END still ends it.
+org $02B163
+    JML NeStart             ; on the menu
+    NOP #3
+org $02B264
+    JML NeStart             ; on the grid
+    NOP #3
+
 ; A on the grid, after its sound (JSL $00965D)
 org $02B282
     JML NeA
@@ -231,6 +240,19 @@ NeEnter:
     JSR NeCell
     BCS +
     STZ $1A9F               ; the cell is empty on this page: start at the top left
++
+    JML $02B162             ; RTS
+
+NeStart:
+    LDA $CC
+    AND #$0010
+    BEQ +
+    LDA #$0001
+    STA $1AA1
+    LDA #$0A04
+    STA $1A9F
+    STZ $CC
+    JSL $0092F7
 +
     JML $02B162             ; RTS
 

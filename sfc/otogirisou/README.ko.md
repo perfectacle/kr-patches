@@ -37,7 +37,7 @@ v1.0 패치 위에 대본과 폰트를 다시 만들고, v1.2 는 v1.1 롬에 �
 | `zsh tools/build-v1.2.sh` | v1.1 빌드 위에 `build/otogirisou-kr-v1.2.sfc` |
 | `zsh tools/release-v1.2.sh` | `release/v1.2/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `2C31A0B2` |
 | `zsh tools/build-v1.3.sh` | v1.2 빌드 위에 `build/otogirisou-kr-v1.3.sfc` |
-| `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `3258FDFC` |
+| `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `DAE98F06` |
 
 배포한 v1.2·v1.3 패치를 그대로 다시 만들려면:
 
