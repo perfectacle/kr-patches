@@ -11,7 +11,7 @@ cores=($@)
 for core in $cores; do
   for rom in ${=ROMS:-jp v10 v11 v11h}; do
     f=roms/$rom.sfc; [[ $rom == *h ]] && f=roms/$rom.smc
-    for sc in new cont; do
+    for sc in ${=SCENARIOS:-new cont}; do
       d=out/$sc-$core-$rom; rm -rf $d; mkdir -p $d
       if [[ $sc == cont ]]; then $KRPATCH sfc run cores/${core}_libretro.dylib $f $d s_$sc.txt roms/save.srm --watch 7E004D:2 > $d.log 2>&1
       else $KRPATCH sfc run cores/${core}_libretro.dylib $f $d s_$sc.txt --watch 7E004D:2 > $d.log 2>&1; fi

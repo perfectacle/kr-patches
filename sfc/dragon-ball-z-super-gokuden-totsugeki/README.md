@@ -1,12 +1,14 @@
-# Dragon Ball Z: Super Gokuden – Totsugeki-hen (SFC) Korean patch v1.2
+# Dragon Ball Z: Super Gokuden – Totsugeki-hen (SFC) Korean patch v1.3
 
 English | [한국어](README.ko.md)
 
-Source of the Korean translation patch v1.2 for the Japanese *Dragon Ball Z:
+Source of the Korean translation patch v1.3 for the Japanese *Dragon Ball Z:
 Super Gokuden – Totsugeki-hen* (Super Famicom). The build starts from the
 Japanese ROM with the Korean v1.0 patch applied, then replaces the title
 screen, rewrites the dialogue and menus, redraws look-alike password glyphs
-and shows a fixed ending password.
+and shows a fixed ending password (v1.2). v1.3 redraws the 8px Hangul of
+names, adds all 11,172 syllables and turns the name entry into a jamo
+keyboard; the ROM grows to 4 MB.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
@@ -29,30 +31,36 @@ as `super-gokuden-jp.smc`:
 ## Build
 
 Requirements: the repository's Python environment (see the top-level README),
-zsh, macOS. `tools/title.py` draws 「초오공전」 with the BM YeongSung font from
+zsh, macOS, and for v1.3 [asar](https://github.com/RPGHacker/asar) 1.91 at
+`tools/asar`. `tools/title.py` draws 「초오공전」 with the BM YeongSung font from
 the macOS system font assets (`TITLE_FONT`); on other systems add
 `--font PATH` to the `title.py` line of `tools/build.sh`.
 
 ```sh
-zsh tools/build.sh
+zsh tools/build-v1.3.sh
 ```
 
-Output: `super-gokuden-kr-v1.2.smc` (CRC32 `A939C4F8`) and
-`release/v1.2/*.ips` (plain and 512-byte copier header), identical to the
-released patches. `tables/kr-v1.2.txt` (the v1.2 code table) is written by the
+Output: `super-gokuden-kr-v1.3.smc` (CRC32 `FC7FB902`) and
+`release/v1.3/*.ips` (plain and 512-byte copier header), identical to the
+released patches. The v1.3 build runs `tools/build.sh` first, which writes
+`super-gokuden-kr-v1.2.smc` (CRC32 `A939C4F8`) and `release/v1.2/*.ips`. `tables/kr-v1.2.txt` (the v1.2 code table) is written by the
 build. Set `PYTHON` and `KRPATCH` to use another environment.
 
 Steps: `krpatch ips apply` (v1.0) → `tools/title.py` → `tools/text_patch1.py`
 (dialogue, other text sets, menu fixes) → `tools/statusmenu1.py` (learned and
 cleared marks in the status screen lists) → `tools/pwglyph1.py` (password
 glyphs, checked against the table) → `tools/endpw1.py` (ending password) →
-`krpatch sfc checksum --fix` → `krpatch ips make --headered`.
+`krpatch sfc checksum --fix` → `krpatch ips make --headered` gives v1.2;
+then `tools/font8.py` (redrawn and new 8px glyphs, 4 MB ROM, jamo board and
+the tables `work/font8_*.asm`) → asar `asm/v13.asm` (renderer and name entry
+hooks) → `krpatch sfc checksum --fix` → `krpatch ips make --headered --rle`.
 
 ## Layout
 
 | Path | Contents |
 | --- | --- |
 | `tools/` | build and analysis scripts (usage in each file's first lines) |
+| `asm/v13.asm` | v1.3 renderer and name entry code (asar) |
 | `tables/v1.1/` | v1.1 text (id, window info, text) |
 | `tables/ui-fixes.tsv` | menu strings outside the pointer tables (status screen, results screen, ending credits included) |
 | `tables/*-v1.0.tsv` | Japanese text next to the v1.0 translation |
@@ -61,7 +69,7 @@ glyphs, checked against the table) → `tools/endpw1.py` (ending password) →
 | `tables/password.tsv` | the 163 ending-password characters (code, kana, v1.1 and v1.2 screens) |
 | `v1.0/` | the v1.0 patch the build starts from |
 | `lua/` | Mesen 2 scripts for this game |
-| `compat/` | the same input on several libretro cores (`compat/run_all.sh`) |
+| `compat/` | the same input on several libretro cores (`compat/run_all.sh`; `SCENARIOS="new13 cont"` for v1.3) |
 | `tools/fonts/` | Galmuri fonts (SIL Open Font License 1.1, `LICENSE.txt`) |
 
 ## Tests
@@ -106,7 +114,7 @@ was found.
 
 ## License
 
-Code (Python, shell, Lua): MIT, see the top-level `LICENSE`. The Korean text,
+Code (Python, shell, Lua, assembly): MIT, see the top-level `LICENSE`. The Korean text,
 code tables and graphics are fan translation data, distributed
 non-commercially and not covered by the MIT license. Galmuri is under the SIL
 Open Font License 1.1.
