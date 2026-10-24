@@ -1,10 +1,11 @@
-# Otogirisou (SFC) Korean patch v1.2
+# Otogirisou (SFC) Korean patch v1.3
 
 English | [한국어](README.ko.md)
 
 Source of the Korean translation patch for the Japanese *Otogirisou*
 (Super Famicom). v1.1 rebuilds the script and font on top of the Korean v1.0
-patch; v1.2 adds a chapter select and an ending list to the v1.1 ROM.
+patch; v1.2 adds a chapter select and an ending list to the v1.1 ROM; v1.3 turns the
+name entry of the v1.2 ROM into a screen where names are composed from jamo.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/otogirisou/>
 
@@ -35,11 +36,14 @@ Requirements: the repository's Python environment (see the top-level README),
 | `zsh tools/release.sh` | v1.1 build plus `release/v1.1/*.ips` (plain and 512-byte header) |
 | `zsh tools/build-v1.2.sh` | `build/otogirisou-kr-v1.2.sfc`, on top of the v1.1 build |
 | `zsh tools/release-v1.2.sh` | `release/v1.2/*.ips` (plain and 512-byte header), CRC32 `2C31A0B2` |
+| `zsh tools/build-v1.3.sh` | `build/otogirisou-kr-v1.3.sfc`, on top of the v1.2 build |
+| `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips` (plain and 512-byte header), CRC32 `112F8D8A` |
 
-To reproduce the released v1.2 patch:
+To reproduce the released v1.2 and v1.3 patches:
 
 ```sh
 zsh tools/build.sh && zsh tools/release-v1.2.sh
+zsh tools/build.sh && zsh tools/release-v1.3.sh
 ```
 
 The first build dumps the Japanese script from your ROM to
@@ -56,6 +60,9 @@ Set `PYTHON` and `KRPATCH` to use another environment.
 - New characters: characters missing from the v1.0 font produce a warning; draw
   them in `tables/newglyphs.json`. `tools/glyph_workbench.py` shows v1.0 glyphs
   and builds new ones from parts of others (needs `build/v1.0.sfc`).
+- v1.3 name entry: the jamo page and the new glyphs (KS X 1001 syllables the font
+  lacks, compatibility jamo) come from `tools/namefont.py`, the code is
+  `asm/nameentry.asm`. The new glyphs are drawn with Galmuri11 and live in bank $36.
 - v1.2 extras: chapters in `tables/qol-chapters.tsv`, endings in
   `tables/qol-endings.tsv`; data from `tools/qol.py` (bank $1B) and
   `tools/flow.py` (bank $1C), code in `asm/qol.asm` and `asm/flow.asm`.

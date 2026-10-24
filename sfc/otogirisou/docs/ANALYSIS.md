@@ -1,4 +1,4 @@
-# Otogirisou (弟切草) ROM analysis (Korean v1.0 / v1.1 / v1.2)
+# Otogirisou (弟切草) ROM analysis (Korean v1.0 / v1.1 / v1.2 / v1.3)
 
 English | [한국어](ANALYSIS.ko.md)
 
@@ -28,6 +28,7 @@ Address notation
   v1.0 (Japanese + v1.0 IPS)    2MB         C70A8E66
   v1.1                          2MB         27EE014E  (MD5 F45317CFAAAB68CCA5D8984AF8452535)
   v1.2                          2MB         2C31A0B2  (MD5 CD48C59B3B80D6C9E3C648E8BDD5A4E0)
+  v1.3                          2MB         112F8D8A  (MD5 3721316240287F89CB269D5B319B2B95)
 
  - Rebuilding v1.2 with the included tools gives the same CRC32.
 
@@ -226,6 +227,9 @@ Address notation
  - v1.1 turned 168 codes nobody references (1247 and later, not Hangul) into blank glyphs of the same size as their neighbours and merged them into 45 entries.
    "Referenced" was judged from the dialogue, the name entry table ($02:A990-$02:B03F) and the two character lists ($02:A97C, $00:F5CE).
  - 75 new glyphs (codes 1614-1688) were added as 3 entries (9×11: 33, 10×11: 20, 11×11: 22), making 48 entries. 10 remain free.
+ - v1.3: codes 1689-2773 (51 compatibility jamo + the 1,034 KS X 1001 syllables the font lacks, Galmuri11 11×11) were added as one 49th entry.
+   The data does not fit bank $1F, so it is at $36:8000, and the decoder's LDA #$1F / STA $16 at $00:A56C became JSL NeBank,
+   which picks bank $36 for entries from 48 on. The width table is filled for the new codes too (11).
  - Glyph width table $1E:F000 (1 byte per code, 0x800 entries): for v1.1 word wrapping. Characters that hang at the line end have width 0
  - The name entry screen uses the same codes as the dialogue. The v1.0 code-to-character mapping was not changed.
 
@@ -322,6 +326,26 @@ Address notation
    2 = $16:A67B 0x580 bytes → VRAM $4840 (before the bookmark screen)
    3 = $16:AC7B 0x1C0 bytes → VRAM $4330 (before the name entry screen)
  - The area around $15:E401-$15:E52A is v1.0 code too.
+
+■ Name entry screen (v1.3) [verified: MesenCE]
+ - Module $02:B040-$02:B6FF. Focus $1AA1 (0 = left menu, nonzero = grid, $FFFF = done), menu choice $1AAB (0 letters, 1 digits, 2 Hangul),
+   Hangul page $1AAD (0-9), page number $1AA7 = menu or 2 + page, redraw flag $1AA9
+ - Page data: the pointer tables $02:B18E (drawing) and $02:B849 (input) point to the same place. 50 codes and $FFFF per page, 0 = empty.
+   The grid is that code string printed by the dialogue engine (spacing $10, left $90, margin $E6 -> 5 columns)
+ - Grid cursor $1A9F (column) / $1AA0 (row). Row $0A is the command row: 1 delete, 2 back to the menu, 3 space (code 0), 4 END
+ - Name $1BC9 (6 codes), count $1AA3 (at most 6). $02:B334 appends a code and $02:B357 draws it in the name box (x = 13 x n + 31, y = 40)
+ - The Japanese voicing marks are still handled ($02:AFE4/$AFE6, tables $02:AEC4 and $02:AF90).
+ - The arrows of 「한글 ◀ 1 ▶」 are tiles of the BG1 book picture (run-length tile map of the Japanese ROM near $07:E4D0); the digit is printed at $02:B5C5.
+ - v1.3 (asm/nameentry.asm, tools/namefont.py)
+   · Hangul page 1 ($02:AAB4) is now the 2-set jamo page (consonant block on top, vowel block below, each with its Shift row above it).
+   · $02:B114 and $02:B12F: left/right on the Hangul button no longer turn pages (right enters the grid). $02:B5C5 page number NOP, ◀▶ tiles become button face
+   · $02:B282: A on the Hangul page -> NeA. The composing states (initial, medial, final for each jamo typed) are stacked in WRAM $7F:E000,
+     and the syllable being composed is always the last code of the name. Every write goes through $02:B334 (trampoline $02:D8BD);
+     replacing the last character means decrementing $1AA3 and appending again.
+   · $02:B23F: delete -> NeDel. While composing it takes back one jamo. If the name is not what we last wrote (count and last code), the
+     composing state is dropped.
+   · The rules are those of the 2-set keyboard. A vowel that would make a syllable outside KS X 1001 is ignored; a final that would
+     do so commits the syllable and starts a new one.
 ```
 
 ## 6. Saves
@@ -384,6 +408,9 @@ Address notation
   $1E:F000-$1E:F7FF     tools/mkfont.py          glyph width table
   $1F:8000-$1F:D457     tools/mkfont.py          v1.1 font
   $20:8000-$35:AF66     tools/assemble.py        v1.1 script
+  $36:8000-$36:C01C     tools/namefont.py        v1.3 name glyphs (1,085)
+  $36:D000-             asm/nameentry.asm        v1.3 name entry code and tables (jamo tables, 2,350 syllable numbers and codes)
+  $02:D8BD-$02:D8C3     asm/nameentry.asm        trampoline to $02:B334
 
 ■ Zero runs (4KB or more) [verified: v1.2 ROM. Not a guarantee that they are free]
   $15:E52B-$16:8069, $16:AE4F-$16:FFFF, $18:81D0-$18:FFFF, $1A:96D1-$1A:FFFF, $1B:8F3A-$1B:EFFF,
