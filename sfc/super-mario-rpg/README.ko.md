@@ -43,7 +43,7 @@ v1.3 은 이름 입력 화면을 자모를 골라 조합하는 한 페이지 화
    ```
 
 2. asar 실행 파일을 `tools/asar` 에 둡니다.
-3. `build/test.sfc`(CRC32 `2CA10BBA`)를 빌드합니다.
+3. `build/test.sfc`(CRC32 `76E9D81D`)를 빌드합니다.
 
    ```sh
    zsh tools/make.sh

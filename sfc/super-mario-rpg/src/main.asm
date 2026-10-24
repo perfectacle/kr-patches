@@ -418,6 +418,7 @@ FsKeep:
     REP #$20
     LDA.w #!fs_slot_word
     STA $2116
+    LDA $2139           ; the read buffer refills before the address moves: the first word comes twice
     LDA.w #!fs_keep
     STA $4302
     LDA #$0200

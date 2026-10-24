@@ -29,7 +29,7 @@ v1.0 배포 글: https://blog.naver.com/perfectacle/220297115483
    · 대사 폰트 글자 2개(0x2490E8-0x2490FE 콰, 0x2494D8-0x2494EC 힐)
    · 메뉴 동적 글자: 248자 → 249자 (셸이 빠지고 힐·휠이 들어옴, 2장 "메뉴 폰트 코드표의 틀린 두 줄") 번호와 그림이 바뀜
  - v1.3은 이름 입력을 자모 조합식 한 페이지 화면으로 바꾸고, 메뉴 폰트에 없는 음절도 이름에 쓸 수 있게 했습니다(3장 끝).
-   결과 롬: CRC32 2CA10BBA / MD5 EF46E23AEBD234C320B5C6BD4C2CB328
+   결과 롬: CRC32 76E9D81D / MD5 2EC7FE7658BB9C45C595020AAB0AA063
  - 아래 주소 표기
    · $XX:YYYY = SFC 주소 (뱅크:주소)
    · 파일 0xNNNNNN = 헤더 없는 롬 파일 기준 오프셋
@@ -832,7 +832,7 @@ Super_Mario_RPG_K_v1_2_tools.zip
  - 롬 파일, asar, Mesen은 포함하지 않았습니다.
  - 빌드하려면 일본판 원본에 v1.0 IPS를 적용한 롬을 rom/smrpg_kr_v1.sfc로 두고
    asar 1.91 실행 파일을 tools/asar로 둔 뒤 zsh tools/make.sh 를 실행하시면 됩니다.
-   (결과 build/test.sfc, CRC32 2CA10BBA) 자세한 순서는 README.txt에 적었습니다.
+   (결과 build/test.sfc, CRC32 76E9D81D) 자세한 순서는 README.txt에 적었습니다.
  - tools/py/patchnote_compose.py는 macOS 시스템 폰트 경로를 쓰므로 다른 환경에서는 FONT 경로를 바꿔야 합니다.
  - 테스트 스크립트는 tools/Mesen.app (Mesen 2)과 test/states/의 세이브스테이트를 전제로 합니다.
    세이브스테이트는 포함하지 않았습니다.
