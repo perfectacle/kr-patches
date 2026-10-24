@@ -27,7 +27,7 @@ jobs:
         run: git ls-files -z '*.sh' | xargs -0 -n1 zsh -n
       - run: python -m pip install -r requirements.txt
       - name: Compile Python
-        run: python -m compileall -q snes
+        run: python -m compileall -q sfc
       - name: Check kr_patch imports
         run: |
           python - <<'PY'
@@ -47,5 +47,5 @@ jobs:
           sys.exit(1 if bad else 0)
           PY
       - name: Totsugeki-hen dialogue layout
-        working-directory: snes/dragon-ball-z-super-gokuden-totsugeki
+        working-directory: sfc/dragon-ball-z-super-gokuden-totsugeki
         run: python tools/layout1.py tables/v1.1/dialogue.tsv | tee /dev/stderr | tail -1 | grep -qx '0 lines with problems'
