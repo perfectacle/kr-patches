@@ -36,15 +36,18 @@ SYL_FREE = 4796
 # a menu-font character, or one of the commands; None is a gap the cursor skips.
 SPACE, BACK, DONE = 'SPACE', 'BACK', 'DONE'
 GRID = [
-    list('ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ') + [None],
-    list('ㅋㅌㅍㅎㄲㄸㅃㅆㅉ') + [None, None],
+    list('ㅃㅉㄸㄲㅆ') + [None, None, None] + list('ㅒㅖ') + [None],
+    list('ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ') + [None],
+    list('ㅁㄴㅇㄹㅎㅗㅓㅏㅣ') + [None, None],
+    list('ㅋㅌㅊㅍㅠㅜㅡ') + [None] * 4,
     [None] * 11,
-    list('ㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ') + [None],
-    list('ㅐㅒㅔㅖㅘㅙㅚㅝㅞㅟ') + [None],
-    ['ㅢ'] + [None] * 9 + [SPACE],
-    list(range(0x30, 0x3A)) + [BACK],
-    [0x3F, 0x24, 0x25, 0x40, 0x5B, 0x5D, 0x2C, 0x2B, 0x2F, None, DONE],
+    list(range(0x30, 0x3A)) + [SPACE],
+    [0x3F, 0x24, 0x25, 0x40, 0x5B, 0x5D, 0x2C, 0x2B, 0x2F, None, BACK],
+    [None] * 10 + [DONE],
 ]
+# The jamo rows follow the 2-set keyboard as Nintendo's Korean releases lay it
+# out (Pokémon DS/3DS): double consonants on the Shift row above, and no keys
+# for ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ, which are typed as two vowels.
 # Digits and symbols are menu-font codes checked against the glyphs (korTBL2's
 # punctuation lines do not match them): 0-9, then ? ♥ ♪ ★ - . , : /
 LABELS = {SPACE: '띄우기', BACK: '지우기', DONE: '완료'}

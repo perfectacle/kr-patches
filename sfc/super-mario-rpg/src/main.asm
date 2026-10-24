@@ -44,6 +44,7 @@ sa1rom
 !ne_vowel = $127E   ; medial of the vowel being typed
 !fs_cnt   = $1280   ; file-select slots in use * 2
 !fs_tab   = $1282   ; 16 words, name glyph held by each file-select slot
+!ne_key   = $12A4   ; code of the key just chosen
 
 !font_tmp = $F500   ; input/output buffer of the outline routine
 
