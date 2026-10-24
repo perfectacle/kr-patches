@@ -30,7 +30,7 @@ v1.0 release post: https://blog.naver.com/perfectacle/220297115483
    · menu dynamic glyphs: 248 → 249 (셸 removed, 힐 and 휠 added; section 2 "Two wrong lines in the menu font code table"), numbers and pictures changed
  - v1.3 turns name entry into a one-page screen that composes syllables from jamo, and lets names use syllables the menu font
    lacks (end of section 3).
-   Resulting ROM: CRC32 50F235C2 / MD5 EBEA0FEFBB509A9C7E1BCEFCCC763F19
+   Resulting ROM: CRC32 67C9DD4E / MD5 4FD2E3BF01149484A0EB19CE64094324
  - Address notation below
    · $XX:YYYY = SFC address (bank:address)
    · file 0xNNNNNN = offset in the headerless ROM file
@@ -463,8 +463,16 @@ After the data of dialogue bank $E2, the space is zero up to 0x230000 in the Jap
      $C3:40C1     grid drawing → NeInit (one-page jamo grid, state reset)
      $C3:4126     input → NeInput
      $C3:44D2     name drawing → NeDrawName (BG1, a fixed dynamic slot $60-$67 per name cell)
+     $C3:452D     landing of the flying key → NeLanded (draws the name)
      $C3:4A8F, $C3:4AB8   names on file select → FsPutName (BG3, 16-slot cache)
-   · Grid: 19 consonants, 21 vowels, 10 digits, 9 symbols; right column rows 5-7 = 띄우기 (space) / 지우기 (delete) / 완료 (done).
+   · Grid: the 2-set keyboard layout Nintendo's Korean releases use (name entry in Pokémon on DS and 3DS). Double consonants
+     sit on the Shift row above, and there are no keys for ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ (typed as two vowels). 33 jamo, 10 digits,
+     9 symbols; right column rows 5-7 = 띄우기 (space) / 지우기 (delete) / 완료 (done).
+       ㅃ ㅉ ㄸ ㄲ ㅆ       ㅒ ㅖ
+       ㅂ ㅈ ㄷ ㄱ ㅅ ㅛ ㅕ ㅑ ㅐ ㅔ
+       ㅁ ㄴ ㅇ ㄹ ㅎ ㅗ ㅓ ㅏ ㅣ
+       ㅋ ㅌ ㅊ ㅍ ㅠ ㅜ ㅡ
+     The cursor skips empty cells and starts on ㅂ.
      The cursor skips empty cells. The done cell is where the original's is (column $0A, row 7), so done calls the original $4413.
    · Composition follows the 2-set keyboard. Each jamo typed into the current syllable pushes a state (initial, medial, final)
      on !ne_stk, and B pops one. The syllable number s = (initial x 21 + medial) x 28 + final is binary-searched in NeKsSyl
@@ -475,7 +483,11 @@ After the data of dialogue bank $E2, the space is zero up to 0x230000 in the Jap
      · More than 8 bytes or 8 characters is refused. When full, the cursor goes to done (as in the original).
    · Glyphs: Galmuri11 Condensed 12px, 1bpp, 12 bytes x 2,401 = 28,812 bytes in 4 runs (section 9). They are spread to the
      2bpp (row, 0) form and run through the outline routine when drawn.
-   · The sprite that flew the chosen character to the name ($0964) is not used; the composed result shows in the name at once.
+   · The chosen key flies to the name with the original effect ($0964). NeFly fills the sprite tiles at $7E:F580 (4bpp upper
+     and lower) and enters $C3:434F (NMI upload request, start and target positions, 16 frames, sound). The target cell
+     $0929 is the syllable being composed, else the last character. Menu-font characters come from $7E:8000 as in the
+     original; jamo are name glyphs run through the outline routine. The landing at $C3:452D (originally JSR $43F3 /
+     JSR $4409) is replaced by NeLanded, which draws the name then. Space does not fly, as in the original.
    · The field menu glyph queue (Stage/NmiUpload) now holds a VRAM address and length per entry ($40 = two 4bpp tiles,
      $20 = two 2bpp tiles); !pslots holds VRAM word addresses instead of slot numbers, and !plen is new.
  - Free space check: read and execute callbacks on every candidate run while booting to file select and name entry and while
@@ -725,7 +737,7 @@ Addresses are as seen from the S-CPU. Checked by running the Korean ROM based on
  - Also used by v1.3 (0 in the Japanese ROM and in v1.2; checked with the read watch at the end of section 3)
 
   location                 use                                    left in the v1.3 ROM [verified]
-  $C3:E240-$C3:EFFF        name entry and file select code        1,567 bytes
+  $C3:E240-$C3:EFFF        name entry and file select code        1,419 bytes
   $DA:4DA0-$DA:7FFF        name glyphs 0-1,073                    9 bytes
   $DC:6506-$DC:7FFF        name glyphs 1,074-1,648                7 bytes
   $DD:EBE0-$DD:FFFF        name glyphs 1,649-2,077                5 bytes
@@ -824,7 +836,7 @@ Notes
  - ROM files, asar and Mesen are not included.
  - To build, put the Japanese original with the v1.0 IPS applied at rom/smrpg_kr_v1.sfc,
    put the asar 1.91 executable at tools/asar, and run zsh tools/make.sh.
-   (Result build/test.sfc, CRC32 05DBCBE6) The detailed steps are in README.txt.
+   (Result build/test.sfc, CRC32 67C9DD4E) The detailed steps are in README.txt.
  - tools/py/patchnote_compose.py uses a macOS system font path, so change the FONT path on other systems.
  - The test scripts assume tools/Mesen.app (Mesen 2) and the savestates in test/states/.
    The savestates are not included.

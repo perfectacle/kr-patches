@@ -28,6 +28,9 @@
 !fs_slots     = 16
 
 !ne_done      = $4413   ; original "done" handler: moves the cursor to 완료, or finishes
+!ne_fly       = $434F   ; original: sends the sprite tiles at $7E:F580 flying to name cell $0929
+!ne_fly_tiles = $F580   ; two 4bpp sprite tiles (upper, lower) the original builds from $7E:8000
+!menu_font    = $8000   ; converted menu font, 32 bytes per code from $20
 !play_sfx     = $7A47
 
 org $C340C1
@@ -38,6 +41,11 @@ org $C34126
 
 org $C344D2
     JMP NeDrawName      ; was the name drawing (LDX #$4158 / STX $62 / JSR $79C5 / ...)
+
+; End of the flying character: was JSR $43F3 (next position) / JSR $4409 (draw).
+org $C3452D
+    JSR NeLanded
+    NOP #3
 
 ; File select: the two places that draw a file's name after copying it to $0995.
 org $C34A8F
@@ -362,6 +370,11 @@ NeInit:
     STZ !ne_n
     STZ !ne_sp
     STZ !ne_gslot
+    SEP #$20
+    STZ $092A           ; cursor on ㅂ
+    LDA #$01
+    STA $092B
+    REP #$20
     LDA #$FFFF
     LDX #$000E
 -
@@ -587,6 +600,7 @@ NeSelect:
     SEP #$20
     RTS
 +
+    STA !ne_key
     CMP #!ne_cmd_done
     BNE +
     STZ !ne_sp
@@ -612,27 +626,96 @@ NeSelect:
     JSR NeSaveState
     JSR NeAddChar
 .check
-    BCS NeRefuse
+    BCS .refuse
     JSR NeLength
     CMP #$0009
-    BCS NeRefuse
+    BCS .refuse
     PHA
-    JSR NeRefresh
+    JSR NeSerialize
     PLA
     CMP #$0008
-    BNE .ok
+    BNE .fly
     LDA !ne_sp
-    BNE .ok
+    BNE .fly
     SEP #$20            ; full: go to 완료, as the original screen does
     LDA #$0A
     STA $092A
     LDA #$07
     STA $092B
-.ok
+.fly
+    REP #$30
+    LDA !ne_key
+    CMP #!ne_cmd_space
+    BNE NeFly
+    JSR NeDrawName      ; a space does not fly, as in the original
     SEP #$20
     LDA #!ne_sfx_ok
     STA $70
     JMP !play_sfx
+.refuse
+    JMP NeRefuse
+
+; Sends the chosen key flying to the cell that changed; the name is drawn when
+; it lands (NeLanded). The original routine plays the sound.
+NeFly:
+    LDA !ne_n           ; target cell: the syllable being composed, else the last character
+    LDX !ne_sp
+    BNE +
+    DEC
++
+    SEP #$20
+    STA $0929
+    REP #$20
+    LDA !ne_key
+    BIT #$8000
+    BNE .dynamic
+    SEC
+    SBC #$0020
+    ASL
+    ASL
+    ASL
+    ASL
+    ASL
+    TAY
+    LDX #$0000
+-
+    LDA !menu_font,Y
+    STA !ne_fly_tiles,X
+    STZ !ne_fly_tiles+16,X
+    LDA !menu_font+16,Y
+    STA !ne_fly_tiles+32,X
+    STZ !ne_fly_tiles+48,X
+    INY
+    INY
+    INX
+    INX
+    CPX #$0010
+    BCC -
+    BRA .go
+.dynamic
+    AND #$7FFF
+    JSR NeLoadGlyph
+    LDX #$0000
+-
+    LDA !font_tmp,X
+    STA !ne_fly_tiles,X
+    STZ !ne_fly_tiles+16,X
+    LDA !font_tmp+16,X
+    STA !ne_fly_tiles+32,X
+    STZ !ne_fly_tiles+48,X
+    INX
+    INX
+    CPX #$0010
+    BCC -
+.go
+    SEP #$20
+    JMP !ne_fly
+
+NeLanded:
+    PHP
+    JSR NeRefresh
+    PLP
+    RTS
 
 NeRefuse:
     JSR NeLoadState
@@ -661,6 +744,12 @@ NeBack:
 
 ; Writes the state to $0995, sets the arrow ($0929) and redraws the name.
 NeRefresh:
+    JSR NeSerialize
+    REP #$30
+    JMP NeDrawName
+
+; Writes the state to $0995 and sets the arrow ($0929).
+NeSerialize:
     REP #$30
     LDX #$0000
     LDY #$0000
@@ -700,7 +789,7 @@ NeRefresh:
 +
     STA $0929
     REP #$30
-    JMP NeDrawName
+    RTS
 
 ; In: A = code, X = offset in $0995 (known to fit). Out: X advanced.
 NeEmit:
