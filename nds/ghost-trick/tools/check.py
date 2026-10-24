@@ -59,13 +59,17 @@ def repaired(cs):
 
 
 def leftover_ja(ko, ja):
-    """한국어 대사에 남은 일본어 글자. 일본판과 똑같은 머리 부분은 뺀다: 제어 코드 사이에
-    낀 값이 우연히 가나 번호와 같아 글자로 읽히는 대사가 있다."""
+    """한국어 대사에 남은 일본어 글자. 제어 코드 사이에 낀 값이 우연히 가나 번호와 같아 글자로
+    읽히는 대사가 있어서, 일본판과 똑같은 머리 부분에서 앞뒤가 모두 제어 코드인 낱글자는 뺀다."""
     tk, tj = [m.group(0) for m in TOKEN.finditer(ko)], [m.group(0) for m in TOKEN.finditer(ja)]
     n = 0
     while n < min(len(tk), len(tj)) and tk[n] == tj[n]:
         n += 1
-    return [t for t in tk[n:] if len(t) == 1 and JA.match(t)]
+
+    def between_codes(i):
+        return 0 < i < n and i + 1 < len(tk) and tk[i - 1][0] == "{" and tk[i + 1][0] == "{"
+
+    return [t for i, t in enumerate(tk) if len(t) == 1 and JA.match(t) and not between_codes(i)]
 
 
 def check_row(ko, ja, base_ko, kc):
@@ -113,10 +117,16 @@ def main(jp_rom, v11_rom, script, proposal=None):
         if ps:
             bad += 1
             print("\t".join(key) + "\t" + " / ".join(ps))
-    if not proposal and len(targets) != len(ref):
-        missing = sorted(set(ref) - {(r["file"], r["run"], r["i"]) for r in targets})
-        print(f"{len(missing)} messages are not in {script}, first {missing[:1]}")
-        bad += len(missing)
+    keys = [(r["file"], r["run"], r["i"]) for r in targets]
+    dup = sorted({k for k in keys if keys.count(k) > 1}) if len(set(keys)) != len(keys) else []
+    if dup:
+        print(f"{len(dup)} messages appear more than once, first {dup[:1]}")
+        bad += len(dup)
+    if not proposal:
+        missing = sorted(set(ref) - set(keys))
+        if missing:
+            print(f"{len(missing)} messages are not in {script}, first {missing[:1]}")
+            bad += len(missing)
     print(f"# {bad} / {len(targets)} rows with problems", file=sys.stderr)
     return bad
 

@@ -14,13 +14,16 @@ from kr_patch.nds.rom import Rom, rebuild
 HERE = Path(__file__).resolve().parent.parent
 jp_path, src, dst, name, run, idx, text = sys.argv[1:8]
 kc = T.Codec(T.ko_table(HERE / "tables/low.tsv"))
+packed = name.endswith(".lz")
 rom = Rom(open(src, "rb").read())
 fid = rom.find(name)
-K, _ = lz11.decompress(rom.file(fid))
-w = lmg.code_words(K)
+K = rom.file(fid)
 # 묶음 범위는 일본판에서(다시 만든 롬은 묶음 끝 여유 칸이 0 이라 runs() 가 짧게 잡는다)
 jp = Rom(open(jp_path, "rb").read())
-J, _ = lz11.decompress(jp.file(jp.find(name)))
+J = jp.file(jp.find(name))
+if packed:
+    K, J = lz11.decompress(K)[0], lz11.decompress(J)[0]
+w = lmg.code_words(K)
 layout = [(a, b, lmg.locate(w, a, len(m))) for a, b, m in lmg.runs(J)]
 new = []
 for r, (a, b, msgs) in enumerate(layout):
@@ -31,5 +34,6 @@ for r, (a, b, msgs) in enumerate(layout):
             body = kc.encode(text)
         run_new.append((lmg.MSG, w[s + 1], w[s + 2]) + body + (lmg.END,))
     new.append(run_new)
-open(dst, "wb").write(rebuild(rom, {fid: lz11.compress(lmg.repack(K, layout, new))}))
+out = lmg.repack(K, layout, new)
+open(dst, "wb").write(rebuild(rom, {fid: lz11.compress(out) if packed else out}))
 print(dst)
