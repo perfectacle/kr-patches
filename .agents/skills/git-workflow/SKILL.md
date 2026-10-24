@@ -16,7 +16,7 @@ description: 코드·설정·문서를 바꾸기 전에(워크트리·브랜치)
    cd ../kr-patches-<짧은-설명>
    uv sync --locked
    ```
-   브랜치 종류는 `feat`·`fix`·`perf`·`refactor`·`chore`·`docs`. 이름만 보고 PR 성격을 알 수 있게 하려는 관례다. 원본 롬은 추적하지 않는 파일이라 새 워크트리에 없다. 빌드할 때는 원래 체크아웃의 롬을 같은 이름의 심볼릭 링크로 건다(`ln -s <원래 체크아웃>/snes/<게임>/<롬> snes/<게임>/`). 롬 확장자는 `.gitignore` 대상이라 링크도 추적되지 않고, 워크트리를 지워도 원본은 남는다. 워크트리 폴더는 저장소 옆에 `kr-patches-<짧은-설명>` 으로 둔다. 로컬 `main` 은 다른 세션이 쓰고 있을 수 있어 건드리지 않고 `origin/main` 에서 바로 딴다. 이후 모든 명령은 이 워크트리 안에서 실행한다.
+   브랜치 종류는 `feat`·`fix`·`perf`·`refactor`·`chore`·`docs`. 이름만 보고 PR 성격을 알 수 있게 하려는 관례다. 원본 롬은 추적하지 않는 파일이라 새 워크트리에 없다. 빌드할 때는 원래 체크아웃의 롬을 같은 이름의 심볼릭 링크로 건다(`ln -s <원래 체크아웃>/sfc/<게임>/<롬> sfc/<게임>/`). 롬 확장자는 `.gitignore` 대상이라 링크도 추적되지 않고, 워크트리를 지워도 원본은 남는다. 워크트리 폴더는 저장소 옆에 `kr-patches-<짧은-설명>` 으로 둔다. 로컬 `main` 은 다른 세션이 쓰고 있을 수 있어 건드리지 않고 `origin/main` 에서 바로 딴다. 이후 모든 명령은 이 워크트리 안에서 실행한다.
    완료: `git worktree list` 에 새 워크트리가 있고, 그 안에서 `git log -1 origin/main` 이 HEAD 와 같다.
 2. **커밋한다** — 작성자는 저장소 주인(`perfectacle <perfectacle@gmail.com>`)이다. 개인 저장소라 다른 계정이 기록에 섞이지 않게 한다. 전역 git 설정이 다르면 이 저장소에만 `git config user.email perfectacle@gmail.com` 을 둔다. 커밋은 perfectacle 계정에 등록된 키로 서명해야 한다. 서명이 없거나 GitHub 이 검증하지 못하면 push 가 거부된다. 메시지는 Conventional Commits 형식에 한국어로, 한 게임만 바꿨으면 범위를 붙이고(`fix(kakusei): …`), 첫 줄은 무엇을 바꿨는지, 본문은 왜 바꿨는지와 이전 문제를 쓴다.
    완료: `git log -1 --format='%an <%ae> %G?'` 가 주인 정보와 `G` 다.

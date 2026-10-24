@@ -17,7 +17,7 @@ import os
 
 import wave
 
-from kr_patch.snes.libretro import (AUD_CB, AUDB_CB, ENV_CB, IN_CB, LOG_CB, POLL_CB, VID_CB, AvInfo, GameInfo,
+from kr_patch.sfc.libretro import (AUD_CB, AUDB_CB, ENV_CB, IN_CB, LOG_CB, POLL_CB, VID_CB, AvInfo, GameInfo,
                                     LogIface, load_core, to_image)
 
 BUTTONS = {"b": 0, "y": 1, "select": 2, "start": 3, "up": 4, "down": 5, "left": 6, "right": 7,
