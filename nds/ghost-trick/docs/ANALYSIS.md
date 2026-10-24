@@ -31,7 +31,7 @@ number than in the Japanese ROM (fonts2bpp_new.imb: 16 in Japanese, 14 in v1.1).
 and replace files by path.
 150 of the 221 data files changed:
 
-  stNN/*_Expand.xml.lz (138)   dialogue scripts (LZ11). Same unpacked size, only the lines moved
+  stNN/*_Expand.xml.lz (143)   dialogue scripts (LZ11). Same unpacked size, only the lines moved
   system/database_0000_Expand.xml.bin, system/system_0000.msg.xml.bin
                                system messages and the notebook (uncompressed, same size)
   fonts2bpp_new.imb            dialogue font, 129,600 → 307,488 bytes (1,350 → 3,203 glyphs)
