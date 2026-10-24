@@ -1,9 +1,9 @@
-# [SFC] Super Mario RPG ROM analysis (Korean patch v1.1/v1.2 work notes)
+# [SFC] Super Mario RPG ROM analysis (Korean patch v1.1/v1.2/v1.3 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patches v1.1 and v1.2.
+The ROM structure and methods confirmed while working on the Korean patches v1.1, v1.2 and v1.3.
 A record so that anyone who analyses this ROM again or continues fixing this patch can pick up at the same addresses.
 Patch page: https://perfectacle.github.io/games/kr-patches/sfc/super-mario-rpg/#making
 v1.0 release post: https://blog.naver.com/perfectacle/220297115483
@@ -28,6 +28,9 @@ v1.0 release post: https://blog.naver.com/perfectacle/220297115483
    · name tables and code from $E2:B400: new code ($E2:FDE2-$E2:FF6C), 해피쉘 (Happy Shell), 파이어쉘 (Fire Shell), 힐쉘 (Heal Shell), 천둥콰르릉 (Thunderbolt)
    · 2 dialogue font glyphs (0x2490E8-0x2490FE 콰, 0x2494D8-0x2494EC 힐)
    · menu dynamic glyphs: 248 → 249 (셸 removed, 힐 and 휠 added; section 2 "Two wrong lines in the menu font code table"), numbers and pictures changed
+ - v1.3 turns name entry into a one-page screen that composes syllables from jamo, and lets names use syllables the menu font
+   lacks (end of section 3).
+   Resulting ROM: CRC32 50F235C2 / MD5 EBEA0FEFBB509A9C7E1BCEFCCC763F19
  - Address notation below
    · $XX:YYYY = SFC address (bank:address)
    · file 0xNNNNNN = offset in the headerless ROM file
@@ -420,6 +423,64 @@ After the data of dialogue bank $E2, the space is zero up to 0x230000 in the Jap
      are drawn too. On the first run only 힐셸 and 천둥콰르릉 differed; that is section 2 "Dialogue font code collision".
    · Tools: test/probe.lua (EXEC, ONCE); the script that changes the banner number and records character codes is test/banner_ids.lua;
      the comparison is tools/py/check_banner.py
+■ Name entry screen and file select screen (v1.3) [verified]
+ - The original name entry screen (main loop $C3:410D)
+   · Setup $C3:40A1: window frame ($C3:694E), the line "당신의 이름은?" (menu text 0x2A), the grid ($C3:4162), the name buffer
+     cleared to spaces, then the name drawn ($C3:44D2).
+   · The grid is 10 columns x 8 rows of characters plus a command column on the right. Cell tilemap offset =
+     $7E:4248 + row x $80 + column x 4, page 2 at +$800. Byte b of the grid table $C3:41CC is character b on page 1 and b + 1
+     on page 2 (the Japanese hiragana/katakana pairing). A works the code back out of the tile under the cursor:
+     (($7E:4000,X & $1FF) >> 1) + $20
+   · Command column (column $0A), rows 3-7, jump table $C3:42CD: space $4397, page $43D3, next $43AC, back $43C0, done $4413
+   · Cursor $092A (column) / $092B (row), name position $0929 (0-7), page $0935
+   · Input $C3:422E: up/down/left/right from $18; from $14 A and Y (enter), B (delete, $43B7), Select/L/R (page), Start ($4413)
+   · Sound $C3:7A47 ($70 = number): 1 enter, 2 delete, 3 cursor, $58 refusing an empty name ($C3:19B5)
+   · Name buffer $7E:0995, 8 bytes (space $20, cell count $0994). Done copies it to $7F:F8B5, which is saved at slot offset +$B5.
+     The default name "UNTITLED" is at $C3:48E8.
+   · Name drawing $C3:44D2: $62 = $4158, JSR $79C5. $79C5 writes the $0994 bytes of $0995 as tile (c - $20) x 2 with
+     attribute (($9D << 2) | $20) << 8, the lower row $9E bytes further on.
+ - The name only appears on the name entry screen and the file select screen.
+   · File select: $C3:4ACE copies 8 bytes from $40:00B5 + slot x $800 to $0995, and JSR $79C5 at $C3:4A8F and $C3:4AB8 draws them.
+     (Save slots are $800 bytes, with the complement of the byte sum at $7FC; section 8 "Save")
+   · The dialogue engine has a routine that copies $7F:F8B5 ($C0:6221), but the control code dispatch ($C0:5F1F) only sends
+     codes below $1D through the table ($C0:6860), so this entry ($20) is never reached.
+ - VRAM per screen (MesenCE register values; word address x 2 = byte)
+     screen        BG1 chr (4bpp)  BG2 chr         BG3 chr (2bpp)   layer the name is on
+     name entry    $2000           $6000           $A000            BG1 (BG2 only uses tiles $100-$1FC = $8000-$9F9F)
+     file select   $2000           $6000           $A000            BG3 (BG1 uses tile 0 and $202-$2EC, BG3 uses $1E0-$1F1)
+   So the name entry screen uses the field menu's dynamic slots (VRAM $6000-$7FFF, BG1 tiles from $200), and file select uses
+   BG3 tiles $1C0-$1DF right after its 2bpp menu font (VRAM $BC00-$BDFF, 16 glyphs).
+   The BG3 menu font has the same shape as the output of the outline routine $C3:6869 (2bpp upper and lower tiles).
+ - v1.3 name encoding (the save layout is unchanged)
+   · $20-$FF: a 1-byte menu-font code. Syllables the menu font has are always stored this way, so they match names in old saves.
+   · $01-$0A + low byte: name glyph n = (first byte - 1) x 256 + low byte
+     n < 51: compatibility jamo U+3131-U+3163, n = 51 + k: the k-th of the 2,350 KS X 1001 syllables (code point order)
+   · Only menu-font codes listed in data/tbl/menu_font_audit.txt (plus MENU_REUSE) are used. korTBL2's punctuation lines do not
+     match the glyphs ($21 is an icon, for example), so the grid's digits and symbols are codes checked against the glyphs:
+     $30-$39, $3F $24 $25 $40 $5B $5D $2C $2B $2F.
+ - v1.3 screen (src/name_entry.asm)
+     hook         contents
+     $C3:40C1     grid drawing → NeInit (one-page jamo grid, state reset)
+     $C3:4126     input → NeInput
+     $C3:44D2     name drawing → NeDrawName (BG1, a fixed dynamic slot $60-$67 per name cell)
+     $C3:4A8F, $C3:4AB8   names on file select → FsPutName (BG3, 16-slot cache)
+   · Grid: 19 consonants, 21 vowels, 10 digits, 9 symbols; right column rows 5-7 = 띄우기 (space) / 지우기 (delete) / 완료 (done).
+     The cursor skips empty cells. The done cell is where the original's is (column $0A, row 7), so done calls the original $4413.
+   · Composition follows the 2-set keyboard. Each jamo typed into the current syllable pushes a state (initial, medial, final)
+     on !ne_stk, and B pops one. The syllable number s = (initial x 21 + medial) x 28 + final is binary-searched in NeKsSyl
+     (2,350 entries, sorted).
+     · A vowel that would make a syllable outside the 2,350 (e.g. 쌰) is refused with sound $58.
+     · A consonant whose final would leave the 2,350 (e.g. 똠) commits the syllable and starts a new one: "또ㅁ".
+     · A vowel after a final moves the final (the second consonant of a double final) to the next syllable (닭 + ㅣ → 달기).
+     · More than 8 bytes or 8 characters is refused. When full, the cursor goes to done (as in the original).
+   · Glyphs: Galmuri11 Condensed 12px, 1bpp, 12 bytes x 2,401 = 28,812 bytes in 4 runs (section 9). They are spread to the
+     2bpp (row, 0) form and run through the outline routine when drawn.
+   · The sprite that flew the chosen character to the name ($0964) is not used; the composed result shows in the name at once.
+   · The field menu glyph queue (Stage/NmiUpload) now holds a VRAM address and length per entry ($40 = two 4bpp tiles,
+     $20 = two 2bpp tiles); !pslots holds VRAM word addresses instead of slot numbers, and !plen is new.
+ - Free space check: read and execute callbacks on every candidate run while booting to file select and name entry and while
+   going through menus, shops and battles from the 21 savestates in test/states. Only runs never read were used. The same check
+   showed that the run at $FD:D7FE (6,146 zero bytes) is read, so it was dropped.
 ```
 
 ## 4. Automatic particle selection
@@ -661,6 +722,18 @@ Addresses are as seen from the S-CPU. Checked by running the Korean ROM based on
   $E4:EDD8 etc.            249 dynamic glyphs                     100 glyphs (below)
   $FE:F61C-$FE:F6FF        lengthened menu text                   205 bytes from $FE:F633
 
+ - Also used by v1.3 (0 in the Japanese ROM and in v1.2; checked with the read watch at the end of section 3)
+
+  location                 use                                    left in the v1.3 ROM [verified]
+  $C3:E240-$C3:EFFF        name entry and file select code        1,567 bytes
+  $DA:4DA0-$DA:7FFF        name glyphs 0-1,073                    9 bytes
+  $DC:6506-$DC:7FFF        name glyphs 1,074-1,648                7 bytes
+  $DD:EBE0-$DD:FFFF        name glyphs 1,649-2,077                5 bytes
+  $F7:B5E8-$F7:E001        name glyphs 2,078-2,400                6,903 bytes
+  $FA:ED44-$FA:FFFF        NeKsSyl (2,350 syllable numbers)       96 bytes
+  $D5:EFEB-$D5:FFFF        NeKsStatic, jamo tables, grid, labels  1,267 bytes
+  $C3:F000-$C3:F3FF has 238 bytes left after the glyph queue change.
+
  - Dynamic glyphs fill the four FREE_RUNS stretches of tools/build.py in order.
    File 0x24EDD8 (4,648 bytes) is full, and 0x2511C2 (1,601 bytes) is used up to 0x251701.
    What remains is 10 glyphs from 0x251702, 61 glyphs at 0x252534 (1,484 bytes) and 29 glyphs at 0x251D48 (697 bytes). [computed]
@@ -691,6 +764,9 @@ Addresses are as seen from the S-CPU. Checked by running the Korean ROM based on
    If dialogue needs more new characters, more unused 2-byte codes must be found with textusage.py.
  - The field menu has 128 dynamic glyph cells, and at most 12 glyphs are collected in WRAM at a time.
  - Name length: 10 characters for items and specials, 8 for enemies (the cell sizes of the original tables)
+ - Player name: 8 bytes. Syllables and jamo the menu font lacks take 2 bytes, so a name of only those has 4 characters.
+   Syllables outside the 2,350 KS X 1001 syllables cannot be made.
+   A name with 2-byte characters entered in v1.3 looks garbled on the file select screen of v1.2 and earlier (play is unaffected).
  - No free space to move the battle message and "what's on your mind" text into was found, so they only grew into the 0 bytes after each string.
  - The menu text area contains data no pointer points to, so its strings must not be moved.
 
@@ -725,6 +801,8 @@ Super_Mario_RPG_K_v1_2_tools.zip
  - tools/py/dis65816.py      : a simple 65816 disassembler
  - tools/make_harness.sh, make_states.sh, run_seq.sh, test_menu.sh : test ROMs, savestates, Mesen runs
  - src/main.asm              : all hook code (asar)
+ - src/name_entry.asm        : name entry and file select screens (v1.3)
+ - tools/py/name_entry.py    : name glyphs, jamo and syllable tables, grid (v1.3)
  - test/harness/harness.asm  : test-only dialogue substitution hook
  - test/lib.lua, seq.lua, poke_state.lua, warp_seq.lua : Mesen 2 test scripts
  - test/probe.lua            : execution point logging, value forcing, memory correspondence comparison (section 8)

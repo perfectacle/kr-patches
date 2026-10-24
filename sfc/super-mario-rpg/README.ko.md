@@ -1,10 +1,11 @@
-# 슈퍼 마리오 RPG(SFC) 한글패치 v1.2
+# 슈퍼 마리오 RPG(SFC) 한글패치 v1.3
 
 [English](README.md) | 한국어
 
-일본판 슈퍼 패미콤 *슈퍼 마리오 RPG* 한글패치 v1.2 의 소스입니다. v1.2 는 한글판
+일본판 슈퍼 패미콤 *슈퍼 마리오 RPG* 한글패치 v1.3 의 소스입니다. v1.3 은 한글판
 v1.0 패치 위에 빌드합니다. 아이템·스페셜·적 이름을 바꾸고, v1.0 대사에 남아
-있던 영어 아이템 이름을 다시 쓰고, 전투 결과 창과 그 밖의 메뉴를 고칩니다.
+있던 영어 아이템 이름을 다시 쓰고, 전투 결과 창과 그 밖의 메뉴를 고칩니다(v1.2 까지).
+v1.3 은 이름 입력 화면을 자모를 골라 조합하는 한 페이지 화면으로 바꿨습니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/super-mario-rpg/>
 
@@ -42,7 +43,7 @@ v1.0 패치 위에 빌드합니다. 아이템·스페셜·적 이름을 바꾸�
    ```
 
 2. asar 실행 파일을 `tools/asar` 에 둡니다.
-3. `build/test.sfc`(CRC32 `05DBCBE6`)를 빌드합니다.
+3. `build/test.sfc`(CRC32 `50F235C2`)를 빌드합니다.
 
    ```sh
    zsh tools/make.sh
@@ -52,13 +53,13 @@ v1.0 패치 위에 빌드합니다. 아이템·스페셜·적 이름을 바꾸�
    만들었으므로, 결과가 바이트 단위로 같도록 그 값을 그대로 씁니다.
 
    ```sh
-   ../../.venv/bin/krpatch ips make --gap 7 rom/smrpg_jp.sfc build/test.sfc v1.2.ips --headered v1.2_headered.ips
+   ../../.venv/bin/krpatch ips make --gap 7 rom/smrpg_jp.sfc build/test.sfc v1.3.ips --headered v1.3_headered.ips
    ```
 
 `tools/make.sh` 가 돌리는 것:
 
 - `tools/build.py`: 이름 표, 동적 글리프, 다시 쓰는 대사 폰트 코드, 레벨업·
-  스페셜 화면 문자열(`build/`).
+  스페셜 화면 문자열, 이름 입력 화면의 글리프·표(`tools/py/name_entry.py`)(`build/`).
 - `tools/py/dlg_rewrite.py`: 다시 쓴 대사를 담은 `build/dialogue.asm`.
 - v1.0 롬 사본에 asar `--fix-checksum=on src/main.asm`.
 - `tools/py/check_menu_names.py`: 모든 이름을 메뉴가 그리는 글리프와
@@ -70,11 +71,11 @@ v1.0 패치 위에 빌드합니다. 아이템·스페셜·적 이름을 바꾸�
 
 | 경로 | 내용 |
 | --- | --- |
-| `src/main.asm` | 패치(asar) |
+| `src/main.asm`, `src/name_entry.asm` | 패치(asar), 이름 입력·파일 선택 화면 |
 | `data/` | 이름, 대사 수정, 코드표(`data/tbl/korTBL*.tbl` 은 v1.0 코드표) |
 | `tools/build.py`, `tools/py/` | 빌드 단계, 텍스트 덤프·검증, 패치 노트 스크린샷 |
-| `tools/*.sh` | 빌드, 테스트 롬, Mesen 2 테스트 실행 |
-| `test/` | 테스트 전용 asar 훅(`test/harness/`), 이 게임용 Mesen 2 스크립트, 픽스처 |
+| `tools/*.sh` | 빌드, 테스트 롬, MesenCE 테스트 실행 |
+| `test/` | 테스트 전용 asar 훅(`test/harness/`), 이 게임용 MesenCE 스크립트, 픽스처 |
 | `compat/` | 여러 에뮬레이터에 같은 입력 재생(`compat/run_all.sh`) |
 | `v1.0/` | 빌드의 출발점인 v1.0 패치 |
 | `tools/fonts/galmuri/` | Galmuri 글꼴(SIL Open Font License 1.1, `LICENSE.txt`) |
@@ -84,9 +85,9 @@ v1.0 패치 위에 빌드합니다. 아이템·스페셜·적 이름을 바꾸�
 - `tools/make.sh` 가 `check_menu_names.py` 를 돌립니다. 에뮬레이터는 필요
   없습니다.
 - `tools/test_menu.sh`, `tools/run_seq.sh`, `tools/make_states.sh` 와 패치 노트
-  스크립트는 `tools/Mesen.app` 의 Mesen 2 와 `test/states/*.mss` 세이브
+  스크립트는 `tools/Mesen.app` 의 MesenCE 와 `test/states/*.mss` 세이브
   스테이트가 필요하며, 이것들은 들어 있지 않습니다.
-- 범용 Mesen 2 스크립트(`lib.lua`, `seq.lua`, `poke_state.lua`, `script.lua`,
+- 범용 MesenCE 스크립트(`lib.lua`, `seq.lua`, `poke_state.lua`, `script.lua`,
   `dumpsrm.lua`)는 툴킷에서 가져옵니다.
   `LIBDIR=$(../../.venv/bin/krpatch sfc lua)` 로 실행하세요. `test/` 에 있는 이
   게임용 스크립트(`probe.lua`, `banner_ids.lua`, `warp_seq.lua`)도 같은
