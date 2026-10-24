@@ -1,10 +1,11 @@
-# 제절초(SFC) 한글패치 v1.2
+# 제절초(SFC) 한글패치 v1.3
 
 [English](README.md) | 한국어
 
 일본판 슈퍼 패미콤 *제절초* 한글패치의 소스입니다. v1.1 은 한글판
 v1.0 패치 위에 대본과 폰트를 다시 만들고, v1.2 는 v1.1 롬에 장 선택과 엔딩
-목록을 더합니다.
+목록을 더하고, v1.3 은 v1.2 롬의 이름 입력을 자모를 골라 조합하는 화면으로
+바꿉니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/otogirisou/>
 
@@ -35,11 +36,14 @@ v1.0 패치 위에 대본과 폰트를 다시 만들고, v1.2 는 v1.1 롬에 �
 | `zsh tools/release.sh` | v1.1 빌드와 `release/v1.1/*.ips`(헤더 없는 롬용과 512바이트 헤더용) |
 | `zsh tools/build-v1.2.sh` | v1.1 빌드 위에 `build/otogirisou-kr-v1.2.sfc` |
 | `zsh tools/release-v1.2.sh` | `release/v1.2/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `2C31A0B2` |
+| `zsh tools/build-v1.3.sh` | v1.2 빌드 위에 `build/otogirisou-kr-v1.3.sfc` |
+| `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `DAE98F06` |
 
-배포한 v1.2 패치를 그대로 다시 만들려면:
+배포한 v1.2·v1.3 패치를 그대로 다시 만들려면:
 
 ```sh
 zsh tools/build.sh && zsh tools/release-v1.2.sh
+zsh tools/build.sh && zsh tools/release-v1.3.sh
 ```
 
 첫 빌드는 가진 롬에서 일본어 대본을 `tables/script-jp.txt`(`tables/script.txt`
@@ -55,6 +59,9 @@ zsh tools/build.sh && zsh tools/release-v1.2.sh
 - 새 글자: v1.0 폰트에 없는 글자는 경고가 나옵니다. `tables/newglyphs.json` 에
   그려 넣으세요. `tools/glyph_workbench.py` 는 v1.0 글리프를 보여 주고 다른
   글리프의 부분을 모아 새 글리프를 만듭니다(`build/v1.0.sfc` 필요).
+- v1.3 이름 입력: 자모 쪽 배치와 새 글자(완성형 중 폰트에 없는 음절, 호환 자모)는
+  `tools/namefont.py`, 코드는 `asm/nameentry.asm` 에 있습니다. 새 글자는 Galmuri11 로
+  그리고 뱅크 $36 에 둡니다.
 - v1.2 추가 기능: 장은 `tables/qol-chapters.tsv`, 엔딩은
   `tables/qol-endings.tsv` 에 있습니다. 데이터는 `tools/qol.py`(뱅크 $1B)와
   `tools/flow.py`(뱅크 $1C), 코드는 `asm/qol.asm` 과 `asm/flow.asm` 에 있습니다.
