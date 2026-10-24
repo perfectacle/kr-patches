@@ -37,7 +37,7 @@ Requirements: the repository's Python environment (see the top-level README),
 | `zsh tools/build-v1.2.sh` | `build/otogirisou-kr-v1.2.sfc`, on top of the v1.1 build |
 | `zsh tools/release-v1.2.sh` | `release/v1.2/*.ips` (plain and 512-byte header), CRC32 `2C31A0B2` |
 | `zsh tools/build-v1.3.sh` | `build/otogirisou-kr-v1.3.sfc`, on top of the v1.2 build |
-| `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips` (plain and 512-byte header), CRC32 `112F8D8A` |
+| `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips` (plain and 512-byte header), CRC32 `3258FDFC` |
 
 To reproduce the released v1.2 and v1.3 patches:
 

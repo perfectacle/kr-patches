@@ -28,7 +28,7 @@ Address notation
   v1.0 (Japanese + v1.0 IPS)    2MB         C70A8E66
   v1.1                          2MB         27EE014E  (MD5 F45317CFAAAB68CCA5D8984AF8452535)
   v1.2                          2MB         2C31A0B2  (MD5 CD48C59B3B80D6C9E3C648E8BDD5A4E0)
-  v1.3                          2MB         112F8D8A  (MD5 3721316240287F89CB269D5B319B2B95)
+  v1.3                          2MB         3258FDFC  (MD5 84A82E0A88BF2EC9FAAA243C823D90E9)
 
  - Rebuilding v1.2 with the included tools gives the same CRC32.
 
@@ -339,6 +339,14 @@ Address notation
  - v1.3 (asm/nameentry.asm, tools/namefont.py)
    · Hangul page 1 ($02:AAB4) is now the 2-set jamo page (consonant block on top, vowel block below, each with its Shift row above it).
    · $02:B114 and $02:B12F: left/right on the Hangul button no longer turn pages (right enters the grid). $02:B5C5 page number NOP, ◀▶ tiles become button face
+   · The menu order is 한글, 영문자, 숫자. The menu index is the page number, so entries 0 and 2 of the page pointer tables
+     $02:B18E and $02:B849 swap, and the first page drawn ($02:B5CC) is the jamo page. $02:B585-$02:B5B8 set x, y and the string
+     ($02:A9CA 영문자, $A9D4 숫자, $A9DE 한글) of each button label, so their order and x change. x $44 for 한글 is where the first
+     letter of 숫자 (which starts with a blank) lands.
+   · The grid cursor skips empty cells on every page ($02:B1D8, $B1ED, $B20A, $B220 → NeUp, NeDown, NeRight, NeLeft). Up/down
+     go to the next cell in the same column, or if the column has none, the nearest cell of the next row that has one (left on
+     a tie). Left with no cell to the left goes to the menu. Entering the grid ($02:B15D) moves the cursor to the top left if
+     its cell is empty on that page.
    · $02:B282: A on the Hangul page -> NeA. The composing states (initial, medial, final for each jamo typed) are stacked in WRAM $7F:E000,
      and the syllable being composed is always the last code of the name. Every write goes through $02:B334 (trampoline $02:D8BD);
      replacing the last character means decrementing $1AA3 and appending again.

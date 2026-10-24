@@ -30,12 +30,16 @@ incsrc "../build/name_defs.asm"
 !vowel = $E02A              ; its medial
 !lastn = $E02C              ; name count and last code after our last write, to tell
 !lastc = $E02E              ; whether the name still ends in the syllable we were composing
+!dir   = $7FE030            ; cursor moves: row step ($0100 down, $FF00 up)
+!row   = $7FE034
+!col   = $7FE036
+!dist  = $7FE038
 
 ; Font decoder: the bank of the glyph data was always $1F (LDA #$1F / STA $16).
 org $00A56C
     JSL NeBank
 
-; Hangul page: left/right on the 한글 button no longer turns pages; right enters the grid.
+; Left/right on the menu no longer turn Hangul pages; right enters the grid.
 org $02B114
     db $80                  ; BNE $B123 -> BRA: left does nothing
 org $02B12F
@@ -53,6 +57,41 @@ org $07E513
     db $27                  ; ◀ lower half
 org $07E516
     db $2C                  ; ▶ lower half
+
+; Menu order 한글, 영문자, 숫자, so the screen opens on the jamo page: the page tables (the
+; menu index is the page number) and the labels swap places. 한글 lines up with 숫자, whose
+; string starts with a blank.
+org $02B18E
+    dw !ne_page1, $A9E4, $AA4C
+org $02B849
+    dw !ne_page1, $A9E4, $AA4C
+org $02B5CC
+    dw !ne_page1            ; first page drawn
+org $02B586
+    dw $0044                ; x of the top label
+org $02B592
+    dw $A9DE                ; 한글
+org $02B598
+    dw $0035
+org $02B5A4
+    dw $A9CA                ; 영문자
+org $02B5AA
+    dw $0038
+org $02B5B6
+    dw $A9D4                ; 숫자
+
+; The grid cursor skips empty cells on every page.
+org $02B15D
+    JML NeEnter             ; entering the grid
+    NOP
+org $02B1D8
+    JML NeUp
+org $02B1ED
+    JML NeDown
+org $02B20A
+    JML NeRight
+org $02B220
+    JML NeLeft
 
 ; A on the grid, after its sound (JSL $00965D)
 org $02B282
@@ -91,8 +130,7 @@ NeA:
     JSL $00965D
     REP #$30
     LDA $1AA7
-    CMP #$0002
-    BNE .orig
+    BNE .orig               ; page 0 = the jamo page
     LDA $1A9F
     CMP #$0A00
     BCS .orig               ; bottom row: ← 한칸 띄어쓰기 END
@@ -147,6 +185,148 @@ NeDel:
     PLB
     LDA $1AA3
     JML $02B242             ; BEQ / DEC / ... of the original
+
+; Cursor moves. $1A9F = column, $1AA0 = row; row $0A is the command row (columns 1-4).
+; In: A = row/column like $1A9F. Out: carry set if the cursor may stop there. A is kept.
+NeCell:
+    PHA
+    CMP #$0A00
+    BCC .grid
+    AND #$00FF
+    CMP #$0001
+    PLA
+    RTS
+.grid
+    XBA
+    AND #$00FF
+    STA $10
+    ASL
+    ASL
+    ADC $10
+    STA $10
+    LDA $01,S
+    AND #$00FF
+    CLC
+    ADC $10
+    ASL
+    TAY
+    LDA $1AA7
+    ASL
+    TAX
+    LDA.l $02B849,X
+    STA $10
+    SEP #$20
+    LDA #$02
+    STA $12
+    REP #$20
+    LDA [$10],Y
+    CMP #$0001
+    PLA
+    RTS
+
+NeEnter:
+    INC $1AA1
+    STZ $CC
+    LDA $1A9F
+    JSR NeCell
+    BCS +
+    STZ $1A9F               ; the cell is empty on this page: start at the top left
++
+    JML $02B162             ; RTS
+
+NeRight:
+    LDA $1A9F
+-
+    INC
+    PHA
+    AND #$00FF
+    CMP #$0005
+    PLA
+    BCS .stay
+    JSR NeCell
+    BCC -
+    STA $1A9F
+.stay
+    JML $02B1D0             ; RTS
+
+NeLeft:
+    LDA $1A9F
+-
+    BIT #$00FF
+    BEQ .menu               ; nothing to the left: back to the menu, as from column 0
+    DEC
+    JSR NeCell
+    BCC -
+    STA $1A9F
+    BIT #$00FF
+    BNE +
+    JSL $0092F7
++
+    JML $02B1D0
+.menu
+    JML $02B260
+
+NeUp:
+    LDA #$FF00
+    BRA NeVert
+NeDown:
+    LDA #$0100
+; The next cell in the same column; if the column has none, the nearest cell of the next
+; row that has one (left first on a tie).
+NeVert:
+    STA.l !dir
+    LDA $1A9F
+-
+    CLC
+    ADC.l !dir
+    CMP #$0B00
+    BCS .near               ; past the command row, or above row 0
+    JSR NeCell
+    BCC -
+    BRA .found
+.near
+    LDA $1A9F
+    AND #$00FF
+    STA.l !col
+    LDA $1A9F
+.row
+    AND #$FF00
+    CLC
+    ADC.l !dir
+    CMP #$0B00
+    BCS .stay
+    STA.l !row
+    LDA #$0001
+    STA.l !dist
+.try
+    LDA.l !col
+    SEC
+    SBC.l !dist
+    BMI +
+    ORA.l !row
+    JSR NeCell
+    BCS .found
++
+    LDA.l !col
+    CLC
+    ADC.l !dist
+    CMP #$0005
+    BCS +
+    ORA.l !row
+    JSR NeCell
+    BCS .found
++
+    LDA.l !dist
+    INC
+    STA.l !dist
+    CMP #$0005
+    BCC .try
+    LDA.l !row
+    BRA .row
+.found
+    STA $1A9F
+.stay
+    JML $02B1D0
 
 ; DB = $7F from here on; game variables are read long.
 
