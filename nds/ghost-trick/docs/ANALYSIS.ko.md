@@ -30,7 +30,7 @@ arm9·arm7·오버레이는 그대로다. 코드는 고치지 않고 데이터�
 (예: fonts2bpp_new.imb 일본판 16번 → v1.1 14번). 비교·교체는 항상 경로 이름으로 한다.
 data 파일 221개 가운데 150개가 바뀌었다.
 
-  stNN/*_Expand.xml.lz 138개   대사 스크립트(LZ11). 푼 크기는 일본판과 같고 대사 위치만 밀림
+  stNN/*_Expand.xml.lz 143개   대사 스크립트(LZ11). 푼 크기는 일본판과 같고 대사 위치만 밀림
   system/database_0000_Expand.xml.bin, system/system_0000.msg.xml.bin
                                시스템 메시지·수첩(무압축, 크기 같음)
   fonts2bpp_new.imb            대사 폰트, 129,600 → 307,488 바이트(1,350자 → 3,203자)
