@@ -5,6 +5,7 @@
 스크립트 파일은 일본판에서 다시 만든다: 묶음마다 TSV 의 한국어 대사를 이어 쓰고,
 옮겨 간 대사를 가리키는 포인터·레이블을 고친다(lmg.repack). 대사 머리(FF2D 두 인수)는
 일본판 값을 쓴다. 출발점(BASE)은 v1.1 롬이라 스크립트 밖 데이터(폰트·그래픽)는 v1.1 그대로다.
+다만 타이틀 화면의 v1.1 안내·제작자 문구는 지운다(title.py).
 다시 만든 스크립트가 출발점과 같으면 출발점의 압축 바이트를 그대로 둔다.
 """
 import csv
@@ -12,6 +13,7 @@ from pathlib import Path
 
 import lmg
 import textcodec as T
+import title
 from kr_patch import lz11
 from kr_patch.nds.rom import Rom, rebuild
 
@@ -56,6 +58,9 @@ def build(jp_rom, base_rom, script, out=None):
         if K2 != K:
             files[fid] = lz11.compress(K2) if packed else K2
             changed.append(name)
+    fid = base.find(title.CPAC)
+    files[fid] = title.clean(jp.file(jp.find(title.CPAC)), base.file(fid))
+    changed.append(title.CPAC)
     data = rebuild(base, files)
     if out:
         Path(out).write_bytes(data)
