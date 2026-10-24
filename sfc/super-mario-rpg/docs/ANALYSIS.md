@@ -30,7 +30,7 @@ v1.0 release post: https://blog.naver.com/perfectacle/220297115483
    · menu dynamic glyphs: 248 → 249 (셸 removed, 힐 and 휠 added; section 2 "Two wrong lines in the menu font code table"), numbers and pictures changed
  - v1.3 turns name entry into a one-page screen that composes syllables from jamo, and lets names use syllables the menu font
    lacks (end of section 3).
-   Resulting ROM: CRC32 2CA10BBA / MD5 EF46E23AEBD234C320B5C6BD4C2CB328
+   Resulting ROM: CRC32 76E9D81D / MD5 2EC7FE7658BB9C45C595020AAB0AA063
  - Address notation below
    · $XX:YYYY = SFC address (bank:address)
    · file 0xNNNNNN = offset in the headerless ROM file
@@ -839,7 +839,7 @@ Notes
  - ROM files, asar and Mesen are not included.
  - To build, put the Japanese original with the v1.0 IPS applied at rom/smrpg_kr_v1.sfc,
    put the asar 1.91 executable at tools/asar, and run zsh tools/make.sh.
-   (Result build/test.sfc, CRC32 2CA10BBA) The detailed steps are in README.txt.
+   (Result build/test.sfc, CRC32 76E9D81D) The detailed steps are in README.txt.
  - tools/py/patchnote_compose.py uses a macOS system font path, so change the FONT path on other systems.
  - The test scripts assume tools/Mesen.app (Mesen 2) and the savestates in test/states/.
    The savestates are not included.

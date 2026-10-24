@@ -45,7 +45,7 @@ Requirements: the repository's Python environment (see the top-level README),
    ```
 
 2. Put the asar executable at `tools/asar`.
-3. Build `build/test.sfc` (CRC32 `2CA10BBA`):
+3. Build `build/test.sfc` (CRC32 `76E9D81D`):
 
    ```sh
    zsh tools/make.sh
