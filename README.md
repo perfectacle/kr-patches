@@ -14,7 +14,7 @@ header title, CRC32 and SHA-1.
 
 | Game | Patch | Base ROM (header title, CRC32) |
 | --- | --- | --- |
-| [Super Mario RPG](sfc/super-mario-rpg/) | v1.2 | `SUPER MARIO RPG`, `5527071E` |
+| [Super Mario RPG](sfc/super-mario-rpg/) | v1.3 | `SUPER MARIO RPG`, `5527071E` |
 | [Otogirisou](sfc/otogirisou/) | v1.2 | `OTOGIRISOU`, `8E4BEFD0` |
 | [Dragon Ball Z: Super Gokuden – Totsugeki-hen](sfc/dragon-ball-z-super-gokuden-totsugeki/) | v1.2 | `SFX DBZ TOTSUGEKIHEN`, `D531289B` |
 | [Dragon Ball Z: Super Gokuden – Kakusei-hen](sfc/dragon-ball-z-super-gokuden-kakusei/) | v1.3 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |

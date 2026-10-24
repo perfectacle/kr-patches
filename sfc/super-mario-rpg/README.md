@@ -1,11 +1,13 @@
-# Super Mario RPG (SFC) Korean patch v1.2
+# Super Mario RPG (SFC) Korean patch v1.3
 
 English | [한국어](README.ko.md)
 
-Source of the Korean translation patch v1.2 for the Japanese *Super Mario RPG*
-(Super Famicom). v1.2 is built on top of the Korean v1.0 patch: it
+Source of the Korean translation patch v1.3 for the Japanese *Super Mario RPG*
+(Super Famicom). v1.3 is built on top of the Korean v1.0 patch: it
 replaces the item, special and enemy names, rewrites the English item names
-left in v1.0's dialogue, and fixes the battle result window and other menus.
+left in v1.0's dialogue, and fixes the battle result window and other menus
+(up to v1.2). v1.3 turns the name entry screen into a single page where names
+are composed from jamo.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/super-mario-rpg/>
 
@@ -43,7 +45,7 @@ Requirements: the repository's Python environment (see the top-level README),
    ```
 
 2. Put the asar executable at `tools/asar`.
-3. Build `build/test.sfc` (CRC32 `05DBCBE6`):
+3. Build `build/test.sfc` (CRC32 `50F235C2`):
 
    ```sh
    zsh tools/make.sh
@@ -53,13 +55,14 @@ Requirements: the repository's Python environment (see the top-level README),
    a record gap of 7; keep it so the output stays byte-identical:
 
    ```sh
-   ../../.venv/bin/krpatch ips make --gap 7 rom/smrpg_jp.sfc build/test.sfc v1.2.ips --headered v1.2_headered.ips
+   ../../.venv/bin/krpatch ips make --gap 7 rom/smrpg_jp.sfc build/test.sfc v1.3.ips --headered v1.3_headered.ips
    ```
 
 `tools/make.sh` runs:
 
-- `tools/build.py`: name tables, dynamic glyphs, reused dialogue-font codes and
-  the level-up/special screen strings (`build/`).
+- `tools/build.py`: name tables, dynamic glyphs, reused dialogue-font codes,
+  the level-up/special screen strings, and the name entry screen's glyphs and
+  tables (`tools/py/name_entry.py`) (`build/`).
 - `tools/py/dlg_rewrite.py`: `build/dialogue.asm` with the rewritten dialogue.
 - asar `--fix-checksum=on src/main.asm` on a copy of the v1.0 ROM.
 - `tools/py/check_menu_names.py`: checks every name against the glyphs the menus
@@ -71,11 +74,11 @@ Set `PYTHON` (and `KRPATCH` for the test scripts) to use another environment.
 
 | Path | Contents |
 | --- | --- |
-| `src/main.asm` | the patch (asar) |
+| `src/main.asm`, `src/name_entry.asm` | the patch (asar), name entry and file select screens |
 | `data/` | names, dialogue fixes, code tables (`data/tbl/korTBL*.tbl` are the v1.0 tables) |
 | `tools/build.py`, `tools/py/` | build steps, text dump/verification, patch-note screenshots |
-| `tools/*.sh` | build, test ROMs, Mesen 2 test runs |
-| `test/` | test-only asar hooks (`test/harness/`), game-specific Mesen 2 scripts, fixtures |
+| `tools/*.sh` | build, test ROMs, MesenCE test runs |
+| `test/` | test-only asar hooks (`test/harness/`), game-specific MesenCE scripts, fixtures |
 | `compat/` | the same input on several emulators (`compat/run_all.sh`) |
 | `v1.0/` | the v1.0 patch the build starts from |
 | `tools/fonts/galmuri/` | Galmuri font (SIL Open Font License 1.1, `LICENSE.txt`) |
@@ -84,9 +87,9 @@ Set `PYTHON` (and `KRPATCH` for the test scripts) to use another environment.
 
 - `tools/make.sh` runs `check_menu_names.py`; no emulator needed.
 - `tools/test_menu.sh`, `tools/run_seq.sh`, `tools/make_states.sh` and the
-  patch-note scripts need Mesen 2 at `tools/Mesen.app` and save states under
+  patch-note scripts need MesenCE at `tools/Mesen.app` and save states under
   `test/states/*.mss`, which are not included.
-- Generic Mesen 2 scripts (`lib.lua`, `seq.lua`, `poke_state.lua`, `script.lua`,
+- Generic MesenCE scripts (`lib.lua`, `seq.lua`, `poke_state.lua`, `script.lua`,
   `dumpsrm.lua`) come from the toolkit: run them with
   `LIBDIR=$(../../.venv/bin/krpatch sfc lua)`. The game's own scripts in `test/`
   (`probe.lua`, `banner_ids.lua`, `warp_seq.lua`) take the same `LIBDIR`.

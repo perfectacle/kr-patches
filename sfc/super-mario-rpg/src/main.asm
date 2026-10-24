@@ -19,10 +19,31 @@ sa1rom
 !ptr    = $0C0A
 !lock   = $0C0C     ; nonzero while Stage is filling an entry; NMI must wait
 !hcnt   = $0C12     ; dynamic glyphs placed for the held-item name
-!pslots = $0C20     ; slot number of each staged glyph (12 words)
+!pslots = $0C20     ; VRAM word address of each staged glyph (12 words)
 !table  = $0C40     ; glyph index held by each slot (128 words)
 !stage  = $0D40     ; 12 staged glyphs x 64 bytes (two 4bpp tiles)
 !stagemax = 12
+!plen   = $1040     ; byte count of each staged glyph (12 words)
+!tmpq   = $1058
+!tmpl   = $105A
+; Name entry and file select (src/name_entry.asm)
+!ne_n     = $1200   ; characters committed
+!ne_ch    = $1202   ; 8 words, their codes (menu-font code, or $8000 | name glyph)
+!ne_sp    = $1212   ; states on the composing stack (0 = not composing)
+!ne_stk   = $1214   ; 6 states x 4 bytes: initial, medial, final, unused
+!ne_state_end = $1230
+!ne_save  = $1230   ; copy of $1200-$122F, restored when an input is refused
+!ne_cellg = $1260   ; 8 words, name glyph held by each name cell's slot ($FFFF = none)
+!ne_gslot = $1270   ; next grid slot
+!ne_t0    = $1272
+!ne_t1    = $1274
+!ne_t2    = $1276
+!ne_t3    = $1278
+!ne_t4    = $127A
+!ne_len   = $127C
+!ne_vowel = $127E   ; medial of the vowel being typed
+!fs_cnt   = $1280   ; file-select slots in use * 2
+!fs_tab   = $1282   ; 16 words, name glyph held by each file-select slot
 
 !font_tmp = $F500   ; input/output buffer of the outline routine
 
@@ -217,13 +238,14 @@ Alloc:
 
 ; In: A = slot, !tmpg = glyph index.
 Stage:
+    ASL
+    ASL
+    ASL
+    ASL
+    ASL
+    CLC
+    ADC #!slot_vram_word
     PHA
-    LDA !pend
-    CMP.w #!stagemax
-    BCC +
-    JSR WaitFlush
-+
-    INC !lock
     LDA !tmpg
     ASL
     TAX
@@ -248,15 +270,31 @@ Stage:
     BCC .clear
 
     JSR !outline_glyph
+    PLA
+    LDY #$0040
 
-    ; Output is two 2bpp tiles (top, bottom). Stage them as 4bpp with
-    ; planes 2/3 cleared, because the slot area holds other graphics.
+; In: A = VRAM word address, Y = $40 (two 4bpp tiles) or $20 (two 2bpp
+; tiles), font_tmp = output of the outline routine (two 2bpp tiles, top and
+; bottom). A/X/Y 16-bit.
+QueueTmp:
+    STA !tmpq
+    STY !tmpl
+    LDA !pend
+    CMP.w #!stagemax
+    BCC +
+    JSR WaitFlush
++
+    INC !lock
     LDA !pend
     XBA
     LSR
     LSR
     TAX                 ; pend * 64
     LDY #$0000
+    LDA !tmpl
+    CMP #$0040
+    BNE .two
+    ; 4bpp with planes 2/3 cleared, because the slot area holds other graphics.
 .out
     LDA !font_tmp,Y
     STA !stage,X
@@ -271,12 +309,24 @@ Stage:
     INY
     CPY #$0010
     BCC .out
-
+    BRA .queued
+.two
+    LDA !font_tmp,Y
+    STA !stage,X
+    INX
+    INX
+    INY
+    INY
+    CPY #$0020
+    BCC .two
+.queued
     LDA !pend
     ASL
     TAX
-    PLA
+    LDA !tmpq
     STA !pslots,X
+    LDA !tmpl
+    STA !plen,X
     INC !pend
     STZ !lock
     RTS
@@ -319,13 +369,6 @@ NmiUpload:
     CMP.l $7E0000+!pend
     BCS .done
     LDA.l $7E0000+!pslots,X
-    ASL
-    ASL
-    ASL
-    ASL
-    ASL
-    CLC
-    ADC #!slot_vram_word
     STA $2116
     TXA
     ASL
@@ -336,7 +379,7 @@ NmiUpload:
     CLC
     ADC #!stage
     STA $4302
-    LDA #$0040
+    LDA.l $7E0000+!plen,X
     STA $4305
     SEP #$20
     LDA #$01
@@ -461,6 +504,7 @@ ResetSlots:
     STA.l $7E0000+!cnt2
     STA.l $7E0000+!pend
     STA.l $7E0000+!lock
+    STA.l $7E0000+!fs_cnt
     LDX #$0000
     RTS
 
@@ -1899,3 +1943,5 @@ assert pc() <= $E2FFFF
 
 incsrc "../build/glyphs.asm"
 incsrc "../build/dialogue.asm"
+incsrc "../build/name_entry_data.asm"
+incsrc "name_entry.asm"

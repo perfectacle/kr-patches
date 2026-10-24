@@ -32,6 +32,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'py'))
+import name_entry  # noqa: E402
 import textusage  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -362,11 +363,17 @@ def main():
         data = ','.join(f'${b:02X}' for b in render_glyph(font, ch))
         asm += [f'org ${0xC00000 | (DLG_EXT_BASE + n * GLYPH_BYTES):06X}   ; dialogue font extension {n:02X} = {ch}', f'    db {data}']
     (BUILD / 'glyphs.asm').write_text('\n'.join(asm) + '\n')
+    trusted = {int(m.group(1), 16): m.group(2) for m in
+               (re.match(r'([0-9A-F]{2})=(\S+) ', line) for line in (ROOT / 'data/tbl/menu_font_audit.txt').read_text(encoding='utf-8').splitlines())
+               if m}
+    trusted.update({c: ch for ch, c in menu_added.items()})
+    name_glyphs = name_entry.build(enc.tbl, render_glyph, font, BUILD, trusted)
     (BUILD / 'dlg_added.txt').write_text(''.join(f'{v:04X}={k}\n' for k, v in sorted(dlg_added.items(), key=lambda kv: kv[1])), encoding='utf-8')
     (BUILD / 'glyphs.txt').write_text(''.join(f'{v:03X} {k}\n' for k, v in enc.dyn.items()), encoding='utf-8')
     if missing:
         print('not in the dialogue font (shown as ?):', ''.join(sorted(missing)))
-    print(f'items {len(items)}, skills {len(skills)}, enemies {len(enemies)}, dynamic glyphs {len(order)} in {len(chunks)} chunk(s)')
+    print(f'items {len(items)}, skills {len(skills)}, enemies {len(enemies)}, dynamic glyphs {len(order)} in {len(chunks)} chunk(s), '
+          f'name glyphs {name_glyphs}')
 
 
 if __name__ == '__main__':
