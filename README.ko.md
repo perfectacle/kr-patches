@@ -17,7 +17,7 @@ perfectacle 의 한글 패치 소스입니다. 게임 폴더마다 그 게임에
 | [슈퍼 마리오 RPG](sfc/super-mario-rpg/README.ko.md) | v1.3 | `SUPER MARIO RPG`, `5527071E` |
 | [제절초](sfc/otogirisou/README.ko.md) | v1.3 | `OTOGIRISOU`, `8E4BEFD0` |
 | [드래곤볼 Z 초오공전: 돌격편](sfc/dragon-ball-z-super-gokuden-totsugeki/README.ko.md) | v1.3 | `SFX DBZ TOTSUGEKIHEN`, `D531289B` |
-| [드래곤볼 Z 초오공전: 각성편](sfc/dragon-ball-z-super-gokuden-kakusei/README.ko.md) | v1.3 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
+| [드래곤볼 Z 초오공전: 각성편](sfc/dragon-ball-z-super-gokuden-kakusei/README.ko.md) | v1.4 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
 | [고스트 트릭](nds/ghost-trick/README.ko.md) | v1.2 | `GHOSTTRICK-J`, `105DDD9E` |
 
 게임은 기종별 폴더(슈퍼 패미콤 `sfc/`, 닌텐도 DS `nds/`)로 나눕니다.

@@ -1,0 +1,320 @@
+500 start 4
+800 start 4
+1100 a 4
+1400 a 4
+1550 a 4
+1700 a 4
+2200 left 4
+2230 up 4
+2400 a 4
+2600 a 4
+2680 a 4
+2760 a 4
+2840 a 4
+2920 a 4
+3000 a 4
+3080 a 4
+3160 a 4
+3240 a 4
+3320 a 4
+3400 a 4
+3480 a 4
+3560 a 4
+3640 a 4
+3720 a 4
+3800 a 4
+3880 a 4
+3960 a 4
+4040 a 4
+4120 a 4
+4200 a 4
+4280 a 4
+4360 a 4
+4440 a 4
+4520 a 4
+4600 a 4
+4680 a 4
+4760 a 4
+4840 a 4
+4920 a 4
+5000 a 4
+5080 a 4
+5160 a 4
+5240 a 4
+5320 a 4
+5400 a 4
+5480 a 4
+5560 a 4
+5640 a 4
+5720 a 4
+5800 a 4
+5880 a 4
+5960 a 4
+6040 a 4
+6120 a 4
+6200 a 4
+6280 a 4
+6360 a 4
+6440 a 4
+6520 a 4
+6600 a 4
+6680 a 4
+6760 a 4
+6840 a 4
+6920 a 4
+7000 a 4
+7080 a 4
+7160 a 4
+7240 a 4
+7320 a 4
+7400 a 4
+7480 a 4
+7560 a 4
+7640 a 4
+7720 a 4
+7800 a 4
+7880 a 4
+7960 a 4
+8040 a 4
+8120 a 4
+8200 a 4
+8280 a 4
+8360 a 4
+8440 a 4
+8520 a 4
+8600 a 4
+8680 a 4
+8760 a 4
+8840 a 4
+8920 a 4
+2640 x 4
+2720 x 4
+2800 x 4
+2880 x 4
+2960 x 4
+3040 x 4
+3120 x 4
+3200 x 4
+3280 x 4
+3360 x 4
+3440 x 4
+3520 x 4
+3600 x 4
+3680 x 4
+3760 x 4
+3840 x 4
+3920 x 4
+4000 x 4
+4080 x 4
+4160 x 4
+4240 x 4
+4320 x 4
+4400 x 4
+4480 x 4
+4560 x 4
+4640 x 4
+4720 x 4
+4800 x 4
+4880 x 4
+4960 x 4
+5040 x 4
+5120 x 4
+5200 x 4
+5280 x 4
+5360 x 4
+5440 x 4
+5520 x 4
+5600 x 4
+5680 x 4
+5760 x 4
+5840 x 4
+5920 x 4
+6000 x 4
+6080 x 4
+6160 x 4
+6240 x 4
+6320 x 4
+6400 x 4
+6480 x 4
+6560 x 4
+6640 x 4
+6720 x 4
+6800 x 4
+6880 x 4
+6960 x 4
+7040 x 4
+7120 x 4
+7200 x 4
+7280 x 4
+7360 x 4
+7440 x 4
+7520 x 4
+7600 x 4
+7680 x 4
+7760 x 4
+7840 x 4
+7920 x 4
+8000 x 4
+8080 x 4
+8160 x 4
+8240 x 4
+8320 x 4
+8400 x 4
+8480 x 4
+8560 x 4
+8640 x 4
+8720 x 4
+8800 x 4
+8880 x 4
+8960 x 4
+60 shot
+120 shot
+180 shot
+240 shot
+300 shot
+360 shot
+420 shot
+480 shot
+540 shot
+600 shot
+660 shot
+720 shot
+780 shot
+840 shot
+900 shot
+960 shot
+1020 shot
+1080 shot
+1140 shot
+1200 shot
+1260 shot
+1320 shot
+1380 shot
+1440 shot
+1500 shot
+1560 shot
+1620 shot
+1680 shot
+1740 shot
+1800 shot
+1860 shot
+1920 shot
+1980 shot
+2040 shot
+2100 shot
+2160 shot
+2220 shot
+2280 shot
+2340 shot
+2400 shot
+2460 shot
+2520 shot
+2580 shot
+2640 shot
+2700 shot
+2760 shot
+2820 shot
+2880 shot
+2940 shot
+3000 shot
+3060 shot
+3120 shot
+3180 shot
+3240 shot
+3300 shot
+3360 shot
+3420 shot
+3480 shot
+3540 shot
+3600 shot
+3660 shot
+3720 shot
+3780 shot
+3840 shot
+3900 shot
+3960 shot
+4020 shot
+4080 shot
+4140 shot
+4200 shot
+4260 shot
+4320 shot
+4380 shot
+4440 shot
+4500 shot
+4560 shot
+4620 shot
+4680 shot
+4740 shot
+4800 shot
+4860 shot
+4920 shot
+4980 shot
+5040 shot
+5100 shot
+5160 shot
+5220 shot
+5280 shot
+5340 shot
+5400 shot
+5460 shot
+5520 shot
+5580 shot
+5640 shot
+5700 shot
+5760 shot
+5820 shot
+5880 shot
+5940 shot
+6000 shot
+6060 shot
+6120 shot
+6180 shot
+6240 shot
+6300 shot
+6360 shot
+6420 shot
+6480 shot
+6540 shot
+6600 shot
+6660 shot
+6720 shot
+6780 shot
+6840 shot
+6900 shot
+6960 shot
+7020 shot
+7080 shot
+7140 shot
+7200 shot
+7260 shot
+7320 shot
+7380 shot
+7440 shot
+7500 shot
+7560 shot
+7620 shot
+7680 shot
+7740 shot
+7800 shot
+7860 shot
+7920 shot
+7980 shot
+8040 shot
+8100 shot
+8160 shot
+8220 shot
+8280 shot
+8340 shot
+8400 shot
+8460 shot
+8520 shot
+8580 shot
+8640 shot
+8700 shot
+8760 shot
+8820 shot
+8880 shot
+8940 shot
+9000 shot
+9000 end
