@@ -1,11 +1,12 @@
-# 드래곤볼 Z 초오공전: 돌격편(SFC) 한글패치 v1.2
+# 드래곤볼 Z 초오공전: 돌격편(SFC) 한글패치 v1.3
 
 [English](README.md) | 한국어
 
-일본판 슈퍼 패미콤 *드래곤볼 Z 초오공전 돌격편* 한글패치 v1.2 의 소스입니다.
+일본판 슈퍼 패미콤 *드래곤볼 Z 초오공전 돌격편* 한글패치 v1.3 의 소스입니다.
 일본판 롬에 한글패치 v1.0 을 적용한 롬에서 시작해, 타이틀 화면을 바꾸고 대사와
 메뉴를 다시 쓰고, 서로 헷갈리는 암호 글자를 다시 그리고, 엔딩에 고정 암호를
-보여 줍니다.
+보여 줍니다(v1.2). v1.3 은 이름의 8px 한글을 다시 그려 11,172자 전부로 늘리고
+이름 입력을 자모 조합으로 바꿉니다. 롬은 4MB 로 늘어납니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
@@ -27,17 +28,20 @@
 
 ## 빌드
 
-준비물: 저장소의 Python 환경(최상위 README 참고), zsh, macOS.
+준비물: 저장소의 Python 환경(최상위 README 참고), zsh, macOS, v1.3 은
+`tools/asar` 에 둔 [asar](https://github.com/RPGHacker/asar) 1.91.
 `tools/title.py` 는 macOS 시스템 글꼴 애셋의 BM영성체(`TITLE_FONT`)로
 「초오공전」을 그립니다. 다른 시스템에서는 `tools/build.sh` 의 `title.py` 줄에
 `--font PATH` 를 더하세요.
 
 ```sh
-zsh tools/build.sh
+zsh tools/build-v1.3.sh
 ```
 
-결과물: `super-gokuden-kr-v1.2.smc`(CRC32 `A939C4F8`)와 `release/v1.2/*.ips`
+결과물: `super-gokuden-kr-v1.3.smc`(CRC32 `FC7FB902`)와 `release/v1.3/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다.
+v1.3 빌드는 먼저 `tools/build.sh` 를 돌리고, 이것이
+`super-gokuden-kr-v1.2.smc`(CRC32 `A939C4F8`)와 `release/v1.2/*.ips` 를 씁니다.
 `tables/kr-v1.2.txt`(v1.2 코드표)는 빌드가 씁니다. 다른 환경을 쓰려면
 `PYTHON` 과 `KRPATCH` 를 지정하세요.
 
@@ -45,13 +49,17 @@ zsh tools/build.sh
 (대사, 그 밖의 텍스트 묶음, 메뉴 수정) → `tools/statusmenu1.py`(상태 화면
 목록의 습득·완료 표시) → `tools/pwglyph1.py`(암호 글리프, 표와 대조) →
 `tools/endpw1.py`(엔딩 암호) → `krpatch sfc checksum --fix` →
-`krpatch ips make --headered`.
+`krpatch ips make --headered` 까지가 v1.2 이고, 이어서 `tools/font8.py`(다시
+그린 8px 글자와 새 글자, 4MB 롬, 자모 글자판, 표 `work/font8_*.asm`) →
+asar `asm/v13.asm`(렌더러·이름 입력 훅) → `krpatch sfc checksum --fix` →
+`krpatch ips make --headered --rle`.
 
 ## 구성
 
 | 경로 | 내용 |
 | --- | --- |
 | `tools/` | 빌드·분석 스크립트(사용법은 각 파일 첫 줄들에) |
+| `asm/v13.asm` | v1.3 렌더러·이름 입력 코드(asar) |
 | `tables/v1.1/` | v1.1 텍스트(id, 창 정보, 텍스트) |
 | `tables/ui-fixes.tsv` | 포인터 테이블 밖의 메뉴 문자열(상태 화면, 성적표, 엔딩 크레딧 포함) |
 | `tables/*-v1.0.tsv` | 일본어 텍스트와 v1.0 번역을 나란히 |
@@ -60,7 +68,7 @@ zsh tools/build.sh
 | `tables/password.tsv` | 엔딩 암호 글자 163개(코드, 가나, v1.1·v1.2 화면) |
 | `v1.0/` | 빌드의 출발점인 v1.0 패치 |
 | `lua/` | 이 게임용 Mesen 2 스크립트 |
-| `compat/` | 여러 libretro 코어에 같은 입력 재생(`compat/run_all.sh`) |
+| `compat/` | 여러 libretro 코어에 같은 입력 재생(`compat/run_all.sh`, v1.3 은 `SCENARIOS="new13 cont"`) |
 | `tools/fonts/` | Galmuri 글꼴(SIL Open Font License 1.1, `LICENSE.txt`) |
 
 ## 테스트
@@ -105,6 +113,6 @@ docs/ANALYSIS.ko.md 는 무언가를 어떻게 찾았는지 설명하는 대목�
 
 ## 라이선스
 
-코드(Python, 셸, Lua): MIT, 최상위 `LICENSE` 참고. 한글 텍스트, 코드표,
+코드(Python, 셸, Lua, 어셈블리): MIT, 최상위 `LICENSE` 참고. 한글 텍스트, 코드표,
 그래픽은 비상업으로 배포하는 팬 번역 데이터이며 MIT 라이선스 대상이 아닙니다.
 Galmuri 는 SIL Open Font License 1.1 을 따릅니다.

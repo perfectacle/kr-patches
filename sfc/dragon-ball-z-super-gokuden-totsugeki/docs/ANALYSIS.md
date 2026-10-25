@@ -1,9 +1,9 @@
-# [SFC] Dragon Ball Z: Super Gokuden – Totsugeki-hen ROM analysis (Korean patch v1.2 work notes)
+# [SFC] Dragon Ball Z: Super Gokuden – Totsugeki-hen ROM analysis (Korean patch v1.3 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patches v1.1 and v1.2.
+The ROM structure and methods confirmed while working on the Korean patches v1.1, v1.2 and v1.3.
 A record for anyone who analyses this ROM again or continues fixing the patch.
 It is best read together with the analysis of Super Gokuden Kakusei-hen, which uses the same engine.
 Patch page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/
@@ -14,6 +14,7 @@ Kakusei-hen page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball
  - v1.0 ROM: Japanese + v1.0/v1.0.ips = CRC32 52FEF8C3
  - v1.1 ROM: CRC32 7405D969 (output of tools/build.sh in the v1.1 tool bundle)
  - v1.2 ROM: output of tools/build.sh = CRC32 A939C4F8
+ - v1.3 ROM: output of tools/build-v1.3.sh = CRC32 FC7FB902 (4 MB, section 12)
  - Address notation below
    · $XX:YYYY = SFC address (bank:address)
    · file 0xNNNNN = offset in the headerless ROM file
@@ -361,6 +362,9 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
      Beetle Supafaust         OK. The new game drifts by a few frames and takes a different path on the field
                               (the Japanese ROM diverges by the same amount between cores)
      Mesen-S core             undetermined. Even the Japanese original exits immediately in lr.py (exit 139)
+ - v1.3 (compat/s_new13.txt types one jamo and Start for each name, then the same story; s_cont.txt):
+   bsnes, bsnes-hd beta, snes9x, snes9x2010 and Beetle Supafaust run the new game into the story with the name tags,
+   and the continue stops at the same point as v1.2 (dialogue ID 4703). Mesen-S stays undetermined.
  - On five libretro cores, headered and headerless v1.1 gave pixel-identical screens.
  - In the continue run, a black screen follows after the dialogue ends (about 4,700 frames).
    The Japanese ROM shows the same screen at the same point on every emulator, so it is unrelated to the patch.
@@ -474,9 +478,59 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
    No way to open it in normal play was found. [verified]
 ```
 
-## 12. Not checked, and known limits
+## 12. Names in v1.3: 8px glyphs and jamo name entry
 
 ```text
+ - v1.3 ROM: output of tools/build-v1.3.sh = CRC32 FC7FB902, 4,194,304 bytes (header ROM size byte 0x7FD7: 0x0B → 0x0C).
+   Banks $C0-$FF map to file 0x200000-. [verified]
+ - Where names are read (static scan for $0B00-$0B45, then confirmed at run time) [verified]
+     $80:9529              name list of the name entry screen
+     $80:A547 A5F0 A69D A74A name tags of the villain, rival, henchman and adviser (ORA #$8000: 8px small codes)
+                           in the opening and in the ending comments
+     $80:B751 B78D B7C9    the 「달성치」 screen ($80:B5C9): rival, henchman and villain with their scores
+                           (codes copied without $8000)
+     $81:D104-D122 D37F    the data password; v1.2 shows the fixed password, so these never reach the screen
+   $80:B5C9 is called only from the event command at $80:C7CA ($82:9D95 is unreachable from the $0216 table).
+   It was checked by moving the PC there from a Lua exec callback; the event that opens it in play was not found.
+ - 8px glyphs (tools/font8.py)
+   · The 160 Hangul in the kana slots (sheet $83:DE00) are redrawn with Galmuri11 Condensed (7×11, rows 3-13)
+     and the usual shadow. Every code keeps its meaning.
+   · The other 11,012 syllables and the 51 compatibility jamo get codes 0x1000-0x6666:
+     code = 0x1000 + (i / 16) × 32 + i % 16 (glyphs start on even sheet rows, bottom half +0x100 as in the kana sheet),
+     glyph data at bank $C0 + (code - 0x1000) / 0x800, offset ((code - 0x1000) % 0x800) × 16 (banks $C0-$CA).
+   · All of 가-힣 are there because the name entry composes jamo freely: 뷁 is typed through 뷀, and 뷁, 뷀, 똠 and 얅
+     are not in KS X 1001. With only the 2,350 KS X 1001 syllables, a final that made an unknown syllable
+     dropped to the next cell and 「뷁얅닭」 became 「뷁ㄹ얄ㄱ닭」.
+     (Python's euc-kr codec encodes such syllables as 8-byte jamo sequences, so encode() succeeding does not mean KS X 1001.)
+   · Build check: no two glyphs have the same pixels (glyph minus shadow) unless Galmuri11 Condensed itself draws them alike.
+     145 pairs are alike in the font (쌔/썌, 째/쨰, 쎈/쏀 and others).
+ - Renderer hooks (asm/v13.asm, code at $E0:8000, syllable → code table NeSylCode at $E1:8000)
+     $B7:FA00  codes ≥ $07F0 → F8Sheet: codes 0x1000- copy their 2 tiles into WRAM $7E:4000-$410F
+               and are drawn from there with DB = $7E (the renderer reads its variables at $0200- through DB,
+               and banks $C0- have no low-RAM mirror)
+     $B7:97F0, $B7:98DA, $B7:9977  advance and tile count: new codes are treated as kana-slot code $0100 with the same $8000 bit
+ - Name entry ($80:958E) [verified]
+   · Board (file 0x7005): two rows of jamo, consonants (double consonants included) and vowels with the space key 「⋮」.
+     $80:9688 stops the cursor at the second row and $80:9941 hides the down arrow (it showed while the board could scroll).
+   · The cursor skips empty cells: hooks at $80:9624 (right), $80:967C (left), $80:96A7 (down), $80:96EE (up).
+     Right and left send an empty cell back through the game's own step ($80:95E8, $80:9643), which also skips the gaps
+     between groups; up and down move left to the nearest cell. The 4-byte JML covers the first byte of the JSR $A3A7
+     that follows, so the rest of the step runs from small stubs in bank $80 ($80:F590-).
+   · A ($80:9739) composes; B ($80:9789) takes back one jamo; Start ($80:95A7) ends the name and fills the rest with spaces.
+     A key that would start a sixth character ends the name (the original moved on after five characters).
+   · State in WRAM $7F:FF00-$7F:FF33 (zero and never written after boot through 9,000 frames);
+     the glyph buffer $7E:4000-$4FFF is free the same way.
+ - asar pitfalls
+   · asar treats a .smc file as headered, so the build assembles on a .sfc copy.
+   · A decimal immediate such as #51 is assembled as 8-bit even in 16-bit mode; write CMP.w #51.
+   · 65816 has no STA long,Y: copy with DB = source bank and LDA abs,Y / STA long,X.
+```
+
+## 13. Not checked, and known limits
+
+```text
+ - v1.3 was not run on the Mesen-S libretro core, which exits at boot with the Japanese ROM as well (section 8).
+ - v1.3: the event that opens the 「달성치」 screen ($80:B5C9) in normal play was not found (section 12).
  - There is no record of running on an actual Super Famicom or a flash cartridge.
    The emulator results are in section 8.
  - Window info first byte FE (347 lines): by the code it is a 128px window that skips the face drawing routine, but the screen was not looked at.
@@ -494,7 +548,7 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
    become 1px taller than their neighbours, so v1.2 keeps the v1.0 glyphs.
 ```
 
-## 13. Tools used
+## 14. Tools used
 
 ```text
  - Python 3.9.6, Pillow 11.3.0, numpy 2.0.2 (macOS)
