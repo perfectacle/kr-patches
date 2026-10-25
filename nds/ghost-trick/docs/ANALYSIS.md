@@ -90,10 +90,11 @@ Only system/database_0000 (the notebook) finds entries by number. An entry with 
 v1.1 kept the file size and the event block positions, wrote the lines of each run one after another
 and fixed the pointers. repack in tools/lmg.py follows the same rule: it writes the new lines of each
 run in order, fills the rest with zeros and fixes the pointers and labels of lines that moved. A run
-that overflows is an error. Putting the v1.1 lines (with the v1.1 message heads) into the Japanese scripts gives 144 of the
+that overflows is an error. Putting the v1.1 lines (with the v1.1 message heads) into the Japanese scripts gives 141 of the
 148 files with dialogue identical to v1.1 except for the leftover slots at the end of a run, where
-v1.1 left old bytes and repack writes zeros. The other 4 (st03_demo010, st03_demo011, st04_game001,
-st06_game004) also differ outside the runs, for example in the label area.
+v1.1 left old bytes and repack writes zeros. The other 7 also differ outside the runs (in the code
+area or the label area): st03_demo010, st03_demo011, st04_game001, st06_game004, st07_game004,
+st15_demo060 (the shifted label tables below) and system/database_0000.
 
 ■ Finding the v1.1 lines [verified]
 v1.1 mostly kept the Japanese order, but some untranslated lines stayed in place, some numbers changed
