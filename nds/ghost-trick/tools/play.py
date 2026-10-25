@@ -2,7 +2,7 @@
 
     play.py ROM OUTDIR [--state IN.state] [--save OUT.state] [--wav OUT.wav] [--cmd "..."] [SCRIPT]
 
-명령(한 줄에 하나, ; 로도 나눈다):
+명령(스크립트 파일은 한 줄에 하나, --cmd 는 ; 로 나눈다. 주석은 # 으로 시작하는 줄만):
     wait N                     N 프레임 그대로
     press BTN[+BTN] [N] [W]    버튼을 N(기본 6) 프레임 누르고 W(기본 20) 프레임 기다림
     a K [P]                    A 를 K 번, P(기본 30) 프레임 간격

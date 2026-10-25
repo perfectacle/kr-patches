@@ -90,8 +90,10 @@ Only system/database_0000 (the notebook) finds entries by number. An entry with 
 v1.1 kept the file size and the event block positions, wrote the lines of each run one after another
 and fixed the pointers. repack in tools/lmg.py follows the same rule: it writes the new lines of each
 run in order, fills the rest with zeros and fixes the pointers and labels of lines that moved. A run
-that overflows is an error. Putting the v1.1 lines into the Japanese scripts gives 170 of 176 files
-byte-identical to v1.1 (the other 6 are the v1.1 problems below).
+that overflows is an error. Putting the v1.1 lines (with the v1.1 message heads) into the Japanese scripts gives 144 of the
+148 files with dialogue identical to v1.1 except for the leftover slots at the end of a run, where
+v1.1 left old bytes and repack writes zeros. The other 4 (st03_demo010, st03_demo011, st04_game001,
+st06_game004) also differ outside the runs, for example in the label area.
 
 ■ Finding the v1.1 lines [verified]
 v1.1 mostly kept the Japanese order, but some untranslated lines stayed in place, some numbers changed
@@ -190,9 +192,10 @@ The only commands are notes, rests, program, C0 (pan), C1 (track volume), C7 (0)
 Instrument types: PCM (1), drum set (0x10), key split (0x11). Waves are IMA-ADPCM.
 The sequencer and envelopes update at ARM7 33,513,982 Hz / (64 x 2,728) = about 191.96 Hz.
 
-desmume recordings sounded slightly different on every repeat because channel allocation changed,
+desmume recordings sounded slightly different on every repeat,
 and the loop length found by correlation (55.51 s) was not the real one (54.87 s).
-tools/sseq_render.py renders repeats 2 and 3 sample-identical. At 48 kHz, loopStart is
+With tools/sseq_render.py, repeats 1 and 2 are sample-identical once the tails of the intro notes
+have died away; that first point is loopStart. At 48 kHz, loopStart is
 83.590563 s and loopEnd 138.460271 s.
 
 ■ Test ROMs for recording [verified]
