@@ -419,12 +419,14 @@ Address notation
   $1F:8000-$1F:D457     tools/mkfont.py          v1.1 font
   $20:8000-$35:AF66     tools/assemble.py        v1.1 script
   $36:8000-$36:C01C     tools/namefont.py        v1.3 name glyphs (1,085)
-  $36:D000-             asm/nameentry.asm        v1.3 name entry code and tables (jamo tables, 2,350 syllable numbers and codes)
-  $02:D8BD-$02:D8C3     asm/nameentry.asm        trampoline to $02:B334
+  $36:D000-$36:FA79     asm/nameentry.asm        v1.3 name entry code and tables (jamo tables, 2,350 syllable numbers and codes)
+  $02:D8BD-$02:D8C4     asm/nameentry.asm        trampoline to $02:B334
 
-■ Zero runs (4KB or more) [verified: v1.2 ROM. Not a guarantee that they are free]
+■ Zero runs (4KB or more) [verified: v1.3 ROM. Not a guarantee that they are free]
   $15:E52B-$16:8069, $16:AE4F-$16:FFFF, $18:81D0-$18:FFFF, $1A:96D1-$1A:FFFF, $1B:8F3A-$1B:EFFF,
-  $1C:A944-$1C:BFFF, $1C:E628-$1D:FFFF, $1E:80CA-$1E:EFFF, $1F:D458-$1F:FFFF, $35:AF67-$3F:FFFF
+  $1C:A944-$1C:BFFF, $1C:E628-$1D:FFFF, $1E:80CA-$1E:EFFF, $1F:D458-$1F:FFFF, $35:AF67-$35:FFFF,
+  $36:FA7A-$3F:FFFF
+ - In v1.2, $35:AF67-$3F:FFFF was one run. v1.3 uses $36:8000-$36:FA79 (the gap $36:C01D-$36:CFFF is under 4KB).
  - A run of zeros is not necessarily free; part of a table can be 0. Before using one, check that none of the sources above write to those addresses.
  - The back of $1F is within the range the font decoder reads, so it is safest to put only new group data there. [inferred]
 ```
@@ -447,6 +449,9 @@ Address notation
   Mesen-S core        undetermined. All 7 exit immediately with exit 139. Same with the Japanese original
   Mesen 2             OK (playthroughs 1-4, continuing every kind of save. Checked by hand before this re-measurement)
    The cores that passed reached the same scenes and choices to the end; the only difference was the timing of text printing, a few frames.
+ - v1.3 (CRC32 DAE98F06) was not rerun on each core. The VRAM of the name entry screen with and without saves
+   differed only as in v1.2, because v1.3 uploads nothing new to VRAM. The changed book picture tilemap was read only on the
+   name entry screen, and the screens and script positions of the menu and flowchart scenarios matched v1.2.
 ```
 
 ## 9. Not checked

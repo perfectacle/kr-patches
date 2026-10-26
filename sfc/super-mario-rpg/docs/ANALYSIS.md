@@ -453,6 +453,8 @@ After the data of dialogue bank $E2, the space is zero up to 0x230000 in the Jap
    · These tiles hold the window frame of the name entry screen, and new game opens that screen without reloading them. So
      right before file select uploads its first slot, the NMI reads those 512 bytes into WRAM $7E:1300 (FsKeep, state $12A6),
      and opening the name entry screen puts them back (FsRestore). This only matters when a save puts names on file select.
+   · The VRAM read buffer ($2139) is filled before the address moves, so a DMA started right after setting the address gets
+     the first word twice and the kept tiles shift by one word. FsKeep sets the address, reads $2139 once and drops it.
    The BG3 menu font has the same shape as the output of the outline routine $C3:6869 (2bpp upper and lower tiles).
  - v1.3 name encoding (the save layout is unchanged)
    · $20-$FF: a 1-byte menu-font code. Syllables the menu font has are always stored this way, so they match names in old saves.
@@ -476,7 +478,7 @@ After the data of dialogue bank $E2, the space is zero up to 0x230000 in the Jap
        ㅁ ㄴ ㅇ ㄹ ㅎ ㅗ ㅓ ㅏ ㅣ
        ㅋ ㅌ ㅊ ㅍ ㅠ ㅜ ㅡ
      The cursor skips empty cells and starts on ㅂ.
-     The cursor skips empty cells. The done cell is where the original's is (column $0A, row 7), so done calls the original $4413.
+     The done cell is where the original's is (column $0A, row 7), so done calls the original $4413.
    · Composition follows the 2-set keyboard. Each jamo typed into the current syllable pushes a state (initial, medial, final)
      on !ne_stk, and B pops one. The syllable number s = (initial x 21 + medial) x 28 + final is binary-searched in NeKsSyl
      (2,350 entries, sorted).
@@ -713,6 +715,7 @@ Addresses are as seen from the S-CPU. Checked by running the Korean ROM based on
  - The name spelling (셸 → 쉘) and menu characters (힐, 휠) fixed after the table was made were checked by rerunning new and cont on bsnes and Snes9x:
    all 84 screens were the same as the runs in the table.
  - Whether a transformation succeeds is random, so it differs by core. On the same core, the three ROMs gave the same result on the same frame.
+ - v1.3 was not rerun on these cores; compat/ has runs for the Japanese ROM, v1.1 and v1.2 only.
  - Not tested on real hardware (an actual Super Famicom, a flash cartridge).
 ```
 
@@ -740,14 +743,14 @@ Addresses are as seen from the S-CPU. Checked by running the Korean ROM based on
  - Also used by v1.3 (0 in the Japanese ROM and in v1.2; checked with the read watch at the end of section 3)
 
   location                 use                                    left in the v1.3 ROM [verified]
-  $C3:E240-$C3:EFFF        name entry and file select code        1,419 bytes
+  $C3:E240-$C3:EFFF        name entry and file select code        1,341 bytes
   $DA:4DA0-$DA:7FFF        name glyphs 0-1,073                    9 bytes
   $DC:6506-$DC:7FFF        name glyphs 1,074-1,648                7 bytes
   $DD:EBE0-$DD:FFFF        name glyphs 1,649-2,077                5 bytes
   $F7:B5E8-$F7:E001        name glyphs 2,078-2,400                6,903 bytes
   $FA:ED44-$FA:FFFF        NeKsSyl (2,350 syllable numbers)       96 bytes
   $D5:EFEB-$D5:FFFF        NeKsStatic, jamo tables, grid, labels  1,267 bytes
-  $C3:F000-$C3:F3FF has 238 bytes left after the glyph queue change.
+  $C3:F000-$C3:F3FF has 164 bytes left after the glyph queue change and the file select frame keeper (FsKeep).
 
  - Dynamic glyphs fill the four FREE_RUNS stretches of tools/build.py in order.
    File 0x24EDD8 (4,648 bytes) is full, and 0x2511C2 (1,601 bytes) is used up to 0x251701.

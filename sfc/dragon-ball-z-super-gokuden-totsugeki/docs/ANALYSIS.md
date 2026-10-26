@@ -404,6 +404,17 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
      9D 9E A8 A9 AB B2 B4 B5 dialogue (A9 also choices)     9F ally comments
      AD event list, pointer 204    AE enemy names           B1 battle dialogue
      B7 hooks, new code, title graphics, ending credits     BF font (slots out of use)
+ - Space used by v1.3 (asm/v13.asm, tools/font8.py; compared with the v1.2 ROM) [verified]
+     $80:F590-$80:F5B2   name entry cursor stubs (0xFF in the Japanese ROM and v1.2)
+     $B7:97F0, $B7:986E, $B7:98DA, $B7:9977, $B7:FA00   renderer hooks (6 bytes each, 4 at $B7:FA00)
+     $C0:8000-$CA:E76F   8px glyphs of the new sheet
+     $E0:8000-$E0:8655   name entry and renderer code, jamo tables
+     $E1:8000-$E1:D747   syllable → code table (NeSylCode, 11,172 entries)
+   The ROM grew from 2MB to 4MB. Of the added 2MB, 1,759,658 bytes are still 0xFF.
+ - Banks whose bytes changed between the v1.2 and v1.3 ROMs [verified]
+     80 name entry code, grid ($80:F005), cursor stubs, header (ROM size, checksum)
+     83 8px kana slots ($83:DE00 sheet) redrawn    B7 renderer hooks
+     C0-CA 8px glyphs    E0 code    E1 syllable table
  - ROM header checksum: file 0x7FDC-0x7FDF (2-byte complement + 2-byte checksum)
    Recomputed after changing the ROM. (tools/fixsum.py)
 ```
@@ -558,4 +569,6 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
  - New glyph drawing: Galmuri11 2.404 (tools/fonts/)
  - Title font: BM YeongSung (macOS system font, TITLE_FONT in tools/title.py)
  - Disassembly: tools/dis65816.py (a home-made 65c816 disassembler)
+ - v1.3: asar 1.91 (tools/asar), MesenCE 2.2.1, kr-patch-toolkit krpatch (sfc checksum --fix --mapper lorom,
+   ips make --rle --headered). --rle writes the 0xFF filler of the added 2MB as RLE records, which keeps the IPS small.
 ```
