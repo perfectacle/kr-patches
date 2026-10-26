@@ -516,7 +516,7 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
 ## 12. v1.4 names: jamo name entry and new 16 px glyphs
 
 ```text
- - v1.4 ROM: output of tools/build-v1.4.sh = CRC32 29F5A03B, 4,194,304 bytes (header ROM size byte 0x7FD7: 0x0B → 0x0C).
+ - v1.4 ROM: output of tools/build-v1.4.sh = CRC32 8AA3123E, 4,194,304 bytes (header ROM size byte 0x7FD7: 0x0B → 0x0C).
    Banks $C0-$FF map to file 0x200000-. [verified]
  - The five names [verified]
    · $0C00 + name × 10, five 16-bit codes each (space 0x272). $80:81D2 copies the defaults from $84:A048.
@@ -586,6 +586,15 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
      into the field's width (its codes × 12 px + 4 px, cut at the window edge) and cut into 12 px glyphs with new
      codes. Button guides are centred; the command item starts where the other items do and now reads 「기술 경험치」, spaced out
      (2 px between letters, 5 px between words) to end where 기술설정 and 기술습득 end (x 46).
+   · Button icon colours: the guides are on BG3 (2 bpp), and each screen ORs a palette into the four tilemap entries
+     (two tiles, two rows) under each icon ($81:95F3 and the like: LDA $7E5xxx / ORA #$0400, 0800, 0C00 or 1000 /
+     STA $7E5xxx). Each guide ends on screen x 230, where the lines below it end (values, separators, lists), keeps
+     the same margin from its panel's left edge as from the right (x 243) and spaces its items evenly. Each icon is
+     kept within two tiles (left column mod 8 at most 5) and off any tile another icon uses (a shared tile gets both
+     palettes), and those instructions' addresses move with the icons. The event clear list does not fit 96 px that
+     way, so it shows only 「Ⓑ취소」 and Ⓐ's palette instructions become NOPs. These
+     glyphs keep both planes for the icon colours (64 bytes, codes 0x3C00-, bank $CB) and the renderer copies them
+     as they are.
  - Checked (MesenCE 2.2.1)
    · Five names (뷁얅닭, 똠방, 쌤힣, 읊잖, 손오공) land in WRAM as typed and show correctly in the name list,
      the achievement list ranks and the classmates' comments (「뷁얅닭의움직임이 심상치 않다!」).

@@ -96,6 +96,12 @@ K16Sheet:
     STA $2F
     SEC
     SBC.w #!k16_first-$0900
+    CMP.w #!k16_two_first-!k16_first
+    BCS +
+    BRA ++
++
+    JMP K16Sheet_two
+++
     PHA
     AND #$03FF              ; 32 bytes per glyph, $400 glyphs per bank
     ASL
@@ -134,6 +140,7 @@ K16Sheet:
     INX
     CPX #$0010
     BCC -
+.drawn
     LDA #$80
     PHA
     PLB
@@ -145,6 +152,42 @@ K16Sheet:
     STZ $27
     PLP
     JML $809B9A
+
+; Codes from !k16_two_first keep both planes (button icons have colours): 64 bytes per glyph,
+; the four tiles in sheet order, in bank !k16_two_bank. In: A = code - !k16_first, 16-bit.
+K16Sheet_two:
+    SEC
+    SBC.w #!k16_two_first-!k16_first
+    ASL
+    ASL
+    ASL
+    ASL
+    ASL
+    ASL
+    TAY
+    SEP #$20
+    LDA.b #!k16_two_bank
+    PHA
+    PLB
+    REP #$20
+    LDX #$0000
+-
+    LDA $8000,Y
+    STA.l $7E0000|!buf,X
+    LDA $8010,Y
+    STA.l $7E0000|(!buf+$10),X
+    LDA $8020,Y
+    STA.l $7E0000|(!buf+$100),X
+    LDA $8030,Y
+    STA.l $7E0000|(!buf+$110),X
+    INY
+    INY
+    INX
+    INX
+    CPX #$0010
+    BCC -
+    SEP #$20
+    JMP K16Sheet_drawn
 
 ; ---------------------------------------------------------------------------
 

@@ -40,7 +40,7 @@ v1.4 는 이름 입력을 자모 조합으로 바꾸고 타이틀 메뉴를 가�
 zsh tools/build-v1.4.sh
 ```
 
-결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `29F5A03B`)와 `release/v1.4/*.ips`
+결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `8AA3123E`)와 `release/v1.4/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다. v1.4
 빌드는 먼저 `tools/build.sh` 를 돌리고, 이것이 `super-gokuden-kr-v1.3.smc`
 (CRC32 `B9F14962`)와 `release/v1.3/*.ips` 를 씁니다. 빌드는
