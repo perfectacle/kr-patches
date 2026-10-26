@@ -87,6 +87,16 @@ FIELDS = [(0x86DC, [0x2B7, 0x2B3, 0xA14, 0x837, 0x2B5, 0x273, 0x2B4, 0x274], "�
           (0x896C, [0x2B5, 0x276, 0x2B6, 0x7E2, 0x932, 0x2B3, 0x2B4, 0x826, 0xA25], "Ⓧ다음Ⓨ뒤로ⒶⒷ취소", 112, True),
           (0x878E, [0x166, 0x501, 0x135, 0x275], "기술 경험치", 48, False, 2, 5)]
 CONDENSED_FONT = os.path.join(ROOT, "tools", "fonts", "Galmuri11-Condensed.ttf")
+# The button icons have colours (plane 1 differs from plane 0), so the field glyphs keep both planes:
+# 64 bytes each, the four tiles in sheet order, from TWO_FIRST in bank TWO_BANK.
+TWO_FIRST, TWO_BANK = 0x3C00, 0xCB
+# Each screen gives an icon its colour by ORing a palette into four entries of the BG3 tilemap
+# buffer at $7E:5000 (two tiles, two rows): LDA $7Exxxx / ORA #$pp00 / STA $7Exxxx, 11 bytes each.
+# Moving an icon moves those entries, so an icon must lie within two tiles (its left column mod 8
+# at most 5). (field, screen x of its first code, bank $81 setter blocks)
+SETTERS = {0x86DC: (136, [0x95F3]), 0x87E2: (160, [0x9DDB]), 0x886A: (136, [0xC128]),
+           0x888C: (192, [0xCCCF]), 0x8904: (128, [0xA894, 0xB84C]), 0x896C: (128, [0xC5D7, 0xC8BD])}
+HEADER_ROWS = range(0x50C0, 0x5140)
 
 
 def load_table():
@@ -168,29 +178,96 @@ def condensed(ch, cfont):
     return rows
 
 
+def glyph2(rom, code):
+    """16 rows of 16 colour indexes (plane 0 + 2 x plane 1) of a stock glyph"""
+    o = font.glyph_offset(code)
+    rows = []
+    for y in range(16):
+        base = o + (0x100 if y >= 8 else 0) + (y % 8) * 2
+        rows.append([(rom[base + (x // 8) * 16] >> (7 - x % 8) & 1) | (rom[base + (x // 8) * 16 + 1] >> (7 - x % 8) & 1) << 1
+                     for x in range(16)])
+    return rows
+
+
+def pack2(rows):
+    """16 rows of colour indexes -> 64 bytes: top left, top right, bottom left, bottom right tiles"""
+    out = bytearray()
+    for top in (0, 8):
+        for half in (0, 8):
+            for y in range(top, top + 8):
+                for plane in (0, 1):
+                    out.append(sum(0x80 >> x for x in range(8) if rows[y][half + x] >> plane & 1))
+    return bytes(out)
+
+
+def lay_right(rom, text, cfont, right):
+    """button guide -> (rows of colour indexes, left x of each icon): right-aligned on `right`,
+    1 px apart, every icon within two tiles"""
+    strip = [[0] * (right + 1) for _ in range(16)]
+    icons, cursor = [], right
+    for ch in reversed(text):
+        if ch in ICONS:
+            g, x = glyph2(rom, ICONS[ch]), cursor - 10
+            while x % 8 > 5:
+                x -= 1
+            icons.append(x)
+        else:
+            g, x = [[3 if p else 0 for p in row] for row in condensed(ch, cfont)], cursor - 6
+        if x < 0:
+            raise SystemExit("%s does not fit left of x %d" % (text, right))
+        for y in range(16):
+            for gx in range(16):
+                if g[y][gx] and x + gx <= right:
+                    strip[y][x + gx] |= g[y][gx]
+        cursor = x - 2
+    return strip, icons[::-1]
+
+
+def move_icon_palettes(rom, at, old, icons):
+    """moves each icon's palette entries with the icon (see SETTERS)"""
+    origin, blocks = SETTERS[at]
+    old_cols = [(origin + i * 12) // 8 for i, c in enumerate(old) if c in ICONS.values()]
+    new_cols = [(origin + x) // 8 for x in icons]
+    for block in blocks:
+        o = (0x81 & 0x7F) * 0x8000 + (block & 0x7FFF)
+        while rom[o] == 0xAF and rom[o + 3] == 0x7E and rom[o + 4] == 0x09 and rom[o + 7] == 0x8F:
+            addr = rom[o + 1] | rom[o + 2] << 8
+            if addr in HEADER_ROWS:
+                col = (addr - 0x5000) % 0x40 // 2
+                k = next((k for k, c in enumerate(old_cols) if c == col), None)
+                if k is None:
+                    k = next((k for k, c in enumerate(old_cols) if c == col - 1), None)
+                if k is None:
+                    raise SystemExit("palette entry $7E:%04X of field $84:%04X has no icon" % (addr, at))
+                new = addr + 2 * (new_cols[k] - old_cols[k])
+                for off in (1, 8):
+                    rom[o + off], rom[o + off + 1] = new & 0xFF, new >> 8
+            o += 11
+
+
 def lay_field(rom, text, cfont, width, centred, gap=1, space=3):
-    """text -> rows `width` px wide: icons advance 12, syllables 7 + gap, a space `space`"""
-    strip = [[False] * (width + 32) for _ in range(16)]
+    """text -> rows of colour indexes `width` px wide: icons advance 12, syllables 7 + gap, a space
+    `space`; the syllables take colour 3 like the stock font"""
+    strip = [[0] * (width + 32) for _ in range(16)]
     pen, prev = 0, None
     for ch in text:
         if ch == " ":
             pen += space - gap
             continue
         if ch in ICONS:
-            g, w = font.glyph(rom, ICONS[ch]), 12
+            g, w = glyph2(rom, ICONS[ch]), 12
         else:
-            g, w = condensed(ch, cfont), 7 + gap
+            g, w = [[3 if p else 0 for p in row] for row in condensed(ch, cfont)], 7 + gap
         for y in range(16):
             for x in range(16):
-                if g[y][x]:
-                    strip[y][pen + x] = True
+                strip[y][pen + x] |= g[y][x]
         pen += w
         prev = "icon" if ch in ICONS else "text"
     ink = [x for x in range(width + 32) if any(strip[y][x] for y in range(16))]
     shift = (width - (ink[-1] + 1 - ink[0])) // 2 - ink[0] if centred else 1 - ink[0]
     if ink[0] + shift < 0 or ink[-1] + shift >= width:
         raise SystemExit("%s does not fit its %d px" % (text, width))
-    return [[strip[y][x - shift] if 0 <= x - shift < width + 32 else False for x in range(width)] for y in range(16)]
+    return [[strip[y][x - shift] if 0 <= x - shift < width + 32 else 0 for x in range(width)] for y in range(16)]
 
 
 def new_offset(code):
@@ -273,31 +350,37 @@ def main(romp, out):
                 raise SystemExit("%s runs past the %d codes of its line" % (label, len(old)))
             rom[start:start + 2 * len(old)] = b"".join(w.to_bytes(2, "little") for w in words)
     cfont = ImageFont.truetype(CONDENSED_FONT, 12)
+    two_glyphs = {}
     for at, old, text, width, centred, *spacing in FIELDS:
         start = (0x84 & 0x7F) * 0x8000 + (at & 0x7FFF)
         if [struct.unpack_from("<H", rom, start + 2 * i)[0] for i in range(len(old))] != old:
             raise SystemExit("field at $84:%04X not found" % at)
         if width > len(old) * 12 + 4:
             raise SystemExit("field at $84:%04X: %d px is past its last glyph" % (at, width))
-        pixels = lay_field(rom, text, cfont, width, centred, *spacing)
+        if at in SETTERS:
+            pixels, icons = lay_right(rom, text, cfont, len(old) * 12 - 2)
+            pixels = [row + [0] * (width - len(row)) for row in pixels]
+            move_icon_palettes(rom, at, old, icons)
+        else:
+            pixels = lay_field(rom, text, cfont, width, centred, *spacing)
         words = []
         for c in range(len(old)):
-            rows = [[pixels[y][c * 12 + x] if c * 12 + x < width and (x < 12 or c == len(old) - 1) else False
+            rows = [[pixels[y][c * 12 + x] if c * 12 + x < width and (x < 12 or c == len(old) - 1) else 0
                      for x in range(16)] for y in range(16)]
             if not any(any(r) for r in rows):
                 words.append(BLANK)
                 continue
-            data = pack(rows)
-            if data not in menu_glyphs:
-                menu_glyphs[data] = next_code
-                o2 = new_offset(next_code)
-                rom[o2:o2 + 32] = data
-                next_code += 1
-            words.append(menu_glyphs[data])
+            data = pack2(rows)
+            if data not in two_glyphs:
+                code = TWO_FIRST + len(two_glyphs)
+                o2 = (TWO_BANK & 0x7F) * 0x8000 + (code - TWO_FIRST) * 64
+                rom[o2:o2 + 64] = data
+                two_glyphs[data] = code
+            words.append(two_glyphs[data])
         rom[start:start + 2 * len(old)] = b"".join(w.to_bytes(2, "little") for w in words)
     last = next_code - 1
-    if new_offset(last) // 0x8000 + 0x80 >= CODE_BANK:
-        raise SystemExit("the glyphs run into the code bank")
+    if new_offset(last) // 0x8000 + 0x80 >= TWO_BANK or last >= TWO_FIRST:
+        raise SystemExit("the glyphs run into the two-plane glyphs")
 
     def words(at, n):
         return [struct.unpack_from("<H", rom, at + 2 * i)[0] for i in range(n)]
@@ -346,7 +429,9 @@ def main(romp, out):
     defs = ["; generated by tools/font16.py",
             "!k16_first = $%04X" % FIRST,
             "!k16_bank0 = $%02X" % BANK0,
-            "!k16_jamo_first = $%04X" % every[JAMO[0]]]
+            "!k16_jamo_first = $%04X" % every[JAMO[0]],
+            "!k16_two_first = $%04X" % TWO_FIRST,
+            "!k16_two_bank = $%02X" % TWO_BANK]
     asm = ["; generated by tools/font16.py"]
     asm += dw("NeJamoCode", (every[j] for j in JAMO))
     asm += db("NeJCho", (CHO.index(j) if j in CHO else 0xFF for j in JAMO))
