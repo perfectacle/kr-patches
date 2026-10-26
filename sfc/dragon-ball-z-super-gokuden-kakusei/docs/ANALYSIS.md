@@ -267,6 +267,15 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
    $84  password/name entry grids $84:A3E0, $84:A4D0 (section 11)
    $B7  4 new characters (딩 띠 렉 창)
  - The other banks ($85–$87, $8A–$97, $A0–$B3, $B5, $B8–$BF) are identical in all three ROMs.
+ - Banks changed by v1.4 (against v1.3, section 12)
+   $80  renderer hook $80:9B7E, header ROM size byte (0x0B → 0x0C) and checksum
+   $81  name entry hooks, code and tables ($81:DA60–$81:E234), title menu cursor box x ($81:8672),
+        chapter menu strings ($81:D654), addresses of the button icon palette instructions ($81:95F3 and the like)
+   $84  title menu strings ($84:A1D8–$84:A24D), status screen button guides and 「기술 경험치」 ($84:86DC–$84:896C)
+   $C0–$CA  new 1 bpp glyphs (name glyphs, title and chapter menu glyphs)
+   $CB  2 bpp button guide glyphs
+   $E0  syllable → code table NeSylCode ($E0:8000–$E0:D747)
+   The ROM is 4 MB now; $CC–$DF and $E1–$FF are 0xFF.
 
 ■ v1.3 relocation per dialogue bank (tools/build.sh output)
   Of 782 lines, 432 did not fit in place and were moved within the same bank.
@@ -532,6 +541,8 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
  - Glyphs (tools/font16.py)
    · The 882 Hangul syllables of the dialogue font (section 1) stay; the other 10,290 syllables and the 51
      compatibility jamo are drawn with Galmuri11 (12 px) as new codes 0x1000-0x3864. 「띄」 (help text) is one of them.
+   · From 0x3865 come the typeset title and chapter menu glyphs (also 1 bpp, bank $CA), and from 0x3C00 the button
+     guide glyphs (both planes, 64 bytes, bank $CB), below.
    · The earlier new glyphs (dialogue_patch.py) were aligned by each glyph's bounding box; the 11,000 here share
      one origin taken from 「가」, so 「으」 and 「우」 keep the font's own heights.
    · The font has one colour (plane 1 = plane 0), so a new glyph is 1 bpp, 32 bytes (a left and a right byte per
@@ -604,6 +615,9 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
    snes9x, snes9x2010 and Beetle Supafaust; all 54 scene-word logs match the v1.3 logs of the same scenario.
    new14, phrase14 and pwdebug14 only change the moves to 입력완료 on the name screen for the v1.4 grid
    (left, then up). As with v1.3, Supafaust's debug scenes and the Mesen-S core give no verdict.
+   This comparison ran on the build before the title menu and button icon fixes (CRC32 29F5A03B). What changed since
+   is the menu and guide glyphs, the cursor box x and the palette instruction addresses; the status screens were
+   checked on MesenCE screenshots.
 ```
 
 ## 13. Included files
@@ -640,6 +654,10 @@ gokuden2-kr-v1.3-tools.zip
    (debug menu scene start and dialogue ID logging, showing the ending credits directly, compatibility input playback)
  - compat/lr.py, compat/run_all.sh, compat/s_*.txt : a tool that feeds the same input to libretro cores
    for comparison, and its input scripts (section 10)
+ - tools/build-v1.4.sh     : order of the v1.4 build on top of the v1.3 build (section 12)
+ - tools/font16.py         : draws the new glyphs, typesets the menus and button guides, builds the jamo tables and grid
+ - asm/v14.asm             : renderer hook and jamo name entry (asar 1.91)
+ - compat/s_new14.txt, s_phrase14.txt, s_pwdebug14.txt : scenarios for the v1.4 grid
 
 Notes
  - ROM files are not included.
