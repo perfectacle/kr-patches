@@ -17,7 +17,7 @@ header title, CRC32 and SHA-1.
 | [Super Mario RPG](sfc/super-mario-rpg/) | v1.3 | `SUPER MARIO RPG`, `5527071E` |
 | [Otogirisou](sfc/otogirisou/) | v1.3 | `OTOGIRISOU`, `8E4BEFD0` |
 | [Dragon Ball Z: Super Gokuden – Totsugeki-hen](sfc/dragon-ball-z-super-gokuden-totsugeki/) | v1.3 | `SFX DBZ TOTSUGEKIHEN`, `D531289B` |
-| [Dragon Ball Z: Super Gokuden – Kakusei-hen](sfc/dragon-ball-z-super-gokuden-kakusei/) | v1.3 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
+| [Dragon Ball Z: Super Gokuden – Kakusei-hen](sfc/dragon-ball-z-super-gokuden-kakusei/) | v1.4 | `ｽｰﾊﾟｰｺﾞｸｳﾃﾞﾝ ｶｸｾｲﾍﾝ`, `3172CD4F` |
 | [Ghost Trick](nds/ghost-trick/) | v1.2 | `GHOSTTRICK-J`, `105DDD9E` |
 
 Games are grouped by platform (`sfc/` for the Super Famicom, `nds/` for the

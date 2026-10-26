@@ -1,9 +1,9 @@
-# [SFC] Dragon Ball Z: Super Gokuden – Kakusei-hen ROM analysis (Korean patch v1.2/v1.3 work notes)
+# [SFC] Dragon Ball Z: Super Gokuden – Kakusei-hen ROM analysis (Korean patch v1.2-v1.4 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patches v1.2 and v1.3.
+The ROM structure and methods confirmed while working on the Korean patches v1.2 to v1.4.
 I hope it helps anyone analysing the same game or the same engine (Super Gokuden Totsugeki-hen and others).
 Patch page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/
 
@@ -513,7 +513,91 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
    was found by reading the scripts and the command handling code, not confirmed by playing.
 ```
 
-## 12. Included files
+## 12. v1.4 names: jamo name entry and new 16 px glyphs
+
+```text
+ - v1.4 ROM: output of tools/build-v1.4.sh = CRC32 29F5A03B, 4,194,304 bytes (header ROM size byte 0x7FD7: 0x0B → 0x0C).
+   Banks $C0-$FF map to file 0x200000-. [verified]
+ - The five names [verified]
+   · $0C00 + name × 10, five 16-bit codes each (space 0x272). $80:81D2 copies the defaults from $84:A048.
+     The Japanese ones are プレイヤー, なかよし, いじわる, 女の子ちゃん and せんせい (the player, classmates, the teacher).
+   · Writers: the name entry ($81:8AF7 and 8B0C write $0C00 + $022B × 2; Y blanks all at $81:8A19)
+   · Readers (static search, then confirmed by running)
+       $81:8BB1        the name list of the name entry (copied to $0A00, drawn by $80:997B)
+       $81:A12F etc.   quiz ranks 1-4 on the achievement list (name number $03A7)
+       $80:99E0, 99F9  control codes 0x10 (name 0) and 0x11 (name 4) in $80:997B strings: the classmates'
+                       comments that X shows on the achievement list (strings $84:D53E-$84:ED18)
+       $83:A336-       the name conversion of the Totsugeki-hen password (section 11)
+     The dialogue engine skips codes below 0x100, and no dialogue has a name code.
+ - Glyphs (tools/font16.py)
+   · The 882 Hangul syllables of the dialogue font (section 1) stay; the other 10,290 syllables and the 51
+     compatibility jamo are drawn with Galmuri11 (12 px) as new codes 0x1000-0x3864. 「띄」 (help text) is one of them.
+   · The earlier new glyphs (dialogue_patch.py) were aligned by each glyph's bounding box; the 11,000 here share
+     one origin taken from 「가」, so 「으」 and 「우」 keep the font's own heights.
+   · The font has one colour (plane 1 = plane 0), so a new glyph is 1 bpp, 32 bytes (a left and a right byte per
+     row) at bank $C0 + (code - 0x1000) / 0x400, offset ((code - 0x1000) % 0x400) × 32 (banks $C0-$CA).
+   · Syllable → code table NeSylCode at $E0:8000 (11,172 entries)
+   · Why all of 가-힣: the name entry composes jamo freely, so 뷁 is typed through 뷀, and 뷁, 뷀, 똠 and 얅 are
+     not in KS X 1001. Even the 2,350 KS syllables alone would need a larger ROM (the dialogue font has about 80
+     free slots and the 2 MB ROM about 50 KB of scattered free space), so all are there.
+ - Renderer hook (asm/v14.asm, code at $81:DA60-)
+     $80:9B7E  the branch for codes from 0x900 (SEC / SBC #$0900 / STA $2F). From 0x1000 it expands the glyph
+               to 2 bpp in low WRAM $1600-$161F (top tiles) and $1700-$171F (bottom tiles), sets DB = $80,
+               $50 = $1600, $27 = 0 and returns to $80:9B9A. The renderer reads its $0200- variables and the glyph
+               through DB, and banks $C0- have no low-RAM mirror; DB = $7E could make the line-break path read
+               I/O registers from WRAM, so the glyph goes through low RAM instead.
+ - Name entry ($81:8959 loop) [verified]
+   · The Japanese screen is a grid of 15 cells × 6 rows (hiragana and katakana pages, X switches) and
+     「입력완료」 (cell 0x55). The password entry ($81:9033 etc.) reads the same cell tables and grids on its own
+     and is left alone.
+   · The v1.4 grid (NeGrid and NeCell in work/font16_data.asm): row 0 consonants, row 1 double consonants,
+     rows 2 and 3 vowels. Both pages point at it (the LDA long operands at $81:8B70 and $81:8B82).
+   · A ($81:89DD) composes, B ($81:89E5) takes back one jamo (deletes a character when not composing),
+     X ($81:8A0B) types a space, Y still clears all, and Start (after $81:89ED) puts the cursor on 입력완료 (A there
+     goes on to the next name); Start did nothing on this screen in the Japanese game. The help text ($81:891A) now says 지우기 and 띄어쓰기.
+   · The syllable being composed is at $022B. The next one goes to $022B + 1 and blanks the rest of that name;
+     a key past the fifth position of a name is ignored. When B, 입력완료 or Y move the cursor off the last
+     position and code we wrote, the composing state is dropped and typing overwrites from the cursor. B then
+     moves the cursor back one position like the game's B, and on past the name's trailing spaces to just after
+     its last character. Y ($81:8A26) also resets the state.
+   · The cursor skips empty cells: the ends of the original moves, STA $0229 / JMP $89BA ($81:8A58 right,
+     $81:8A8D left, $81:8AAF down, $81:8AD1 up), become JMPs that repeat the move while the cell is empty.
+   · State in WRAM $7F:FF00-$7F:FF31, which nothing wrote after boot in new game, password and battle
+     scenes (a write callback on the whole CPU address space with the mirrors folded together). It is reset
+     when the screen opens, at $81:89A6.
+ - Centred title menus (MENUS in tools/font16.py)
+   · $84:A1D8 (new game / option), $84:A1FA (continue / new game / option), $84:A22E (start / password) and
+     $81:D654 (the chapter to continue from, 피콜로편부터 and so on) were
+     centred with leading spaces only, so a line moved in 12 px steps and sat up to 6 px off, with a 12 px space
+     inside 새 게임.
+   · The cursor box also sat 4 px from the left and 8 px from the right of the window's inside (x 66-189), at
+     x 70-181. Its x is LDA #$0048 / STA $45 at $81:8672; 0x4A moves it to 72-183, 6 px on each side.
+   · Each line is now typeset from the dialogue font's glyphs pixel by pixel (4 px word space), centred on x 128
+     on screen and cut into 12 px glyphs with new codes; a line keeps its number of codes. Every line of the three
+     menus is now centred at x 128.
+ - Two syllables squeezed into one glyph (FIELDS in tools/font16.py)
+   · Where the Japanese status screens had one kanji, v1.1 drew two syllables into one 12 px glyph:
+     0x273 전환, 0x274 취소, 0x275 험치, 0x276 다음. They are in the button guides of the status, achievement list,
+     event clear list, skill experience, skill setting and skill list screens ($84:86DC, 87E2, 886A, 888C, 8904,
+     896C) and the command 「기술경험치」 ($84:878E).
+   · Each field is copied a fixed number of codes ($81:96AB and the like, LDX/CPX) into a window of fixed width
+     ($020E), so neither can grow. The dialogue font's syllables do not fit even one pixel apart (기술경험치 is
+     51 px in a 48 px window), so the button icons stay and the labels are typeset in Galmuri11 Condensed (7 px)
+     into the field's width (its codes × 12 px + 4 px, cut at the window edge) and cut into 12 px glyphs with new
+     codes. Button guides are centred; the command item starts where the other items do and now reads 「기술 경험치」, spaced out
+     (2 px between letters, 5 px between words) to end where 기술설정 and 기술습득 end (x 46).
+ - Checked (MesenCE 2.2.1)
+   · Five names (뷁얅닭, 똠방, 쌤힣, 읊잖, 손오공) land in WRAM as typed and show correctly in the name list,
+     the achievement list ranks and the classmates' comments (「뷁얅닭의움직임이 심상치 않다!」).
+   · B through 뷁 → 뷀 → 붸 → 부 → ㅂ → space, X for a space, keys ignored once five positions are full.
+ - Emulator compatibility (compat/run_all.sh, section 10): the v1.4 ROM ran new14 (with and without header),
+   cont, bubble, narration, pwko, pwdebug14, phrase14, wrong and cheat on Mesen 2, bsnes, bsnes-hd beta,
+   snes9x, snes9x2010 and Beetle Supafaust; all 54 scene-word logs match the v1.3 logs of the same scenario.
+   new14, phrase14 and pwdebug14 only change the moves to 입력완료 on the name screen for the v1.4 grid
+   (left, then up). As with v1.3, Supafaust's debug scenes and the Mesen-S core give no verdict.
+```
+
+## 13. Included files
 
 ```text
 gokuden2-kr-v1.3-tools.zip
