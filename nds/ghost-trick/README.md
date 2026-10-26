@@ -1,12 +1,14 @@
-# Ghost Trick (NDS) Korean patch v1.2
+# Ghost Trick (NDS) Korean patch v1.3
 
 English | [한국어](README.ko.md)
 
-Source of the Korean translation patch v1.2 for the Japanese *Ghost Trick*
+Source of the Korean translation patch v1.3 for the Japanese *Ghost Trick*
 (Nintendo DS). The build starts from the Japanese ROM with the Korean v1.1
 patch applied and rebuilds the dialogue scripts from the Japanese scripts.
 Fonts and graphics stay as in v1.1, except that the notice and credit lines v1.1
-put on the title screen are removed.
+put on the title screen are removed. Since v1.3 the build also turns off the
+anti-piracy routine that leaves the text boxes empty on DS hardware and
+flashcarts (section 8 of the analysis).
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/>
 
@@ -37,8 +39,8 @@ zsh, and `xdelta3` on the PATH (checked with 3.2.2).
 zsh tools/build.sh
 ```
 
-Output: `ghost-trick-kr-v1.2.nds` (119,462,534 bytes, CRC32 `4C863193`) and
-`release/v1.2/Ghost Trick (K) v1.2.xdelta`, identical to the released patch.
+Output: `ghost-trick-kr-v1.3.nds` (119,462,534 bytes, CRC32 `F13E7A2C`) and
+`release/v1.3/Ghost Trick (K) v1.3.xdelta`, identical to the released patch.
 The patch bytes can differ between `xdelta3` versions, so compare the ROM
 CRC32. Set `PYTHON` and `KRPATCH` to use another environment.
 
@@ -49,7 +51,8 @@ For each script file (`stNN/*_Expand.xml.lz`, `system/*.bin`),
 `tools/build.py` writes the lines of `tables/v1.2/script.tsv` one after
 another into the Japanese script and updates the pointers and labels of the
 lines that moved. Line heads (window and number) keep the Japanese values. The
-ROM is rebuilt with `kr_patch.nds.rom`.
+ROM is rebuilt with `kr_patch.nds.rom`. `tools/apfix.py` puts the
+nds-bootstrap AP fix for the Japanese release (`BGTJ-C8CD.ips`) into overlay 0.
 
 ## Editing the script
 
@@ -69,7 +72,7 @@ To see the lines next to the Japanese, dump them (the output contains Japanese
 text from the ROM, so it stays out of the repository):
 
 ```sh
-../../.venv/bin/python tools/dump.py ghost-trick-jp.nds ghost-trick-kr-v1.2.nds work/side.tsv
+../../.venv/bin/python tools/dump.py ghost-trick-jp.nds ghost-trick-kr-v1.3.nds work/side.tsv
 ```
 
 After editing, `tools/check.py` looks for characters not in the table, control
@@ -101,13 +104,13 @@ after loading the ROM, so it is not used.
 
 ```sh
 # power on, send buttons and touches, take screenshots (save states carry on between runs)
-../../.venv/bin/python tools/play.py ghost-trick-kr-v1.2.nds out --save s1.state --cmd "wait 600; press start; a 20; shot title"
+../../.venv/bin/python tools/play.py ghost-trick-kr-v1.3.nds out --save s1.state --cmd "wait 600; press start; a 20; shot title"
 # a test ROM whose "new game" starts at another stage and scene
-../../.venv/bin/python tools/stage_rom.py ghost-trick-kr-v1.2.nds work/st06.nds 06 game004
+../../.venv/bin/python tools/stage_rom.py ghost-trick-kr-v1.3.nds work/st06.nds 06 game004
 # a ROM with one line replaced by test text (window width experiments)
-../../.venv/bin/python tools/probe.py ghost-trick-jp.nds ghost-trick-kr-v1.2.nds work/probe.nds st01/st01_game000_Expand.xml.lz 0 0 "가나다라마바사아자차카타파하"
+../../.venv/bin/python tools/probe.py ghost-trick-jp.nds ghost-trick-kr-v1.3.nds work/probe.nds st01/st01_game000_Expand.xml.lz 0 0 "가나다라마바사아자차카타파하"
 # a ROM that shows chosen lines in the first scene
-../../.venv/bin/python tools/gallery.py ghost-trick-kr-v1.2.nds tables/v1.2/script.tsv work/gallery.nds st06/st06_game002_Expand.xml.lz:0:15
+../../.venv/bin/python tools/gallery.py ghost-trick-kr-v1.3.nds tables/v1.2/script.tsv work/gallery.nds st06/st06_game002_Expand.xml.lz:0:15
 ```
 
 `tools/font_store.py` dumps the dialogue font (`fonts2bpp_new.imb`) to a
