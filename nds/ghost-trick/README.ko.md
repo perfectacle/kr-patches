@@ -1,11 +1,12 @@
-# 고스트 트릭(NDS) 한글패치 v1.2
+# 고스트 트릭(NDS) 한글패치 v1.3
 
 [English](README.md) | 한국어
 
-일본판 닌텐도 DS *고스트 트릭* 한글패치 v1.2 의 소스입니다. 일본판 롬에
+일본판 닌텐도 DS *고스트 트릭* 한글패치 v1.3 의 소스입니다. 일본판 롬에
 한글패치 v1.1 을 적용한 롬에서 시작해, 대사 스크립트를 일본판 스크립트에서
 다시 만듭니다. 폰트와 그래픽은 v1.1 그대로이고, 타이틀 화면에 v1.1 이 넣은 안내·제작자
-문구만 지웁니다.
+문구만 지웁니다. v1.3 부터는 DS 실기·플래시카드에서 대사창을 비게 만드는 안티
+파이러시 루틴도 끕니다(분석 노트 8절).
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/>
 
@@ -35,8 +36,8 @@
 zsh tools/build.sh
 ```
 
-결과물: `ghost-trick-kr-v1.2.nds`(119,462,534 바이트, CRC32 `4C863193`)와
-`release/v1.2/Ghost Trick (K) v1.2.xdelta`. 배포한 패치와 같습니다. 패치
+결과물: `ghost-trick-kr-v1.3.nds`(119,462,534 바이트, CRC32 `F13E7A2C`)와
+`release/v1.3/Ghost Trick (K) v1.3.xdelta`. 배포한 패치와 같습니다. 패치
 바이트는 `xdelta3` 버전에 따라 달라질 수 있으니 롬 CRC32 로 비교하세요.
 다른 환경을 쓰려면 `PYTHON`, `KRPATCH` 를 지정합니다.
 
@@ -46,7 +47,8 @@ zsh tools/build.sh
 `tools/build.py` 는 스크립트 파일(`stNN/*_Expand.xml.lz`, `system/*.bin`)마다
 일본판 스크립트에 `tables/v1.2/script.tsv` 의 대사를 차례로 이어 쓰고, 옮겨 간
 대사를 가리키는 포인터와 레이블을 고칩니다. 대사 머리(창·번호)는 일본판 값을
-씁니다. 롬은 `kr_patch.nds.rom` 으로 다시 묶습니다.
+씁니다. 롬은 `kr_patch.nds.rom` 으로 다시 묶습니다. `tools/apfix.py` 는
+일본판용 nds-bootstrap AP 수정(`BGTJ-C8CD.ips`)을 오버레이 0 에 넣습니다.
 
 ## 대본 고치기
 
@@ -63,7 +65,7 @@ zsh tools/build.sh
 저장소에 넣지 않습니다).
 
 ```sh
-../../.venv/bin/python tools/dump.py ghost-trick-jp.nds ghost-trick-kr-v1.2.nds work/side.tsv
+../../.venv/bin/python tools/dump.py ghost-trick-jp.nds ghost-trick-kr-v1.3.nds work/side.tsv
 ```
 
 고친 뒤에는 `tools/check.py` 가 다음을 봅니다: 글자표에 없는 글자, 제어 코드 열이
@@ -93,13 +95,13 @@ v1.1·일본판과 다름, 줄 넘침(초상화가 창 안에 있는 창 13자, 
 
 ```sh
 # 전원을 켜고 버튼·터치를 넣어 가며 화면을 찍는다(세이브 스테이트로 이어 갈 수 있음)
-../../.venv/bin/python tools/play.py ghost-trick-kr-v1.2.nds out --save s1.state --cmd "wait 600; press start; a 20; shot title"
+../../.venv/bin/python tools/play.py ghost-trick-kr-v1.3.nds out --save s1.state --cmd "wait 600; press start; a 20; shot title"
 # 「처음부터」가 다른 스테이지·장면에서 시작하는 시험 롬
-../../.venv/bin/python tools/stage_rom.py ghost-trick-kr-v1.2.nds work/st06.nds 06 game004
+../../.venv/bin/python tools/stage_rom.py ghost-trick-kr-v1.3.nds work/st06.nds 06 game004
 # 대사 하나를 시험 문장으로 바꾼 롬(창 폭 실험)
-../../.venv/bin/python tools/probe.py ghost-trick-jp.nds ghost-trick-kr-v1.2.nds work/probe.nds st01/st01_game000_Expand.xml.lz 0 0 "가나다라마바사아자차카타파하"
+../../.venv/bin/python tools/probe.py ghost-trick-jp.nds ghost-trick-kr-v1.3.nds work/probe.nds st01/st01_game000_Expand.xml.lz 0 0 "가나다라마바사아자차카타파하"
 # 첫 장면에 확인할 대사를 모은 롬
-../../.venv/bin/python tools/gallery.py ghost-trick-kr-v1.2.nds tables/v1.2/script.tsv work/gallery.nds st06/st06_game002_Expand.xml.lz:0:15
+../../.venv/bin/python tools/gallery.py ghost-trick-kr-v1.3.nds tables/v1.2/script.tsv work/gallery.nds st06/st06_game002_Expand.xml.lz:0:15
 ```
 
 `tools/font_store.py` 는 대사 폰트(`fonts2bpp_new.imb`)를 툴킷 글리프

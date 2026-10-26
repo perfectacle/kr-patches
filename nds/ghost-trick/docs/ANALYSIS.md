@@ -1,16 +1,17 @@
-# [NDS] Ghost Trick ROM analysis (Korean patch v1.2 work notes)
+# [NDS] Ghost Trick ROM analysis (Korean patch v1.2 and v1.3 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patch v1.2.
+The ROM structure and methods confirmed while working on the Korean patch v1.2 and v1.3.
 A record for anyone who analyses this ROM again or continues fixing the patch.
 Patch page: https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/
 
  - Target ROM: Japanese original, 134,217,728 bytes, game code BGTJ
    CRC32 105DDD9E / SHA-1 323901c81e6e9300e2221e5cc42289cc5be73dce
  - v1.1 ROM: Japanese + v1.1/v1.1.xdelta = 119,459,746 bytes, CRC32 D366A4D9
- - v1.2 ROM: output of tools/build.sh = 119,462,534 bytes, CRC32 4C863193
+ - v1.2 ROM: 119,462,534 bytes, CRC32 4C863193
+ - v1.3 ROM: output of tools/build.sh = 119,462,534 bytes, CRC32 F13E7A2C (differs from v1.2 only in the 4 bytes of section 8)
  - Markers
    · [verified] checked by reading ROM bytes or running in an emulator
    · [inferred] guessed from the shape of the data or circumstances. Check it yourself before changing anything.
@@ -205,3 +206,31 @@ whatever song the game starts, song K plays. --quiet zeroes the volume byte (+6)
 record (12 bytes each from file +0x20, count at +0x1C) to mute sound effects.
 ```
 
+## 8. Anti-piracy (AP)
+
+```text
+■ Symptom [verified: user report and nds-bootstrap data]
+Even the Japanese original, started on DS hardware from TWiLight Menu++ or a flashcart, shows no text in
+dialogue, narration, choices or speech bubbles. An AP routine that decides the card is not genuine stops the
+text output. no$gba 3.2 behaves the same.
+
+■ The launcher's AP fix and the Korean patch [verified]
+nds-bootstrap applies retail/apfix/files/<game code>-<header CRC16>.ips in memory while it loads the ROM.
+The Japanese release has BGTJ-C8CD.ips (2 records), used only when the CRC16 at header 0x15E is C8CD.
+The Korean patch repacks the ROM, which moves the FAT and offsets, so the header CRC16 becomes CCD2 and the fix
+is not applied.
+
+■ Where the fix goes [verified]
+Both IPS records (Japanese ROM 0x84A9E: aae0 -> a939, 0x84B49: bfaae0 -> beaa36) fall in the overlay 0 file
+(Japanese ROM 0x84A00-0x86138, 5,944 bytes, BLZ compressed, 9,312 bytes unpacked, loaded at 0x020F2060).
+Overlay 0 in the v1.1 and v1.2 ROMs is byte-identical to the Japanese one and only moved to 0x84708 (-0x2F8).
+The fix edits compressed bytes, so after unpacking four places change, around +0x6E, +0x119, +0x1C2 and +0x26D.
+v1.3 writes the same bytes at their positions in the file (+0x9E, +0x149) with tools/apfix.py. The file keeps its
+size, so the overlay table is not touched. The resulting ROM differs from v1.2 only at 0x847A6-0x847A7, 0x84851
+and 0x84853. The header CRC16 is still CCD2, so nds-bootstrap never applies the fix a second time.
+
+■ Checks [verified]
+desmume runs v1.2 and v1.3 with the same input to identical frames, from the title to the first chapter's
+narration. That text shows on hardware (TWiLight Menu++) was confirmed by the reporter who made the same fix as an
+IPS.
+```
