@@ -516,7 +516,7 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
 ## 12. v1.4 names: jamo name entry and new 16 px glyphs
 
 ```text
- - v1.4 ROM: output of tools/build-v1.4.sh = CRC32 D5D27F1A, 4,194,304 bytes (header ROM size byte 0x7FD7: 0x0B → 0x0C).
+ - v1.4 ROM: output of tools/build-v1.4.sh = CRC32 29F5A03B, 4,194,304 bytes (header ROM size byte 0x7FD7: 0x0B → 0x0C).
    Banks $C0-$FF map to file 0x200000-. [verified]
  - The five names [verified]
    · $0C00 + name × 10, five 16-bit codes each (space 0x272). $80:81D2 copies the defaults from $84:A048.
@@ -553,7 +553,8 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
    · The v1.4 grid (NeGrid and NeCell in work/font16_data.asm): row 0 consonants, row 1 double consonants,
      rows 2 and 3 vowels. Both pages point at it (the LDA long operands at $81:8B70 and $81:8B82).
    · A ($81:89DD) composes, B ($81:89E5) takes back one jamo (deletes a character when not composing),
-     X ($81:8A0B) types a space, Y still clears all. The help text ($81:891A) now says 지우기 and 띄어쓰기.
+     X ($81:8A0B) types a space, Y still clears all, and Start (after $81:89ED) puts the cursor on 입력완료 (A there
+     goes on to the next name); Start did nothing on this screen in the Japanese game. The help text ($81:891A) now says 지우기 and 띄어쓰기.
    · The syllable being composed is at $022B. The next one goes to $022B + 1 and blanks the rest of that name;
      a key past the fifth position of a name is ignored. When B, 입력완료 or Y move the cursor off the last
      position and code we wrote, the composing state is dropped and typing overwrites from the cursor. B then
@@ -564,6 +565,27 @@ v1.1 ROM = Japanese + v1.1/v1.1.ips (CRC32 32219BC3)
    · State in WRAM $7F:FF00-$7F:FF31, which nothing wrote after boot in new game, password and battle
      scenes (a write callback on the whole CPU address space with the mirrors folded together). It is reset
      when the screen opens, at $81:89A6.
+ - Centred title menus (MENUS in tools/font16.py)
+   · $84:A1D8 (new game / option), $84:A1FA (continue / new game / option), $84:A22E (start / password) and
+     $81:D654 (the chapter to continue from, 피콜로편부터 and so on) were
+     centred with leading spaces only, so a line moved in 12 px steps and sat up to 6 px off, with a 12 px space
+     inside 새 게임.
+   · The cursor box also sat 4 px from the left and 8 px from the right of the window's inside (x 66-189), at
+     x 70-181. Its x is LDA #$0048 / STA $45 at $81:8672; 0x4A moves it to 72-183, 6 px on each side.
+   · Each line is now typeset from the dialogue font's glyphs pixel by pixel (4 px word space), centred on x 128
+     on screen and cut into 12 px glyphs with new codes; a line keeps its number of codes. Every line of the three
+     menus is now centred at x 128.
+ - Two syllables squeezed into one glyph (FIELDS in tools/font16.py)
+   · Where the Japanese status screens had one kanji, v1.1 drew two syllables into one 12 px glyph:
+     0x273 전환, 0x274 취소, 0x275 험치, 0x276 다음. They are in the button guides of the status, achievement list,
+     event clear list, skill experience, skill setting and skill list screens ($84:86DC, 87E2, 886A, 888C, 8904,
+     896C) and the command 「기술경험치」 ($84:878E).
+   · Each field is copied a fixed number of codes ($81:96AB and the like, LDX/CPX) into a window of fixed width
+     ($020E), so neither can grow. The dialogue font's syllables do not fit even one pixel apart (기술경험치 is
+     51 px in a 48 px window), so the button icons stay and the labels are typeset in Galmuri11 Condensed (7 px)
+     into the field's width (its codes × 12 px + 4 px, cut at the window edge) and cut into 12 px glyphs with new
+     codes. Button guides are centred; the command item starts where the other items do and now reads 「기술 경험치」, spaced out
+     (2 px between letters, 5 px between words) to end where 기술설정 and 기술습득 end (x 46).
  - Checked (MesenCE 2.2.1)
    · Five names (뷁얅닭, 똠방, 쌤힣, 읊잖, 손오공) land in WRAM as typed and show correctly in the name list,
      the achievement list ranks and the classmates' comments (「뷁얅닭의움직임이 심상치 않다!」).

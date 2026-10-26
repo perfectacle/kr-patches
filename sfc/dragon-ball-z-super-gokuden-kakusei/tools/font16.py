@@ -58,6 +58,35 @@ DONE_AT = 5 * ROW_WORDS + 13    # 입력완료 in the last row: blank + four cod
 HELP_AT = GRID_AT + 0x1E0       # the name screen's help: icon, label, newline, ...
 HELP = [((0x2B7, 0x2B3), "선택"), ((0x2B4,), "지우기"), ((0x2B5,), "띄어쓰기"), ((0x2B6,), "클리어")]  # button icons, label
 BLANK, NEWLINE = 0x0272, 0x000A
+# Centred title menus ($84:A1D8 new game / option, $84:A1FA with continue, $84:A22E start / password,
+# $81:D654 the chapter to continue from).
+# Leading spaces can only move a line by a whole 12 px glyph, which left the lines up to 6 px off
+# centre and a 12 px gap inside 새 게임. Each line is typeset from the stock glyphs instead (a 4 px
+# word space), centred on the window (x 128 on screen, the middle of its inside 66-189 and of the
+# cursor box that asm/v14.asm moves to 72-183) and cut into new 12 px glyphs; a line keeps its
+# number of codes.
+MENUS = [(0x84A1D8, ["새 게임", "옵션"]),
+         (0x84A1FA, ["이어하기", "새 게임", "옵션"]),
+         (0x84A22E, ["게임 시작", "암호"]),
+         (0x81D654, ["피콜로편부터", "베지터편부터", "프리더편부터"])]
+MENU_CELLS, MENU_CENTRE, WORD_SPACE = 9, 56, 4
+# Status screen labels where the Japanese had one kanji and v1.1 squeezed two syllables into one
+# 12 px glyph (codes 0x273 전환, 0x274 취소, 0x275 험치, 0x276 다음). The code that copies them takes
+# a fixed number of codes into a window of fixed width ($020E), so each field is typeset into what
+# is visible: its codes x 12 px plus the 4 px a glyph may reach past its cell, cut at the window
+# edge. Button icons stay stock and the labels use Galmuri11 Condensed (7 px): the stock syllables
+# do not fit even one pixel apart. Headers are centred; the command item starts where the others do.
+# (bank $84 address of the field, its old codes, the new text, visible width, centred?[, letter gap,
+# word space]). The command item is spaced out to end where 기술설정 and 기술습득 end (x 46).
+ICONS = {"✚": 0x2B7, "Ⓐ": 0x2B3, "Ⓑ": 0x2B4, "Ⓧ": 0x2B5, "Ⓨ": 0x2B6}
+FIELDS = [(0x86DC, [0x2B7, 0x2B3, 0xA14, 0x837, 0x2B5, 0x273, 0x2B4, 0x274], "✚Ⓐ선택Ⓧ전환Ⓑ취소", 100, True),
+          (0x87E2, [0x2B5, 0x5F1, 0x724, 0x2B3, 0x2B4, 0x274], "Ⓧ전환ⒶⒷ취소", 76, True),
+          (0x886A, [0x2B5, 0x276, 0x2B6, 0x7E2, 0x932, 0x2B3, 0x2B4, 0x274], "Ⓧ다음Ⓨ뒤로ⒶⒷ취소", 96, True),
+          (0x888C, [0x272, 0x2B3, 0x2B4, 0x274], "ⒶⒷ취소", 48, True),
+          (0x8904, [0x2B7, 0x2B3, 0xA14, 0x837, 0x2B5, 0x5F1, 0x724, 0x2B4, 0x274], "✚Ⓐ선택Ⓧ전환Ⓑ취소", 112, True),
+          (0x896C, [0x2B5, 0x276, 0x2B6, 0x7E2, 0x932, 0x2B3, 0x2B4, 0x826, 0xA25], "Ⓧ다음Ⓨ뒤로ⒶⒷ취소", 112, True),
+          (0x878E, [0x166, 0x501, 0x135, 0x275], "기술 경험치", 48, False, 2, 5)]
+CONDENSED_FONT = os.path.join(ROOT, "tools", "fonts", "Galmuri11-Condensed.ttf")
 
 
 def load_table():
@@ -104,6 +133,66 @@ def pack(rows):
     return bytes(out)
 
 
+def typeset(rom, label, have, cells):
+    """label -> rows of the line's pixels (cells x 12 wide), ink centred on MENU_CENTRE"""
+    width = cells * 12 + 32
+    strip = [[False] * width for _ in range(16)]
+    pen = 0
+    for ch in label:
+        if ch == " ":
+            pen += WORD_SPACE
+            continue
+        g = font.glyph(rom, have[ch])
+        for y in range(16):
+            for x in range(16):
+                if g[y][x]:
+                    strip[y][pen + x] = True
+        pen += 12
+    ink = [x for x in range(width) if any(strip[y][x] for y in range(16))]
+    shift = MENU_CENTRE - (ink[0] + ink[-1] + 1) // 2
+    if ink[0] + shift < 0 or ink[-1] + shift >= cells * 12:
+        raise SystemExit("%s does not fit its line" % label)
+    return [[strip[y][x - shift] if 0 <= x - shift < width else False for x in range(cells * 12)] for y in range(16)]
+
+
+def condensed(ch, cfont):
+    """16x16 rows: a Galmuri11 Condensed syllable, 7 px wide, rows 4-14 like the stock glyphs"""
+    im = Image.new("1", (32, 32), 0)
+    ImageDraw.Draw(im).text((8, 8), ch, font=cfont, fill=1)
+    ref = Image.new("1", (32, 32), 0)
+    ImageDraw.Draw(ref).text((8, 8), "가", font=cfont, fill=1)
+    x0, y0, _, _ = ref.getbbox()
+    rows = [[bool(im.getpixel((x0 + x, y0 - 4 + y))) for x in range(16)] for y in range(16)]
+    if any(rows[y][x] for y in range(16) for x in range(7, 16)):
+        raise SystemExit("%s is wider than 7 px" % ch)
+    return rows
+
+
+def lay_field(rom, text, cfont, width, centred, gap=1, space=3):
+    """text -> rows `width` px wide: icons advance 12, syllables 7 + gap, a space `space`"""
+    strip = [[False] * (width + 32) for _ in range(16)]
+    pen, prev = 0, None
+    for ch in text:
+        if ch == " ":
+            pen += space - gap
+            continue
+        if ch in ICONS:
+            g, w = font.glyph(rom, ICONS[ch]), 12
+        else:
+            g, w = condensed(ch, cfont), 7 + gap
+        for y in range(16):
+            for x in range(16):
+                if g[y][x]:
+                    strip[y][pen + x] = True
+        pen += w
+        prev = "icon" if ch in ICONS else "text"
+    ink = [x for x in range(width + 32) if any(strip[y][x] for y in range(16))]
+    shift = (width - (ink[-1] + 1 - ink[0])) // 2 - ink[0] if centred else 1 - ink[0]
+    if ink[0] + shift < 0 or ink[-1] + shift >= width:
+        raise SystemExit("%s does not fit its %d px" % (text, width))
+    return [[strip[y][x - shift] if 0 <= x - shift < width + 32 else False for x in range(width)] for y in range(16)]
+
+
 def new_offset(code):
     i = code - FIRST
     return ((BANK0 & 0x7F) + i // PER_BANK) * 0x8000 + (i % PER_BANK) * 32
@@ -144,7 +233,69 @@ def main(romp, out):
     if any(codes.get(j) != FIRST + i for i, j in enumerate(JAMO)):
         raise SystemExit("the jamo must be the first new codes: the name entry computes their index from the code")
     every = {**have, **codes}
-    last = max(codes.values())
+
+    next_code = FIRST + len(new)
+    menu_glyphs = {}
+    for at, labels in MENUS:
+        o = (at >> 16 & 0x7F) * 0x8000 + (at & 0x7FFF)
+        lines, line, k = [], [], o
+        while True:
+            w = struct.unpack_from("<H", rom, k)[0]
+            if w in (0, NEWLINE):
+                lines.append((k - 2 * len(line), line))
+                line = []
+                if w == 0:
+                    break
+            else:
+                line.append(w)
+            k += 2
+        if len(lines) != len(labels):
+            raise SystemExit("menu at $%06X not found" % at)
+        for (start, old), label in zip(lines, labels):
+            if "".join(table.get(c, "") for c in old if c != BLANK) != label.replace(" ", ""):
+                raise SystemExit("menu at $%06X does not say %s" % (at, label))
+            pixels = typeset(rom, label, have, MENU_CELLS)
+            words = []
+            for c in range(len(old)):
+                rows = [[pixels[y][c * 12 + x] if c * 12 + x < MENU_CELLS * 12 and x < 12 else False
+                         for x in range(16)] for y in range(16)]
+                if not any(any(r) for r in rows):
+                    words.append(BLANK)
+                    continue
+                data = pack(rows)
+                if data not in menu_glyphs:
+                    menu_glyphs[data] = next_code
+                    o2 = new_offset(next_code)
+                    rom[o2:o2 + 32] = data
+                    next_code += 1
+                words.append(menu_glyphs[data])
+            if any(pixels[y][x] for y in range(16) for x in range(len(old) * 12, MENU_CELLS * 12)):
+                raise SystemExit("%s runs past the %d codes of its line" % (label, len(old)))
+            rom[start:start + 2 * len(old)] = b"".join(w.to_bytes(2, "little") for w in words)
+    cfont = ImageFont.truetype(CONDENSED_FONT, 12)
+    for at, old, text, width, centred, *spacing in FIELDS:
+        start = (0x84 & 0x7F) * 0x8000 + (at & 0x7FFF)
+        if [struct.unpack_from("<H", rom, start + 2 * i)[0] for i in range(len(old))] != old:
+            raise SystemExit("field at $84:%04X not found" % at)
+        if width > len(old) * 12 + 4:
+            raise SystemExit("field at $84:%04X: %d px is past its last glyph" % (at, width))
+        pixels = lay_field(rom, text, cfont, width, centred, *spacing)
+        words = []
+        for c in range(len(old)):
+            rows = [[pixels[y][c * 12 + x] if c * 12 + x < width and (x < 12 or c == len(old) - 1) else False
+                     for x in range(16)] for y in range(16)]
+            if not any(any(r) for r in rows):
+                words.append(BLANK)
+                continue
+            data = pack(rows)
+            if data not in menu_glyphs:
+                menu_glyphs[data] = next_code
+                o2 = new_offset(next_code)
+                rom[o2:o2 + 32] = data
+                next_code += 1
+            words.append(menu_glyphs[data])
+        rom[start:start + 2 * len(old)] = b"".join(w.to_bytes(2, "little") for w in words)
+    last = next_code - 1
     if new_offset(last) // 0x8000 + 0x80 >= CODE_BANK:
         raise SystemExit("the glyphs run into the code bank")
 

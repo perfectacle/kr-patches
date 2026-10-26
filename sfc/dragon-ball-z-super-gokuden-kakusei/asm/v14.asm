@@ -54,8 +54,13 @@ org $8189E5                 ; B
     JMP NeB
 org $818A0B                 ; X switched the grid page; it types a space now
     JMP NeSpace
+org $8189ED                 ; BIT #$4000 / BNE: Y; Start is checked after it
+    JMP NeYStart
+    NOP #2
 org $818A26                 ; Y cleared every name: STZ $022B
     JSR NeInit2
+org $818672                 ; title menu cursor box: x 70-181 left 4 px and 8 px of the window's
+    LDA #$004A              ; inside (66-189); two pixels right make 6 and 6
 org $818B70                 ; the grid, either page
     LDA.l NeGrid,X
 org $818B82
@@ -152,6 +157,20 @@ NeReset:
     LDA #$0001
     STA.l $7F0000|!here
     RTS
+
+; In: A = the new buttons ($85). Start puts the cursor on 입력완료, as A there ends the name.
+NeYStart:
+    BIT #$4000
+    BEQ +
+    JMP $8A13
++
+    BIT #$1000
+    BEQ +
+    LDA.w #!done
+    STA $0229
+    JMP $89BA
++
+    JMP $89F2
 
 NeInit2:
     STZ $022B

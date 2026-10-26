@@ -6,7 +6,7 @@
 일본판 롬에 한글패치 v1.1 을 적용한 롬에서 시작해, v1.1 이 살아 있는 데이터를
 덮어쓴 텍스트를 되돌린 뒤 타이틀 화면, 대사, 전투 말풍선, 엔딩 크레딧을 바꾸고,
 한글판 돌격편의 암호를 암호 입력 화면에서 읽을 수 있게 합니다(v1.3).
-v1.4 는 이름 입력을 자모 조합으로 바꾸고, 이름에 한글 11,172자를 모두 쓸 수
+v1.4 는 이름 입력을 자모 조합으로 바꾸고 타이틀 메뉴를 가운데에 맞추며, 이름에 한글 11,172자를 모두 쓸 수
 있게 대사 폰트에 없는 글자를 새로 넣습니다. 롬은 4MB 로 늘어납니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/>
@@ -40,7 +40,7 @@ v1.4 는 이름 입력을 자모 조합으로 바꾸고, 이름에 한글 11,172
 zsh tools/build-v1.4.sh
 ```
 
-결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `D5D27F1A`)와 `release/v1.4/*.ips`
+결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `29F5A03B`)와 `release/v1.4/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다. v1.4
 빌드는 먼저 `tools/build.sh` 를 돌리고, 이것이 `super-gokuden-kr-v1.3.smc`
 (CRC32 `B9F14962`)와 `release/v1.3/*.ips` 를 씁니다. 빌드는

@@ -8,7 +8,7 @@ Japanese ROM with the Korean v1.1 patch applied, undoes v1.1 text that
 overwrote live data, then replaces the title screen, dialogue, battle speech
 bubbles and ending credits and makes passwords from the Korean Totsugeki-hen
 readable on the password screen (v1.3). v1.4 turns the name entry into jamo
-composition and adds the glyphs the dialogue font lacks, so names can use all
+composition, centres the title menus and adds the glyphs the dialogue font lacks, so names can use all
 11,172 Hangul syllables; the ROM grows to 4 MB.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-kakusei/>
@@ -44,7 +44,7 @@ the macOS system font assets; on other systems change `TITLE_FONT` in
 zsh tools/build-v1.4.sh
 ```
 
-Output: `super-gokuden-kr-v1.4.smc` (CRC32 `D5D27F1A`) and
+Output: `super-gokuden-kr-v1.4.smc` (CRC32 `29F5A03B`) and
 `release/v1.4/*.ips` (plain and 512-byte copier header), identical to the
 released patches. The v1.4 build runs `tools/build.sh` first, which writes
 `super-gokuden-kr-v1.3.smc` (CRC32 `B9F14962`) and `release/v1.3/*.ips`. The build also rewrites `tables/kr-v1.3.txt` (the v1.3 code
