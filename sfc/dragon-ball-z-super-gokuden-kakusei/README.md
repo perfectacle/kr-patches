@@ -44,7 +44,7 @@ the macOS system font assets; on other systems change `TITLE_FONT` in
 zsh tools/build-v1.4.sh
 ```
 
-Output: `super-gokuden-kr-v1.4.smc` (CRC32 `D25F2F46`) and
+Output: `super-gokuden-kr-v1.4.smc` (CRC32 `8AA3123E`) and
 `release/v1.4/*.ips` (plain and 512-byte copier header), identical to the
 released patches. The v1.4 build runs `tools/build.sh` first, which writes
 `super-gokuden-kr-v1.3.smc` (CRC32 `B9F14962`) and `release/v1.3/*.ips`. The build also rewrites `tables/kr-v1.3.txt` (the v1.3 code

@@ -81,7 +81,7 @@ MENU_CELLS, MENU_CENTRE, WORD_SPACE = 9, 56, 4
 ICONS = {"✚": 0x2B7, "Ⓐ": 0x2B3, "Ⓑ": 0x2B4, "Ⓧ": 0x2B5, "Ⓨ": 0x2B6}
 FIELDS = [(0x86DC, [0x2B7, 0x2B3, 0xA14, 0x837, 0x2B5, 0x273, 0x2B4, 0x274], "✚Ⓐ선택Ⓧ전환Ⓑ취소", 100, True),
           (0x87E2, [0x2B5, 0x5F1, 0x724, 0x2B3, 0x2B4, 0x274], "Ⓧ전환ⒶⒷ취소", 76, True),
-          (0x886A, [0x2B5, 0x276, 0x2B6, 0x7E2, 0x932, 0x2B3, 0x2B4, 0x274], "Ⓧ다음Ⓨ뒤로ⒶⒷ취소", 96, True),
+          (0x886A, [0x2B5, 0x276, 0x2B6, 0x7E2, 0x932, 0x2B3, 0x2B4, 0x274], "Ⓧ다음Ⓨ뒤로Ⓑ취소", 96, True),
           (0x888C, [0x272, 0x2B3, 0x2B4, 0x274], "ⒶⒷ취소", 48, True),
           (0x8904, [0x2B7, 0x2B3, 0xA14, 0x837, 0x2B5, 0x5F1, 0x724, 0x2B4, 0x274], "✚Ⓐ선택Ⓧ전환Ⓑ취소", 112, True),
           (0x896C, [0x2B5, 0x276, 0x2B6, 0x7E2, 0x932, 0x2B3, 0x2B4, 0x826, 0xA25], "Ⓧ다음Ⓨ뒤로ⒶⒷ취소", 112, True),
@@ -94,8 +94,14 @@ TWO_FIRST, TWO_BANK = 0x3C00, 0xCB
 # buffer at $7E:5000 (two tiles, two rows): LDA $7Exxxx / ORA #$pp00 / STA $7Exxxx, 11 bytes each.
 # Moving an icon moves those entries, so an icon must lie within two tiles (its left column mod 8
 # at most 5). (field, screen x of its first code, bank $81 setter blocks)
-SETTERS = {0x86DC: (136, [0x95F3]), 0x87E2: (160, [0x9DDB]), 0x886A: (136, [0xC128]),
-           0x888C: (192, [0xCCCF]), 0x8904: (128, [0xA894, 0xB84C]), 0x896C: (128, [0xC5D7, 0xC8BD])}
+# (field, screen x of its first code, window width $020E x 8, inner left edge of its panel,
+# bank $81 setter blocks). Two icons never share a tile, or the tile gets both palettes.
+SETTERS = {0x86DC: (136, 104, 130, [0x95F3]), 0x87E2: (160, 80, 154, [0x9DDB]),
+           0x886A: (136, 96, 122, [0xC128]), 0x888C: (192, 48, 186, [0xCCCF]),
+           0x8904: (128, 112, 122, [0xA894, 0xB84C]), 0x896C: (128, 112, 122, [0xC5D7, 0xC8BD])}
+# Every guide ends on x 230, where the lines below it end (values, separators, lists), and starts
+# as far in from its panel's left edge as that end is from the panel's right edge (x 243).
+GUIDE_RIGHT, PANEL_RIGHT = 230, 243
 HEADER_ROWS = range(0x50C0, 0x5140)
 
 
@@ -200,34 +206,71 @@ def pack2(rows):
     return bytes(out)
 
 
-def lay_right(rom, text, cfont, right):
-    """button guide -> (rows of colour indexes, left x of each icon): right-aligned on `right`,
-    1 px apart, every icon within two tiles"""
-    strip = [[0] * (right + 1) for _ in range(16)]
-    icons, cursor = [], right
+def place_guide(text, end, gap, icon_gap):
+    """left x of each item, laid from the right so it ends on `end` (field x from a tile boundary):
+    icons 11 px with their left column mod 8 at most 5 and no tile shared with another icon,
+    labels 7 px. Room the tiles force goes in front of an icon, not between two icons."""
+    xs, pen, nxt, next_tile = [], end + 1, None, 1 << 16
     for ch in reversed(text):
-        if ch in ICONS:
-            g, x = glyph2(rom, ICONS[ch]), cursor - 10
-            while x % 8 > 5:
+        icon = ch in ICONS
+        if nxt is not None:
+            pen -= icon_gap if icon != (nxt == "icon") else gap if not icon else 1
+        x = pen - (11 if icon else 7)
+        if icon:
+            while x % 8 > 5 or x // 8 + 1 >= next_tile:
                 x -= 1
-            icons.append(x)
-        else:
-            g, x = [[3 if p else 0 for p in row] for row in condensed(ch, cfont)], cursor - 6
-        if x < 0:
-            raise SystemExit("%s does not fit left of x %d" % (text, right))
+            next_tile = x // 8
+        xs.append(x)
+        pen = x
+        nxt = "icon" if icon else "text"
+    return xs[::-1], xs[-1]
+
+
+def lay_guide(rom, text, cfont, origin, window, panel_left, limit):
+    """button guide -> (rows of colour indexes `limit` px wide, left x of each icon), from the
+    spacing and start nearest the targets (see GUIDE_RIGHT), even spacing breaking ties"""
+    right = GUIDE_RIGHT - origin
+    left = panel_left + (PANEL_RIGHT - GUIDE_RIGHT) - origin
+    best = None
+    for gap in (1, 2, 3):
+        for icon_gap in range(gap, gap + 4):
+            for end in range(min(limit, window) - 1, 0, -1):
+                xs, start = place_guide(text, end, gap, icon_gap)
+                if start < 0:
+                    break
+                uneven = 0
+                for (a, xa), (b, xb) in zip(zip(text, xs), zip(text[1:], xs[1:])):
+                    want = 1 if a in ICONS and b in ICONS else icon_gap if (a in ICONS) != (b in ICONS) else gap
+                    uneven += abs(xb - xa - (11 if a in ICONS else 7) - want)
+                score = (abs(start - left) + abs(end - right) + 2 * uneven, icon_gap - gap, -gap)
+                if best is None or score < best[0]:
+                    best = (score, xs)
+    if best is None:
+        raise SystemExit("%s does not fit %d px" % (text, window))
+    xs = best[1]
+    strip = [[0] * limit for _ in range(16)]
+    for ch, x in zip(text, xs):
+        g = glyph2(rom, ICONS[ch]) if ch in ICONS else [[3 if p else 0 for p in row] for row in condensed(ch, cfont)]
         for y in range(16):
             for gx in range(16):
-                if g[y][gx] and x + gx <= right:
+                if g[y][gx] and x + gx < limit:
                     strip[y][x + gx] |= g[y][gx]
-        cursor = x - 2
-    return strip, icons[::-1]
+    return strip, [x for ch, x in zip(text, xs) if ch in ICONS]
 
 
-def move_icon_palettes(rom, at, old, icons):
-    """moves each icon's palette entries with the icon (see SETTERS)"""
-    origin, blocks = SETTERS[at]
-    old_cols = [(origin + i * 12) // 8 for i, c in enumerate(old) if c in ICONS.values()]
-    new_cols = [(origin + x) // 8 for x in icons]
+def move_icon_palettes(rom, at, old, text, icons):
+    """moves each icon's palette entries with the icon (see SETTERS); an icon the new text leaves out
+    loses them (the instructions become NOPs)"""
+    origin, _, _, blocks = SETTERS[at]
+    names = {v: k for k, v in ICONS.items()}
+    old_icons = [(names[c], (origin + i * 12) // 8) for i, c in enumerate(old) if c in names]
+    new_icons = [ch for ch in text if ch in ICONS]
+    old_cols = [c for _, c in old_icons]
+    new_cols = []
+    for k, (ch, _) in enumerate(old_icons):
+        nth = sum(1 for c, _ in old_icons[:k] if c == ch)
+        hits = [x for c, x in zip(new_icons, icons) if c == ch]
+        new_cols.append((origin + hits[nth]) // 8 if nth < len(hits) else None)
     for block in blocks:
         o = (0x81 & 0x7F) * 0x8000 + (block & 0x7FFF)
         while rom[o] == 0xAF and rom[o + 3] == 0x7E and rom[o + 4] == 0x09 and rom[o + 7] == 0x8F:
@@ -239,6 +282,10 @@ def move_icon_palettes(rom, at, old, icons):
                     k = next((k for k, c in enumerate(old_cols) if c == col - 1), None)
                 if k is None:
                     raise SystemExit("palette entry $7E:%04X of field $84:%04X has no icon" % (addr, at))
+                if new_cols[k] is None:
+                    rom[o:o + 11] = b"\xEA" * 11
+                    o += 11
+                    continue
                 new = addr + 2 * (new_cols[k] - old_cols[k])
                 for off in (1, 8):
                     rom[o + off], rom[o + off + 1] = new & 0xFF, new >> 8
@@ -358,9 +405,9 @@ def main(romp, out):
         if width > len(old) * 12 + 4:
             raise SystemExit("field at $84:%04X: %d px is past its last glyph" % (at, width))
         if at in SETTERS:
-            pixels, icons = lay_right(rom, text, cfont, len(old) * 12 - 2)
-            pixels = [row + [0] * (width - len(row)) for row in pixels]
-            move_icon_palettes(rom, at, old, icons)
+            field_x, window, panel_left, _ = SETTERS[at]
+            pixels, icons = lay_guide(rom, text, cfont, field_x, window, panel_left, width)
+            move_icon_palettes(rom, at, old, text, icons)
         else:
             pixels = lay_field(rom, text, cfont, width, centred, *spacing)
         words = []
