@@ -20,14 +20,9 @@
   },
   "packageRules": [
     {
-      "description": "CI cannot rebuild the patches without the ROMs, so anything that can change build output waits for a local rebuild and IPS comparison",
+      "description": "A Python patch or lock maintenance (Pillow renders the fonts) reaches build output through the glyphs and titles the builds draw, which the render-diff CI job compares with the base, so those merge themselves. A minor or major can change more than that, and CI cannot rebuild without the ROMs, so it waits for a local rebuild and IPS comparison",
       "matchManagers": ["pep621", "pyenv"],
-      "automerge": false,
-      "addLabels": ["rebuild-needed"]
-    },
-    {
-      "description": "Lock maintenance can move Pillow, which renders the fonts",
-      "matchUpdateTypes": ["lockFileMaintenance"],
+      "matchUpdateTypes": ["major", "minor"],
       "automerge": false,
       "addLabels": ["rebuild-needed"]
     },

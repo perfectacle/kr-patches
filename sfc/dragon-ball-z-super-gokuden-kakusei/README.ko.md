@@ -33,8 +33,8 @@ v1.4 는 이름 입력을 자모 조합으로 바꾸고 타이틀 메뉴를 가�
 
 준비물: 저장소의 Python 환경(최상위 README 참고), zsh, macOS, v1.4 는
 `tools/asar` 에 둔 [asar](https://github.com/RPGHacker/asar) 1.91.
-`tools/title.py` 는 macOS 시스템 글꼴 애셋의 BM영성체로 타이틀을 그립니다.
-다른 시스템에서는 `tools/title.py` 의 `TITLE_FONT` 를 바꾸세요.
+`tools/title.py` 는 `tools/fonts/` 의 배달의민족 연성체(`BMYeongSung-Regular.otf`,
+라이선스는 `BMYeongSung-LICENSE.txt`)로 타이틀을 그립니다.
 
 ```sh
 zsh tools/build-v1.4.sh

@@ -136,10 +136,55 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+  # CI cannot build without ROMs, but what Python and Pillow can change is the pixels the builds draw from the
+  # fonts in the repo. On Renovate PRs that move either, every such glyph and title is rendered on the base and on
+  # the PR, each with its own .venv, and any difference fails here. That is what lets those PRs merge themselves.
+  # macOS because the patches are built there; other PRs pass straight through, as ci-ok counts a skip as failure.
+  render-diff:
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - id: scope
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = pull_request ] && [ "$AUTHOR" = 'renovate[bot]' ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.scope.outputs.run == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - if: steps.scope.outputs.run == 'true'
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: 0.13.5
+          enable-cache: true
+
+      - if: steps.scope.outputs.run == 'true'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/base" "$BASE"
+          uv sync --locked
+          uv sync --locked --directory "$RUNNER_TEMP/base"
+          # The PR's copy of the script renders both trees, so the comparison itself is the same on each side.
+          .venv/bin/python -W ignore .github/scripts/render_outputs.py . > "$RUNNER_TEMP/pr.txt"
+          "$RUNNER_TEMP/base/.venv/bin/python" -W ignore .github/scripts/render_outputs.py "$RUNNER_TEMP/base" > "$RUNNER_TEMP/base.txt"
+          wc -l "$RUNNER_TEMP/base.txt" "$RUNNER_TEMP/pr.txt"
+          if ! diff -u "$RUNNER_TEMP/base.txt" "$RUNNER_TEMP/pr.txt" > "$RUNNER_TEMP/render.diff"; then
+            head -n 60 "$RUNNER_TEMP/render.diff"
+            echo "::error::$(grep -c '^+[a-z]' "$RUNNER_TEMP/render.diff") rendered glyphs or titles changed; rebuild every game and compare (BUILD-01) before merging"
+            exit 1
+          fi
+
   # The one required status check on main: passes only when every job above passed.
   ci-ok:
     if: always()
-    needs: [check, actionlint, zizmor]
+    needs: [check, actionlint, zizmor, render-diff]
     runs-on: ubuntu-26.04-arm
     timeout-minutes: 2
     steps:

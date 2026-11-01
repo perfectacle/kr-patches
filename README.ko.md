@@ -34,8 +34,8 @@ uv sync --locked
 
 게임 빌드 스크립트는 저장소 최상위의 `.venv/bin/python` 과 `.venv/bin/krpatch`
 를 씁니다. 다른 환경을 쓰려면 `PYTHON` 과 `KRPATCH` 를 지정하세요. 일부 빌드는
-[asar](https://github.com/RPGHacker/asar) 1.91, zsh, macOS 시스템 글꼴,
-`xdelta3` 도 필요합니다. 자세한 것은 각 게임 README 를 보세요.
+[asar](https://github.com/RPGHacker/asar) 1.91, zsh, `xdelta3` 도
+필요합니다. 자세한 것은 각 게임 README 를 보세요.
 
 툴킷은 릴리스 태그로, 나머지(폰트를 그리는 Pillow 등)는 `uv.lock` 으로 고정해
 모든 빌드가 배포한 패치와 바이트 단위로 같게 유지합니다. 둘 중 하나라도 옮길

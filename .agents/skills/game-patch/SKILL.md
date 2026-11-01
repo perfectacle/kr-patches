@@ -21,7 +21,7 @@ description: 게임 패치(어셈블리, 대본·이름 데이터, 코드표, �
 | `lua/`, `compat/`, `test/`    | Mesen 2 스크립트, 여러 에뮬레이터 코어 호환 테스트         |
 | `v1.0/*.ips`, `v1.1/*.xdelta` 등 | 빌드의 출발점인 이전 버전 패치([BASE-01](#base-01--출발점-패치는-불변)) |
 
-빌드 스크립트는 저장소 최상위 `.venv/bin/python`·`.venv/bin/krpatch` 를 쓴다(`PYTHON`·`KRPATCH` 로 바꿀 수 있다). 원본 롬은 각 README 가 정한 이름으로 게임 폴더에 둔다. 일부 빌드는 macOS 시스템 글꼴, asar 1.91, `xdelta3` 가 필요하다.
+빌드 스크립트는 저장소 최상위 `.venv/bin/python`·`.venv/bin/krpatch` 를 쓴다(`PYTHON`·`KRPATCH` 로 바꿀 수 있다). 원본 롬은 각 README 가 정한 이름으로 게임 폴더에 둔다. 일부 빌드는 asar 1.91, `xdelta3` 가 필요하다.
 
 ## 절차 — 패치를 고칠 때
 
@@ -56,8 +56,8 @@ description: 게임 패치(어셈블리, 대본·이름 데이터, 코드표, �
 
 같은 원본 롬과 같은 소스에서 빌드하면 배포한 패치와 바이트 단위로 같은 롬·패치(IPS·xdelta)가 나와야 한다. 각 README 의 결과물 CRC32 가 그 기준이다. 빌드 결과를 바꿀 수 있는 변경은 게임마다 다시 빌드해 CRC32 와 패치를 비교한 뒤에만 머지한다. xdelta 는 `xdelta3` 버전에 따라 바이트가 달라질 수 있어 롬 CRC32 가 기준이다.
 
-- 결과를 바꿀 수 있는 변경: 툴킷 고정 버전, `uv.lock` 의 Pillow(폰트·타이틀 렌더링), `.python-version`, 빌드 스크립트·도구, macOS 시스템 글꼴, asar 버전. xdelta 패치는 `xdelta3` 버전도.
-- 이유: CI 에는 롬이 없어 이것을 검사할 수 없다. 그래서 Renovate 도 이런 업데이트는 자동 머지하지 않고 `rebuild-needed` 라벨을 단다([dependencies](../dependencies/SKILL.md)).
+- 결과를 바꿀 수 있는 변경: 툴킷 고정 버전, `uv.lock` 의 Pillow(폰트·타이틀 렌더링), `.python-version`, 빌드 스크립트·도구, `tools/fonts/` 의 글꼴, asar 버전. xdelta 패치는 `xdelta3` 버전도.
+- 이유: CI 에는 롬이 없어 이것을 검사할 수 없다. 그래서 Renovate 도 이런 업데이트는 자동 머지하지 않고 `rebuild-needed` 라벨을 단다([dependencies](../dependencies/SKILL.md)). 예외는 Python 패치 버전과 lock 유지보수다. 이 둘이 빌드 결과를 바꾸는 길은 빌드가 저장소 글꼴로 그리는 글리프·타이틀뿐이라, CI 의 `render-diff` 잡이 롬 없이 그 픽셀을 base 와 비교한다([ci](../ci/SKILL.md)).
 - 의도한 변경(새 패치 버전)이면 README 의 CRC32 를 새 값으로 바꾸는 것이 곧 기준을 옮기는 것이다.
 
 ### BASE-01 — 출발점 패치는 불변

@@ -36,9 +36,8 @@ as `super-gokuden-jp.smc`:
 
 Requirements: the repository's Python environment (see the top-level README),
 zsh, macOS, and for v1.4 [asar](https://github.com/RPGHacker/asar) 1.91 as
-`tools/asar`. `tools/title.py` draws the title with the BM YeongSung font from
-the macOS system font assets; on other systems change `TITLE_FONT` in
-`tools/title.py`.
+`tools/asar`. `tools/title.py` draws the title with the BM YEONSUNG font in `tools/fonts/`
+(`BMYeongSung-Regular.otf`, license in `BMYeongSung-LICENSE.txt`).
 
 ```sh
 zsh tools/build-v1.4.sh

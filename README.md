@@ -34,8 +34,8 @@ uv sync --locked
 
 The game build scripts use `.venv/bin/python` and `.venv/bin/krpatch` at the
 repository root; set `PYTHON` and `KRPATCH` to use another environment. Some
-builds also need [asar](https://github.com/RPGHacker/asar) 1.91, zsh, the
-macOS system fonts or `xdelta3`; see each game's README.
+builds also need [asar](https://github.com/RPGHacker/asar) 1.91, zsh or
+`xdelta3`; see each game's README.
 
 The toolkit is pinned to a release tag and the rest (Pillow, which renders the
 fonts) by `uv.lock`, so that every build stays byte-identical to the released
