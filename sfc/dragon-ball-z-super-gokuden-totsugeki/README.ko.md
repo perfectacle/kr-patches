@@ -30,9 +30,9 @@
 
 준비물: 저장소의 Python 환경(최상위 README 참고), zsh, macOS, v1.3 은
 `tools/asar` 에 둔 [asar](https://github.com/RPGHacker/asar) 1.91.
-`tools/title.py` 는 macOS 시스템 글꼴 애셋의 BM영성체(`TITLE_FONT`)로
-「초오공전」을 그립니다. 다른 시스템에서는 `tools/build.sh` 의 `title.py` 줄에
-`--font PATH` 를 더하세요.
+`tools/title.py` 는 `tools/fonts/` 의 배달의민족 연성체(`BMYeongSung-Regular.otf`,
+라이선스는 `BMYeongSung-LICENSE.txt`)로 「초오공전」을 그립니다. 다른 글꼴을
+쓰려면 `tools/build.sh` 의 `title.py` 줄에 `--font PATH` 를 더하세요.
 
 ```sh
 zsh tools/build-v1.3.sh

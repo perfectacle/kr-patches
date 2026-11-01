@@ -18,11 +18,10 @@ from PIL import Image, ImageDraw, ImageFont
 from kr_patch.lzss import compress, decompress
 from kr_patch.sfc.tiles import planar_to_sfc, sfc_to_planar
 
-FONT_DIR = "/System/Library/AssetsV2/com_apple_MobileAsset_Font8"
-GALMURI = os.path.join(os.path.dirname(__file__), "fonts")
-TITLE_FONT = f"{FONT_DIR}/a7a90316a83e0693b3d971d89b235ee578c59f0c.asset/AssetData/BMYeongSung-Regular.otf"
-SUB_FONT = f"{GALMURI}/Galmuri11-Bold.ttf"
-COPY_FONT = f"{GALMURI}/Galmuri11-Condensed.ttf"
+FONTS = os.path.join(os.path.dirname(__file__), "fonts")
+TITLE_FONT = f"{FONTS}/BMYeongSung-Regular.otf"
+SUB_FONT = f"{FONTS}/Galmuri11-Bold.ttf"
+COPY_FONT = f"{FONTS}/Galmuri11-Condensed.ttf"
 
 
 class Asset:

@@ -5,9 +5,9 @@ description: 툴킷 고정 버전·Pillow 등 Python 의존성·Python·uv·GitH
 
 # 의존성
 
-이 스킬이 DEP-01, DEP-02 의 정본이다. Python 환경은 `pyproject.toml`(툴킷을 릴리스 태그로 고정) + `uv.lock`(간접 의존성 Pillow 까지 고정)이고, `uv sync` 가 빌드 스크립트가 쓰는 최상위 `.venv/` 를 만든다. 업데이트는 Renovate 가 PR 로 올린다(`renovate.json`). GitHub Actions 업데이트만 CI 통과 후 자동 머지되고, 빌드 결과를 바꿀 수 있는 업데이트는 `rebuild-needed` 라벨을 달고 사람이 머지한다.
+이 스킬이 DEP-01, DEP-02 의 정본이다. Python 환경은 `pyproject.toml`(툴킷을 릴리스 태그로 고정) + `uv.lock`(간접 의존성 Pillow 까지 고정)이고, `uv sync` 가 빌드 스크립트가 쓰는 최상위 `.venv/` 를 만든다. 업데이트는 Renovate 가 PR 로 올린다(`renovate.json`). GitHub Actions 업데이트, Python 패치 버전, lock 유지보수는 CI 통과 후 자동 머지된다. 뒤의 둘은 CI 의 `render-diff` 잡이 롬 없이 렌더 결과를 base 와 비교해 같을 때만 통과한다([ci](../ci/SKILL.md)). 빌드 결과를 바꿀 수 있는 나머지 업데이트(툴킷 태그, Python minor·major)와 `render-diff` 가 실패한 PR 은 `rebuild-needed` 라벨을 달거나 실패한 채로 사람이 머지한다.
 
-## 절차 — `rebuild-needed` PR (툴킷 태그, lock 유지보수, Python 버전)
+## 절차 — `rebuild-needed` PR (툴킷 태그, Python minor·major, `render-diff` 가 실패한 PR)
 
 1. **PR 브랜치로 워크트리를 판다** — `git fetch origin <브랜치> && git worktree add ../kr-patches-<짧은-설명> <브랜치>`(원격 브랜치를 따라가는 로컬 브랜치가 생긴다). 정리는 [git-workflow 절차 6](../git-workflow/SKILL.md#절차) 과 같다.
    완료: 워크트리가 PR 의 HEAD 다.
@@ -39,4 +39,4 @@ description: 툴킷 고정 버전·Pillow 등 Python 의존성·Python·uv·GitH
 ## 참고
 
 - **툴킷 태그를 Renovate 가 읽는 방법**: pep621 매니저는 git 의존성을 건너뛰어서, `renovate.json` 의 regex customManager 가 `pyproject.toml` 의 `kr-patch-toolkit @ git+…@vX.Y.Z` 줄을 github-tags 로 올린다. 그래서 lock 은 따라 바뀌지 않는다(절차 2).
-- **Python 버전**은 `.python-version`(uv 와 CI 가 읽는다)이 정한다. Renovate 가 올리되 자동 머지하지 않는다.
+- **Python 버전**은 `.python-version`(uv 와 CI 가 읽는다)이 정한다. Renovate 가 올리고, 패치 버전은 `render-diff` 통과 후 자동 머지되며 minor·major 는 사람이 머지한다.

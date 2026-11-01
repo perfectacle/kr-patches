@@ -31,6 +31,7 @@ main 은 `ci-ok` 체크 통과가 필수다(저장소 ruleset). `ci-ok` 는 모�
 검사가 실패하면 기준(검사 단계, 돌격편 대사 배치 검사의 `0 lines with problems`)을 낮추지 않고 원인을 고친다. 기준을 바꾸는 것은 측정 방식 자체가 틀렸다는 근거가 있을 때뿐이고, 그 근거를 PR 에 적는다.
 
 - CI 는 빌드를 검사하지 못한다. 그래서 CI 가 초록이어도 빌드 결과를 바꿀 수 있는 변경은 [BUILD-01](../game-patch/SKILL.md#build-01--배포한-패치와-같은-빌드) 비교를 거쳐야 한다. Renovate 는 그런 PR 을 자동 머지하지 않는다.
+- 예외: Renovate 의 Python 패치 버전·lock 유지보수 PR 은 `render-diff` 잡(macOS)이 빌드가 Pillow 로 그리는 글리프·타이틀을 base 와 PR 에서 각자의 `.venv` 로 모두 그려 비교한다(`.github/scripts/render_outputs.py`). 한 줄이라도 다르면 실패해 사람이 BUILD-01 비교를 하게 되고, 같으면 자동 머지된다. 다른 PR 에서는 이 잡이 아무것도 하지 않고 통과한다. 빌드가 Pillow 로 그리는 것을 새로 만들면 이 스크립트에도 넣는다. 빠지면 그 픽셀이 바뀌어도 자동 머지된다.
 
 ## 참고
 

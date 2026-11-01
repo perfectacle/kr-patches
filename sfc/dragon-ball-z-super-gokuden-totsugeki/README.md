@@ -32,9 +32,9 @@ as `super-gokuden-jp.smc`:
 
 Requirements: the repository's Python environment (see the top-level README),
 zsh, macOS, and for v1.3 [asar](https://github.com/RPGHacker/asar) 1.91 at
-`tools/asar`. `tools/title.py` draws 「초오공전」 with the BM YeongSung font from
-the macOS system font assets (`TITLE_FONT`); on other systems add
-`--font PATH` to the `title.py` line of `tools/build.sh`.
+`tools/asar`. `tools/title.py` draws 「초오공전」 with the BM YEONSUNG font in `tools/fonts/`
+(`BMYeongSung-Regular.otf`, license in `BMYeongSung-LICENSE.txt`); to try another
+font, add `--font PATH` to the `title.py` line of `tools/build.sh`.
 
 ```sh
 zsh tools/build-v1.3.sh
