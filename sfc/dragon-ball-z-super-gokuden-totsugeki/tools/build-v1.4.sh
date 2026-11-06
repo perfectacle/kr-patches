@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Build v1.4 (v1.3 plus name-list labels of equal width) on top of the v1.3 build.
+# Build v1.4 (v1.3 plus Korean name-list labels of equal width) on top of the v1.3 build.
 # usage: tools/build-v1.4.sh   (needs tools/asar)
 set -e
 cd "$(dirname $0)/.."

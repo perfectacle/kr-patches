@@ -7,7 +7,7 @@
 메뉴를 다시 쓰고, 서로 헷갈리는 암호 글자를 다시 그리고, 엔딩에 고정 암호를
 보여 줍니다(v1.2). v1.3 은 이름의 8px 한글을 다시 그려 11,172자 전부로 늘리고
 이름 입력을 자모 조합으로 바꿉니다. 롬은 4MB 로 늘어납니다. v1.4 는
-이름 입력 화면의 이름 목록 라벨 폭을 맞춰 이름이 한 줄로 서게 합니다.
+이름 입력 화면의 이름 목록 라벨 폭을 맞춰 이름이 한 줄로 서게 하고, PLAYER 를 「플레이어」로 바꿉니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
@@ -39,7 +39,7 @@
 zsh tools/build-v1.4.sh
 ```
 
-결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `070FE484`)와 `release/v1.4/*.ips`
+결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `4B766A85`)와 `release/v1.4/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다.
 v1.4 빌드는 먼저 `tools/build-v1.3.sh` 를 돌리고, 이것이
 `super-gokuden-kr-v1.3.smc`(CRC32 `FC7FB902`)와 `release/v1.3/*.ips` 를 씁니다.

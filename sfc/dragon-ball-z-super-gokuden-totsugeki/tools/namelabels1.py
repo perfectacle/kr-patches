@@ -4,8 +4,9 @@ usage: namelabels1.py rom.smc table.txt
 
 The name list ($80:9529) draws each label from $80:F237 + row * 18 and appends the
 name right after it, so the name starts where the label ends. v1.0 left the labels
-at 63-67 px. Every label becomes 67 px like the PLAYER row, with the small dots on
-x = 39, 47, 55 and a 4 px gap before the name. A row holds 8 codes and its terminator.
+at 63-67 px and the first row in English (PLAYER). Every label becomes 67 px, with the
+small dots on x = 39, 47, 55 and a 4 px gap before the name. 플레이어 is 52 px, so its row
+ends in the 9 px dot (code 0x016B) at x = 54 instead. A row holds 8 codes and its terminator.
 """
 import os
 import sys
@@ -17,6 +18,7 @@ import width1  # noqa: E402
 
 FIRST, STRIDE, ROW_CODES, WIDTH = 0x7237, 18, 8, 67
 LABELS = {
+    0: ("PLAYER‥{sp4}", "플레이어{sp2}‥{sp4}"),
     2: ("부하{s: }{s: }{s:‥}{s:‥}{s: }", "부하{sp7}{sp6}{s:‥}{s:‥}{s:‥}{sp4}"),
     3: ("나쁜놈{sp4}{sp4}{s:‥}{s: }", "나쁜놈{s: }{s:‥}{s:‥}{sp4}"),
     4: ("조언자{sp4}{s:‥}{s:‥}{s: }", "조언자{s: }{s:‥}{s:‥}{sp4}"),
