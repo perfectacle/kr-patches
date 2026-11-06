@@ -1,4 +1,4 @@
-# Otogirisou (弟切草) ROM analysis (Korean v1.0 / v1.1 / v1.2 / v1.3)
+# Otogirisou (弟切草) ROM analysis (Korean v1.0 / v1.1 / v1.2 / v1.3 / v1.4)
 
 English | [한국어](ANALYSIS.ko.md)
 
@@ -29,6 +29,7 @@ Address notation
   v1.1                          2MB         27EE014E  (MD5 F45317CFAAAB68CCA5D8984AF8452535)
   v1.2                          2MB         2C31A0B2  (MD5 CD48C59B3B80D6C9E3C648E8BDD5A4E0)
   v1.3                          2MB         DAE98F06  (MD5 3605777DAC6BE2AAFA011CEAA0429D91)
+  v1.4                          2MB         C2AF6ABF  (MD5 2B7BF4CFFC83CAD3D4F646F4DE6CD527)
 
  - Rebuilding v1.2 with the included tools gives the same CRC32.
 
@@ -293,7 +294,7 @@ Address notation
 ■ All hook points [verified: org lines in the asm sources, Japanese and v1.2 ROM bytes, asar symbols]
   address    original bytes (JP)    v1.2           new code           source           does
   $00:A777   C2 30 18 AD 83 1A      22 00 80 1E…   WordWrap $1E:8000  wordwrap.asm     word-level line breaks
-  $02:A54F   A5 13 9F AF 05 70      22 00 80 18…   MarkNew $18:8000   savecompat.asm   v1.1 marker in a new slot
+  $02:A54F   A5 13 9F AF 05 70      22 00 80 18…   MarkNew $18:8000   savecompat.asm   v1.1 marker in a new slot (asm/newslot.asm from v1.4)
   $02:A83B   AD 5D 00 8F B1 05      22 13 80 18…   MarkSave $18:8013  savecompat.asm   marker on autosave
   $02:A6D3   AF AC 05 70            22 22 80 18    LoadSave $18:8022  savecompat.asm   convert old save positions
   $00:9CF9   A5 CC 29 00 80         22 45 84 1A EA SelCheck $1A:8445  qol.asm          Select during input wait → flowchart
@@ -452,6 +453,15 @@ Address notation
  - v1.3 (CRC32 DAE98F06) was not rerun on each core. The VRAM of the name entry screen with and without saves
    differed only as in v1.2, because v1.3 uploads nothing new to VRAM. The changed book picture tilemap was read only on the
    name entry screen, and the screens and script positions of the menu and flowchart scenarios matched v1.2.
+ - MarkNew in v1.1-v1.3 was assembled with 8 bit immediates, but A is 16 bit at $02:A54F (the REP #$20 at $02:A505 is
+   still in effect, and $02:A569 returns with the caller's flags). So a new slot got no marker, and on its first load
+   LoadSave translated the new game's start as a v1.0 position. Scenario 0 ($20:8000) maps to the same address and showed
+   nothing; scenario 1 ($2E:D395) hit the entry 2ED324 -> 2ECFE2 of the v1.0 table, started on the page of the ending
+   "Nami is Dracula" and went straight to the ending credits. The new game checks above seem to have drawn scenario 0 only.
+ - v1.4 (CRC32 C2AF6ABF) differs from v1.3 only in $18:8008-$18:800D (MarkNew) and the header checksum. On the snes9x and
+   bsnes cores, new games without a save started at 6 input timings: scenario 1 starts at $2E:D395 (the mountain road)
+   and every slot has the marker $C311 at $7005B5. With the same input, v1.3 started at $2E:CFE4. Continuing a v1.4
+   save resumed at the saved position. Scenario 2 (from the second playthrough) was not run.
 ```
 
 ## 9. Not checked
