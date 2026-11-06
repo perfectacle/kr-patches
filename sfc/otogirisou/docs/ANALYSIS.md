@@ -461,7 +461,16 @@ Address notation
  - v1.4 (CRC32 C2AF6ABF) differs from v1.3 only in $18:8008-$18:800D (MarkNew) and the header checksum. On the snes9x and
    bsnes cores, new games without a save started at 6 input timings: scenario 1 starts at $2E:D395 (the mountain road)
    and every slot has the marker $C311 at $7005B5. With the same input, v1.3 started at $2E:CFE4. Continuing a v1.4
-   save resumed at the saved position. Scenario 2 (from the second playthrough) was not run.
+   save resumed at the saved position. A new slot has playthrough 0, so scenario 2 (from the second playthrough) is
+   never drawn there. A slot moved to a new playthrough after an ending has the marker even in v1.3, so second
+   playthrough. Saves continued from 3 lines before an ending until past it (bsnes, 8 input timings) were stored at
+   $25:EAA8 (scenario 2) or $20:8000 with the marker in both v1.3 and v1.4, and both resumed from there (snes9x).
+ - A slot that reached the ending credits through this bug in v1.3 has its playthrough raised by 1 and keeps the
+   ending "Nami is Dracula" (bit 9) among the seen endings in the v1.2 record. Continued in v1.4, it resumes correctly
+   from scenario 1 at $2E:D395. Empty slots of a v1.3 save without the marker are rebuilt with it when v1.4 boots.
+ - MarkNew in v1.3 also broke X (LDX $05,Y with $05 = $FFFF) and wrote the checksum to $71:001F. On bsnes the SRAM
+   header matched v1.4, so the write did not reach SRAM. Whether that address mirrors SRAM on other emulators or on
+   hardware was not checked.
 ```
 
 ## 9. Not checked
