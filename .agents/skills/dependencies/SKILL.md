@@ -11,7 +11,7 @@ description: 툴킷 고정 버전·Pillow 등 Python 의존성·Python·uv·GitH
 
 1. **PR 브랜치로 워크트리를 판다** — `git fetch origin <브랜치> && git worktree add ../kr-patches-<짧은-설명> <브랜치>`(원격 브랜치를 따라가는 로컬 브랜치가 생긴다). 정리는 [git-workflow 절차 6](../git-workflow/SKILL.md#절차) 과 같다.
    완료: 워크트리가 PR 의 HEAD 다.
-2. **lock 을 맞춘다** — 툴킷 태그 PR 은 Renovate 가 `pyproject.toml` 의 태그만 바꾸고 `uv.lock` 은 그대로라 CI 의 `uv sync --locked` 가 실패한다. `uv lock` 으로 lock 을 다시 만들어 같은 PR 에 커밋한다. 툴킷 CHANGELOG 의 해당 버전 절에서 출력이 바뀐다는 항목이 있는지 먼저 읽는다.
+2. **lock 을 확인한다** — Renovate 는 툴킷 태그와 `uv.lock` 을 한 커밋에서 같이 바꾼다(참고 절). PR 에 `uv.lock` 변경이 없거나 CI 의 `uv sync --locked` 가 실패하면, CI 와 같은 uv(`ci.yml` 의 `setup-uv` `version`)로 `uvx uv@<버전> lock` 을 돌려 같은 PR 에 커밋한다. Homebrew 등 로컬 uv 가 오래되면 `.python-version` 의 Python 을 받지 못한다. 툴킷 CHANGELOG 의 해당 버전 절에서 출력이 바뀐다는 항목이 있는지 먼저 읽는다.
    완료: `uv sync --locked` 통과.
 3. **게임마다 다시 빌드해 비교한다** — [BUILD-01](../game-patch/SKILL.md#build-01--배포한-패치와-같은-빌드). README 의 결과물 CRC32 와 배포한 IPS 와 같아야 한다.
    완료: 모든 게임이 같다. 다른 게임이 있으면 머지하지 않고 원인(툴킷 변경, Pillow 렌더링)을 PR 에 적는다.
@@ -38,5 +38,5 @@ description: 툴킷 고정 버전·Pillow 등 Python 의존성·Python·uv·GitH
 
 ## 참고
 
-- **툴킷 태그를 Renovate 가 읽는 방법**: pep621 매니저는 git 의존성을 건너뛰어서, `renovate.json` 의 regex customManager 가 `pyproject.toml` 의 `kr-patch-toolkit @ git+…@vX.Y.Z` 줄을 github-tags 로 올린다. 그래서 lock 은 따라 바뀌지 않는다(절차 2).
+- **툴킷 태그를 Renovate 가 읽는 방법**: 태그는 `pyproject.toml` 의 `[tool.uv.sources]` 에 `git` + `tag` 로 둔다. pep621 매니저가 이것을 github-tags 로 올리고 `uv lock --upgrade-package kr-patch-toolkit` 로 lock 도 같이 고친다. `dependencies` 에 PEP 508 직접 참조(`kr-patch-toolkit @ git+…@vX.Y.Z`)로 되돌리면 pep621 매니저가 건너뛰어 lock 이 빠진 PR 이 올라오니 그렇게 바꾸지 않는다.
 - **Python 버전**은 `.python-version`(uv 와 CI 가 읽는다)이 정한다. Renovate 가 올리고, 패치 버전은 `render-diff` 통과 후 자동 머지되며 minor·major 는 사람이 머지한다.

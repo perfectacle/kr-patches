@@ -4,8 +4,7 @@ version = "0"
 description = "Build and test tools for perfectacle's Korean translation patches"
 requires-python = ">=3.15"
 dependencies = [
-  # Pinned to a release tag so builds stay byte-identical when the toolkit changes.
-  "kr-patch-toolkit @ git+https://github.com/perfectacle/kr-patch-toolkit@v0.8.0",
+  "kr-patch-toolkit",
 ]
 
 [tool.uv]
@@ -13,3 +12,9 @@ dependencies = [
 package = false
 # Supply-chain cooldown: resolve only releases at least a week old.
 exclude-newer = "7 days"
+
+[tool.uv.sources]
+# Pinned to a release tag so builds stay byte-identical when the toolkit changes.
+# Kept here rather than as a PEP 508 `@ git+…` reference so that Renovate's
+# pep621 manager sees the tag and regenerates uv.lock in the same PR.
+kr-patch-toolkit = { git = "https://github.com/perfectacle/kr-patch-toolkit", tag = "v0.8.0" }
