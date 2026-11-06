@@ -9,7 +9,7 @@ screen, rewrites the dialogue and menus, redraws look-alike password glyphs
 and shows a fixed ending password (v1.2). v1.3 redraws the 8px Hangul of
 names, adds all 11,172 syllables and turns the name entry into a jamo
 keyboard; the ROM grows to 4 MB. v1.4 gives the name list labels on the
-name entry screen the same width so the names line up.
+name entry screen the same width so the names line up, and writes PLAYER in Korean.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
@@ -41,7 +41,7 @@ font, add `--font PATH` to the `title.py` line of `tools/build.sh`.
 zsh tools/build-v1.4.sh
 ```
 
-Output: `super-gokuden-kr-v1.4.smc` (CRC32 `070FE484`) and
+Output: `super-gokuden-kr-v1.4.smc` (CRC32 `4B766A85`) and
 `release/v1.4/*.ips` (plain and 512-byte copier header), identical to the
 released patches. The v1.4 build runs `tools/build-v1.3.sh` first, which writes
 `super-gokuden-kr-v1.3.smc` (CRC32 `FC7FB902`) and `release/v1.3/*.ips`; that in
