@@ -1,12 +1,13 @@
-# 드래곤볼 Z 초오공전: 돌격편(SFC) 한글패치 v1.3
+# 드래곤볼 Z 초오공전: 돌격편(SFC) 한글패치 v1.4
 
 [English](README.md) | 한국어
 
-일본판 슈퍼 패미콤 *드래곤볼 Z 초오공전 돌격편* 한글패치 v1.3 의 소스입니다.
+일본판 슈퍼 패미콤 *드래곤볼 Z 초오공전 돌격편* 한글패치 v1.4 의 소스입니다.
 일본판 롬에 한글패치 v1.0 을 적용한 롬에서 시작해, 타이틀 화면을 바꾸고 대사와
 메뉴를 다시 쓰고, 서로 헷갈리는 암호 글자를 다시 그리고, 엔딩에 고정 암호를
 보여 줍니다(v1.2). v1.3 은 이름의 8px 한글을 다시 그려 11,172자 전부로 늘리고
-이름 입력을 자모 조합으로 바꿉니다. 롬은 4MB 로 늘어납니다.
+이름 입력을 자모 조합으로 바꿉니다. 롬은 4MB 로 늘어납니다. v1.4 는
+이름 입력 화면의 이름 목록 라벨 폭을 맞춰 이름이 한 줄로 서게 합니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
@@ -28,19 +29,21 @@
 
 ## 빌드
 
-준비물: 저장소의 Python 환경(최상위 README 참고), zsh, macOS, v1.3 은
+준비물: 저장소의 Python 환경(최상위 README 참고), zsh, macOS, v1.3 부터는
 `tools/asar` 에 둔 [asar](https://github.com/RPGHacker/asar) 1.91.
 `tools/title.py` 는 `tools/fonts/` 의 배달의민족 연성체(`BMYeongSung-Regular.otf`,
 라이선스는 `BMYeongSung-LICENSE.txt`)로 「초오공전」을 그립니다. 다른 글꼴을
 쓰려면 `tools/build.sh` 의 `title.py` 줄에 `--font PATH` 를 더하세요.
 
 ```sh
-zsh tools/build-v1.3.sh
+zsh tools/build-v1.4.sh
 ```
 
-결과물: `super-gokuden-kr-v1.3.smc`(CRC32 `FC7FB902`)와 `release/v1.3/*.ips`
+결과물: `super-gokuden-kr-v1.4.smc`(CRC32 `070FE484`)와 `release/v1.4/*.ips`
 (헤더 없는 롬용과 512바이트 카피어 헤더용). 배포한 패치와 같습니다.
-v1.3 빌드는 먼저 `tools/build.sh` 를 돌리고, 이것이
+v1.4 빌드는 먼저 `tools/build-v1.3.sh` 를 돌리고, 이것이
+`super-gokuden-kr-v1.3.smc`(CRC32 `FC7FB902`)와 `release/v1.3/*.ips` 를 씁니다.
+v1.3 빌드는 다시 `tools/build.sh` 를 먼저 돌리고, 이것이
 `super-gokuden-kr-v1.2.smc`(CRC32 `A939C4F8`)와 `release/v1.2/*.ips` 를 씁니다.
 `tables/kr-v1.2.txt`(v1.2 코드표)는 빌드가 씁니다. 다른 환경을 쓰려면
 `PYTHON` 과 `KRPATCH` 를 지정하세요.
@@ -52,7 +55,9 @@ v1.3 빌드는 먼저 `tools/build.sh` 를 돌리고, 이것이
 `krpatch ips make --headered` 까지가 v1.2 이고, 이어서 `tools/font8.py`(다시
 그린 8px 글자와 새 글자, 4MB 롬, 자모 글자판, 표 `work/font8_*.asm`) →
 asar `asm/v13.asm`(렌더러·이름 입력 훅) → `krpatch sfc checksum --fix` →
-`krpatch ips make --headered --rle`.
+`krpatch ips make --headered --rle` 까지가 v1.3 이고, 이어서
+`tools/namelabels1.py`(이름 목록 라벨) → `krpatch sfc checksum --fix` →
+`krpatch ips make --headered --rle` 가 v1.4 입니다.
 
 ## 구성
 
