@@ -1,9 +1,9 @@
-# [SFC] Dragon Ball Z: Super Gokuden – Totsugeki-hen ROM analysis (Korean patch v1.3 work notes)
+# [SFC] Dragon Ball Z: Super Gokuden – Totsugeki-hen ROM analysis (Korean patch v1.4 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patches v1.1, v1.2 and v1.3.
+The ROM structure and methods confirmed while working on the Korean patches v1.1, v1.2, v1.3 and v1.4.
 A record for anyone who analyses this ROM again or continues fixing the patch.
 It is best read together with the analysis of Super Gokuden Kakusei-hen, which uses the same engine.
 Patch page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/
@@ -15,6 +15,7 @@ Kakusei-hen page: https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball
  - v1.1 ROM: CRC32 7405D969 (output of tools/build.sh in the v1.1 tool bundle)
  - v1.2 ROM: output of tools/build.sh = CRC32 A939C4F8
  - v1.3 ROM: output of tools/build-v1.3.sh = CRC32 FC7FB902 (4 MB, section 12)
+ - v1.4 ROM: output of tools/build-v1.4.sh = CRC32 070FE484 (section 12)
  - Address notation below
    · $XX:YYYY = SFC address (bank:address)
    · file 0xNNNNN = offset in the headerless ROM file
@@ -535,6 +536,13 @@ The loop that runs after reset ($80:805E-$80:8078) contains these bytes.
    · asar treats a .smc file as headered, so the build assembles on a .sfc copy.
    · A decimal immediate such as #51 is assembled as 8-bit even in 16-bit mode; write CMP.w #51.
    · 65816 has no STA long,Y: copy with DB = source bank and LDA abs,Y / STA long,X.
+ - Name list labels (v1.4, tools/namelabels1.py) [verified]
+   · The name list ($80:9529) multiplies the row $4D by $12 and copies the label from $80:F237,X (file 0x1501),
+     then appends the name from $0B01. The name starts where the label ends.
+   · v1.0 labels were 63-67 px (나쁜놈 63, 부하 66, others 67), so the names did not line up.
+     v1.4 makes every row 67 px like PLAYER: small ‥ at x = 39, 47, 55 and {sp4} before the name.
+     A row is 18 bytes, so it holds 8 codes and the terminator (부하 now uses 8).
+   · Checked on the snes9x libretro core: the five names start in the same column.
 ```
 
 ## 13. Not checked, and known limits

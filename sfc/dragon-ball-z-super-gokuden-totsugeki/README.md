@@ -1,14 +1,15 @@
-# Dragon Ball Z: Super Gokuden – Totsugeki-hen (SFC) Korean patch v1.3
+# Dragon Ball Z: Super Gokuden – Totsugeki-hen (SFC) Korean patch v1.4
 
 English | [한국어](README.ko.md)
 
-Source of the Korean translation patch v1.3 for the Japanese *Dragon Ball Z:
+Source of the Korean translation patch v1.4 for the Japanese *Dragon Ball Z:
 Super Gokuden – Totsugeki-hen* (Super Famicom). The build starts from the
 Japanese ROM with the Korean v1.0 patch applied, then replaces the title
 screen, rewrites the dialogue and menus, redraws look-alike password glyphs
 and shows a fixed ending password (v1.2). v1.3 redraws the 8px Hangul of
 names, adds all 11,172 syllables and turns the name entry into a jamo
-keyboard; the ROM grows to 4 MB.
+keyboard; the ROM grows to 4 MB. v1.4 gives the name list labels on the
+name entry screen the same width so the names line up.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/dragon-ball-z-super-gokuden-totsugeki/>
 
@@ -31,18 +32,20 @@ as `super-gokuden-jp.smc`:
 ## Build
 
 Requirements: the repository's Python environment (see the top-level README),
-zsh, macOS, and for v1.3 [asar](https://github.com/RPGHacker/asar) 1.91 at
+zsh, macOS, and for v1.3 and later [asar](https://github.com/RPGHacker/asar) 1.91 at
 `tools/asar`. `tools/title.py` draws 「초오공전」 with the BM YEONSUNG font in `tools/fonts/`
 (`BMYeongSung-Regular.otf`, license in `BMYeongSung-LICENSE.txt`); to try another
 font, add `--font PATH` to the `title.py` line of `tools/build.sh`.
 
 ```sh
-zsh tools/build-v1.3.sh
+zsh tools/build-v1.4.sh
 ```
 
-Output: `super-gokuden-kr-v1.3.smc` (CRC32 `FC7FB902`) and
-`release/v1.3/*.ips` (plain and 512-byte copier header), identical to the
-released patches. The v1.3 build runs `tools/build.sh` first, which writes
+Output: `super-gokuden-kr-v1.4.smc` (CRC32 `070FE484`) and
+`release/v1.4/*.ips` (plain and 512-byte copier header), identical to the
+released patches. The v1.4 build runs `tools/build-v1.3.sh` first, which writes
+`super-gokuden-kr-v1.3.smc` (CRC32 `FC7FB902`) and `release/v1.3/*.ips`; that in
+turn runs `tools/build.sh`, which writes
 `super-gokuden-kr-v1.2.smc` (CRC32 `A939C4F8`) and `release/v1.2/*.ips`. `tables/kr-v1.2.txt` (the v1.2 code table) is written by the
 build. Set `PYTHON` and `KRPATCH` to use another environment.
 
@@ -53,7 +56,9 @@ glyphs, checked against the table) → `tools/endpw1.py` (ending password) →
 `krpatch sfc checksum --fix` → `krpatch ips make --headered` gives v1.2;
 then `tools/font8.py` (redrawn and new 8px glyphs, 4 MB ROM, jamo board and
 the tables `work/font8_*.asm`) → asar `asm/v13.asm` (renderer and name entry
-hooks) → `krpatch sfc checksum --fix` → `krpatch ips make --headered --rle`.
+hooks) → `krpatch sfc checksum --fix` → `krpatch ips make --headered --rle` gives v1.3;
+then `tools/namelabels1.py` (name list labels) → `krpatch sfc checksum --fix` →
+`krpatch ips make --headered --rle` gives v1.4.
 
 ## Layout
 
