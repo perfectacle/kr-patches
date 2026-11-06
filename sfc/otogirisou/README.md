@@ -1,11 +1,12 @@
-# Otogirisou (SFC) Korean patch v1.3
+# Otogirisou (SFC) Korean patch v1.4
 
 English | [한국어](README.ko.md)
 
 Source of the Korean translation patch for the Japanese *Otogirisou*
 (Super Famicom). v1.1 rebuilds the script and font on top of the Korean v1.0
 patch; v1.2 adds a chapter select and an ending list to the v1.1 ROM; v1.3 turns the
-name entry of the v1.2 ROM into a screen where names are composed from jamo.
+name entry of the v1.2 ROM into a screen where names are composed from jamo; v1.4
+fixes new games that could start on an ending page and go straight to the credits.
 
 Patch page: <https://perfectacle.github.io/games/kr-patches/sfc/otogirisou/>
 
@@ -38,12 +39,15 @@ Requirements: the repository's Python environment (see the top-level README),
 | `zsh tools/release-v1.2.sh` | `release/v1.2/*.ips` (plain and 512-byte header), CRC32 `2C31A0B2` |
 | `zsh tools/build-v1.3.sh` | `build/otogirisou-kr-v1.3.sfc`, on top of the v1.2 build |
 | `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips` (plain and 512-byte header), CRC32 `DAE98F06` |
+| `zsh tools/build-v1.4.sh` | `build/otogirisou-kr-v1.4.sfc`, on top of the v1.3 build |
+| `zsh tools/release-v1.4.sh` | `release/v1.4/*.ips` (plain and 512-byte header), CRC32 `C2AF6ABF` |
 
-To reproduce the released v1.2 and v1.3 patches:
+To reproduce the released v1.2, v1.3 and v1.4 patches:
 
 ```sh
 zsh tools/build.sh && zsh tools/release-v1.2.sh
 zsh tools/build.sh && zsh tools/release-v1.3.sh
+zsh tools/build.sh && zsh tools/release-v1.4.sh
 ```
 
 The first build dumps the Japanese script from your ROM to
@@ -63,6 +67,8 @@ Set `PYTHON` and `KRPATCH` to use another environment.
 - v1.3 name entry: the jamo page and the new glyphs (KS X 1001 syllables the font
   lacks, compatibility jamo) come from `tools/namefont.py`, the code is
   `asm/nameentry.asm`. The new glyphs are drawn with Galmuri11 and live in bank $36.
+- Save marker: `asm/savecompat.asm` keeps the v1.1-v1.3 bytes; from v1.4 the new
+  slot marker (`MarkNew`) is assembled over it from `asm/newslot.asm`.
 - v1.2 extras: chapters in `tables/qol-chapters.tsv`, endings in
   `tables/qol-endings.tsv`; data from `tools/qol.py` (bank $1B) and
   `tools/flow.py` (bank $1C), code in `asm/qol.asm` and `asm/flow.asm`.

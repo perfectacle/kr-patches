@@ -1,11 +1,12 @@
-# 제절초(SFC) 한글패치 v1.3
+# 제절초(SFC) 한글패치 v1.4
 
 [English](README.md) | 한국어
 
 일본판 슈퍼 패미콤 *제절초* 한글패치의 소스입니다. v1.1 은 한글판
 v1.0 패치 위에 대본과 폰트를 다시 만들고, v1.2 는 v1.1 롬에 장 선택과 엔딩
 목록을 더하고, v1.3 은 v1.2 롬의 이름 입력을 자모를 골라 조합하는 화면으로
-바꿉니다.
+바꿉니다. v1.4 는 새 게임이 엔딩 페이지에서 시작해 바로 크레디트로 넘어갈 수 있던
+문제를 고칩니다.
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/sfc/otogirisou/>
 
@@ -38,12 +39,15 @@ v1.0 패치 위에 대본과 폰트를 다시 만들고, v1.2 는 v1.1 롬에 �
 | `zsh tools/release-v1.2.sh` | `release/v1.2/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `2C31A0B2` |
 | `zsh tools/build-v1.3.sh` | v1.2 빌드 위에 `build/otogirisou-kr-v1.3.sfc` |
 | `zsh tools/release-v1.3.sh` | `release/v1.3/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `DAE98F06` |
+| `zsh tools/build-v1.4.sh` | v1.3 빌드 위에 `build/otogirisou-kr-v1.4.sfc` |
+| `zsh tools/release-v1.4.sh` | `release/v1.4/*.ips`(헤더 없는 롬용과 512바이트 헤더용), CRC32 `C2AF6ABF` |
 
-배포한 v1.2·v1.3 패치를 그대로 다시 만들려면:
+배포한 v1.2·v1.3·v1.4 패치를 그대로 다시 만들려면:
 
 ```sh
 zsh tools/build.sh && zsh tools/release-v1.2.sh
 zsh tools/build.sh && zsh tools/release-v1.3.sh
+zsh tools/build.sh && zsh tools/release-v1.4.sh
 ```
 
 첫 빌드는 가진 롬에서 일본어 대본을 `tables/script-jp.txt`(`tables/script.txt`
@@ -62,6 +66,8 @@ zsh tools/build.sh && zsh tools/release-v1.3.sh
 - v1.3 이름 입력: 자모 쪽 배치와 새 글자(완성형 중 폰트에 없는 음절, 호환 자모)는
   `tools/namefont.py`, 코드는 `asm/nameentry.asm` 에 있습니다. 새 글자는 Galmuri11 로
   그리고 뱅크 $36 에 둡니다.
+- 세이브 표식: `asm/savecompat.asm` 은 v1.1-v1.3 바이트 그대로 두고, v1.4 부터 새 슬롯
+  표식(`MarkNew`)은 `asm/newslot.asm` 이 그 위에 덮어씁니다.
 - v1.2 추가 기능: 장은 `tables/qol-chapters.tsv`, 엔딩은
   `tables/qol-endings.tsv` 에 있습니다. 데이터는 `tools/qol.py`(뱅크 $1B)와
   `tools/flow.py`(뱅크 $1C), 코드는 `asm/qol.asm` 과 `asm/flow.asm` 에 있습니다.
