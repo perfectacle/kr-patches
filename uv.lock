@@ -9,7 +9,7 @@ exclude-newer-span = "P7D"
 [[package]]
 name = "kr-patch-toolkit"
 version = "0.8.0"
-source = { git = "https://github.com/perfectacle/kr-patch-toolkit?rev=v0.8.0#6c71f32fc40d2eb921375d7b9e83299699abe8c3" }
+source = { git = "https://github.com/perfectacle/kr-patch-toolkit?tag=v0.8.0#6c71f32fc40d2eb921375d7b9e83299699abe8c3" }
 dependencies = [
     { name = "numpy" },
     { name = "pillow" },
@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "kr-patch-toolkit", git = "https://github.com/perfectacle/kr-patch-toolkit?rev=v0.8.0" }]
+requires-dist = [{ name = "kr-patch-toolkit", git = "https://github.com/perfectacle/kr-patch-toolkit?tag=v0.8.0" }]
 
 [[package]]
 name = "numpy"

@@ -27,8 +27,8 @@
       "addLabels": ["rebuild-needed"]
     },
     {
-      "description": "Our own toolkit, pinned by tag: no supply-chain cooldown, and the PR only moves the tag in pyproject.toml, so run uv lock and rebuild before merging",
-      "matchPackageNames": ["kr-patch-toolkit"],
+      "description": "Our own toolkit, pinned by tag in [tool.uv.sources]: no supply-chain cooldown; the pep621 manager updates uv.lock with it, and the patches still need a local rebuild before merging",
+      "matchDepNames": ["kr-patch-toolkit"],
       "minimumReleaseAge": null,
       "automerge": false,
       "addLabels": ["rebuild-needed"]
@@ -46,17 +46,6 @@
       "matchStrings": ["ZIZMOR: zizmor==(?<currentValue>\\S+)"],
       "depNameTemplate": "zizmor",
       "datasourceTemplate": "pypi"
-    },
-    {
-      "customType": "regex",
-      "description": "kr-patch-toolkit is a git dependency, which the pep621 manager skips",
-      "managerFilePatterns": ["/^pyproject\\.toml$/"],
-      "matchStrings": [
-        "kr-patch-toolkit @ git\\+https://github\\.com/perfectacle/kr-patch-toolkit@(?<currentValue>v[^\"\\s]+)"
-      ],
-      "depNameTemplate": "kr-patch-toolkit",
-      "packageNameTemplate": "perfectacle/kr-patch-toolkit",
-      "datasourceTemplate": "github-tags"
     }
   ]
 }
