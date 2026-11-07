@@ -8,6 +8,7 @@
 다만 타이틀 화면의 v1.1 안내·제작자 문구는 지운다(title.py). 실기·플래시카드에서 대사가 안 나오게 하는
 AP 루틴은 오버레이 0 을 고쳐 끈다(apfix.py).
 다시 만든 스크립트가 출발점과 같으면 출발점의 압축 바이트를 그대로 둔다.
+롬은 헤더의 카드 용량(128MB)까지 0xFF 로 채운다(pad).
 """
 import csv
 from pathlib import Path
@@ -42,6 +43,15 @@ def script_file(J, msgs, kc):
     return lmg.repack(J, layout, new)
 
 
+def pad(data):
+    """헤더 0x14 의 카드 용량까지 0xFF 로 채운다. 일본판 카드 덤프도 사용 영역 뒤가 0xFF 다.
+    melonDS DS 코어는 크기가 용량과 다른 롬을 용량으로 올려 잡은 뒤 멈춘다."""
+    size = 0x20000 << data[0x14]
+    if len(data) > size:
+        raise SystemExit(f"ROM is {len(data)} bytes, more than the header capacity {size}")
+    return data + b"\xff" * (size - len(data))
+
+
 def build(jp_rom, base_rom, script, out=None):
     kc = T.Codec(T.ko_table(HERE / "tables/low.tsv"))
     jp, base = Rom(Path(jp_rom).read_bytes()), Rom(Path(base_rom).read_bytes())
@@ -67,7 +77,7 @@ def build(jp_rom, base_rom, script, out=None):
     fid = base.overlay_files()[ov]
     files[fid] = apfix.patch(base.file(fid))
     changed.append(ov)
-    data = rebuild(base, files)
+    data = pad(rebuild(base, files))
     if out:
         Path(out).write_bytes(data)
     return data, changed

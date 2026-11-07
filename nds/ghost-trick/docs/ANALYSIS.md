@@ -1,9 +1,9 @@
-# [NDS] Ghost Trick ROM analysis (Korean patch v1.2 and v1.3 work notes)
+# [NDS] Ghost Trick ROM analysis (Korean patch v1.2 to v1.4 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patch v1.2 and v1.3.
+The ROM structure and methods confirmed while working on the Korean patch v1.2 to v1.4.
 A record for anyone who analyses this ROM again or continues fixing the patch.
 Patch page: https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/
 
@@ -12,6 +12,7 @@ Patch page: https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/
  - v1.1 ROM: Japanese + v1.1/v1.1.xdelta = 119,459,746 bytes, CRC32 D366A4D9
  - v1.2 ROM: 119,462,534 bytes, CRC32 4C863193
  - v1.3 ROM: output of tools/build.sh = 119,462,534 bytes, CRC32 F13E7A2C (differs from v1.2 only in the 4 bytes of section 8)
+ - v1.4 ROM: output of tools/build.sh = 134,217,728 bytes, CRC32 13DD4810 (v1.3 padded with 0xFF, section 6)
  - Markers
    · [verified] checked by reading ROM bytes or running in an emulator
    · [inferred] guessed from the shape of the data or circumstances. Check it yourself before changing anything.
@@ -176,7 +177,13 @@ A desmume core built from libretro/desmume commit 95b4d79 (2026-09-20) runs thro
 libretro callbacks (tools/play.py). Touches go through the pointer device with the core variables
 desmume_pointer_mouse=enabled and desmume_pointer_type=touch. Pointer coordinates span the whole
 256×384 frame of both screens; the bottom screen starts at y 192.
-The melonDS DS v1.4.0 core stops after loading the ROM.
+■ ROM size and melonDS DS [verified]
+The Japanese card dump is 134,217,728 bytes, the capacity at header 0x14 (0x20000 << 10). After the used size at
+header 0x80 (118,591,968) it is all 0xFF. The v1.1 to v1.3 ROMs end at the used size (119,459,746 and
+119,462,534 bytes). The melonDS DS v1.4.0 core logs "bad ROM size 119462534 (expected 134217728) rounded to
+134217728" for them and runs no frames. The same ROM padded with 0xFF to 134,217,728 bytes plays to the first
+chapter's narration. v1.4 is padded this way in tools/build.py. The header is not changed (CRC16 stays CCD2),
+and desmume shows identical frames for v1.3 and v1.4 from the title to the first chapter's narration.
 
 ■ Later scenes [verified]
 tools/stage_rom.py changes the start path st01/st01_root.xml in route.xml to another stage and the
