@@ -1,13 +1,13 @@
 #!/bin/zsh
-# Build v1.4 from the Japanese ROM and the v1.1 xdelta.
-# usage: tools/build.sh   (outputs ghost-trick-kr-v1.4.nds and the release xdelta)
+# Build v1.5 from the Japanese ROM and the v1.1 xdelta.
+# usage: tools/build.sh   (outputs ghost-trick-kr-v1.5.nds and the release xdelta)
 set -e
 cd "$(dirname $0)/.."
 PY=${PYTHON:-${PWD:h:h}/.venv/bin/python}
 KRPATCH=${KRPATCH:-${PWD:h:h}/.venv/bin/krpatch}
-mkdir -p work release/v1.4
+mkdir -p work release/v1.5
 $KRPATCH xdelta apply ghost-trick-jp.nds v1.1/v1.1.xdelta work/build-v1.1.nds
 $PY tools/check.py ghost-trick-jp.nds work/build-v1.1.nds tables/v1.2/script.tsv
-$PY tools/build.py ghost-trick-jp.nds work/build-v1.1.nds ghost-trick-kr-v1.4.nds tables/v1.2/script.tsv
-$KRPATCH xdelta make ghost-trick-jp.nds ghost-trick-kr-v1.4.nds "release/v1.4/Ghost Trick (K) v1.4.xdelta"
-$PY -c "import zlib;print('CRC32 %08X'%zlib.crc32(open('ghost-trick-kr-v1.4.nds','rb').read()))"
+$PY tools/build.py ghost-trick-jp.nds work/build-v1.1.nds ghost-trick-kr-v1.5.nds tables/v1.2/script.tsv
+$KRPATCH xdelta make ghost-trick-jp.nds ghost-trick-kr-v1.5.nds "release/v1.5/Ghost Trick (K) v1.5.xdelta"
+$PY -c "import zlib;print('CRC32 %08X'%zlib.crc32(open('ghost-trick-kr-v1.5.nds','rb').read()))"

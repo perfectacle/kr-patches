@@ -1,9 +1,9 @@
-# [NDS] Ghost Trick ROM analysis (Korean patch v1.2 to v1.4 work notes)
+# [NDS] Ghost Trick ROM analysis (Korean patch v1.2 to v1.5 work notes)
 
 English | [한국어](ANALYSIS.ko.md)
 
 ```text
-The ROM structure and methods confirmed while working on the Korean patch v1.2 to v1.4.
+The ROM structure and methods confirmed while working on the Korean patch v1.2 to v1.5.
 A record for anyone who analyses this ROM again or continues fixing the patch.
 Patch page: https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/
 
@@ -13,6 +13,7 @@ Patch page: https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/
  - v1.2 ROM: 119,462,534 bytes, CRC32 4C863193
  - v1.3 ROM: output of tools/build.sh = 119,462,534 bytes, CRC32 F13E7A2C (differs from v1.2 only in the 4 bytes of section 8)
  - v1.4 ROM: output of tools/build.sh = 134,217,728 bytes, CRC32 13DD4810 (v1.3 padded with 0xFF, section 6)
+ - v1.5 ROM: output of tools/build.sh = 134,217,728 bytes, CRC32 6DDD429F (layout and banner, section 9)
  - Markers
    · [verified] checked by reading ROM bytes or running in an emulator
    · [inferred] guessed from the shape of the data or circumstances. Check it yourself before changing anything.
@@ -235,9 +236,54 @@ The fix edits compressed bytes, so after unpacking four places change, around +0
 v1.3 writes the same bytes at their positions in the file (+0x9E, +0x149) with tools/apfix.py. The file keeps its
 size, so the overlay table is not touched. The resulting ROM differs from v1.2 only at 0x847A6-0x847A7, 0x84851
 and 0x84853. The header CRC16 is still CCD2, so nds-bootstrap never applies the fix a second time.
+v1.5 moves overlay 0 back to the Japanese offset 0x84A00 (section 9). The header CRC16 becomes DFE5, still not
+C8CD, so this still holds.
 
 ■ Checks [verified]
 desmume runs v1.2 and v1.3 with the same input to identical frames, from the title to the first chapter's
 narration. That text shows on hardware (TWiLight Menu++) was confirmed by the reporter who made the same fix as an
 IPS.
+```
+
+## 9. ROM layout and the DS menu
+
+```text
+■ Symptom [verified: user report and melonDS DS]
+With native BIOS and firmware and native boot in melonDS DS, v1.4 stops on a white screen after the game is
+picked in the DS menu. The DS menu already shows an empty card slot (no icon, no title) for it. Direct boot,
+where the emulator copies ARM9 and ARM7 to memory itself, runs normally.
+
+■ Cause [verified]
+The Japanese ROM puts ARM9 at 0x4000 and every other part (overlay table, files, ARM7, FNT, FAT, banner) on a
+0x200 boundary, with 0xFF in the gaps. The tool that made v1.1 packed them without gaps: ARM7 is at 0x95DA8
+instead of 0x96800, the banner at 0xBDF48 instead of 0xBEE00, and 224 of the 228 files are unaligned. It also
+dropped the 12 bytes after ARM9 (the nitrocode footer, 21 06 C0 DE ...).
+The firmware reads ARM7 and the banner from the card in 0x200-byte blocks. A card read wraps at 0x1000-byte
+page boundaries back to the start of the page (melonDS: src/NDSCart/CartCommon.cpp, ROMRead32). The block
+that crosses 0x96000 brings in bytes from 0x95000, so ARM7 is loaded broken. The game's own file reads go
+through the SDK card routines, which handle any alignment, so files are read correctly after boot.
+
+■ Fix [verified]
+tools/layout.py lays the ROM out again in the Japanese order (ARM9, overlay table, overlay files, ARM7, FNT,
+FAT, banner, other files; files are matched by path), ARM9 at 0x4000 and everything else on the next 0x200
+boundary, gaps 0xFF, and puts the Japanese nitrocode footer back after ARM9. ARM7, FNT, FAT, overlay table and
+banner now sit at the same offsets as in the Japanese ROM. In the header only the offsets, the used size at
+0x80 and the CRC16 change. The contents of every file, ARM9, ARM7 and FNT are the same as in v1.4.
+
+■ Banner title [verified]
+The banner title is UTF-16 text that the DS menu draws with the font in the firmware. v1.1 put "고스트 트릭"
+in all six language slots of the version 1 banner. Firmware without Hangul draws each missing glyph as @,
+so the menu showed "@@@ @@" whatever the language setting. tools/banner.py makes a version 3 banner (0xA40
+bytes, CRCs at 0x02, 0x04 and 0x06 over 0x20-0x83F, 0x20-0x93F and 0x20-0xA3F) with "Ghost Trick (K)" and
+"CAPCOM" in the six language slots and the Chinese slot, and "고스트 트릭" and "CAPCOM" in the Korean slot.
+The icon stays as in v1.1 (identical to the Japanese one).
+[inferred] Korean DS firmware reads the Korean slot and has Hangul glyphs. Not checked, as no Korean firmware
+was at hand. Setting the language of a non-Korean firmware to Korean (7) stops it at the boot logo.
+
+■ Checks [verified]
+melonDS DS v1.4.0, native BIOS and firmware (DS and DS Lite, language Japanese and English), native boot:
+v1.4 shows an empty card slot and stops on a white screen; v1.5 shows the icon and "Ghost Trick (K)", and
+runs through the title to the first chapter's narration like the Japanese ROM. With direct boot, desmume and
+melonDS DS show the same frames for v1.4 and v1.5 except that one line of narration fades in a few frames
+apart (the card reads land at other offsets).
 ```

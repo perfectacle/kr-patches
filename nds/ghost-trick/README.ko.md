@@ -1,13 +1,15 @@
-# 고스트 트릭(NDS) 한글패치 v1.4
+# 고스트 트릭(NDS) 한글패치 v1.5
 
 [English](README.md) | 한국어
 
-일본판 닌텐도 DS *고스트 트릭* 한글패치 v1.4 의 소스입니다. 일본판 롬에
+일본판 닌텐도 DS *고스트 트릭* 한글패치 v1.5 의 소스입니다. 일본판 롬에
 한글패치 v1.1 을 적용한 롬에서 시작해, 대사 스크립트를 일본판 스크립트에서
 다시 만듭니다. 폰트와 그래픽은 v1.1 그대로이고, 타이틀 화면에 v1.1 이 넣은 안내·제작자
 문구만 지웁니다. v1.3 부터는 DS 실기·플래시카드에서 대사창을 비게 만드는 안티
 파이러시 루틴도 끕니다(분석 노트 8절). v1.4 부터는 롬을 헤더의 카드 용량(128MB)까지
-`0xFF` 로 채워 melonDS DS 코어에서도 돌아갑니다(분석 노트 6절).
+`0xFF` 로 채워 melonDS DS 코어에서도 돌아갑니다(분석 노트 6절). v1.5 부터는 롬의 모든
+부분을 일본판처럼 0x200 경계에 놓아 DS 펌웨어로도 부팅되고(melonDS 의 네이티브 BIOS 부팅),
+DS 메뉴의 게임 제목이 「@@@ @@」 대신 「Ghost Trick (K)」로 나옵니다(분석 노트 9절).
 
 패치 페이지: <https://perfectacle.github.io/games/kr-patches/nds/ghost-trick/>
 
@@ -37,8 +39,8 @@
 zsh tools/build.sh
 ```
 
-결과물: `ghost-trick-kr-v1.4.nds`(134,217,728 바이트, CRC32 `13DD4810`)와
-`release/v1.4/Ghost Trick (K) v1.4.xdelta`. 배포한 패치와 같습니다. 패치
+결과물: `ghost-trick-kr-v1.5.nds`(134,217,728 바이트, CRC32 `6DDD429F`)와
+`release/v1.5/Ghost Trick (K) v1.5.xdelta`. 배포한 패치와 같습니다. 패치
 바이트는 `xdelta3` 버전에 따라 달라질 수 있으니 롬 CRC32 로 비교하세요.
 다른 환경을 쓰려면 `PYTHON`, `KRPATCH` 를 지정합니다.
 
@@ -50,7 +52,10 @@ zsh tools/build.sh
 대사를 가리키는 포인터와 레이블을 고칩니다. 대사 머리(창·번호)는 일본판 값을
 씁니다. 롬은 `kr_patch.nds.rom` 으로 다시 묶습니다. `tools/apfix.py` 는
 일본판용 nds-bootstrap AP 수정(`BGTJ-C8CD.ips`)을 오버레이 0 에 넣습니다.
-다시 묶은 롬은 헤더 `0x14` 의 카드 용량까지 `0xFF` 로 채웁니다.
+`tools/banner.py` 는 배너를 버전 3 으로 만들어 여섯 언어 칸과 중국어 칸에는 라틴 문자
+제목을, 한국어 칸에는 한글 제목을 넣습니다. `tools/layout.py` 는 롬을 일본판 순서로
+다시 놓으면서 모든 부분을 0x200 경계에 맞춥니다. 그 뒤 헤더 `0x14` 의 카드 용량까지
+`0xFF` 로 채웁니다.
 
 ## 대본 고치기
 
@@ -67,7 +72,7 @@ zsh tools/build.sh
 저장소에 넣지 않습니다).
 
 ```sh
-../../.venv/bin/python tools/dump.py ghost-trick-jp.nds ghost-trick-kr-v1.4.nds work/side.tsv
+../../.venv/bin/python tools/dump.py ghost-trick-jp.nds ghost-trick-kr-v1.5.nds work/side.tsv
 ```
 
 고친 뒤에는 `tools/check.py` 가 다음을 봅니다: 글자표에 없는 글자, 제어 코드 열이
@@ -93,17 +98,17 @@ v1.1·일본판과 다름, 줄 넘침(초상화가 창 안에 있는 창 13자, 
 에뮬레이터는 desmume libretro 코어를 씁니다. libretro/desmume 의 커밋
 `95b4d79`(2026-09-20)을 직접 빌드해 `compat/cores/desmume_libretro.dylib` 에
 둡니다(`make -C desmume/src/frontend/libretro`). melonDS DS v1.4.0 코어로도
-v1.4 는 돌아가지만(`--core`), v1.3 이하 롬에서는 멈춥니다.
+v1.4 이후는 돌아가지만(`--core`), v1.3 이하 롬에서는 멈춥니다.
 
 ```sh
 # 전원을 켜고 버튼·터치를 넣어 가며 화면을 찍는다(세이브 스테이트로 이어 갈 수 있음)
-../../.venv/bin/python tools/play.py ghost-trick-kr-v1.4.nds out --save s1.state --cmd "wait 600; press start; a 20; shot title"
+../../.venv/bin/python tools/play.py ghost-trick-kr-v1.5.nds out --save s1.state --cmd "wait 600; press start; a 20; shot title"
 # 「처음부터」가 다른 스테이지·장면에서 시작하는 시험 롬
-../../.venv/bin/python tools/stage_rom.py ghost-trick-kr-v1.4.nds work/st06.nds 06 game004
+../../.venv/bin/python tools/stage_rom.py ghost-trick-kr-v1.5.nds work/st06.nds 06 game004
 # 대사 하나를 시험 문장으로 바꾼 롬(창 폭 실험)
-../../.venv/bin/python tools/probe.py ghost-trick-jp.nds ghost-trick-kr-v1.4.nds work/probe.nds st01/st01_game000_Expand.xml.lz 0 0 "가나다라마바사아자차카타파하"
+../../.venv/bin/python tools/probe.py ghost-trick-jp.nds ghost-trick-kr-v1.5.nds work/probe.nds st01/st01_game000_Expand.xml.lz 0 0 "가나다라마바사아자차카타파하"
 # 첫 장면에 확인할 대사를 모은 롬
-../../.venv/bin/python tools/gallery.py ghost-trick-kr-v1.4.nds tables/v1.2/script.tsv work/gallery.nds st06/st06_game002_Expand.xml.lz:0:15
+../../.venv/bin/python tools/gallery.py ghost-trick-kr-v1.5.nds tables/v1.2/script.tsv work/gallery.nds st06/st06_game002_Expand.xml.lz:0:15
 ```
 
 `tools/font_store.py` 는 대사 폰트(`fonts2bpp_new.imb`)를 툴킷 글리프

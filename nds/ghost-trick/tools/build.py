@@ -8,12 +8,15 @@
 다만 타이틀 화면의 v1.1 안내·제작자 문구는 지운다(title.py). 실기·플래시카드에서 대사가 안 나오게 하는
 AP 루틴은 오버레이 0 을 고쳐 끈다(apfix.py).
 다시 만든 스크립트가 출발점과 같으면 출발점의 압축 바이트를 그대로 둔다.
-롬은 헤더의 카드 용량(128MB)까지 0xFF 로 채운다(pad).
+DS 메뉴의 제목은 한국판이 아닌 펌웨어에서도 읽히게 배너를 버전 3 으로 바꾼다(banner.py).
+롬은 일본판처럼 영역마다 0x200 경계에 다시 놓고(layout.py), 헤더의 카드 용량(128MB)까지 0xFF 로 채운다(pad).
 """
 import csv
 from pathlib import Path
 
 import apfix
+import banner
+import layout
 import lmg
 import textcodec as T
 import title
@@ -77,7 +80,8 @@ def build(jp_rom, base_rom, script, out=None):
     fid = base.overlay_files()[ov]
     files[fid] = apfix.patch(base.file(fid))
     changed.append(ov)
-    data = pad(rebuild(base, files))
+    rom = Rom(rebuild(base, files))
+    data = pad(layout.relayout(jp.data, rom.data, banner.make(rom.data[rom.banner:rom.banner + rom.banner_size()])))
     if out:
         Path(out).write_bytes(data)
     return data, changed
